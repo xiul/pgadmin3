@@ -47,6 +47,20 @@ pgadmin3_SOURCES += \
 	$(srcdir)/include/images/database-sm.xpm \
 	$(srcdir)/include/images/database.xpm \
 	$(srcdir)/include/images/databases.xpm \
+    $(srcdir)/include/images/ddAddColumn.xpm \
+    $(srcdir)/include/images/ddAddForeignKey.xpm \
+    $(srcdir)/include/images/ddDown.xpm \
+    $(srcdir)/include/images/ddforeignkey.xpm \
+    $(srcdir)/include/images/ddMaximizeTable.xpm \
+    $(srcdir)/include/images/ddMinimizeTable.xpm \
+    $(srcdir)/include/images/ddnotnull.xpm \
+    $(srcdir)/include/images/ddnull.xpm \
+    $(srcdir)/include/images/ddprimaryforeignkey.xpm \
+    $(srcdir)/include/images/ddprimarykey.xpm \
+    $(srcdir)/include/images/ddRemoveColumn.xpm \
+    $(srcdir)/include/images/ddRemoveTable.xpm \
+    $(srcdir)/include/images/ddUp.xpm \
+    $(srcdir)/include/images/ddunique.xpm \
 	$(srcdir)/include/images/debugger.xpm \
 	$(srcdir)/include/images/delete.xpm \
 	$(srcdir)/include/images/dictionary.xpm \

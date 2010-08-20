@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="Windows-1252"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
-	Version="9.00"
+	Version="9,00"
 	Name="pgAdmin3"
 	ProjectGUID="{5C2D73BA-1F24-48F8-8233-85F5D672AA6A}"
 	RootNamespace="pgAdmin3"
@@ -123,6 +123,110 @@
 			/>
 		</Configuration>
 		<Configuration
+			Name="Release|x64"
+			OutputDirectory="$(PlatformName)\$(ConfigurationName)"
+			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
+			ConfigurationType="1"
+			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC60.vsprops"
+			UseOfMFC="0"
+			ATLMinimizesCRunTimeLibraryUsage="false"
+			CharacterSet="1"
+			>
+			<Tool
+				Name="VCPreBuildEventTool"
+			/>
+			<Tool
+				Name="VCCustomBuildTool"
+			/>
+			<Tool
+				Name="VCXMLDataGeneratorTool"
+			/>
+			<Tool
+				Name="VCWebServiceProxyGeneratorTool"
+			/>
+			<Tool
+				Name="VCMIDLTool"
+				PreprocessorDefinitions="NDEBUG"
+				MkTypLibCompatible="true"
+				SuppressStartupBanner="true"
+				TargetEnvironment="3"
+				TypeLibraryName=".\Release/pgAdmin3.tlb"
+				HeaderFileName=""
+			/>
+			<Tool
+				Name="VCCLCompilerTool"
+				Optimization="2"
+				InlineFunctionExpansion="2"
+				AdditionalIncludeDirectories="&quot;$(WXWIN)/include&quot;;&quot;$(WXWIN)/contrib/include&quot;;&quot;$(PGDIR)/include&quot;;&quot;$(PGBUILD)/libxml2/include/&quot;;&quot;$(PGBUILD)/libxslt/include/&quot;;&quot;$(PGBUILD)/iconv/include/&quot;;include/"
+				PreprocessorDefinitions="_CRT_SECURE_NO_DEPRECATE=1;NDEBUG;WIN32;_WINDOWS;__WINDOWS__;__WIN95__;__WIN32__;WINVER=0x0400;STRICT;wxUSE_UNICODE=1;UNICODE;EMBED_XRC;SSL"
+				StringPooling="true"
+				RuntimeLibrary="2"
+				EnableFunctionLevelLinking="true"
+				UsePrecompiledHeader="2"
+				PrecompiledHeaderThrough="pgadmin3.h"
+				PrecompiledHeaderFile=".\Release/pgAdmin3.pch"
+				AssemblerOutput="2"
+				AssemblerListingLocation=".\Release/"
+				ObjectFile=".\Release/"
+				ProgramDataBaseFileName=".\Release/"
+				BrowseInformation="1"
+				WarningLevel="3"
+				SuppressStartupBanner="true"
+			/>
+			<Tool
+				Name="VCManagedResourceCompilerTool"
+			/>
+			<Tool
+				Name="VCResourceCompilerTool"
+				PreprocessorDefinitions="NDEBUG"
+				Culture="2057"
+				AdditionalIncludeDirectories="$(WXWIN)/include"
+			/>
+			<Tool
+				Name="VCPreLinkEventTool"
+			/>
+			<Tool
+				Name="VCLinkerTool"
+				AdditionalDependencies="wxbase28u.lib wxbase28u_xml.lib wxbase28u_net.lib wxmsw28u_adv.lib wxmsw28u_core.lib wxmsw28u_html.lib wxmsw28u_aui.lib wxregexu.lib wxpng.lib wxzlib.lib wxjpeg.lib wxtiff.lib wxmsw28u_stc.lib wxmsw28u_ogl.lib wxmsw28u_xrc.lib wxexpat.lib libpq.lib libxml2.lib libxslt.lib iconv_a.lib comctl32.lib rpcrt4.lib wsock32.lib winmm.lib"
+				OutputFile=".\Release/pgAdmin3.exe"
+				LinkIncremental="2"
+				SuppressStartupBanner="true"
+				AdditionalLibraryDirectories="&quot;$(WXWIN)/lib/vc_lib&quot;;&quot;$(PGDIR)/lib&quot;;&quot;$(PGBUILD)/libxml2/lib&quot;;&quot;$(PGBUILD)/libxslt/lib&quot;;&quot;$(PGBUILD)/iconv/lib&quot;"
+				IgnoreDefaultLibraryNames="libcd.lib,libcid.lib,msvcrtd.lib"
+				GenerateDebugInformation="true"
+				ProgramDatabaseFile=".\Release/pgAdmin3.pdb"
+				GenerateMapFile="true"
+				MapFileName=".\Release/pgAdmin3.map"
+				SubSystem="2"
+				RandomizedBaseAddress="1"
+				DataExecutionPrevention="0"
+				TargetMachine="17"
+			/>
+			<Tool
+				Name="VCALinkTool"
+			/>
+			<Tool
+				Name="VCManifestTool"
+			/>
+			<Tool
+				Name="VCXDCMakeTool"
+			/>
+			<Tool
+				Name="VCBscMakeTool"
+				SuppressStartupBanner="true"
+				OutputFile=".\Release/pgAdmin3.bsc"
+			/>
+			<Tool
+				Name="VCFxCopTool"
+			/>
+			<Tool
+				Name="VCAppVerifierTool"
+			/>
+			<Tool
+				Name="VCPostBuildEventTool"
+			/>
+		</Configuration>
+		<Configuration
 			Name="Debug|Win32"
 			OutputDirectory=".\Debug"
 			IntermediateDirectory=".\Debug"
@@ -218,110 +322,6 @@
 				Name="VCBscMakeTool"
 				SuppressStartupBanner="true"
 				OutputFile=".\Debug/pgAdmin3.bsc"
-			/>
-			<Tool
-				Name="VCFxCopTool"
-			/>
-			<Tool
-				Name="VCAppVerifierTool"
-			/>
-			<Tool
-				Name="VCPostBuildEventTool"
-			/>
-		</Configuration>
-		<Configuration
-			Name="Release|x64"
-			OutputDirectory="$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
-			ConfigurationType="1"
-			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC60.vsprops"
-			UseOfMFC="0"
-			ATLMinimizesCRunTimeLibraryUsage="false"
-			CharacterSet="1"
-			>
-			<Tool
-				Name="VCPreBuildEventTool"
-			/>
-			<Tool
-				Name="VCCustomBuildTool"
-			/>
-			<Tool
-				Name="VCXMLDataGeneratorTool"
-			/>
-			<Tool
-				Name="VCWebServiceProxyGeneratorTool"
-			/>
-			<Tool
-				Name="VCMIDLTool"
-				PreprocessorDefinitions="NDEBUG"
-				MkTypLibCompatible="true"
-				SuppressStartupBanner="true"
-				TargetEnvironment="3"
-				TypeLibraryName=".\Release/pgAdmin3.tlb"
-				HeaderFileName=""
-			/>
-			<Tool
-				Name="VCCLCompilerTool"
-				Optimization="2"
-				InlineFunctionExpansion="2"
-				AdditionalIncludeDirectories="&quot;$(WXWIN)/include&quot;;&quot;$(WXWIN)/contrib/include&quot;;&quot;$(PGDIR)/include&quot;;&quot;$(PGBUILD)/libxml2/include/&quot;;&quot;$(PGBUILD)/libxslt/include/&quot;;&quot;$(PGBUILD)/iconv/include/&quot;;include/"
-				PreprocessorDefinitions="_CRT_SECURE_NO_DEPRECATE=1;NDEBUG;WIN32;_WINDOWS;__WINDOWS__;__WIN95__;__WIN32__;WINVER=0x0400;STRICT;wxUSE_UNICODE=1;UNICODE;EMBED_XRC;SSL"
-				StringPooling="true"
-				RuntimeLibrary="2"
-				EnableFunctionLevelLinking="true"
-				UsePrecompiledHeader="2"
-				PrecompiledHeaderThrough="pgadmin3.h"
-				PrecompiledHeaderFile=".\Release/pgAdmin3.pch"
-				AssemblerOutput="2"
-				AssemblerListingLocation=".\Release/"
-				ObjectFile=".\Release/"
-				ProgramDataBaseFileName=".\Release/"
-				BrowseInformation="1"
-				WarningLevel="3"
-				SuppressStartupBanner="true"
-			/>
-			<Tool
-				Name="VCManagedResourceCompilerTool"
-			/>
-			<Tool
-				Name="VCResourceCompilerTool"
-				PreprocessorDefinitions="NDEBUG"
-				Culture="2057"
-				AdditionalIncludeDirectories="$(WXWIN)/include"
-			/>
-			<Tool
-				Name="VCPreLinkEventTool"
-			/>
-			<Tool
-				Name="VCLinkerTool"
-				AdditionalDependencies="wxbase28u.lib wxbase28u_xml.lib wxbase28u_net.lib wxmsw28u_adv.lib wxmsw28u_core.lib wxmsw28u_html.lib wxmsw28u_aui.lib wxregexu.lib wxpng.lib wxzlib.lib wxjpeg.lib wxtiff.lib wxmsw28u_stc.lib wxmsw28u_ogl.lib wxmsw28u_xrc.lib wxexpat.lib libpq.lib libxml2.lib libxslt.lib iconv_a.lib comctl32.lib rpcrt4.lib wsock32.lib winmm.lib"
-				OutputFile=".\Release/pgAdmin3.exe"
-				LinkIncremental="2"
-				SuppressStartupBanner="true"
-				AdditionalLibraryDirectories="&quot;$(WXWIN)/lib/vc_lib&quot;;&quot;$(PGDIR)/lib&quot;;&quot;$(PGBUILD)/libxml2/lib&quot;;&quot;$(PGBUILD)/libxslt/lib&quot;;&quot;$(PGBUILD)/iconv/lib&quot;"
-				IgnoreDefaultLibraryNames="libcd.lib,libcid.lib,msvcrtd.lib"
-				GenerateDebugInformation="true"
-				ProgramDatabaseFile=".\Release/pgAdmin3.pdb"
-				GenerateMapFile="true"
-				MapFileName=".\Release/pgAdmin3.map"
-				SubSystem="2"
-				RandomizedBaseAddress="1"
-				DataExecutionPrevention="0"
-				TargetMachine="17"
-			/>
-			<Tool
-				Name="VCALinkTool"
-			/>
-			<Tool
-				Name="VCManifestTool"
-			/>
-			<Tool
-				Name="VCXDCMakeTool"
-			/>
-			<Tool
-				Name="VCBscMakeTool"
-				SuppressStartupBanner="true"
-				OutputFile=".\Release/pgAdmin3.bsc"
 			/>
 			<Tool
 				Name="VCFxCopTool"
@@ -461,7 +461,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="Debug|Win32"
+					Name="Release|x64"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -470,7 +470,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="Release|x64"
+					Name="Debug|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -501,7 +501,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="Debug|Win32"
+					Name="Release|x64"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -510,7 +510,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="Release|x64"
+					Name="Debug|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -541,7 +541,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="Debug|Win32"
+					Name="Release|x64"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -550,7 +550,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="Release|x64"
+					Name="Debug|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -585,7 +585,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="Debug|Win32"
+					Name="Release|x64"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -594,7 +594,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="Release|x64"
+					Name="Debug|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -625,7 +625,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="Debug|Win32"
+					Name="Release|x64"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -634,7 +634,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="Release|x64"
+					Name="Debug|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -665,7 +665,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="Debug|Win32"
+					Name="Release|x64"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -674,7 +674,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="Release|x64"
+					Name="Debug|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -806,7 +806,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="Debug|Win32"
+					Name="Release|x64"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -816,7 +816,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="Release|x64"
+					Name="Debug|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -853,7 +853,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="Debug|Win32"
+					Name="Release|x64"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -862,7 +862,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="Release|x64"
+					Name="Debug|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -897,7 +897,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="Debug|Win32"
+					Name="Release|x64"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -906,7 +906,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="Release|x64"
+					Name="Debug|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -1142,6 +1142,10 @@
 			</File>
 			<File
 				RelativePath=".\frm\frmConfig.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\frm\frmDatabaseDesigner.cpp"
 				>
 			</File>
 			<File
@@ -1636,10 +1640,6 @@
 					>
 				</File>
 				<File
-					RelativePath=".\include\images\exclude.xpm"
-					>
-				</File>
-				<File
 					RelativePath=".\include\images\ex_aggregate.xpm"
 					>
 				</File>
@@ -1793,6 +1793,10 @@
 				</File>
 				<File
 					RelativePath=".\include\images\ex_worktable_scan.xpm"
+					>
+				</File>
+				<File
+					RelativePath=".\include\images\exclude.xpm"
 					>
 				</File>
 				<File
@@ -2736,6 +2740,10 @@
 					>
 				</File>
 				<File
+					RelativePath=".\include\frm\frmDatabaseDesigner.h"
+					>
+				</File>
+				<File
 					RelativePath=".\include\frm\frmEditGrid.h"
 					>
 				</File>
@@ -3608,6 +3616,362 @@
 					</Filter>
 				</Filter>
 			</Filter>
+			<Filter
+				Name="dd"
+				>
+				<Filter
+					Name="dditems"
+					>
+					<Filter
+						Name="figures"
+						>
+						<File
+							RelativePath=".\include\dd\dditems\figures\ddColumnFigure.h"
+							>
+						</File>
+						<File
+							RelativePath=".\include\dd\dditems\figures\ddColumnKindIcon.h"
+							>
+						</File>
+						<File
+							RelativePath=".\include\dd\dditems\figures\ddColumnOptionIcon.h"
+							>
+						</File>
+						<File
+							RelativePath=".\include\dd\dditems\figures\ddRelationshipFigure.h"
+							>
+						</File>
+						<File
+							RelativePath=".\include\dd\dditems\figures\ddRelationshipTerminal.h"
+							>
+						</File>
+						<File
+							RelativePath=".\include\dd\dditems\figures\ddTableFigure.h"
+							>
+						</File>
+						<File
+							RelativePath=".\include\dd\dditems\figures\ddTextColumnFigure.h"
+							>
+						</File>
+					</Filter>
+					<Filter
+						Name="handles"
+						>
+						<File
+							RelativePath=".\include\dd\dditems\handles\ddAddColButtonHandle.h"
+							>
+						</File>
+						<File
+							RelativePath=".\include\dd\dditems\handles\ddAddFkButtonHandle.h"
+							>
+						</File>
+						<File
+							RelativePath=".\include\dd\dditems\handles\ddMinMaxTableButtonHandle.h"
+							>
+						</File>
+						<File
+							RelativePath=".\include\dd\dditems\handles\ddRemoveColButtonHandle.h"
+							>
+						</File>
+						<File
+							RelativePath=".\include\dd\dditems\handles\ddRemoveTableButtonHandle.h"
+							>
+						</File>
+						<File
+							RelativePath=".\include\dd\dditems\handles\ddScrollBarHandle.h"
+							>
+						</File>
+						<File
+							RelativePath=".\include\dd\dditems\handles\ddSouthTableSizeHandle.h"
+							>
+						</File>
+					</Filter>
+					<Filter
+						Name="locators"
+						>
+						<File
+							RelativePath=".\include\dd\dditems\locators\ddAddColLocator.h"
+							>
+						</File>
+						<File
+							RelativePath=".\include\dd\dditems\locators\ddAddFkLocator.h"
+							>
+						</File>
+						<File
+							RelativePath=".\include\dd\dditems\locators\ddMinMaxTableLocator.h"
+							>
+						</File>
+						<File
+							RelativePath=".\include\dd\dditems\locators\ddRemoveColLocator.h"
+							>
+						</File>
+						<File
+							RelativePath=".\include\dd\dditems\locators\ddRemoveTableLocator.h"
+							>
+						</File>
+						<File
+							RelativePath=".\include\dd\dditems\locators\ddScrollBarTableLocator.h"
+							>
+						</File>
+						<File
+							RelativePath=".\include\dd\dditems\locators\ddTableBottomLocator.h"
+							>
+						</File>
+					</Filter>
+					<Filter
+						Name="tools"
+						>
+						<File
+							RelativePath=".\include\dd\dditems\tools\ddColumnFigureTool.h"
+							>
+						</File>
+						<File
+							RelativePath=".\include\dd\dditems\tools\ddColumnTextTool.h"
+							>
+						</File>
+					</Filter>
+					<Filter
+						Name="utilities"
+						>
+						<File
+							RelativePath=".\include\dd\dditems\utilities\ddDataType.h"
+							>
+						</File>
+					</Filter>
+				</Filter>
+				<Filter
+					Name="draw"
+					>
+					<Filter
+						Name="figures"
+						>
+						<File
+							RelativePath=".\include\dd\draw\figures\ddAbstractFigure.h"
+							>
+						</File>
+						<File
+							RelativePath=".\include\dd\draw\figures\ddAbstractMenuFigure.h"
+							>
+						</File>
+						<File
+							RelativePath=".\include\dd\draw\figures\ddBitmapFigure.h"
+							>
+						</File>
+						<File
+							RelativePath=".\include\dd\draw\figures\ddCompositeFigure.h"
+							>
+						</File>
+						<File
+							RelativePath=".\include\dd\draw\figures\ddIConnectionFigure.h"
+							>
+						</File>
+						<File
+							RelativePath=".\include\dd\draw\figures\ddIFigure.h"
+							>
+						</File>
+						<File
+							RelativePath=".\include\dd\draw\figures\ddLineConnection.h"
+							>
+						</File>
+						<File
+							RelativePath=".\include\dd\draw\figures\ddLineTerminal.h"
+							>
+						</File>
+						<File
+							RelativePath=".\include\dd\draw\figures\ddPolyLineFigure.h"
+							>
+						</File>
+						<File
+							RelativePath=".\include\dd\draw\figures\ddRectangleFigure.h"
+							>
+						</File>
+						<File
+							RelativePath=".\include\dd\draw\figures\ddSimpleTextFigure.h"
+							>
+						</File>
+					</Filter>
+					<Filter
+						Name="handles"
+						>
+						<File
+							RelativePath=".\include\dd\draw\handles\ddButtonHandle.h"
+							>
+						</File>
+						<File
+							RelativePath=".\include\dd\draw\handles\ddChangeConnectionEndHandle.h"
+							>
+						</File>
+						<File
+							RelativePath=".\include\dd\draw\handles\ddChangeConnectionHandle.h"
+							>
+						</File>
+						<File
+							RelativePath=".\include\dd\draw\handles\ddChangeConnectionStartHandle.h"
+							>
+						</File>
+						<File
+							RelativePath=".\include\dd\draw\handles\ddIHandle.h"
+							>
+						</File>
+						<File
+							RelativePath=".\include\dd\draw\handles\ddLineConnectionHandle.h"
+							>
+						</File>
+						<File
+							RelativePath=".\include\dd\draw\handles\ddLocatorHandle.h"
+							>
+						</File>
+						<File
+							RelativePath=".\include\dd\draw\handles\ddPolyLineHandle.h"
+							>
+						</File>
+					</Filter>
+					<Filter
+						Name="tools"
+						>
+						<File
+							RelativePath=".\include\dd\draw\tools\ddAbstractTool.h"
+							>
+						</File>
+						<File
+							RelativePath=".\include\dd\draw\tools\ddCompositeFigureTool.h"
+							>
+						</File>
+						<File
+							RelativePath=".\include\dd\draw\tools\ddConnectionCreationTool.h"
+							>
+						</File>
+						<File
+							RelativePath=".\include\dd\draw\tools\ddCreationTool.h"
+							>
+						</File>
+						<File
+							RelativePath=".\include\dd\draw\tools\ddDragCreationTool.h"
+							>
+						</File>
+						<File
+							RelativePath=".\include\dd\draw\tools\ddDragTrackerTool.h"
+							>
+						</File>
+						<File
+							RelativePath=".\include\dd\draw\tools\ddFigureTool.h"
+							>
+						</File>
+						<File
+							RelativePath=".\include\dd\draw\tools\ddHandleTrackerTool.h"
+							>
+						</File>
+						<File
+							RelativePath=".\include\dd\draw\tools\ddITool.h"
+							>
+						</File>
+						<File
+							RelativePath=".\include\dd\draw\tools\ddMenuTool.h"
+							>
+						</File>
+						<File
+							RelativePath=".\include\dd\draw\tools\ddPolyLineFigureTool.h"
+							>
+						</File>
+						<File
+							RelativePath=".\include\dd\draw\tools\ddSelectAreaTool.h"
+							>
+						</File>
+						<File
+							RelativePath=".\include\dd\draw\tools\ddSelectionTool.h"
+							>
+						</File>
+						<File
+							RelativePath=".\include\dd\draw\tools\ddSimpleTextTool.h"
+							>
+						</File>
+					</Filter>
+					<Filter
+						Name="locators"
+						>
+						<File
+							RelativePath=".\include\dd\draw\locators\ddILocator.h"
+							>
+						</File>
+						<File
+							RelativePath=".\include\dd\draw\locators\ddPolyLineLocator.h"
+							>
+						</File>
+					</Filter>
+					<Filter
+						Name="utilities"
+						>
+						<File
+							RelativePath=".\include\dd\draw\utilities\ddArrayCollection.h"
+							>
+						</File>
+						<File
+							RelativePath=".\include\dd\draw\utilities\ddCollection.h"
+							>
+						</File>
+						<File
+							RelativePath=".\include\dd\draw\utilities\ddCollectionBase.h"
+							>
+						</File>
+						<File
+							RelativePath=".\include\dd\draw\utilities\ddGeometry.h"
+							>
+						</File>
+						<File
+							RelativePath=".\include\dd\draw\utilities\ddMouseEvent.h"
+							>
+						</File>
+						<File
+							RelativePath=".\include\dd\draw\utilities\ddPoint.h"
+							>
+						</File>
+						<File
+							RelativePath=".\include\dd\draw\utilities\ddRect.h"
+							>
+						</File>
+					</Filter>
+					<Filter
+						Name="main"
+						>
+						<File
+							RelativePath=".\include\dd\draw\main\ddDrawing.h"
+							>
+						</File>
+						<File
+							RelativePath=".\include\dd\draw\main\ddDrawingEditor.h"
+							>
+						</File>
+						<File
+							RelativePath=".\include\dd\draw\main\ddDrawingView.h"
+							>
+						</File>
+						<File
+							RelativePath=".\include\dd\draw\main\ddObject.h"
+							>
+						</File>
+					</Filter>
+					<Filter
+						Name="connectors"
+						>
+						<File
+							RelativePath=".\include\dd\draw\connectors\ddChopBoxConnector.h"
+							>
+						</File>
+						<File
+							RelativePath=".\include\dd\draw\connectors\ddIConnector.h"
+							>
+						</File>
+					</Filter>
+				</Filter>
+				<Filter
+					Name="ddmodel"
+					>
+					<File
+						RelativePath=".\include\dd\ddmodel\ddDatabaseDesign.h"
+						>
+					</File>
+				</Filter>
+			</Filter>
 		</Filter>
 		<Filter
 			Name="schema"
@@ -4172,7 +4536,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="Debug|Win32"
+					Name="Release|x64"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -4180,7 +4544,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="Release|x64"
+					Name="Debug|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -4264,7 +4628,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="Debug|Win32"
+					Name="Release|x64"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -4272,7 +4636,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="Release|x64"
+					Name="Debug|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -4997,6 +5361,350 @@
 				</Filter>
 			</Filter>
 		</Filter>
+		<Filter
+			Name="dd"
+			>
+			<Filter
+				Name="dditems"
+				>
+				<Filter
+					Name="figures"
+					>
+					<File
+						RelativePath=".\dd\dditems\figures\ddColumnFigure.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\dd\dditems\figures\ddColumnKindIcon.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\dd\dditems\figures\ddColumnOptionIcon.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\dd\dditems\figures\ddRelationshipFigure.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\dd\dditems\figures\ddRelationshipTerminal.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\dd\dditems\figures\ddTableFigure.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\dd\dditems\figures\ddTextColumnFigure.cpp"
+						>
+					</File>
+				</Filter>
+				<Filter
+					Name="handles"
+					>
+					<File
+						RelativePath=".\dd\dditems\handles\ddAddColButtonHandle.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\dd\dditems\handles\ddAddFkButtonHandle.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\dd\dditems\handles\ddMinMaxTableButtonHandle.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\dd\dditems\handles\ddRemoveColButtonHandle.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\dd\dditems\handles\ddRemoveTableButtonHandle.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\dd\dditems\handles\ddScrollBarHandle.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\dd\dditems\handles\ddSouthTableSizeHandle.cpp"
+						>
+					</File>
+				</Filter>
+				<Filter
+					Name="locators"
+					>
+					<File
+						RelativePath=".\dd\dditems\locators\ddAddColLocator.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\dd\dditems\locators\ddAddFkLocator.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\dd\dditems\locators\ddMinMaxTableLocator.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\dd\dditems\locators\ddRemoveColLocator.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\dd\dditems\locators\ddRemoveTableLocator.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\dd\dditems\locators\ddScrollBarTableLocator.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\dd\dditems\locators\ddTableBottomLocator.cpp"
+						>
+					</File>
+				</Filter>
+				<Filter
+					Name="tools"
+					>
+					<File
+						RelativePath=".\dd\dditems\tools\ddColumnFigureTool.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\dd\dditems\tools\ddColumnTextTool.cpp"
+						>
+					</File>
+				</Filter>
+			</Filter>
+			<Filter
+				Name="draw"
+				>
+				<Filter
+					Name="figures"
+					>
+					<File
+						RelativePath=".\dd\draw\figures\ddAbstractFigure.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\dd\draw\figures\ddAbstractMenuFigure.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\dd\draw\figures\ddBitmapFigure.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\dd\draw\figures\ddCompositeFigure.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\dd\draw\figures\ddIConnectionFigure.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\dd\draw\figures\ddIFigure.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\dd\draw\figures\ddLineConnection.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\dd\draw\figures\ddLineTerminal.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\dd\draw\figures\ddPolyLineFigure.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\dd\draw\figures\ddRectangleFigure.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\dd\draw\figures\ddSimpleTextFigure.cpp"
+						>
+					</File>
+				</Filter>
+				<Filter
+					Name="handles"
+					>
+					<File
+						RelativePath=".\dd\draw\handles\ddButtonHandle.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\dd\draw\handles\ddChangeConnectionEndHandle.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\dd\draw\handles\ddChangeConnectionHandle.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\dd\draw\handles\ddChangeConnectionStartHandle.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\dd\draw\handles\ddIHandle.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\dd\draw\handles\ddLineConnectionHandle.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\dd\draw\handles\ddLocatorHandle.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\dd\draw\handles\ddPolyLineHandle.cpp"
+						>
+					</File>
+				</Filter>
+				<Filter
+					Name="tools"
+					>
+					<File
+						RelativePath=".\dd\draw\tools\ddAbstractTool.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\dd\draw\tools\ddCompositeFigureTool.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\dd\draw\tools\ddConnectionCreationTool.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\dd\draw\tools\ddCreationTool.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\dd\draw\tools\ddDragCreationTool.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\dd\draw\tools\ddDragTrackerTool.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\dd\draw\tools\ddFigureTool.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\dd\draw\tools\ddHandleTrackerTool.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\dd\draw\tools\ddITool.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\dd\draw\tools\ddMenuTool.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\dd\draw\tools\ddPolyLineFigureTool.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\dd\draw\tools\ddSelectAreaTool.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\dd\draw\tools\ddSelectionTool.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\dd\draw\tools\ddSimpleTextTool.cpp"
+						>
+					</File>
+				</Filter>
+				<Filter
+					Name="locators"
+					>
+					<File
+						RelativePath=".\dd\draw\locator\ddILocator.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\dd\draw\locator\ddPolyLineLocator.cpp"
+						>
+					</File>
+				</Filter>
+				<Filter
+					Name="connectors"
+					>
+					<File
+						RelativePath=".\dd\draw\connectors\ddChopBoxConnector.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\dd\draw\connectors\ddIConnector.cpp"
+						>
+					</File>
+				</Filter>
+				<Filter
+					Name="utilitites"
+					>
+					<File
+						RelativePath=".\dd\draw\utilities\ddArrayCollection.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\dd\draw\utilities\ddCollection.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\dd\draw\utilities\ddGeometry.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\dd\draw\utilities\ddMouseEvent.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\dd\draw\utilities\ddPoint.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\dd\draw\utilities\ddRect.cpp"
+						>
+					</File>
+				</Filter>
+				<Filter
+					Name="main"
+					>
+					<File
+						RelativePath=".\dd\draw\main\ddDrawing.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\dd\draw\main\ddDrawingEditor.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\dd\draw\main\ddDrawingView.cpp"
+						>
+					</File>
+				</Filter>
+			</Filter>
+			<Filter
+				Name="ddmodel"
+				>
+				<File
+					RelativePath=".\dd\ddmodel\ddDatabaseDesign.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\dd\ddmodel\ddTextEditor.cpp"
+					>
+				</File>
+			</Filter>
+		</Filter>
 		<File
 			RelativePath=".\ctl\ctlColourPicker.cpp"
 			>
@@ -5023,7 +5731,7 @@
 				/>
 			</FileConfiguration>
 			<FileConfiguration
-				Name="Debug|Win32"
+				Name="Release|x64"
 				>
 				<Tool
 					Name="VCCLCompilerTool"
@@ -5033,7 +5741,7 @@
 				/>
 			</FileConfiguration>
 			<FileConfiguration
-				Name="Release|x64"
+				Name="Debug|Win32"
 				>
 				<Tool
 					Name="VCCLCompilerTool"
@@ -5075,7 +5783,7 @@
 				/>
 			</FileConfiguration>
 			<FileConfiguration
-				Name="Debug|Win32"
+				Name="Release|x64"
 				>
 				<Tool
 					Name="VCCLCompilerTool"
@@ -5085,7 +5793,7 @@
 				/>
 			</FileConfiguration>
 			<FileConfiguration
-				Name="Release|x64"
+				Name="Debug|Win32"
 				>
 				<Tool
 					Name="VCCLCompilerTool"
