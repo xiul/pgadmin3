@@ -1,3 +1,13 @@
+//////////////////////////////////////////////////////////////////////////
+//
+// pgAdmin III - PostgreSQL Tools
+// 
+// Copyright (C) 2002 - 2010, The pgAdmin Development Team
+// This software is released under the PostgreSQL Licence
+//
+// frmDatabaseDesigner.h - The database designer form
+//
+//////////////////////////////////////////////////////////////////////////
 
 #ifndef __FRM_DATABASEDESIGNER_H
 #define __FRM_DATABASEDESIGNER_H
@@ -8,15 +18,25 @@
 #include "dd/draw/figures/ddLineConnection.h"
 #include "dd/ddmodel/ddDatabaseDesign.h"
 
+
+enum
+{
+    CTL_DDNOTEBOOK = 1001,
+    CTL_DDSPLITTER
+};
+
+
 class frmDatabaseDesigner : public pgFrame
 {
 public:
-	frmDatabaseDesigner(frmMain *form, const wxString& _title); //DD-TODO: future include need from this parameters: pgConn *conn, const wxString& qry, const wxString& file = wxEmptyString);
+	frmDatabaseDesigner(frmMain *form, const wxString& _title);
+    //DD-TODO: future include need from this parameters: pgConn *conn, const wxString& qry, const wxString& file = wxEmptyString);
 	~frmDatabaseDesigner();
 	void Go();
 private:
 	frmMain *mainForm;
 	ddDatabaseDesign *design;
+    wxTextCtrl *sqltext;
 	void OnClose(wxCloseEvent& event);
 	void OnAddTable(wxCommandEvent& event);
 	void OnNewModel(wxCommandEvent& event);
