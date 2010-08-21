@@ -31,6 +31,7 @@ public:
 	wxString generateModel();
 	wxString getNewTableName();
 	bool containsTable(wxString tableName);
+
 protected:
 
 private:

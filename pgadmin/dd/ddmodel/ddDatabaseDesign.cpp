@@ -78,14 +78,14 @@ wxString ddDatabaseDesign::generateModel()
 		tmp=(ddIFigure *)iterator->Next();
 		if(tmp->getKindId()==100)
 		{
-			out+=_(" \n");
+			out+=wxT(" \n");
 			table=(ddTableFigure*)tmp;
-			out+=_("--\n-- Generating SQL for table: ");
+			out+=wxT("--\n-- ")+_("Generating SQL for table: ");
 			out+=table->getTableName();
-			out+=_(" \n--\n");
+			out+=wxT(" \n--\n");
 			out+=table->generateSQL();
-			out+=_(" \n");
-			out+=_(" \n");
+			out+=wxT(" \n");
+			out+=wxT(" \n");
 		}
 	 }
 	delete iterator;
