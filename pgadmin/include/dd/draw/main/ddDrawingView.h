@@ -19,6 +19,15 @@
 #include "dd/draw/figures/ddAbstractMenuFigure.h"
 // Create View Class for MVC pattern of graphic library of pgAdmin
 
+
+enum
+{
+    CTL_TEXTTOOLID=1979,
+    CTL_OKBUTTONID,
+    CTL_CANCELBUTTONID
+};
+
+
 class ddDrawingView : public wxScrolledWindow
 {
 public:

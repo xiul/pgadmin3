@@ -25,17 +25,19 @@
 ddPolyLineFigureTool::ddPolyLineFigureTool(ddDrawingEditor *editor, ddIFigure *fig, ddITool *dt):
 ddFigureTool(editor,fig,dt)
 {
-
 }
 
-ddPolyLineFigureTool::~ddPolyLineFigureTool(){
+ddPolyLineFigureTool::~ddPolyLineFigureTool()
+{
 }
 
-void ddPolyLineFigureTool::mouseDown(ddMouseEvent& event){
+void ddPolyLineFigureTool::mouseDown(ddMouseEvent& event)
+{
 	int x=event.GetPosition().x, y=event.GetPosition().y;
 	setAnchorCoords(x,y);
 	//DD-TODO: middle down or right and left down?
-	if(event.LeftDClick()){
+	if(event.LeftDClick())
+    {
 		ddPolyLineFigure *connection = (ddPolyLineFigure*) figure;
 		connection->splitSegment(x,y);
 		getDrawingEditor()->view()->clearSelection();

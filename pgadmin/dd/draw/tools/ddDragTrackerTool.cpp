@@ -19,21 +19,25 @@
 #include "dd/draw/tools/ddAbstractTool.h"
 
 ddDragTrackerTool::ddDragTrackerTool(ddDrawingEditor *editor, ddIFigure *anchor)
-:ddAbstractTool(editor){
+:ddAbstractTool(editor)
+{
 	hasMovedValue=false;
 	view = editor->view();
 	anchorFigure = anchor;
 }
 
-ddDragTrackerTool::~ddDragTrackerTool(){
+ddDragTrackerTool::~ddDragTrackerTool()
+{
 }
 
-void ddDragTrackerTool::setLastCoords(int x, int y){
+void ddDragTrackerTool::setLastCoords(int x, int y)
+{
 	lastX=x;
 	lastY=y;
 }
 
-void ddDragTrackerTool::mouseDown(ddMouseEvent& event){
+void ddDragTrackerTool::mouseDown(ddMouseEvent& event)
+{
 	ddAbstractTool::mouseDown(event);
 
 	if(event.LeftDown())
@@ -42,7 +46,8 @@ void ddDragTrackerTool::mouseDown(ddMouseEvent& event){
 
 		setLastCoords(x,y);
 
-		if(event.m_shiftDown){
+		if(event.m_shiftDown)
+        {
 				view->toggleSelection(anchorFigure);
 		}
 		else if(!view->isFigureSelected(anchorFigure))
@@ -53,11 +58,13 @@ void ddDragTrackerTool::mouseDown(ddMouseEvent& event){
 	}
 }
 
-void ddDragTrackerTool::mouseUp(ddMouseEvent& event){
+void ddDragTrackerTool::mouseUp(ddMouseEvent& event)
+{
 	ddAbstractTool::mouseUp(event);
 }
 
-void ddDragTrackerTool::mouseDrag(ddMouseEvent& event){
+void ddDragTrackerTool::mouseDrag(ddMouseEvent& event)
+{
 	ddAbstractTool::mouseDrag(event);
 
 	if(event.LeftIsDown())
@@ -73,20 +80,22 @@ void ddDragTrackerTool::mouseDrag(ddMouseEvent& event){
 
 		hasMovedValue = (abs (x - anchorX) > 4 || abs (y - anchorX) > 4);
 
-				if (hasMoved()) {
-					ddIFigure *tmp=NULL;
-					ddIteratorBase *iterator=view->selectionFigures();
-					while(iterator->HasNext())
-					{
-						tmp=(ddIFigure *)iterator->Next();
-						tmp->moveBy(x - lastX, y - lastY);
-					}
-					delete iterator;
-				}
-				setLastCoords (x, y);
+        if (hasMoved())
+        {
+            ddIFigure *tmp=NULL;
+            ddIteratorBase *iterator=view->selectionFigures();
+            while(iterator->HasNext())
+            {
+                tmp=(ddIFigure *)iterator->Next();
+                tmp->moveBy(x - lastX, y - lastY);
+            }
+            delete iterator;
+        }
+        setLastCoords (x, y);
 	}
 }
 
-bool ddDragTrackerTool::hasMoved(){
+bool ddDragTrackerTool::hasMoved()
+{
 	return hasMovedValue;
 }

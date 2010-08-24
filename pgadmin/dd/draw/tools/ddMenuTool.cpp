@@ -54,13 +54,12 @@ void ddMenuTool::mouseDown(ddMouseEvent& event)
 	
 	if(menuFigure->menuEnabled() && event.RightDown())
 	{
-
-                wxMenu menu;
-				getDrawingEditor()->view()->setMenuToolFigure(menuFigure);
-				getDrawingEditor()->view()->setTextPopUpList(menuFigure->popupStrings(),menu);
-				ddPoint p=event.GetPosition();
-				event.getView()->CalcScrolledPosition(p.x,p.y,&p.x,&p.y);
-				getDrawingEditor()->view()->PopupMenu(&menu, p);
+        wxMenu menu;
+        getDrawingEditor()->view()->setMenuToolFigure(menuFigure);
+        getDrawingEditor()->view()->setTextPopUpList(menuFigure->popupStrings(),menu);
+        ddPoint p=event.GetPosition();
+        event.getView()->CalcScrolledPosition(p.x,p.y,&p.x,&p.y);
+        getDrawingEditor()->view()->PopupMenu(&menu, p);
 		return;
 	}
 

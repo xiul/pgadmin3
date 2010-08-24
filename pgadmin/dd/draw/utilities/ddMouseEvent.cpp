@@ -21,7 +21,8 @@
 //This allow only to use selected functions from event and for conversion reason as main goal (unscrolled points)
 ddMouseEvent::ddMouseEvent(wxMouseEvent& event, ddDrawingView *owner):
 mouseEvent(event)
-{  //mouseEvent is a private reference then should be initialize in constructor
+{
+    // mouseEvent is a private reference that should be initialized in constructor
 	view=owner;
 	m_shiftDown = event.m_shiftDown;
 }

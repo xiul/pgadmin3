@@ -30,7 +30,8 @@ ddAbstractTool(editor)
 	dragged=false;
 }
 
-ddConnectionCreationTool::~ddConnectionCreationTool(){
+ddConnectionCreationTool::~ddConnectionCreationTool()
+{
 }
 
 void ddConnectionCreationTool::mouseDrag(ddMouseEvent& event)
@@ -129,6 +130,4 @@ void ddConnectionCreationTool::mouseMove(ddMouseEvent& event)
 	{
 		handle->invokeStep(event,getDrawingEditor()->view());
 	}
-
-
 }

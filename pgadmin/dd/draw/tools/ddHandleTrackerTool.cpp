@@ -19,25 +19,28 @@
 #include "dd/draw/tools/ddAbstractTool.h"
 
 ddHandleTrackerTool::ddHandleTrackerTool(ddDrawingEditor *editor, ddIHandle *anchor)
-:ddAbstractTool(editor){
+:ddAbstractTool(editor)
+{
 	view = editor->view();
 	anchorHandle = anchor;
 }
 
-ddHandleTrackerTool::~ddHandleTrackerTool(){
+ddHandleTrackerTool::~ddHandleTrackerTool()
+{
 }
 
-void ddHandleTrackerTool::mouseDown(ddMouseEvent& event){
+void ddHandleTrackerTool::mouseDown(ddMouseEvent& event)
+{
 	ddAbstractTool::mouseDown(event);
 	anchorHandle->invokeStart(event,view);
 }
 
-void ddHandleTrackerTool::mouseUp(ddMouseEvent& event){
+void ddHandleTrackerTool::mouseUp(ddMouseEvent& event)
+{
 	anchorHandle->invokeEnd(event,view);
 }
 
-void ddHandleTrackerTool::mouseDrag(ddMouseEvent& event){
+void ddHandleTrackerTool::mouseDrag(ddMouseEvent& event)
+{
 	anchorHandle->invokeStep(event,view);
 }
-
-

@@ -49,7 +49,7 @@ void ddRemoveTableButtonHandle::invokeEnd(ddMouseEvent &event, ddDrawingView *vi
 	if(view && getOwner())
 	{
 		ddTableFigure *table = (ddTableFigure*) getOwner();	
-		int answer = wxMessageBox(wxT("Delete Table: ") + table->getTableName() + wxT("?"), wxT("Confirm"), wxYES_NO|wxNO_DEFAULT, view);
+		int answer = wxMessageBox(_("Are you sure you wish to delete table ") + table->getTableName() + wxT("?"), _("Delete table?"), wxYES_NO|wxNO_DEFAULT, view);
 		if (answer == wxYES)
 		{
 			//unselect table

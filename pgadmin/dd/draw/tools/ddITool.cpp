@@ -18,15 +18,18 @@
 #include "dd/draw/tools/ddITool.h"
 #include "dd/draw/utilities/ddMouseEvent.h"
 
-ddITool::ddITool(){
+ddITool::ddITool()
+{
 	activatedValue=false;
 	undoableValue=false;
 }
 
-ddITool::~ddITool(){
+ddITool::~ddITool()
+{
 }
 
-void ddITool::mouseDown(ddMouseEvent& event){
+void ddITool::mouseDown(ddMouseEvent& event)
+{
 /*
 EVT_LEFT_DOWN(func)
 EVT_MIDDLE_DOWN(func)
@@ -35,7 +38,8 @@ EVT_LEFT_DCLICK(func)
 */
 }
 
-void ddITool::mouseUp(ddMouseEvent& event){
+void ddITool::mouseUp(ddMouseEvent& event)
+{
 /*
 EVT_LEFT_UP(func)
 EVT_MIDDLE_UP(func)
@@ -44,19 +48,22 @@ EVT_RIGHT_DCLICK(func)
 */
 }
 
-void ddITool::mouseMove(ddMouseEvent& event){
+void ddITool::mouseMove(ddMouseEvent& event)
+{
 /*
 EVT_MOTION(func)
 */
 }
 
-void ddITool::mouseDrag(ddMouseEvent& event){
+void ddITool::mouseDrag(ddMouseEvent& event)
+{
 /*
 When a mouse is dragged this returns true: event.Dragging()
 */
 }
 
-void ddITool::keyDown(wxKeyEvent& event){
+void ddITool::keyDown(wxKeyEvent& event)
+{
 	//setAnchorCoords(event.GetPosition().x,event.GetPosition().y);
 }
 
@@ -79,7 +86,7 @@ bool ddITool::activated()
 	return activatedValue;
 }
 
-bool ddITool::undoable(){
+bool ddITool::undoable()
+{
 	return undoableValue;
 }
-

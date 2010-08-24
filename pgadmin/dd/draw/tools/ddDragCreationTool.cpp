@@ -25,7 +25,8 @@ ddDragCreationTool::~ddDragCreationTool(){
 }
 
 
-void ddDragCreationTool::mouseDrag(ddMouseEvent& event){
+void ddDragCreationTool::mouseDrag(ddMouseEvent& event)
+{
 	if(event.LeftIsDown())
 	{
 		figurePrototype->displayBox().SetPosition(event.GetPosition());

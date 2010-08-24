@@ -14,7 +14,7 @@
 
 #include "dd/draw/figures/ddIFigure.h"
 
-//main Model of Drawing
+// Main model of drawing
 class ddDrawing : public wxObject
 {
 public:
@@ -22,7 +22,8 @@ public:
 	virtual ~ddDrawing();
 	virtual void add(ddIFigure *figure);
 	virtual void remove(ddIFigure *figure);
-/*	virtual void draw(wxBufferedDC& context, ddCollection figures)=0;
+    /*
+    virtual void draw(wxBufferedDC& context, ddCollection figures)=0;
 	virtual void draw(wxBufferedDC& context)=0;
 	*/
 	virtual bool includes(ddIFigure *figure);
@@ -34,11 +35,6 @@ public:
 	virtual ddIteratorBase* figuresEnumerator();
 	virtual ddIteratorBase* figuresInverseEnumerator();
 	virtual void deleteFigures();
-
-/* DD-TODO: agregar estos manejadores de eventos
-		event EventHandler <DrawingEventArgs> DrawingInvalidated;
-		event EventHandler <DrawingEventArgs> SizeAllocated;
-*/
 
 protected:
 

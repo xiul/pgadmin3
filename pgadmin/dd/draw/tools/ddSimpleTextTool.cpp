@@ -59,22 +59,23 @@ void ddSimpleTextTool::mouseDown(ddMouseEvent& event)
 {	
 	setAnchorCoords(event.GetPosition().x,event.GetPosition().y);
 
-	
-
 	if(txtFigure->menuEnabled() && event.RightDown())
 	{
-                wxMenu menu;
-				getDrawingEditor()->view()->setSimpleTextToolFigure(txtFigure);
-				getDrawingEditor()->view()->setTextPopUpList(txtFigure->popupStrings(),menu);
-				ddPoint p=event.GetPosition();
-				event.getView()->CalcScrolledPosition(p.x,p.y,&p.x,&p.y);
-				getDrawingEditor()->view()->PopupMenu(&menu, p);
+        wxMenu menu;
+        getDrawingEditor()->view()->setSimpleTextToolFigure(txtFigure);
+        getDrawingEditor()->view()->setTextPopUpList(txtFigure->popupStrings(),menu);
+        ddPoint p=event.GetPosition();
+        event.getView()->CalcScrolledPosition(p.x,p.y,&p.x,&p.y);
+        getDrawingEditor()->view()->PopupMenu(&menu, p);
 		return;
 	}
 
-
 	if(event.LeftDClick())
 	{
+        wxString sNewValue = wxGetTextFromUser(_("New table name"), _("Rename table"), txtFigure->getText());
+        if (!sNewValue.IsEmpty())
+            txtFigure->setText(sNewValue);
+        /*
 		getDrawingEditor()->view()->setSimpleTextToolFigure(txtFigure);
 		showEdit = true;
 		edit->ChangeValue(txtFigure->getText()); //Same as SetValue but don't generated wxEVT_COMMAND_TEXT_UPDATED event
@@ -83,6 +84,7 @@ void ddSimpleTextTool::mouseDown(ddMouseEvent& event)
 		edit->Show();
 		okButton->Show();
 		cancelButton->Show();
+        */
 		return;
 	}
 	getDefaultTool()->mouseDown(event);

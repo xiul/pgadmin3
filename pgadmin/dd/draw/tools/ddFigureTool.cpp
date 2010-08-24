@@ -52,35 +52,40 @@ ddIFigure* ddFigureTool::getFigure()
 	return figure;
 }
 
-void ddFigureTool::mouseDown(ddMouseEvent& event){
+void ddFigureTool::mouseDown(ddMouseEvent& event)
+{
 	if(defaultTool)
 	{
 		defaultTool->mouseDown(event);
 	}
 }
 
-void ddFigureTool::mouseUp(ddMouseEvent& event){
+void ddFigureTool::mouseUp(ddMouseEvent& event)
+{
 	if(defaultTool)
 	{
 		defaultTool->mouseUp(event);
 	}
 }
 
-void ddFigureTool::mouseMove(ddMouseEvent& event){
+void ddFigureTool::mouseMove(ddMouseEvent& event)
+{
 	if(defaultTool)
 	{
 		defaultTool->mouseMove(event);
 	}
 }
 
-void ddFigureTool::mouseDrag(ddMouseEvent& event){
+void ddFigureTool::mouseDrag(ddMouseEvent& event)
+{
 	if(defaultTool)
 	{
 		defaultTool->mouseDrag(event);
 	}
 }
 
-void ddFigureTool::keyDown(wxKeyEvent& event){
+void ddFigureTool::keyDown(wxKeyEvent& event)
+{
 	if(defaultTool)
 	{
 		defaultTool->keyDown(event);

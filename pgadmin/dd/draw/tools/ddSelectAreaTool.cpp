@@ -22,17 +22,21 @@
 
 
 ddSelectAreaTool::ddSelectAreaTool(ddDrawingEditor *editor)
-:ddAbstractTool(editor){
+:ddAbstractTool(editor)
+{
 	view = editor->view();
 }
 
-ddSelectAreaTool::~ddSelectAreaTool(){
+ddSelectAreaTool::~ddSelectAreaTool()
+{
 }
 
 //DD-TODO: fix bug select good from left to righ but no from right to left
-void ddSelectAreaTool::mouseDown(ddMouseEvent& event){
+void ddSelectAreaTool::mouseDown(ddMouseEvent& event)
+{
 	ddAbstractTool::mouseDown(event);
-	if(!event.ShiftDown()){
+	if(!event.ShiftDown())
+    {
 		view->clearSelection();
 	}
 	if(event.LeftDown())
@@ -46,7 +50,8 @@ void ddSelectAreaTool::mouseDown(ddMouseEvent& event){
 	}
 }
 
-void ddSelectAreaTool::mouseUp(ddMouseEvent& event){
+void ddSelectAreaTool::mouseUp(ddMouseEvent& event)
+{
 	ddAbstractTool::mouseUp(event);
 	ddGeometry g;
 	//hack-fix for bug when selecting figures from right to left
@@ -74,7 +79,8 @@ void ddSelectAreaTool::mouseUp(ddMouseEvent& event){
 	}
 }
 
-void ddSelectAreaTool::mouseDrag(ddMouseEvent& event){
+void ddSelectAreaTool::mouseDrag(ddMouseEvent& event)
+{
 	ddAbstractTool::mouseDrag(event);
 	if(event.LeftIsDown())
 	{
@@ -87,14 +93,17 @@ void ddSelectAreaTool::mouseDrag(ddMouseEvent& event){
 	}
 }
 
-void ddSelectAreaTool::selectFiguresOnRect(bool shiftPressed){
+void ddSelectAreaTool::selectFiguresOnRect(bool shiftPressed)
+{
 	ddIFigure *figure;
 	ddIteratorBase *iterator = getDrawingEditor()->model()->figuresInverseEnumerator();
 	while(iterator->HasNext())
 	{
 		figure=(ddIFigure *)iterator->Next();
-		if(selectionRect.Contains(figure->displayBox())){
-			if(shiftPressed){
+		if(selectionRect.Contains(figure->displayBox()))
+        {
+			if(shiftPressed)
+            {
 				view->toggleSelection(figure);
 			}
 			else
@@ -106,7 +115,8 @@ void ddSelectAreaTool::selectFiguresOnRect(bool shiftPressed){
 	delete iterator;
 }
 
-void ddSelectAreaTool::drawSelectionRect(){
+void ddSelectAreaTool::drawSelectionRect()
+{
 	view->setSelRect(selectionRect);
 }
 

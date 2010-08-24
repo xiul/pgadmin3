@@ -14,11 +14,9 @@
 #include "dd/draw/utilities/ddPoint.h"
 #include "dd/draw/main/ddObject.h"
 
-class ddDrawingView;	//FIX-HACK for circular reference
+class ddDrawingView;	// FIX-HACK for circular reference
 
-
-
-//DD-TODO: in a future this should be customized event???
+// DD-TODO: this chould be a customized event in the future
 class ddMouseEvent : public ddObject
 {
 	public:

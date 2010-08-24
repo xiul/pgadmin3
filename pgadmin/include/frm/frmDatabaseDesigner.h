@@ -25,7 +25,6 @@ enum
     CTL_DDSPLITTER
 };
 
-
 class frmDatabaseDesigner : public pgFrame
 {
 public:

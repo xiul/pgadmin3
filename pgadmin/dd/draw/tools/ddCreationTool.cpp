@@ -19,14 +19,17 @@
 #include "dd/draw/tools/ddSelectionTool.h"
 
 ddCreationTool::ddCreationTool(ddDrawingEditor *editor, ddIFigure *prototype):
-ddAbstractTool(editor){
+ddAbstractTool(editor)
+{
 	figurePrototype=prototype;
 }
 
-ddCreationTool::~ddCreationTool(){
+ddCreationTool::~ddCreationTool()
+{
 }
 
-void ddCreationTool::mouseDown(ddMouseEvent& event){
+void ddCreationTool::mouseDown(ddMouseEvent& event)
+{
 	ddAbstractTool::mouseDown(event);
 	if(event.LeftDown())
 	{
@@ -38,8 +41,8 @@ void ddCreationTool::mouseDown(ddMouseEvent& event){
 	}
 }
 
-
-void ddCreationTool::mouseUp(ddMouseEvent& event){
+void ddCreationTool::mouseUp(ddMouseEvent& event)
+{
 	ddAbstractTool::mouseUp(event);
 	//DD-TODO: delete tool before overwrite??
 	getDrawingEditor()->setTool(new ddSelectionTool(getDrawingEditor()));
