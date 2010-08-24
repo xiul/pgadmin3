@@ -104,15 +104,8 @@ END_EVENT_TABLE()
 
     // Add the notebook with database designer
 	wxNotebook *notebook = new wxNotebook(this, CTL_DDNOTEBOOK, wxDefaultPosition, wxDefaultSize);
-	wxSplitterWindow *ddMainContainer = new wxSplitterWindow(notebook, CTL_DDSPLITTER, wxDefaultPosition, wxDefaultSize, wxSP_3D);
-	wxPanel *pnlQuery = new wxPanel(ddMainContainer);
-	design = new ddDatabaseDesign(ddMainContainer);
-	ddMainContainer->SplitVertically(pnlQuery,design->getView());
-    ddMainContainer->UpdateSize();
-    ddMainContainer->SetSashPosition(10, true);
-    ddMainContainer->SetMinimumPaneSize(10);
-    ddMainContainer->UpdateSize();
-	notebook->AddPage(ddMainContainer, _("Database Designer"));
+	design = new ddDatabaseDesign(notebook);
+	notebook->AddPage(design->getView(), _("Database Designer"));
 	notebook->SetSelection(0);
 
     // Now, the scratchpad
@@ -145,10 +138,6 @@ frmDatabaseDesigner::~frmDatabaseDesigner(){
 	// Uninitialize wxAUIManager
 	manager.UnInit();
 	
-    // Delete current design
-	if(design)
-		delete design;
-    
 	if (mainForm)
 		mainForm->RemoveFrame(this);
 }

@@ -78,9 +78,6 @@ ddIFigure* ddDrawing::findFigure(int x, int y)
 }
 
 void ddDrawing::recalculateDisplayBox(){
-	//DD-TODO: do it
-	
-	//displayBox = new ddRect();
 	bool first=true;
 	ddIFigure *figure=NULL;
 
