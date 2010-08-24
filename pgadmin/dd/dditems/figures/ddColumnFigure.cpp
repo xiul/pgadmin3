@@ -25,13 +25,14 @@
 #include "dd/dditems/figures/ddTableFigure.h"
 
 //Images
-#include "images/foreignkey.xpm"
-#include "images/primarykey.xpm"
-#include "images/unique.xpm"
-#include "images/parser.xpm"  //test for fk pk
+//#include "images/foreignkey.xpm"
+//#include "images/primarykey.xpm"
+//#include "images/unique.xpm"
+//#include "images/parser.xpm"  //test for fk pk
 
 
-ddColumnFigure::ddColumnFigure(wxString& columnName, ddTableFigure *owner, ddRelationshipItem *sourceFk){
+ddColumnFigure::ddColumnFigure(wxString& columnName, ddTableFigure *owner, ddRelationshipItem *sourceFk)
+{
 	columnText = new ddTextColumnFigure(columnName,dt_null,this);
 	leftImage = new ddColumnKindIcon(this);
 	centerImage = new ddColumnOptionIcon(this);
@@ -56,8 +57,8 @@ ddColumnFigure::ddColumnFigure(wxString& columnName, ddTableFigure *owner, ddRel
 	}
 }
 
-ddColumnFigure::~ddColumnFigure(){
-
+ddColumnFigure::~ddColumnFigure()
+{
 	if(columnText)
 		delete columnText;
 	if(leftImage)
@@ -70,13 +71,9 @@ void ddColumnFigure::basicMoveBy(int x, int y)
 {
 	ddAbstractFigure::basicMoveBy(x,y);
 	if(leftImage)
-	{
-			leftImage->moveBy(x,y);
-	}
+        leftImage->moveBy(x,y);
 	if(centerImage)
-	{
-			centerImage->moveBy(x,y);
-	}
+        centerImage->moveBy(x,y);
 	columnText->moveBy(x,y);
 }
 
@@ -84,6 +81,7 @@ void ddColumnFigure::moveTo(int x, int y)
 {
 	ddAbstractFigure::moveTo(x,y);
 	int distance=0;
+    
 	if(leftImage)
 	{
 		leftImage->moveTo(x,y);
@@ -93,7 +91,8 @@ void ddColumnFigure::moveTo(int x, int y)
 	{
 		distance+=11; //8+3
 	}
-	if(centerImage)
+	
+    if(centerImage)
 	{
 		centerImage->moveTo(x+distance,y);
 		distance+=centerImage->displayBox().GetSize().GetWidth()+3;
@@ -110,20 +109,13 @@ void ddColumnFigure::moveTo(int x, int y)
 bool ddColumnFigure::containsPoint(int x, int y)
 {
 	bool out = false;
+
 	if(columnText->containsPoint(x,y))
-		{
-			out=true;  
-		}
-		
-	if(leftImage->containsPoint(x,y))
-		{
-			out=true;  
-		}
-	
-	if(centerImage->containsPoint(x,y))
-		{
-			out=true;  
-		}
+        out=true;  
+	else if(leftImage->containsPoint(x,y))
+        out=true;  
+	else if(centerImage->containsPoint(x,y))
+        out=true;  
 
 	return out;
 }
@@ -136,19 +128,19 @@ ddRect& ddColumnFigure::getBasicDisplayBox()
 void ddColumnFigure::draw(wxBufferedDC& context, ddDrawingView *view)
 {
 	columnText->draw(context,view);
-		if(leftImage)
-			leftImage->draw(context,view);
-		if(centerImage)
-			centerImage->draw(context,view);
+    if(leftImage)
+        leftImage->draw(context,view);
+    if(centerImage)
+        centerImage->draw(context,view);
 }
 
 void ddColumnFigure::drawSelected(wxBufferedDC& context, ddDrawingView *view)
 {
 	columnText->drawSelected(context,view);
-		if(leftImage)
-			leftImage->drawSelected(context,view);
-		if(centerImage)
-			centerImage->drawSelected(context,view);
+    if(leftImage)
+        leftImage->drawSelected(context,view);
+    if(centerImage)
+        centerImage->drawSelected(context,view);
 }
 
 ddIFigure* ddColumnFigure::findFigure(int x, int y)
@@ -156,13 +148,13 @@ ddIFigure* ddColumnFigure::findFigure(int x, int y)
 	ddIFigure *out=NULL;
 
 	if(columnText->containsPoint(x,y))
-			out=columnText;
+        out=columnText;
 
 	if(leftImage && leftImage->containsPoint(x,y))
-			out=leftImage;
+        out=leftImage;
 
 	if(centerImage && centerImage->containsPoint(x,y))
-			out=centerImage;
+        out=centerImage;
 
 	return out;
 }
@@ -186,19 +178,13 @@ void ddColumnFigure::sendToFront(ddIFigure *figure)
 ddIFigure* ddColumnFigure::getFigureAt(int pos)
 {
 	if(pos==0)
-	{
 		return (ddIFigure*) leftImage;
-	}
 
 	if(pos==1)
-	{
 		return (ddIFigure*) centerImage;
-	}
 
 	if(pos==2)
-	{
 		return (ddIFigure*) columnText;
-	}
 	
 	return NULL;
 }

@@ -29,17 +29,14 @@ ddHandleTrackerTool::~ddHandleTrackerTool(){
 
 void ddHandleTrackerTool::mouseDown(ddMouseEvent& event){
 	ddAbstractTool::mouseDown(event);
-	int x=event.GetPosition().x, y=event.GetPosition().y;
 	anchorHandle->invokeStart(event,view);
 }
 
 void ddHandleTrackerTool::mouseUp(ddMouseEvent& event){
-	int x=event.GetPosition().x, y=event.GetPosition().y;
 	anchorHandle->invokeEnd(event,view);
 }
 
 void ddHandleTrackerTool::mouseDrag(ddMouseEvent& event){
-	int x=event.GetPosition().x, y=event.GetPosition().y;
 	anchorHandle->invokeStep(event,view);
 }
 

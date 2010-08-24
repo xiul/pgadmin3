@@ -37,7 +37,6 @@ ddChangeConnectionHandle::~ddChangeConnectionHandle(){
 void ddChangeConnectionHandle::draw(wxBufferedDC& context, ddDrawingView *view)
 {
 
-	ddPoint points[5];
 	ddRect copy = getDisplayBox();
 	view->CalcScrolledPosition(copy.x,copy.y,&copy.x,&copy.y);
 

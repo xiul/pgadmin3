@@ -88,7 +88,7 @@ END_EVENT_TABLE()
 
     // Set status bar
 	int iWidths[6] = {0, -1, 40, 150, 80, 80};
-	wxStatusBar *statusBar = CreateStatusBar(6);
+	CreateStatusBar(6);
     SetStatusBarPane(-1);
     SetStatusWidths(6, iWidths);
 

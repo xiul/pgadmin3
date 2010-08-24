@@ -20,13 +20,14 @@
 #include "dd/draw/utilities/ddPoint.h"
 
 //typecasting to avoid miscalculations, here need double values not int
-bool ddGeometry::lineContainsPoint(double x1, double y1, double x2, double y2, double px, double py){
-
+bool ddGeometry::lineContainsPoint(double x1, double y1, double x2, double y2, double px, double py)
+{
 	ddPoint p = ddPoint(x1,y1);
 	ddRect r = ddRect(p);
 	r.add(x2,y2);
 	r.Inflate(2,2);
-	if(!r.Contains(px,py)){
+	if(!r.Contains(px,py))
+    {
 		return false;
 	}
 
@@ -56,11 +57,13 @@ bool ddGeometry::lineContainsPoint(double x1, double y1, double x2, double y2, d
 	return out;
 }
 
-int ddGeometry::min(double a, double b){
+int ddGeometry::min(double a, double b)
+{
 	return(a<=b)?a:b;
 }
 
-int ddGeometry::max(double a, double b){
+int ddGeometry::max(double a, double b)
+{
 	return(a>=b)?a:b;
 }
 
@@ -123,7 +126,6 @@ int ddGeometry::ddabs(int value)
    return value < 0 ? (value*-1) : value;
 }
 
-
 double ddGeometry::lineSize (ddPoint p1, ddPoint p2)
 {
 	int w = p1.x - p2.x;
@@ -132,7 +134,6 @@ double ddGeometry::lineSize (ddPoint p1, ddPoint p2)
 	double perimeter = w*w + h*h;
 	return sqrt (perimeter);
 }
-
 
 bool ddGeometry::intersection(ddPoint p1, ddPoint p2, ddPoint p3, ddPoint p4)
 {
@@ -159,4 +160,3 @@ bool ddGeometry::intersection(ddPoint p1, ddPoint p2, ddPoint p3, ddPoint p4)
 
 	return true;
 }
-

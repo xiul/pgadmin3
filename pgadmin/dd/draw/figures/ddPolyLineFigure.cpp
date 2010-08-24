@@ -26,7 +26,8 @@
 #include "dd/draw/tools/ddPolyLineFigureTool.h"
 #include "dd/draw/tools/ddMenuTool.h"
 
-ddPolyLineFigure::ddPolyLineFigure(){
+ddPolyLineFigure::ddPolyLineFigure()
+{
 	points = new ddArrayCollection();
 	startTerminal = NULL;
 	endTerminal = NULL;
@@ -38,7 +39,8 @@ ddPolyLineFigure::ddPolyLineFigure(){
 	//primero=true;
 }
 
-ddPolyLineFigure::~ddPolyLineFigure(){
+ddPolyLineFigure::~ddPolyLineFigure()
+{
 	ddPoint *tmp; //Hack: If just delete points collection an error is raised.
 	while(points->count()>0)
 	{
@@ -54,9 +56,9 @@ ddPolyLineFigure::~ddPolyLineFigure(){
 		delete endTerminal;
 }
 
-ddRect& ddPolyLineFigure::getBasicDisplayBox() {
-	
-	//basicDisplayBox.
+ddRect& ddPolyLineFigure::getBasicDisplayBox()
+{
+    //basicDisplayBox.
 	basicDisplayBox.height=0;
 	basicDisplayBox.width=0;
 	if(points->count() < 2)
@@ -74,7 +76,8 @@ ddRect& ddPolyLineFigure::getBasicDisplayBox() {
 	}
 
 	ddIteratorBase *iterator=points->createIterator();
-	while(iterator->HasNext()){
+	while(iterator->HasNext())
+    {
 		ddPoint *p = (ddPoint *) iterator->Next();
 		ddRect r=ddRect(p->x,p->y,0,0);
 		basicDisplayBox.add(r);
@@ -85,18 +88,21 @@ ddRect& ddPolyLineFigure::getBasicDisplayBox() {
 	return basicDisplayBox;
 }
 
-int ddPolyLineFigure::pointCount(){
- return points->count();
+int ddPolyLineFigure::pointCount()
+{
+    return points->count();
 }
 
-ddPoint& ddPolyLineFigure::getStartPoint(){
+ddPoint& ddPolyLineFigure::getStartPoint()
+{
 	//DD-TODO: fix [] operator not working here, bad casting info was shown
 	startPoint.x = ((ddPoint*)points->getItemAt(0))->x;
 	startPoint.y = ((ddPoint*)points->getItemAt(0))->y;
 	return startPoint;
 }
 
-void ddPolyLineFigure::setStartPoint(ddPoint point){
+void ddPolyLineFigure::setStartPoint(ddPoint point)
+{
 	willChange();
 	if(points->count()==0)
 		addPoint(point.x,point.y);
@@ -112,18 +118,21 @@ void ddPolyLineFigure::setStartPoint(ddPoint point){
 	//DD-TODO: need to delete start point if overwrite it
 }
 
-ddPoint& ddPolyLineFigure::getEndPoint(){
+ddPoint& ddPolyLineFigure::getEndPoint()
+{
 	//DD-TODO: fix [] operator not working here, bad casting info was shown
 	endPoint.x = ((ddPoint*)points->getItemAt(points->count()-1))->x;
 	endPoint.y = ((ddPoint*)points->getItemAt(points->count()-1))->y;
 	return endPoint;
 }
 
-void ddPolyLineFigure::setEndPoint(ddPoint point){
+void ddPolyLineFigure::setEndPoint(ddPoint point)
+{
 	willChange();
 	if(points->count() < 2)
 		addPoint(point.x,point.y);
-	else{
+	else
+    {
 		//points->insertAtIndex((ddObject *)point, points->count()-1); CREO que deberia ser replaceAtIndex de paso
 		ddPoint *p = (ddPoint *) points->getItemAt(points->count()-1);
 		p->x = point.x;
@@ -133,23 +142,28 @@ void ddPolyLineFigure::setEndPoint(ddPoint point){
 	//DD-TODO: need to delete start point if overwrite it??
 }
 
-void ddPolyLineFigure::setStartTerminal(ddLineTerminal *terminal){
+void ddPolyLineFigure::setStartTerminal(ddLineTerminal *terminal)
+{
 	startTerminal=terminal;
 }
 
-ddLineTerminal* ddPolyLineFigure::getStartTerminal(){
+ddLineTerminal* ddPolyLineFigure::getStartTerminal()
+{
 	return startTerminal;
 }
 
-void ddPolyLineFigure::setEndTerminal(ddLineTerminal *terminal){
+void ddPolyLineFigure::setEndTerminal(ddLineTerminal *terminal)
+{
 	endTerminal=terminal;
 }
 
-ddLineTerminal* ddPolyLineFigure::getEndTerminal(){
+ddLineTerminal* ddPolyLineFigure::getEndTerminal()
+{
 	return endTerminal;
 }
 
-ddCollection* ddPolyLineFigure::handlesEnumerator(){
+ddCollection* ddPolyLineFigure::handlesEnumerator()
+{
 	//DD-TODO: HIGH-PRIORITY-FINISH-THIS optimize this, not create a new instance everytime invoke function
 /*	if(handlesChanged)
 	{
@@ -164,7 +178,8 @@ ddCollection* ddPolyLineFigure::handlesEnumerator(){
 	return handles;
 }
 
-void ddPolyLineFigure::addPoint (int x, int y){
+void ddPolyLineFigure::addPoint (int x, int y)
+{
 	willChange();
 	points->addItem((ddObject *) new ddPoint(x,y) );
 	//Update handles
@@ -196,19 +211,22 @@ void ddPolyLineFigure::removePointAt (int index)
 	points->removeItemAt(index);
 	delete p;
 	//Update handles
-	ddIHandle *h = (ddIHandle*) handles->getItemAt(index);
 	handles->removeItemAt(index);
-//DD-TODO: avoid this memory leak without a memory fail---->	delete h;
+    //DD-TODO: avoid this memory leak without a memory fail
+	//ddIHandle *h = (ddIHandle*) handles->getItemAt(index);
+    //delete h;
 	//DD-TODO: delete all item after a getItemAt... research if this is need cause wxwidgets docs is not clear about this
 	updateHandlesIndexes();
 	changed();
 }
 
-void ddPolyLineFigure::basicDrawSelected(wxBufferedDC& context, ddDrawingView *view){
+void ddPolyLineFigure::basicDrawSelected(wxBufferedDC& context, ddDrawingView *view)
+{
 	basicDraw(context,view); //DD-TODO: HIGH-PRIORITY-FINISH-THIS: what to do when selected?
 }
 
-void ddPolyLineFigure::basicDraw(wxBufferedDC& context, ddDrawingView *view){
+void ddPolyLineFigure::basicDraw(wxBufferedDC& context, ddDrawingView *view)
+{
 	if(points->count() < 2)
 	{
 		return;
@@ -247,7 +265,8 @@ void ddPolyLineFigure::basicDraw(wxBufferedDC& context, ddDrawingView *view){
 	context.DrawRectangle(rect);
 	just for testing
 */
-	for(int i=0;i<points->count()-1;i++){
+	for(int i=0;i<points->count()-1;i++)
+    {
 		ddPoint *p1 = (ddPoint *) points->getItemAt(i);
 		ddPoint *p2 = (ddPoint *) points->getItemAt(i+1);
 
@@ -264,9 +283,11 @@ void ddPolyLineFigure::basicDraw(wxBufferedDC& context, ddDrawingView *view){
 	*/
 }
 
-void ddPolyLineFigure::basicMoveBy(int x, int y){
+void ddPolyLineFigure::basicMoveBy(int x, int y)
+{
 	ddPoint *movPoint;
-	for(int i=0 ; i<points->count() ; i++){
+	for(int i=0 ; i<points->count() ; i++)
+    {
 		movPoint = (ddPoint *) points->getItemAt(i);  //DD-TODO: replace and test with pointAt
 		movPoint->x += x;
 		movPoint->y += y;
@@ -281,12 +302,15 @@ ddITool* ddPolyLineFigure::CreateFigureTool(ddDrawingEditor *editor, ddITool *de
 }
 
 
-int ddPolyLineFigure::findSegment (int x, int y){
-	for(int i=0 ; i<points->count()-1 ; i++){
+int ddPolyLineFigure::findSegment (int x, int y)
+{
+	for(int i=0 ; i<points->count()-1 ; i++)
+    {
 		ddPoint p1 = pointAt(i);
 		ddPoint p2 = pointAt(i+1);
 		ddGeometry g;
-		if(g.lineContainsPoint(p1.x, p1.y, p2.x, p2.y, x, y)){
+		if(g.lineContainsPoint(p1.x, p1.y, p2.x, p2.y, x, y))
+        {
 			return i+1;
 		}
 	}
@@ -309,19 +333,23 @@ ddPoint& ddPolyLineFigure::pointAt(int index)
 	return pointAtPos;
 }
 
-bool ddPolyLineFigure::containsPoint (int x, int y){
+bool ddPolyLineFigure::containsPoint (int x, int y)
+{
 	//DD-TODO: HIGH-PRIORITY-FINISH-THIS  Search in all inflate references value pass using value not reference to not modify value
 	ddRect rect = ddRect(this->displayBox()); //DD-TODO: verify some displaybox returned here with incorrect values sometimes
 	rect.Inflate(4,4);
-	if(!rect.Contains(x,y)){
+	if(!rect.Contains(x,y))
+    {
 		return false;
 	}
 
-	for(int i=0 ; i<points->count()-1 ; i++){
+	for(int i=0 ; i<points->count()-1 ; i++)
+    {
 		ddPoint p1 = pointAt(i);
 		ddPoint p2 = pointAt(i+1);
 		ddGeometry g;
-		if(g.lineContainsPoint(p1.x, p1.y, p2.x, p2.y, x, y)){
+		if(g.lineContainsPoint(p1.x, p1.y, p2.x, p2.y, x, y))
+        {
 			return true;
 		}
 	}
@@ -368,10 +396,11 @@ void ddPolyLineFigure::splitSegment(int x, int y)
 //DD-TODO: this functions is deprecated and should be delete in the future
 void ddPolyLineFigure::updateHandlesIndexes()
 {
-ddPolyLineHandle *h = NULL;
-for(int i=0;i<points->count();i++){
-	h = (ddPolyLineHandle*) handles->getItemAt(i);
-	h->setIndex(i);
+    ddPolyLineHandle *h = NULL;
+    for(int i=0;i<points->count();i++)
+    {
+        h = (ddPolyLineHandle*) handles->getItemAt(i);
+        h->setIndex(i);
 	}
 /*handles->deleteAll();
 for(int i=0;i<points->count();i++){

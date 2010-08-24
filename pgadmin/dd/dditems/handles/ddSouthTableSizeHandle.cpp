@@ -24,7 +24,8 @@ ddLocatorHandle(owner,locator)
 	//drawTempRect=false;
 }
 
-ddRect& ddSouthTableSizeHandle::getDisplayBox(){
+ddRect& ddSouthTableSizeHandle::getDisplayBox()
+{
 	ddPoint p = locate();
 	ddTableFigure *table = (ddTableFigure*) getOwner();
 	displayBox.width=table->getFullSpace().width * 0.5;  //as defined at locator
@@ -43,7 +44,8 @@ void ddSouthTableSizeHandle::draw(wxBufferedDC& context, ddDrawingView *view)
 {
 }
 
-ddSouthTableSizeHandle::~ddSouthTableSizeHandle(){
+ddSouthTableSizeHandle::~ddSouthTableSizeHandle()
+{
 }
 
 void ddSouthTableSizeHandle::invokeStart(ddMouseEvent& event, ddDrawingView *view)
@@ -53,7 +55,7 @@ void ddSouthTableSizeHandle::invokeStart(ddMouseEvent& event, ddDrawingView *vie
 
 void ddSouthTableSizeHandle::invokeStep(ddMouseEvent& event, ddDrawingView *view)
 {
-	int x=event.GetPosition().x, y=event.GetPosition().y;
+	int y=event.GetPosition().y;
 	ddTableFigure *table = (ddTableFigure*) getOwner();
 	wxFont font = settings->GetSystemFont();
 	int colOffset = table->getColDefaultHeight(font);

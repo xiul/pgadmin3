@@ -20,6 +20,7 @@
 #include "dd/draw/locators/ddPolyLineLocator.h"
 #include "dd/draw/main/ddDrawingView.h"
 
+
 ddPolyLineHandle::ddPolyLineHandle(ddPolyLineFigure *figure, ddILocator *loc, int index):
 ddLocatorHandle((ddIFigure *)figure,loc)
 {
@@ -39,9 +40,9 @@ void ddPolyLineHandle::draw(wxBufferedDC& context, ddDrawingView *view)
 
 	double middle=copy.width/2;
 	context.DrawCircle(
-						wxPoint(copy.x+middle,copy.y+middle),
-						wxCoord(middle)
-						);
+        wxPoint(copy.x+middle,copy.y+middle),
+        wxCoord(middle)
+        );
 	//DD-TODO: improve this draw
 }
 
@@ -61,7 +62,6 @@ void ddPolyLineHandle::invokeStep(ddMouseEvent& event, ddDrawingView *view)
 
 void ddPolyLineHandle::invokeStart(ddMouseEvent& event, ddDrawingView *view)
 {
-	int x=event.GetPosition().x, y=event.GetPosition().y;
 	if(event.RightDown())
 	{
 		((ddPolyLineFigure*) getOwner())->removePointAt(indx);

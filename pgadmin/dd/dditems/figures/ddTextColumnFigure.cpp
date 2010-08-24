@@ -41,7 +41,6 @@ ddSimpleTextFigure(columnName)
 
 ddTextColumnFigure::~ddTextColumnFigure()
 {
-
 }
 
 wxString& ddTextColumnFigure::getText(bool extended)
@@ -102,7 +101,8 @@ void ddTextColumnFigure::OnTextPopupClick(wxCommandEvent& event, ddDrawingView *
 				if(getOwnerColumn()->isPrimaryKey())
 				{
 					getOwnerColumn()->setColumnKind(none);
-				}else
+				}
+                else
 				{	
 					getOwnerColumn()->setColumnKind(pk);
 					getOwnerColumn()->setColumnOption(notnull);
@@ -172,98 +172,98 @@ void ddTextColumnFigure::OnTextPopupClick(wxCommandEvent& event, ddDrawingView *
 //It's a lot faster to use constant strings that create it at fly.
 wxArrayString& ddTextColumnFigure::popupStrings()
 {
-		strings.Clear();
-		strings.Add(wxT("Add a column ..."));  //0
-		if(getOwnerColumn()->isForeignKey())
-		{
-			strings.Add(wxT("--disable**Delete a column ..."));  //1
-		}
-		else
-		{
-			strings.Add(wxT("Delete a column ..."));  //1
-		}
-		strings.Add(wxT("Rename a column ..."));  //2
-		
-		strings.Add(wxT("--separator--"));
+    strings.Clear();
+    strings.Add(wxT("Add a column ..."));  //0
+    if(getOwnerColumn()->isForeignKey())
+    {
+        strings.Add(wxT("--disable**Delete a column ..."));  //1
+    }
+    else
+    {
+        strings.Add(wxT("Delete a column ..."));  //1
+    }
+    strings.Add(wxT("Rename a column ..."));  //2
+    
+    strings.Add(wxT("--separator--"));
 
-		if(getOwnerColumn()->isNotNull())	//4
-		{
-			if(getOwnerColumn()->isForeignKey())
-				strings.Add(wxT("--checked--disable**Not Null")); 
-			else
-				strings.Add(wxT("--checked**Not Null")); 
-		}
-		else
-		{
-			if(getOwnerColumn()->isForeignKey())		
-				strings.Add(wxT("--disable**Not Null"));
-			else
-				strings.Add(wxT("Not Null"));
-		}
-		
-		strings.Add(wxT("--separator--"));
+    if(getOwnerColumn()->isNotNull())	//4
+    {
+        if(getOwnerColumn()->isForeignKey())
+            strings.Add(wxT("--checked--disable**Not Null")); 
+        else
+            strings.Add(wxT("--checked**Not Null")); 
+    }
+    else
+    {
+        if(getOwnerColumn()->isForeignKey())		
+            strings.Add(wxT("--disable**Not Null"));
+        else
+            strings.Add(wxT("Not Null"));
+    }
+    
+    strings.Add(wxT("--separator--"));
 
-		if(getOwnerColumn()->isPrimaryKey())	//6
-		{
-			if(getOwnerColumn()->isForeignKey())	
-				strings.Add(wxT("--checked--disable**Primary Key"));
-			else
-				strings.Add(wxT("--checked**Primary Key"));
-		}
-		else
-		{
-			if(getOwnerColumn()->isForeignKey())	
-				strings.Add(wxT("--disable**Primary Key"));
-			else
-				strings.Add(wxT("Primary Key"));
-		}
+    if(getOwnerColumn()->isPrimaryKey())	//6
+    {
+        if(getOwnerColumn()->isForeignKey())	
+            strings.Add(wxT("--checked--disable**Primary Key"));
+        else
+            strings.Add(wxT("--checked**Primary Key"));
+    }
+    else
+    {
+        if(getOwnerColumn()->isForeignKey())	
+            strings.Add(wxT("--disable**Primary Key"));
+        else
+            strings.Add(wxT("Primary Key"));
+    }
 
-		if(getOwnerColumn()->isUniqueKey())		//7
-			strings.Add(wxT("--checked**Unique"));
-		else
-			strings.Add(wxT("Unique..."));
+    if(getOwnerColumn()->isUniqueKey())		//7
+        strings.Add(wxT("--checked**Unique"));
+    else
+        strings.Add(wxT("Unique..."));
 
-		strings.Add(wxT("--separator--"));
+    strings.Add(wxT("--separator--"));
 
-		if(getOwnerColumn()->isForeignKey())	
-			strings.Add(wxT("--disable--submenu##Change Column Datatype**Select a Datatype:"));
-		else
-			strings.Add(wxT("--submenu##Change Column Datatype**Select a Datatype:"));
-		
-		if(columnType==dt_bigint)		//10
-			strings.Add(wxT("--subitem--checked**Serial"));
-		else
-			strings.Add(wxT("--subitem**Serial"));
+    if(getOwnerColumn()->isForeignKey())	
+        strings.Add(wxT("--disable--submenu##Change Column Datatype**Select a Datatype:"));
+    else
+        strings.Add(wxT("--submenu##Change Column Datatype**Select a Datatype:"));
+    
+    if(columnType==dt_bigint)		//10
+        strings.Add(wxT("--subitem--checked**Serial"));
+    else
+        strings.Add(wxT("--subitem**Serial"));
 
-		if(columnType==dt_boolean)		//11
-			strings.Add(wxT("--subitem--checked**Boolean"));
-		else
-			strings.Add(wxT("--subitem**Boolean"));
+    if(columnType==dt_boolean)		//11
+        strings.Add(wxT("--subitem--checked**Boolean"));
+    else
+        strings.Add(wxT("--subitem**Boolean"));
 
-		if(columnType==dt_integer)		//12
-			strings.Add(wxT("--subitem--checked**Integer"));
-		else
-			strings.Add(wxT("--subitem**Integer"));
+    if(columnType==dt_integer)		//12
+        strings.Add(wxT("--subitem--checked**Integer"));
+    else
+        strings.Add(wxT("--subitem**Integer"));
 
-		if(columnType==dt_money)		//13
-			strings.Add(wxT("--subitem--checked**Money"));
-		else
-			strings.Add(wxT("--subitem**Money"));
+    if(columnType==dt_money)		//13
+        strings.Add(wxT("--subitem--checked**Money"));
+    else
+        strings.Add(wxT("--subitem**Money"));
 
-		if(columnType==dt_varchar)		//14
-			strings.Add(wxT("--subitem--checked**Varchar(1)"));   
-		else
-			strings.Add(wxT("--subitem**Varchar(1)"));   
+    if(columnType==dt_varchar)		//14
+        strings.Add(wxT("--subitem--checked**Varchar(1)"));   
+    else
+        strings.Add(wxT("--subitem**Varchar(1)"));   
 
-		strings.Add(wxT("--subitem**Choose another datatype"));   //15
-	
-		strings.Add(wxT("--separator--")); 
-		strings.Add(wxT("Primary Key Constraint name..."));  //17
-		strings.Add(wxT("Unique Constraint name..."));  //18
-		strings.Add(wxT("--separator--")); 
-		strings.Add(wxT("Delete Table..."));  //20
-		//DD-TODO: after add varchar left a cursor over length selected to allow used
-	//}
+    strings.Add(wxT("--subitem**Choose another datatype"));   //15
+
+    strings.Add(wxT("--separator--")); 
+    strings.Add(wxT("Primary Key Constraint name..."));  //17
+    strings.Add(wxT("Unique Constraint name..."));  //18
+    strings.Add(wxT("--separator--")); 
+    strings.Add(wxT("Delete Table..."));  //20
+    //DD-TODO: after add varchar left a cursor over length selected to allow used
+
 	return strings;
 };
 

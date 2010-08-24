@@ -74,13 +74,15 @@ wxString ddDatabaseDesign::generateModel()
 	ddIteratorBase *iterator=draw->model()->figuresEnumerator();
 	ddIFigure *tmp;
 	ddTableFigure *table;
-	while(iterator->HasNext()){
+	while(iterator->HasNext())
+    {
 		tmp=(ddIFigure *)iterator->Next();
 		if(tmp->getKindId()==100)
 		{
 			out+=wxT(" \n");
 			table=(ddTableFigure*)tmp;
-			out+=wxT("--\n-- ")+_("Generating SQL for table: ");
+			out+=wxT("--\n-- ");
+            out+=_("Generating SQL for table: ");
 			out+=table->getTableName();
 			out+=wxT(" \n--\n");
 			out+=table->generateSQL();
@@ -100,10 +102,12 @@ wxString ddDatabaseDesign::getNewTableName()
 	ddTableFigure *table;
 	int indx=0;
 	bool repeat;
-	do{
+	do
+    {
 		repeat=false;
 		iterator->ResetIterator();
-		while(iterator->HasNext()){
+		while(iterator->HasNext())
+        {
 			tmp=(ddIFigure *)iterator->Next();
 			if(tmp->getKindId()==100)
 			{
@@ -121,7 +125,7 @@ wxString ddDatabaseDesign::getNewTableName()
 				}
 			}
 		 }
-	}while(repeat);
+	} while(repeat);
 	delete iterator;
 	out=wxString::Format(_("NewTable%d"),indx);
 	return out;
@@ -133,7 +137,8 @@ bool ddDatabaseDesign::containsTable(wxString tableName)
 	ddIteratorBase *iterator=draw->model()->figuresEnumerator();
 	ddIFigure *tmp;
 	ddTableFigure *table;
-	while(iterator->HasNext()){
+	while(iterator->HasNext())
+    {
 		tmp=(ddIFigure *)iterator->Next();
 		if(tmp->getKindId()==100)
 		{

@@ -47,7 +47,8 @@ wxCursor ddScrollBarHandle::createCursor()
 }
 
 //avoid to use inflate on this handle
-ddRect& ddScrollBarHandle::getDisplayBox(){
+ddRect& ddScrollBarHandle::getDisplayBox()
+{
 	ddPoint p = locate();
 	displayBox.width=11;  //as defined at locator
 	displayBox.height=table->getColsSpace().height;

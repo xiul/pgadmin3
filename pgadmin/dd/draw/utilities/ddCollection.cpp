@@ -24,19 +24,16 @@ ddCollection::ddCollection(ddCollectionBase *collectionBase)
     collection=collectionBase;
 }
 
-
 ddCollection::~ddCollection()
 {
     if(collection)
         delete collection;
 }
 
-
 void ddCollection::addItem(ddObject *item)
 {
     collection->addItem(item);
 }
-
 
 void ddCollection::removeItem(ddObject *item)
 {
@@ -58,18 +55,15 @@ ddIteratorBase* ddCollection::createDownIterator()
 	return NULL;
 }
 
-
 int ddCollection::count()
 {
     return collection->count();
 }
 
-
 bool ddCollection::existsObject(ddObject *item)
 {
     return collection->existsObject(item);
 }
-
 
 ddObject* ddCollection::getItemAt(int index)
 {
@@ -87,18 +81,15 @@ void ddCollection::removeAll()
     collection->removeAll();
 }
 
-
 void ddCollection::deleteAll()
 {
     collection->deleteAll();
 }
 
-
 int ddCollection::getIndex(ddObject *item)
 {
     return collection->getIndex(item);
 }
-
 
 void ddCollection::insertAtIndex(ddObject *item, int index)
 {

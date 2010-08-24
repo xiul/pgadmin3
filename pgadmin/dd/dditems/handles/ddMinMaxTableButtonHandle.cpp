@@ -31,7 +31,8 @@ ddButtonHandle(owner,buttonLocator,buttonImage,size)
 	showFirst = true;
 }
 
-ddMinMaxTableButtonHandle::~ddMinMaxTableButtonHandle(){
+ddMinMaxTableButtonHandle::~ddMinMaxTableButtonHandle()
+{
 }
 
 void ddMinMaxTableButtonHandle::invokeStart(ddMouseEvent &event, ddDrawingView *view)

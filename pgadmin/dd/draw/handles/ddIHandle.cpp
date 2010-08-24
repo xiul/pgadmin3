@@ -18,18 +18,21 @@
 #include "dd/draw/handles/ddIHandle.h"
 #include "dd/draw/utilities/ddPoint.h"
 
-ddIHandle::ddIHandle(ddIFigure *owner){
+ddIHandle::ddIHandle(ddIFigure *owner)
+{
 	figureOwner=owner;
 }
-ddIHandle::~ddIHandle(){
-
+ddIHandle::~ddIHandle()
+{
 }
 
-ddIFigure* ddIHandle::getOwner(){
+ddIFigure* ddIHandle::getOwner()
+{
 	return figureOwner;
 }
 
-ddRect& ddIHandle::getDisplayBox(){
+ddRect& ddIHandle::getDisplayBox()
+{
 	ddPoint p = locate();
 	displayBox.width=0;
 	displayBox.height=0;
@@ -38,8 +41,9 @@ ddRect& ddIHandle::getDisplayBox(){
 	return displayBox;
 }
 
-bool ddIHandle::containsPoint(int x, int y){
+bool ddIHandle::containsPoint(int x, int y)
+{
 	return getDisplayBox().Contains(x,y);
 }
 
-//Al methods and properties at ddIHandle.h
+//All methods and properties at ddIHandle.h

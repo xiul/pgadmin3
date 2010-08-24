@@ -32,13 +32,13 @@ ddButtonHandle(owner,buttonLocator,buttonImage,size)
     handleCursor=wxCursor(handleCursorImage);
 }
 
-ddAddFkButtonHandle::~ddAddFkButtonHandle(){
+ddAddFkButtonHandle::~ddAddFkButtonHandle()
+{
 }
 
 void ddAddFkButtonHandle::invokeStart(ddMouseEvent &event, ddDrawingView *view)
 {
 	if(getOwner()->ms_classInfo.IsKindOf(&ddTableFigure::ms_classInfo)){
-		ddTableFigure *table = (ddTableFigure*) getOwner();
 		ddRelationshipFigure *fkConnection = new ddRelationshipFigure();
 		fkConnection->setStartTerminal(new ddRelationshipTerminal(fkConnection,false));
 		fkConnection->setEndTerminal(new ddRelationshipTerminal(fkConnection,true));
@@ -65,7 +65,6 @@ void ddAddFkButtonHandle::invokeEnd(ddMouseEvent &event, ddDrawingView *view)
 	ddTableFigure *table = (ddTableFigure*) getOwner();
 	table->canConnect();
 }
-
 
 wxCursor ddAddFkButtonHandle::createCursor()
 {

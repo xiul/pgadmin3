@@ -22,16 +22,16 @@
 #include "dd/draw/main/ddDrawingView.h"
 
 
-ddBitmapFigure::ddBitmapFigure(wxBitmap image){
+ddBitmapFigure::ddBitmapFigure(wxBitmap image)
+{
 	imageToDraw=image;
 	this->getBasicDisplayBox().width=imageToDraw.GetWidth();
 	this->getBasicDisplayBox().height=imageToDraw.GetHeight();
 }
 
-ddBitmapFigure::~ddBitmapFigure(){
+ddBitmapFigure::~ddBitmapFigure()
+{
 }
-
-
 
 void ddBitmapFigure::basicDraw(wxBufferedDC& context, ddDrawingView *view)
 {

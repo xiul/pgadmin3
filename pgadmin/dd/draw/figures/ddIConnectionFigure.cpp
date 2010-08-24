@@ -17,4 +17,5 @@
 // App headers
 #include "dd/draw/figures/ddIConnectionFigure.h"
 
-//All functions abstract prototypes inside ddIConnectionFigure.h this is just a base class
+// All functions abstract prototypes inside ddIConnectionFigure.h
+// this is just a base class

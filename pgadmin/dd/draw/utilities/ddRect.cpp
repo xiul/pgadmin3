@@ -40,8 +40,8 @@ wxRect(point.x,point.y,0,0)
 {
 }
 
-void ddRect::add (int newX, int newY) {
-
+void ddRect::add (int newX, int newY)
+{
 	int x1 = min(x , newX);
 	int x2 = max(x+width , newX);
 	int y1 = min(y , newY);
@@ -54,29 +54,35 @@ void ddRect::add (int newX, int newY) {
 }
 
 
-void ddRect::add (ddRect *newRect){
+void ddRect::add (ddRect *newRect)
+{
 	add(newRect->GetTopLeft().x , newRect->GetTopLeft().y);
 	add(newRect->GetBottomRight().x , newRect->GetBottomRight().y);
 }
 
-void ddRect::add (ddRect& newRect){
+void ddRect::add (ddRect& newRect)
+{
 	add(newRect.GetTopLeft().x , newRect.GetTopLeft().y);
 	add(newRect.GetBottomRight().x , newRect.GetBottomRight().y);
 }
 
-void ddRect::add(ddPoint *p){
+void ddRect::add(ddPoint *p)
+{
 	add(p->x,p->y);
 }
 
-int ddRect::min(int a, int b){
+int ddRect::min(int a, int b)
+{
 	return(a<=b)?a:b;
 }
 
-int ddRect::max(int a, int b){
+int ddRect::max(int a, int b)
+{
 	return(a>=b)?a:b;
 }
 
-ddPoint ddRect::center(){
+ddPoint ddRect::center()
+{
 	point = ddPoint(x+(width/2) , y+(height/2)); 
 	return point;
 }

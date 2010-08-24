@@ -22,28 +22,32 @@
 #include "dd/draw/utilities/ddArrayCollection.h"
 #include "dd/draw/main/ddDrawingView.h"
 
-ddAbstractFigure::ddAbstractFigure(){
-
+ddAbstractFigure::ddAbstractFigure()
+{
 }
 
-ddAbstractFigure::~ddAbstractFigure(){
-
+ddAbstractFigure::~ddAbstractFigure()
+{
 }
 
-bool ddAbstractFigure::canConnect (){
-return true;
+bool ddAbstractFigure::canConnect ()
+{
+    return true;
 }
 
-bool ddAbstractFigure::includes(ddIFigure *figure){
+bool ddAbstractFigure::includes(ddIFigure *figure)
+{
 	return (this==figure);	
 }
 
-void ddAbstractFigure::draw(wxBufferedDC& context, ddDrawingView *view){
+void ddAbstractFigure::draw(wxBufferedDC& context, ddDrawingView *view)
+{
 	ddIFigure::draw(context,view);
 	basicDraw(context,view);
 }
 
-void ddAbstractFigure::basicDraw(wxBufferedDC& context, ddDrawingView *view){
+void ddAbstractFigure::basicDraw(wxBufferedDC& context, ddDrawingView *view)
+{
 	ddRect copy = displayBox();
 	view->CalcScrolledPosition(copy.x,copy.y,&copy.x,&copy.y);
 
@@ -52,12 +56,14 @@ void ddAbstractFigure::basicDraw(wxBufferedDC& context, ddDrawingView *view){
 	context.DrawRectangle(copy);
 }
 
-void ddAbstractFigure::drawSelected(wxBufferedDC& context, ddDrawingView *view){
+void ddAbstractFigure::drawSelected(wxBufferedDC& context, ddDrawingView *view)
+{
 	ddIFigure::drawSelected(context,view);	
 	basicDrawSelected(context,view);
 }
 
-void ddAbstractFigure::basicDrawSelected(wxBufferedDC& context, ddDrawingView *view){
+void ddAbstractFigure::basicDrawSelected(wxBufferedDC& context, ddDrawingView *view)
+{
 	ddRect copy = displayBox();
 	view->CalcScrolledPosition(copy.x,copy.y,&copy.x,&copy.y);
 	
@@ -74,13 +80,15 @@ ddITool* ddAbstractFigure::CreateFigureTool(ddDrawingEditor *editor, ddITool *de
 
 //DD-TODO: HIGH-PRIORITY-FINISH-THIS: Add connection methods and others
 
-void ddAbstractFigure::moveBy(int x, int y){
+void ddAbstractFigure::moveBy(int x, int y)
+{
 	willChange();
 	basicMoveBy(x,y);
 	changed();
 }
 
-void ddAbstractFigure::basicMoveBy(int x, int y){
+void ddAbstractFigure::basicMoveBy(int x, int y)
+{
 		ddRect r = basicDisplayBox;
 		r.x += x;
 		r.y += y;
@@ -88,29 +96,33 @@ void ddAbstractFigure::basicMoveBy(int x, int y){
 }
 
 
-void ddAbstractFigure::moveTo(int x, int y){
+void ddAbstractFigure::moveTo(int x, int y)
+{
 		ddRect r = basicDisplayBox;
 		r.x = x;
 		r.y = y;
 		basicDisplayBox = r;
 }
 
-void ddAbstractFigure::willChange(){
+void ddAbstractFigure::willChange()
+{
 	invalidate();
-
 }
 
-void ddAbstractFigure::changed(){
-			invalidate();
-			onFigureChanged(this);
-			//DD-TODO: this is really needed
+void ddAbstractFigure::changed()
+{
+    invalidate();
+    onFigureChanged(this);
+    //DD-TODO: this is really needed
 }
 
-void ddAbstractFigure::invalidate(){
-//DD-TODO: OnFigureInvalidated ( FigureEventArgs (this, InvalidateDisplayBox));
+void ddAbstractFigure::invalidate()
+{
+    //DD-TODO: OnFigureInvalidated ( FigureEventArgs (this, InvalidateDisplayBox));
 }
 
-bool ddAbstractFigure::containsPoint(int x, int y){
+bool ddAbstractFigure::containsPoint(int x, int y)
+{
 	return basicDisplayBox.Contains(x,y);
 }
 

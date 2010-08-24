@@ -19,14 +19,17 @@
 #include "dd/draw/utilities/ddRect.h"
 #include "dd/draw/figures/ddPolyLineFigure.h"
 
-ddPolyLineLocator::~ddPolyLineLocator(){
+ddPolyLineLocator::~ddPolyLineLocator()
+{
 }
 
-ddPolyLineLocator::ddPolyLineLocator(int index){
+ddPolyLineLocator::ddPolyLineLocator(int index)
+{
 	indx=index;
 }
 
-ddPoint& ddPolyLineLocator::locate(ddIFigure *owner){
+ddPoint& ddPolyLineLocator::locate(ddIFigure *owner)
+{
 	if(owner)
 	{
 		ddPolyLineFigure *figure = (ddPolyLineFigure *) owner;

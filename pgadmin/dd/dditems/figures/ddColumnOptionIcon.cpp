@@ -25,7 +25,8 @@
 #include "images/ddnull.xpm"
 #include "images/ddnotnull.xpm"
 
-ddColumnOptionIcon::ddColumnOptionIcon(ddColumnFigure *owner){
+ddColumnOptionIcon::ddColumnOptionIcon(ddColumnFigure *owner)
+{
 	ownerColumn=owner; 
 	colOption=null;
 	icon = wxBitmap(ddnull_xpm);
@@ -33,10 +34,9 @@ ddColumnOptionIcon::ddColumnOptionIcon(ddColumnFigure *owner){
 	getBasicDisplayBox().SetSize(wxSize(getWidth(),getHeight()));
 }
 
-ddColumnOptionIcon::~ddColumnOptionIcon(){
-
+ddColumnOptionIcon::~ddColumnOptionIcon()
+{
 }
-
 
 wxArrayString& ddColumnOptionIcon::popupStrings()
 {
@@ -73,7 +73,7 @@ wxArrayString& ddColumnOptionIcon::popupStrings()
 	}
 
 	return strings;
-};
+}
 
 void ddColumnOptionIcon::OnTextPopupClick(wxCommandEvent& event)
 {

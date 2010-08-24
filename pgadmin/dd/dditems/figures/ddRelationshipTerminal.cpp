@@ -22,21 +22,21 @@
 #include "dd/draw/main/ddDrawingView.h"
 #include "dd/draw/utilities/ddGeometry.h"
 
-ddRelationshipTerminal::ddRelationshipTerminal(ddRelationshipFigure *owner, bool endFigureTerminal){
+ddRelationshipTerminal::ddRelationshipTerminal(ddRelationshipFigure *owner, bool endFigureTerminal)
+{
 	//lineDistance = 8;
 	//pointDistance = 22;
 	ownerFigure = owner;
 	endTerminal = endFigureTerminal;
-
 }
 
-ddRelationshipTerminal::~ddRelationshipTerminal(){
-
+ddRelationshipTerminal::~ddRelationshipTerminal()
+{
 }
 
 //DD-TODO: this need this ddDrawingView *view ??? or just avoid this and always pass calcscrolled points
-ddPoint& ddRelationshipTerminal::draw (wxBufferedDC& context, ddPoint& a, ddPoint& b, ddDrawingView *view){
-
+ddPoint& ddRelationshipTerminal::draw (wxBufferedDC& context, ddPoint& a, ddPoint& b, ddDrawingView *view)
+{
 	ddGeometry g;
 	ddPoint points[3];
 
@@ -46,9 +46,8 @@ ddPoint& ddRelationshipTerminal::draw (wxBufferedDC& context, ddPoint& a, ddPoin
 	view->CalcScrolledPosition(aCopy.x,aCopy.y,&aCopy.x,&aCopy.y);
 	view->CalcScrolledPosition(bCopy.x,bCopy.y,&bCopy.x,&bCopy.y);
 
-
-
-	if(endTerminal){
+	if(endTerminal)
+    {
 		//Calc a point very far away of center of table to intersect one of the sides lines of the table rectangle figure
 		double X = aCopy.x + (bCopy.x - aCopy.x) * 0.9;
 		double Y = aCopy.y + (bCopy.y - aCopy.y) * 0.9;
@@ -71,7 +70,8 @@ ddPoint& ddRelationshipTerminal::draw (wxBufferedDC& context, ddPoint& a, ddPoin
 			bool first=true;
 			
 			factor = lastFactor;
-			do{
+			do
+            {
 				XX= aCopy.x + (bCopy.x - aCopy.x) * factor;
 				YY= aCopy.y + (bCopy.y - aCopy.y) * factor;
 				distance = sqrt( (aCopy.x - XX)*(aCopy.x - XX) + (aCopy.y - YY)*(aCopy.y - YY));
@@ -85,13 +85,12 @@ ddPoint& ddRelationshipTerminal::draw (wxBufferedDC& context, ddPoint& a, ddPoin
 					factor=factor*0.75;
 				else
 					factor=factor*1.20;
-			}while(distance > 20 || distance < 10);
-		
+			} while(distance > 20 || distance < 10);
+
 			wxPoint intersectionLine1(centerX,centerY);
 			wxPoint intersectionLine2(X,Y);
 
-		
-				//TOP
+            //TOP
 			if(g.intersection(intersectionLine1,intersectionLine2,r.GetTopLeft(),r.GetTopRight()))
 			{
 				points[0]=wxPoint(XX,YY);
@@ -120,7 +119,6 @@ ddPoint& ddRelationshipTerminal::draw (wxBufferedDC& context, ddPoint& a, ddPoin
 					context.DrawLine(wxPoint(XX,YY-7),wxPoint(XX,YY+7));
 					context.SetPen(*wxBLACK_PEN);
 				}
-
 			}	//BOTTOM
 			else if(g.intersection(intersectionLine1,intersectionLine2,r.GetBottomLeft(),r.GetBottomRight()))
 			{
@@ -135,7 +133,6 @@ ddPoint& ddRelationshipTerminal::draw (wxBufferedDC& context, ddPoint& a, ddPoin
 					context.DrawLine(wxPoint(XX-7,YY),wxPoint(XX+7,YY));
 					context.SetPen(*wxBLACK_PEN);
 				}
-
 			}	//LEFT
 			else if(g.intersection(intersectionLine1,intersectionLine2,r.GetTopLeft(),r.GetBottomLeft()))
 			{

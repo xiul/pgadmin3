@@ -29,7 +29,8 @@ ddButtonHandle(owner,buttonLocator,buttonImage,size)
     handleCursor=wxCursor(handleCursorImage);
 }
 
-ddAddColButtonHandle::~ddAddColButtonHandle(){
+ddAddColButtonHandle::~ddAddColButtonHandle()
+{
 }
 
 void ddAddColButtonHandle::invokeStart(ddMouseEvent &event, ddDrawingView *view)

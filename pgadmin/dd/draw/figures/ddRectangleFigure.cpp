@@ -18,12 +18,12 @@
 #include "dd/draw/figures/ddRectangleFigure.h"
 #include "dd/draw/main/ddDrawingView.h"
 
-ddRectangleFigure::ddRectangleFigure(){
-	
+ddRectangleFigure::ddRectangleFigure()
+{
 }
 
-ddRectangleFigure::~ddRectangleFigure(){
-
+ddRectangleFigure::~ddRectangleFigure()
+{
 }
 
 void ddRectangleFigure::basicDraw(wxBufferedDC& context, ddDrawingView *view)

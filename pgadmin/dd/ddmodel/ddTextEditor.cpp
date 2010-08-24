@@ -25,8 +25,9 @@ BEGIN_EVENT_TABLE(ddTextEditor, wxFrame)
     EVT_MENU(idExit, ddTextEditor::OnExit)
 END_EVENT_TABLE()
 
-ddTextEditor::ddTextEditor(wxString initialText) : wxFrame(NULL, wxID_ANY, wxT("wxddTextEditor"), wxDefaultPosition, wxSize(650,500)) {
-    menu = new wxMenuBar(); 
+ddTextEditor::ddTextEditor(wxString initialText) : wxFrame(NULL, wxID_ANY, wxT("wxddTextEditor"), wxDefaultPosition, wxSize(650,500))
+{
+    menu = new wxMenuBar();
     file = new wxMenu(); 
     file->Append(idSave, wxT("&Save File\tCtrl-S")); 
     file->Append(idOpen, wxT("&Open File\tCtrl-O"));
@@ -39,8 +40,8 @@ ddTextEditor::ddTextEditor(wxString initialText) : wxFrame(NULL, wxID_ANY, wxT("
 	text->SetValue(initialText);
 }
 
-
-void ddTextEditor::OnSave(wxCommandEvent &event) {
+void ddTextEditor::OnSave(wxCommandEvent &event)
+{
     wxFileDialog *saveDialog = new wxFileDialog(this, wxT("Save File~"), wxT(""), wxT(""),
                                                 wxT("Text Files (*.txt)|*.txt|C++ Files (*.cpp)|*.cpp"), wxSAVE);
     int response = saveDialog->ShowModal();
@@ -49,7 +50,8 @@ void ddTextEditor::OnSave(wxCommandEvent &event) {
     }
 }
 
-void ddTextEditor::OnOpen(wxCommandEvent &event) {
+void ddTextEditor::OnOpen(wxCommandEvent &event)
+{
     wxFileDialog *openDialog = new wxFileDialog(this, wxT("Open File~"), wxT(""), wxT(""),
                                                 wxT("Text Files (*.txt)|*.txt|C++ Files (*.cpp)|*.cpp"), wxOPEN);
     int response = openDialog->ShowModal();
@@ -58,6 +60,7 @@ void ddTextEditor::OnOpen(wxCommandEvent &event) {
     }
 }
 
-void ddTextEditor::OnExit(wxCommandEvent &event) {
+void ddTextEditor::OnExit(wxCommandEvent &event)
+{
     Destroy();
 }

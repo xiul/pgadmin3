@@ -656,7 +656,7 @@ void ddTableFigure::processDeleteAlert(ddDrawingView *view)
 {
 	ddIteratorBase *iterator = observersEnumerator();
 	bool repeatFlag;
-	do{
+	do {
 		repeatFlag=false;
 		iterator->ResetIterator();
 		while(iterator->HasNext()){
@@ -668,7 +668,7 @@ void ddTableFigure::processDeleteAlert(ddDrawingView *view)
 			delete rel;
 			break;
 		}
-	}while(repeatFlag);
+	} while(repeatFlag);
 	
 	delete iterator;
 }
@@ -680,7 +680,6 @@ void ddTableFigure::basicMoveBy(int x, int y)
 		ddCompositeFigure::basicMoveBy(x,y);
 }
 
-
 //DD-TODO: fix all model to allow all options from http://www.postgresql.org/docs/8.1/static/sql-createtable.html
 wxString ddTableFigure::generateSQL()
 {
@@ -690,7 +689,8 @@ wxString ddTableFigure::generateSQL()
 	ddIteratorBase *iterator = figuresEnumerator();
 	iterator->Next(); //Fixed Position for table rectangle
 	iterator->Next(); //Fixed Position for table name
-	while(iterator->HasNext()){
+	while(iterator->HasNext())
+    {
 		ddColumnFigure *column = (ddColumnFigure*) iterator->Next();
 		tmp+=column->generateSQL();
 		if(column->isNotNull())
@@ -711,7 +711,8 @@ wxString ddTableFigure::generateSQL()
 	iterator->Next(); //Fixed Position for table rectangle
 	iterator->Next(); //Fixed Position for table name
 	int contPk=0;
-	while(iterator->HasNext()){
+	while(iterator->HasNext())
+    {
 		ddColumnFigure *column = (ddColumnFigure*) iterator->Next();
 		if(column->isPrimaryKey())
 			contPk++;
@@ -723,9 +724,11 @@ wxString ddTableFigure::generateSQL()
 		iterator->Next(); //Fixed Position for table rectangle
 		iterator->Next(); //Fixed Position for table name
 
-		while(iterator->HasNext()){
+		while(iterator->HasNext())
+        {
 			ddColumnFigure *column = (ddColumnFigure*) iterator->Next();
-			if(column->isPrimaryKey()){
+			if(column->isPrimaryKey())
+            {
 				tmp+=column->getColumnName();
 				contPk--;
 				if(contPk>0)
@@ -748,7 +751,8 @@ wxString ddTableFigure::generateSQL()
 	}
 	else
 	{  
-		while(iterator->HasNext()){
+		while(iterator->HasNext())
+        {
 			ddRelationshipFigure *rel = (ddRelationshipFigure*) iterator->Next();
 			if(rel->getStartFigure()!=this)
 			{

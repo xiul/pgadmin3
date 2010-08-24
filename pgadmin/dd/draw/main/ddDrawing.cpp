@@ -20,6 +20,7 @@
 #include "dd/draw/utilities/ddRect.h"
 #include "dd/draw/figures/ddIFigure.h"
 
+
 ddDrawing::ddDrawing()
 {
 	figures = new ddCollection(new ddArrayCollection());
@@ -38,30 +39,34 @@ ddDrawing::~ddDrawing()
 		delete figures;
 }
 
-
-
-void ddDrawing::add(ddIFigure *figure){
+void ddDrawing::add(ddIFigure *figure)
+{
 	if(figures)
 		figures->addItem(figure);	
 }
 
-void ddDrawing::remove(ddIFigure *figure){
+void ddDrawing::remove(ddIFigure *figure)
+{
     if(figures)
 		figures->removeItem(figure);
 }
 
-bool ddDrawing::includes(ddIFigure *figure){
+bool ddDrawing::includes(ddIFigure *figure)
+{
 	if(figures)
 		return figures->existsObject(figure);
 	return false;
 }
 
-ddIFigure* ddDrawing::findFigure(int x, int y){
+ddIFigure* ddDrawing::findFigure(int x, int y)
+{
 	ddIFigure *tmp=NULL, *out=NULL;
 	ddIteratorBase *iterator=figures->createIterator();
-	while(iterator->HasNext()){
+	while(iterator->HasNext())
+    {
 		 tmp=(ddIFigure *)iterator->Next();
-		 if(tmp->containsPoint(x,y)){
+		 if(tmp->containsPoint(x,y))
+         {
 			out=tmp;
 			break;
 		 }
@@ -96,35 +101,39 @@ void ddDrawing::recalculateDisplayBox(){
 
 	delete iterator;	
 	/*
-			//DD-TODO: generate this event
-			OnSizeAllocated ();
-			*/
+    //DD-TODO: generate this event
+    OnSizeAllocated ();
+    */
 }
 
-void ddDrawing::bringToFront(ddIFigure *figure){
+void ddDrawing::bringToFront(ddIFigure *figure)
+{
 	//DD-TODO: do it
 }
 
-void ddDrawing::sendToBack(ddIFigure *figure){
+void ddDrawing::sendToBack(ddIFigure *figure)
+{
 	//DD-TODO: do it
 }
 
-
-ddRect& ddDrawing::DisplayBox(){
+ddRect& ddDrawing::DisplayBox()
+{
 	return displayBox;
 }
 
-ddIteratorBase* ddDrawing::figuresEnumerator(){
+ddIteratorBase* ddDrawing::figuresEnumerator()
+{
 	return figures->createIterator();
 }
 
-
-ddIteratorBase* ddDrawing::figuresInverseEnumerator(){
+ddIteratorBase* ddDrawing::figuresInverseEnumerator()
+{
 	return figures->createDownIterator();
 }
 
 //DD-TODO: need to do this delete to handles too?
-void ddDrawing::deleteFigures(){
+void ddDrawing::deleteFigures()
+{
 	//figures->deleteAll();
 	ddIFigure *tmp;
 	while(figures->count()>0)

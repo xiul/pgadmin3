@@ -24,13 +24,11 @@ ddArrayCollection::~ddArrayCollection()
 	WX_CLEAR_ARRAY(ddArray);
 }
 
-
 // Add item to array
 void ddArrayCollection::addItem(ddObject *item)
 {
     ddArray.Add(item);
 }
-
 
 // Remove item from array but don't delete it.
 void ddArrayCollection::removeItem(ddObject *item)
@@ -42,7 +40,6 @@ void ddArrayCollection::removeItemAt(int index)
 {
 	ddArray.RemoveAt(index);
 }
-
 
 // Create an iterator for the objects inside the array
 ddIteratorBase* ddArrayCollection::createIterator()
@@ -62,7 +59,6 @@ int ddArrayCollection::count()
     return ddArray.Count();
 }
 
-
 // Return true if an element pointer is found inside array
 bool ddArrayCollection::existsObject(ddObject *item)
 {
@@ -76,19 +72,14 @@ bool ddArrayCollection::existsObject(ddObject *item)
             break;
         }
     }
-    if(found)
-        return true;
-    else
-        return false;
+    return (found != NULL);
 }
-
 
 // Delete all elements inside array
 void ddArrayCollection::deleteAll()
 {
     WX_CLEAR_ARRAY(ddArray);
 }
-
 
 // Removes all elements inside array without deleting
 void ddArrayCollection::removeAll()
@@ -106,12 +97,10 @@ ddObject* ddArrayCollection::getItemAt(int index)
         return NULL;
 }
 
-
 int ddArrayCollection::getIndex(ddObject *item)
 {
     return ddArray.Index(item);
 }
-
 
 // Insert item into the array before the index
 void ddArrayCollection::insertAtIndex(ddObject *item, int index)
@@ -137,7 +126,6 @@ ddArrayIterator::ddArrayIterator(ddObjsArray *ddPtrsArray)
     internalArray=ddPtrsArray;
 }
 
-
 // Get next item in the array for the iterator
 ddObject* ddArrayIterator::Next()
 {
@@ -145,7 +133,6 @@ ddObject* ddArrayIterator::Next()
     position++;
     return obj;
 }
-
 
 // Return true if the array has more elements to return
 bool ddArrayIterator::HasNext()
@@ -157,12 +144,10 @@ bool ddArrayIterator::HasNext()
         return false;
 }
 
-
 void ddArrayIterator::ResetIterator()
 {
     position=0;
 }
-
 
 //
 // ddArrayDownIterator - Manages iterator for the array collection concrete class from last to first element
@@ -175,7 +160,6 @@ ddArrayDownIterator::ddArrayDownIterator(ddObjsArray *ddPtrsArray)
 	position=internalArray->GetCount()-1;
 }
 
-
 // Get next item in the array for the iterator
 ddObject* ddArrayDownIterator::Next()
 {
@@ -183,7 +167,6 @@ ddObject* ddArrayDownIterator::Next()
     position--;
     return obj;
 }
-
 
 // Return true if the array has more elements to return
 bool ddArrayDownIterator::HasNext()
@@ -194,7 +177,6 @@ bool ddArrayDownIterator::HasNext()
     else
         return false;
 }
-
 
 void ddArrayDownIterator::ResetIterator()
 {

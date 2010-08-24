@@ -23,7 +23,8 @@
 #include "dd/draw/connectors/ddIConnector.h"
 #include "dd/draw/connectors/ddChopBoxConnector.h"
 
-ddIFigure::ddIFigure(){
+ddIFigure::ddIFigure()
+{
 	figures=new ddCollection(new ddArrayCollection());  //DD-TODO: really need this???
 	handles=new ddCollection(new ddArrayCollection());
 //	dependentFigures=new ddCollection(new ddArrayCollection());
@@ -38,10 +39,10 @@ ddIFigure::ddIFigure(){
 	defaultBrush = wxBrush (wxColour(255, 255, 255),wxSOLID);
 	defaultSelectedPen = wxPen(wxColour(255, 0, 0),1,wxSOLID);
 	defaultSelectedBrush = wxBrush (wxColour(225, 225, 225),wxSOLID);
-	
 }
 
-ddIFigure::~ddIFigure(){
+ddIFigure::~ddIFigure()
+{
 	if(connector)
 		delete connector;
 	if(figures)
@@ -61,7 +62,8 @@ ddIFigure::~ddIFigure(){
 	}
 }
 
-ddRect& ddIFigure::displayBox() {
+ddRect& ddIFigure::displayBox()
+{
 	return getBasicDisplayBox();
 }
 
@@ -70,70 +72,86 @@ ddRect& ddIFigure::getBasicDisplayBox()
 	return basicDisplayBox;
 }
 
-bool ddIFigure::containsPoint (int x, int y){
+bool ddIFigure::containsPoint (int x, int y)
+{
 	return false;
 }
 
-void ddIFigure::draw (wxBufferedDC& context, ddDrawingView *view){
+void ddIFigure::draw (wxBufferedDC& context, ddDrawingView *view)
+{
 	context.SetPen(defaultPen);
 	context.SetBrush(defaultBrush);
 }
 
-void ddIFigure::drawSelected (wxBufferedDC& context, ddDrawingView *view){
+void ddIFigure::drawSelected (wxBufferedDC& context, ddDrawingView *view)
+{
 	context.SetPen(defaultSelectedPen);
 	context.SetBrush(defaultSelectedBrush);
 }
 
-ddCollection* ddIFigure::handlesEnumerator(){
+ddCollection* ddIFigure::handlesEnumerator()
+{
 	return handles;
 }
 
 
-/*void ddIFigure::addDependentFigure (ddIFigure *figure){
-	if(!dependentFigures){
+/*void ddIFigure::addDependentFigure (ddIFigure *figure)
+{
+	if(!dependentFigures)
+    {
 		dependentFigures = new ddCollection(new ddArrayCollection());
 	}
 	dependentFigures->addItem(figure);	
 }
 
 
-void ddIFigure::removeDependentFigure (ddIFigure *figure){
-	if(dependentFigures){
+void ddIFigure::removeDependentFigure (ddIFigure *figure)
+{
+	if(dependentFigures)
+    {
 		dependentFigures->removeItem(figure);		
 	}
 }*/
 
-void ddIFigure::addHandle (ddIHandle *handle){
-	if(!handles){
+void ddIFigure::addHandle (ddIHandle *handle)
+{
+	if(!handles)
+    {
 		handles  = new ddCollection(new ddArrayCollection());
 	}
 	handles->addItem(handle);	
 }
 
-void ddIFigure::removeHandle (ddIHandle *handle){
-	if(handles){
+void ddIFigure::removeHandle (ddIHandle *handle)
+{
+	if(handles)
+    {
 		handles->removeItem(handle);		
 	}
 }
 
-void ddIFigure::moveBy (int x, int y){
+void ddIFigure::moveBy (int x, int y)
+{
 }
 
-void ddIFigure::moveTo(int x, int y){
+void ddIFigure::moveTo(int x, int y)
+{
 }
 
-ddITool* ddIFigure::CreateFigureTool(ddDrawingEditor *editor, ddITool *defaultTool){
+ddITool* ddIFigure::CreateFigureTool(ddDrawingEditor *editor, ddITool *defaultTool)
+{
 	return defaultTool;
 }
 
-bool ddIFigure::isSelected(){
+bool ddIFigure::isSelected()
+{
 	return selected;
 }
 
-void ddIFigure::setSelected(bool value){
+void ddIFigure::setSelected(bool value)
+{
 	selected=value;
 }
-
 
 ddIConnector* ddIFigure::connectorAt (int x, int y)
 {
@@ -147,25 +165,22 @@ bool ddIFigure::includes(ddIFigure *figure)
 	return (this == figure);
 }
 
-
-
 void ddIFigure::onFigureChanged(ddIFigure *figure)
 {
 
 	ddIteratorBase *iterator=observers->createIterator();
-	while(iterator->HasNext()){
+	while(iterator->HasNext())
+    {
 		ddIFigure *o = (ddIFigure*) iterator->Next();
 		o->onFigureChanged(this);
 	}
 	delete iterator;
 }
 
-
-
-
 void ddIFigure::addObserver(ddIFigure *observer)
 {
-	if(!observers){
+	if(!observers)
+    {
 		observers  = new ddCollection(new ddArrayCollection());
 	}
 	observers->addItem(observer);	
@@ -179,24 +194,25 @@ void ddIFigure::removeObserver(ddIFigure *observer)
 	}
 }
 
-
 void ddIFigure::setDefaultPen(wxPen& pen)
 {
 	defaultPen=pen;
 }
+
 void ddIFigure::setDefaultSelectedPen(wxPen& pen)
 {
 	defaultSelectedPen=pen;
 }
+
 void ddIFigure::setDefaultBrush(wxBrush& brush)
 {
 	defaultBrush=brush;
 }
+
 void ddIFigure::setDefaultSelectedBrush(wxBrush& brush)
 {
 	defaultSelectedBrush=brush;
 }
-
 
 ddIteratorBase* ddIFigure::observersEnumerator()
 {

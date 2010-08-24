@@ -28,7 +28,8 @@ ddButtonHandle(owner,buttonLocator,buttonImage,size)
     handleCursor=wxCursor(handleCursorImage);
 }
 
-ddRemoveColButtonHandle::~ddRemoveColButtonHandle(){
+ddRemoveColButtonHandle::~ddRemoveColButtonHandle()
+{
 }
 
 void ddRemoveColButtonHandle::invokeStart(ddMouseEvent &event, ddDrawingView *view)

@@ -22,12 +22,12 @@
 #include "dd/draw/main/ddDrawingView.h"
 #include "dd/draw/tools/ddMenuTool.h"
 
-ddAbstractMenuFigure::ddAbstractMenuFigure(){
-
+ddAbstractMenuFigure::ddAbstractMenuFigure()
+{
 }
 
-ddAbstractMenuFigure::~ddAbstractMenuFigure(){
-
+ddAbstractMenuFigure::~ddAbstractMenuFigure()
+{
 }
 
 

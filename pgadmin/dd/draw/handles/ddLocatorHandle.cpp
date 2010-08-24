@@ -22,6 +22,7 @@ ddIHandle(owner)
 {
 	loc=locator;
 }
+
 ddLocatorHandle::~ddLocatorHandle()
 {
 	if(loc)
@@ -31,7 +32,7 @@ ddLocatorHandle::~ddLocatorHandle()
 ddPoint& ddLocatorHandle::locate()
 {
 	p=ddPoint(0,0);
-	return loc==NULL ? p : loc->locate(getOwner()) ;
+	return loc==NULL ? p : loc->locate(getOwner());
 }
 
 ddILocator* ddLocatorHandle::locator()
@@ -39,11 +40,14 @@ ddILocator* ddLocatorHandle::locator()
 	return loc;
 }
 
-void ddLocatorHandle::invokeStart(ddMouseEvent& event, ddDrawingView *view){
+void ddLocatorHandle::invokeStart(ddMouseEvent& event, ddDrawingView *view)
+{
 }
 
-void ddLocatorHandle::invokeStep(ddMouseEvent& event, ddDrawingView *view){
+void ddLocatorHandle::invokeStep(ddMouseEvent& event, ddDrawingView *view)
+{
 }
 
-void ddLocatorHandle::invokeEnd(ddMouseEvent& event, ddDrawingView *view){
+void ddLocatorHandle::invokeEnd(ddMouseEvent& event, ddDrawingView *view)
+{
 }

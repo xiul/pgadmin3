@@ -43,7 +43,7 @@ ddRelationshipFigure::~ddRelationshipFigure()
 {
 	columnsHashMap::iterator it;
 	ddRelationshipItem *item;
-	for( it = chm.begin(); it != chm.end(); ++it )
+	for (it = chm.begin(); it != chm.end(); ++it)
 	{
 		wxString key = it->first;
 		item = it->second;
@@ -89,9 +89,10 @@ void ddRelationshipFigure::updateForeignKey()
 
 				//Hack to repeat for every time a column is elimite because hashmap is modified inside a for and now is invalid that for loop
 				bool repeat;   
-				do{
+				do
+                {
 					repeat=false;
-					for( it = chm.begin(); it != chm.end(); ++it )
+					for (it = chm.begin(); it != chm.end(); ++it)
 					{
 						wxString key = it->first;
 						NewFkColumn = it->second;
@@ -106,12 +107,10 @@ void ddRelationshipFigure::updateForeignKey()
 							tmpTable->moveBy(-1,0);
 							tmpTable->moveBy(1,0);
 						}
-						if(repeat)
+						if (repeat)
 							break;
 					}
-
-				}while(repeat);
-
+				} while(repeat);
 			}
 			else   //RELATIONSHIP KIND IS USING A UK (UNIQUE KEY) AS FOREIGN KEYS
 			{
@@ -125,7 +124,6 @@ void ddRelationshipFigure::updateForeignKey()
 		wxMessageBox(wxT("Error invalid kind of start figure at relationship"),wxT("Error invalid kind of start figure at relationship"),wxICON_ERROR);
 	}
 }
-
 
 wxArrayString& ddRelationshipFigure::popupStrings()
 {
@@ -178,9 +176,8 @@ wxArrayString& ddRelationshipFigure::popupStrings()
 
 	strings.Add(wxT("Delete Relationship..."));   //9
 
-return strings;
+    return strings;
 }
-
 
 void ddRelationshipFigure::OnTextPopupClick(wxCommandEvent& event, ddDrawingView *view)
 {
@@ -233,18 +230,14 @@ void ddRelationshipFigure::OnTextPopupClick(wxCommandEvent& event, ddDrawingView
 				if (answer == wxYES)
 				{
 					if(view->isFigureSelected(this))
-					{
 						view->removeFromSelection(this);
-					}
 					disconnectStart();
 					disconnectEnd();
 					//Hack to autodelete relationship
 					ddRelationshipFigure *r=this;
 					view->remove(this);
 					if(r)
-					{
 						delete r;
-					}						
 				}
 			}
 			break;
@@ -329,7 +322,7 @@ void ddRelationshipFigure::setOptionAtForeignKeys(ddColumnOptionType type)
 {
 	columnsHashMap::iterator it;
 	ddRelationshipItem *item;
-	for( it = chm.begin(); it != chm.end(); ++it )
+	for (it = chm.begin(); it != chm.end(); ++it)
 	{
 		wxString key = it->first;
 		item = it->second;
@@ -341,7 +334,7 @@ void ddRelationshipFigure::setKindAtForeignKeys(ddColumnType type)
 {
 	columnsHashMap::iterator it;
 	ddRelationshipItem *item;
-	for( it = chm.begin(); it != chm.end(); ++it )
+	for (it = chm.begin(); it != chm.end(); ++it)
 	{
 		wxString key = it->first;
 		item = it->second;

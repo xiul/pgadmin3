@@ -28,7 +28,8 @@
 #include "images/ddunique.xpm"
 #include "images/ddprimaryforeignkey.xpm"
 
-ddColumnKindIcon::ddColumnKindIcon(ddColumnFigure *owner){
+ddColumnKindIcon::ddColumnKindIcon(ddColumnFigure *owner)
+{
 	ownerColumn=owner;
 	colType = none;
 	icon = wxBitmap(ddprimarykey_xpm);  //initialize with any image for calculate goals
@@ -37,10 +38,9 @@ ddColumnKindIcon::ddColumnKindIcon(ddColumnFigure *owner){
 	ukIndex=-1;
 }
 
-ddColumnKindIcon::~ddColumnKindIcon(){
-
+ddColumnKindIcon::~ddColumnKindIcon()
+{
 }
-
 
 wxArrayString& ddColumnKindIcon::popupStrings()
 {
@@ -95,7 +95,7 @@ void ddColumnKindIcon::changeIcon(ddColumnType type, ddDrawingView *view, bool i
 	wxString tmpString;
 	switch(type)
 	{
-		case 0:	
+		case pk:	
 				if(getOwnerColumn()->isForeignKey())
 				{
 					icon = wxBitmap(ddprimaryforeignkey_xpm);
@@ -122,20 +122,22 @@ void ddColumnKindIcon::changeIcon(ddColumnType type, ddDrawingView *view, bool i
 					getOwnerColumn()->getOwnerTable()->updateFkObservers();
 				}
 				break;
-		case 1: uniqueConstraintManager(ukCol,view,interaction);
+		case uk: uniqueConstraintManager(ukCol,view,interaction);
 				icon = wxBitmap(ddunique_xpm);
 				break;
-		case 2:	icon = wxBitmap(ddforeignkey_xpm);
+		case fk:	icon = wxBitmap(ddforeignkey_xpm);
 				colType=fk;
 				break;
-		case 3:	// icon = wxBitmap(ddprimaryforeignkey_xpm);
+		case pkfk:	// icon = wxBitmap(ddprimaryforeignkey_xpm);
 				//colType=pkfk;
 				break;
-		case 5: colType=none;
+		case pkuk:
+				break;
+		case none: colType=none;
 				break;
 	}
-	
-	if(colType!=none){
+    if(colType!=none)
+    {
 		iconToDraw = &icon;
 	}
 	else
@@ -207,81 +209,81 @@ void ddColumnKindIcon::setUniqueConstraintIndex(int i)
 
 void ddColumnKindIcon::uniqueConstraintManager(bool ukCol, ddDrawingView *view, bool interaction)
 {
-  wxString tmpString;
-  colType=uk;
-  if(ukCol)
-  {
-	syncUkIndexes();
-	getOwnerColumn()->setUniqueConstraintIndex(-1);
-	colType=none;
-	//getOwnerColumn()->setColumnKind(none);
-
-  }else //colType!=uk
-  {
-	if(interaction)
-	{
-		if(ownerColumn->getOwnerTable()->getUkConstraintsNames().Count()==0)   //DD-TODO: solve problem of charging values without user interaction (save/load)
-		{
-			tmpString = getOwnerColumn()->getOwnerTable()->getTableName();
-			tmpString.append(wxT("_uk"));
-			tmpString=wxGetTextFromUser(wxT("Name of new Unique Key constraint:"),tmpString,tmpString,view);
-			if(tmpString.length()>0)
-			{
-				getOwnerColumn()->getOwnerTable()->getUkConstraintsNames().Add(tmpString);						
-				ukIndex=0;
-			}
-			else
-			{
-				colType=none;
-				ukIndex=-1;
-			}
-		}
-		else  //>0
-		{
-			getOwnerColumn()->getOwnerTable()->getUkConstraintsNames().Add(wxString(wxT("Add new Unique Constraint...")));
-			int i = wxGetSingleChoiceIndex(wxT("Select Unique Key to add Column"),wxT("Select Unique Key to add Column:"),getOwnerColumn()->getOwnerTable()->getUkConstraintsNames(),view);
-			getOwnerColumn()->getOwnerTable()->getUkConstraintsNames().RemoveAt(getOwnerColumn()->getOwnerTable()->getUkConstraintsNames().Count()-1);
-			if(i>=0)
-			{
-				if(i==getOwnerColumn()->getOwnerTable()->getUkConstraintsNames().Count())
-				{
-					tmpString = getOwnerColumn()->getOwnerTable()->getTableName();
-					tmpString.append(wxT("_uk"));
-					
-					int newIndex=i+1;
-					wxString inumber = wxString::Format(wxT("%s%d"), tmpString.c_str(),(int)newIndex);
-					//Validate new name of uk doesn't exists
-					while(getOwnerColumn()->getOwnerTable()->getUkConstraintsNames().Index(inumber,false)!=-1){
-						newIndex++;
-						inumber = wxString::Format(wxT("%s%d"), tmpString.c_str(),(int)newIndex);
-					}
-					inumber = wxString::Format(wxT("%d"), (int)newIndex);
-					tmpString.append(inumber);
-					tmpString=wxGetTextFromUser(wxT("Name of new Unique Key constraint:"),tmpString,tmpString,view);
-					if(tmpString.length()>0)
-					{
-						getOwnerColumn()->getOwnerTable()->getUkConstraintsNames().Add(tmpString);						
-						ukIndex=i;
-					}
-					else
-					{
-						colType=none;
-						ukIndex=-1;
-					}
-				}
-				else
-				{
-					ukIndex=i;
-				}
-			}
-			else
-			{
-				colType=none;
-				ukIndex=-1;
-			}
-		}
-	}
-  }
+    wxString tmpString;
+    colType=uk;
+    if(ukCol)
+    {
+        syncUkIndexes();
+        getOwnerColumn()->setUniqueConstraintIndex(-1);
+        colType=none;
+        //getOwnerColumn()->setColumnKind(none);
+    }
+    else //colType!=uk
+    {
+        if(interaction)
+        {
+            if(ownerColumn->getOwnerTable()->getUkConstraintsNames().Count()==0)   //DD-TODO: solve problem of charging values without user interaction (save/load)
+            {
+                tmpString = getOwnerColumn()->getOwnerTable()->getTableName();
+                tmpString.append(wxT("_uk"));
+                tmpString=wxGetTextFromUser(wxT("Name of new Unique Key constraint:"),tmpString,tmpString,view);
+                if(tmpString.length()>0)
+                {
+                    getOwnerColumn()->getOwnerTable()->getUkConstraintsNames().Add(tmpString);						
+                    ukIndex=0;
+                }
+                else
+                {
+                    colType=none;
+                    ukIndex=-1;
+                }
+            }
+            else  //>0
+            {
+                getOwnerColumn()->getOwnerTable()->getUkConstraintsNames().Add(wxString(wxT("Add new Unique Constraint...")));
+                unsigned int i = wxGetSingleChoiceIndex(wxT("Select Unique Key to add Column"),wxT("Select Unique Key to add Column:"),getOwnerColumn()->getOwnerTable()->getUkConstraintsNames(),view);
+                getOwnerColumn()->getOwnerTable()->getUkConstraintsNames().RemoveAt(getOwnerColumn()->getOwnerTable()->getUkConstraintsNames().Count()-1);
+                if(i>=0)
+                {
+                    if(i==getOwnerColumn()->getOwnerTable()->getUkConstraintsNames().Count())
+                    {
+                        tmpString = getOwnerColumn()->getOwnerTable()->getTableName();
+                        tmpString.append(wxT("_uk"));
+                        
+                        int newIndex=i+1;
+                        wxString inumber = wxString::Format(wxT("%s%d"), tmpString.c_str(),(int)newIndex);
+                        //Validate new name of uk doesn't exists
+                        while(getOwnerColumn()->getOwnerTable()->getUkConstraintsNames().Index(inumber,false)!=-1){
+                            newIndex++;
+                            inumber = wxString::Format(wxT("%s%d"), tmpString.c_str(),(int)newIndex);
+                        }
+                        inumber = wxString::Format(wxT("%d"), (int)newIndex);
+                        tmpString.append(inumber);
+                        tmpString=wxGetTextFromUser(wxT("Name of new Unique Key constraint:"),tmpString,tmpString,view);
+                        if(tmpString.length()>0)
+                        {
+                            getOwnerColumn()->getOwnerTable()->getUkConstraintsNames().Add(tmpString);						
+                            ukIndex=i;
+                        }
+                        else
+                        {
+                            colType=none;
+                            ukIndex=-1;
+                        }
+                    }
+                    else
+                    {
+                        ukIndex=i;
+                    }
+                }
+                else
+                {
+                    colType=none;
+                    ukIndex=-1;
+                }
+            }
+        }
+    }
 }
 
 void ddColumnKindIcon::syncUkIndexes()
@@ -290,18 +292,18 @@ void ddColumnKindIcon::syncUkIndexes()
 	bool lastUk=true;
 	int maxIndex=-1;
 	ddIteratorBase *iterator = getOwnerColumn()->getOwnerTable()->figuresEnumerator();
-		iterator->Next(); //First Figure is Main Rect
-		iterator->Next(); //Second Figure is Table Title
-		while(iterator->HasNext())
-		{
-			col = (ddColumnFigure*) iterator->Next();
-			
-			if(col->getUniqueConstraintIndex() >  maxIndex)
-				maxIndex = col->getUniqueConstraintIndex();
+    iterator->Next(); //First Figure is Main Rect
+    iterator->Next(); //Second Figure is Table Title
+    while(iterator->HasNext())
+    {
+        col = (ddColumnFigure*) iterator->Next();
+        
+        if(col->getUniqueConstraintIndex() >  maxIndex)
+            maxIndex = col->getUniqueConstraintIndex();
 
-			if(col!=getOwnerColumn() && (col->getUniqueConstraintIndex() == getOwnerColumn()->getUniqueConstraintIndex()))
-				lastUk=false;
-		}
+        if(col!=getOwnerColumn() && (col->getUniqueConstraintIndex() == getOwnerColumn()->getUniqueConstraintIndex()))
+            lastUk=false;
+    }
 	if(lastUk)
 	{
 		//fix uks indexes

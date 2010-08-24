@@ -176,7 +176,8 @@ ddIHandle* ddLineConnection::getEndHandle()
 	return changeConnEndHandle;
 }
 
-void ddLineConnection::basicMoveBy(int x, int y){
+void ddLineConnection::basicMoveBy(int x, int y)
+{
 	/*ddPoint *newPoint;
 	for(int i=1 ; i<points->count()-1 ; i++){
 		newPoint = (ddPoint *) points->getItemAt(i);  //DD-TODO: replace and test with pointAt
@@ -199,7 +200,8 @@ void ddLineConnection::setPointAt (int index, int x, int y)
 	updateConnection();
 }
 
-ddCollection* ddLineConnection::handlesEnumerator(){
+ddCollection* ddLineConnection::handlesEnumerator()
+{
 	//DD-TODO: HIGH-PRIORITY-FINISH-THIS optimize this, not create a new instance everytime invoke function
 	
 	// //ARREGLAR ESTO PQ SI HAGO ESTO DARA PROBLEMAS CUANDO ELIMINE O AGREGUE COSAS

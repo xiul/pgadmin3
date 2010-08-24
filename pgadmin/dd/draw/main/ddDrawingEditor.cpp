@@ -20,7 +20,8 @@
 #include "dd/draw/main/ddDrawingView.h"
 #include "dd/draw/tools/ddITool.h"
 
-ddDrawingEditor::ddDrawingEditor(wxWindow *owner){
+ddDrawingEditor::ddDrawingEditor(wxWindow *owner)
+{
 	_model=new ddDrawing();
 	_view = new ddDrawingView(owner,this,wxSize(1200, 1200),_model);
     // Set Scroll Bar & split
@@ -30,7 +31,8 @@ ddDrawingEditor::ddDrawingEditor(wxWindow *owner){
 	_tool=NULL;
 }
 
-ddDrawingEditor::~ddDrawingEditor(){
+ddDrawingEditor::~ddDrawingEditor()
+{
 	if(_view)
 		delete _view;
 	if(_model)
@@ -39,19 +41,23 @@ ddDrawingEditor::~ddDrawingEditor(){
 		delete _tool;
 }
 
-ddDrawingView* ddDrawingEditor::view(){
+ddDrawingView* ddDrawingEditor::view()
+{
 	return _view;
 }
 
-ddDrawing* ddDrawingEditor::model(){
+ddDrawing* ddDrawingEditor::model()
+{
 	return _model;
 }
 
-ddITool* ddDrawingEditor::tool(){
+ddITool* ddDrawingEditor::tool()
+{
 	return _tool;
 }
 
-void ddDrawingEditor::setTool(ddITool* tool){
+void ddDrawingEditor::setTool(ddITool* tool)
+{
 	if(_tool)
 		delete _tool;
 	_tool=tool;

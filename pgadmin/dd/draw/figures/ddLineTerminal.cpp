@@ -22,13 +22,14 @@
 #include "dd/draw/utilities/ddGeometry.h"
 #include "dd/draw/main/ddDrawingView.h"
 
-ddLineTerminal::ddLineTerminal(){
+ddLineTerminal::ddLineTerminal()
+{
 	middle = ddPoint(0,0);
 	terminalLinePen = wxPen(wxString(wxT("BLACK")),1,wxSOLID);
 }
 
-ddLineTerminal::~ddLineTerminal(){
-
+ddLineTerminal::~ddLineTerminal()
+{
 }
 
 void ddLineTerminal::setLinePen(wxPen pen)
@@ -37,7 +38,8 @@ void ddLineTerminal::setLinePen(wxPen pen)
 }
 
 //DD-TODO: this need this ddDrawingView *view ??? or just avoid this and always pass calcscrolled points
-ddPoint& ddLineTerminal::draw (wxBufferedDC& context, ddPoint& a, ddPoint& b, ddDrawingView *view){
+ddPoint& ddLineTerminal::draw (wxBufferedDC& context, ddPoint& a, ddPoint& b, ddDrawingView *view)
+{
 	ddGeometry g;
 	context.SetPen(terminalLinePen);
 
@@ -58,4 +60,3 @@ ddPoint& ddLineTerminal::draw (wxBufferedDC& context, ddPoint& a, ddPoint& b, dd
 	context.DrawCircle(copyA,10);
 	return middle;
 }
-

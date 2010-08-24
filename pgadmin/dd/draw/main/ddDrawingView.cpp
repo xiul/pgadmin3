@@ -534,7 +534,7 @@ ddDrawingEditor* ddDrawingView::editor()
 
 /*void ddDrawingView::OnKeyDown(wxKeyEvent& event)
 {
-/*    if(event.GetKeyCode() == WXK_DELETE)
+    if(event.GetKeyCode() == WXK_DELETE)
     {
         if(collectionSelected)
         {
@@ -552,16 +552,7 @@ ddDrawingEditor* ddDrawingView::editor()
             this->Refresh();
         }
     }
-}/*
-
-
-
-
-
-
-
-/*
-
+}
 
 wxPoint ddDrawingView::drawingToView(double x, double y){
 }

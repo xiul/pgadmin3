@@ -45,7 +45,6 @@ void ddIConnector::setOwner(ddIFigure *owner)
 
 void ddIConnector::draw(wxBufferedDC& context)
 {
-
 }
 
 ddRect& ddIConnector::getDisplayBox()

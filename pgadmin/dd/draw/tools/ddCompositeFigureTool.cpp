@@ -142,7 +142,7 @@ void ddSelectionTool::deleteFigures(ddDrawingView *view){
 	view->clearSelection();
 	view->getDrawing()->deleteFigures();
 }
-/*
+
 void ddFigureTool::setDefaultTool(ddITool *dt)
 {
 	defaultTool=dt;
