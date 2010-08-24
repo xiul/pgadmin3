@@ -30,6 +30,8 @@
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
+				Description="Extracting source code repository version"
+				CommandLine="ver_svn.bat"
 			/>
 			<Tool
 				Name="VCCustomBuildTool"
@@ -134,6 +136,8 @@
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
+				Description="Extracting source code repository version"
+				CommandLine="ver_svn.bat"
 			/>
 			<Tool
 				Name="VCCustomBuildTool"
@@ -705,7 +709,7 @@
 				>
 			</File>
 			<File
-				RelativePath=".\ctl\ctlCheckTreeView.cpp"
+				RelativePath=".\ctl\ctlColourPicker.cpp"
 				>
 			</File>
 			<File
@@ -1328,7 +1332,7 @@
 					>
 				</File>
 				<File
-					RelativePath=".\include\ctl\ctlCheckTreeView.h"
+					RelativePath=".\include\ctl\ctlColourPicker.h"
 					>
 				</File>
 				<File
@@ -1385,10 +1389,6 @@
 				</File>
 				<File
 					RelativePath=".\include\ctl\xh_calb.h"
-					>
-				</File>
-				<File
-					RelativePath=".\include\ctl\xh_ctlchecktreeview.h"
 					>
 				</File>
 				<File
@@ -5705,14 +5705,6 @@
 				</File>
 			</Filter>
 		</Filter>
-		<File
-			RelativePath=".\ctl\ctlColourPicker.cpp"
-			>
-		</File>
-		<File
-			RelativePath=".\include\ctl\ctlColourPicker.h"
-			>
-		</File>
 		<File
 			RelativePath="Makefile.am"
 			>
