@@ -38,41 +38,16 @@ ddColumnOptionIcon::~ddColumnOptionIcon()
 {
 }
 
-wxArrayString& ddColumnOptionIcon::popupStrings()
+void ddColumnOptionIcon::createMenu(wxMenu &mnu)
 {
-	strings.Clear();
-	
-	if(colOption==null)
-	{
-		if(getOwnerColumn()->isForeignKey())
-			strings.Add(wxT("--checked--disable**Null"));
-		else
-			strings.Add(wxT("--checked**Null"));
-	}
-	else
-	{
-		if(getOwnerColumn()->isForeignKey())
-			strings.Add(wxT("--disable**Null"));
-		else
-			strings.Add(wxT("Null"));
-	}
-
-	if(colOption==notnull)
-	{
-		if(getOwnerColumn()->isForeignKey())
-			strings.Add(wxT("--checked--disable**Not Null"));
-		else
-			strings.Add(wxT("--checked**Not Null"));
-	}
-	else
-	{
-		if(getOwnerColumn()->isForeignKey())
-			strings.Add(wxT("--disable**Not Null"));
-		else
-			strings.Add(wxT("Not Null"));
-	}
-
-	return strings;
+    wxMenuItem *item;
+    
+	item = mnu.AppendCheckItem(MNU_COLNULL, _("NULL"));
+	item->Check(colOption==null);
+	item->Enable(!getOwnerColumn()->isForeignKey());
+	item = mnu.AppendCheckItem(MNU_COLNOTNULL, _("Not NULL"));
+	item->Check(colOption==notnull);
+	item->Enable(!getOwnerColumn()->isForeignKey());
 }
 
 void ddColumnOptionIcon::OnTextPopupClick(wxCommandEvent& event)
@@ -86,18 +61,19 @@ void ddColumnOptionIcon::changeIcon(ddColumnOptionType type)
 	colOption=type;
 	switch(type)
 	{
-		case 0:	icon = wxBitmap(ddnull_xpm);
-				if(getOwnerColumn()->isPrimaryKey())
-				{
-					if(getOwnerColumn()->isForeignKey())
-						getOwnerColumn()->setColumnKind(fk);
-					else
-						getOwnerColumn()->setColumnKind(none);
-
-				}
-				break;
-		case 1:	icon = wxBitmap(ddnotnull_xpm);
-				break;
+		case MNU_COLNULL:
+            icon = wxBitmap(ddnull_xpm);
+            if(getOwnerColumn()->isPrimaryKey())
+            {
+                if(getOwnerColumn()->isForeignKey())
+                    getOwnerColumn()->setColumnKind(fk);
+                else
+                    getOwnerColumn()->setColumnKind(none);
+            }
+            break;
+		case MNU_COLNOTNULL:
+            icon = wxBitmap(ddnotnull_xpm);
+            break;
 	}
 	getBasicDisplayBox().SetSize(wxSize(getWidth(),getHeight()));
 }

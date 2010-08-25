@@ -32,14 +32,19 @@ enum ddColumnType {
 	none
 };
 
+enum
+{
+    MNU_DDCTPKEY = 0,
+    MNU_DDCTUKEY
+};
 
 class ddColumnKindIcon : public ddAbstractMenuFigure
 {
 public:
 	ddColumnKindIcon(ddColumnFigure *owner);
     ~ddColumnKindIcon();
-	virtual wxArrayString& popupStrings();
 	virtual void OnTextPopupClick(wxCommandEvent& event, ddDrawingView *view);
+    virtual void createMenu(wxMenu &mnu);
 	virtual void basicDraw(wxBufferedDC& context, ddDrawingView *view);
 	virtual void basicDrawSelected(wxBufferedDC& context, ddDrawingView *view);		
 	virtual void changeIcon(ddColumnType type, ddDrawingView *view=NULL, bool interaction=true);

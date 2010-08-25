@@ -56,7 +56,8 @@ void ddMenuTool::mouseDown(ddMouseEvent& event)
 	{
         wxMenu menu;
         getDrawingEditor()->view()->setMenuToolFigure(menuFigure);
-        getDrawingEditor()->view()->setTextPopUpList(menuFigure->popupStrings(),menu);
+        menuFigure->createMenu(menu);
+        getDrawingEditor()->view()->connectPopUpMenu(menu);
         ddPoint p=event.GetPosition();
         event.getView()->CalcScrolledPosition(p.x,p.y,&p.x,&p.y);
         getDrawingEditor()->view()->PopupMenu(&menu, p);
@@ -73,7 +74,6 @@ void ddMenuTool::activate()
 
 void ddMenuTool::deactivate()
 {
-	//getDrawingEditor()->view()->setSimpleTextToolFigure(NULL);
 	ddFigureTool::deactivate();
 }
 

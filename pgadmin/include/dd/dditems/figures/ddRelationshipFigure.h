@@ -19,6 +19,17 @@
 #include "dd/draw/handles/ddIHandle.h"
 */
 
+enum
+{
+    MNU_FKEYFROMPKEY = 0,
+	MNU_FKEYFROMUKEY,
+	MNU_MANDATORYRELATIONSHIP,
+	MNU_IDENTIFYINGRELATIONSHIP,
+	MNU_1MRELATIONSHIP,
+	MNU_11RELATIONSHIP,
+	MNU_DELETERELATIONSHIP
+};
+
 class ddRelationshipItem;
 
 WX_DECLARE_STRING_HASH_MAP( ddRelationshipItem*, columnsHashMap );
@@ -30,6 +41,7 @@ public:
 	ddRelationshipFigure();
 	ddRelationshipFigure(ddIFigure *figure1, ddIFigure *figure2);
 	~ddRelationshipFigure();
+    virtual void createMenu(wxMenu &mnu);
 	void updateForeignKey();
 	void removeForeignKeys();
 	bool getIdentifying();
@@ -48,7 +60,6 @@ protected:
 	virtual void disconnectFigure (ddIConnector *connector);
 	*/
 private:
-	virtual wxArrayString& popupStrings();
 	virtual void OnTextPopupClick(wxCommandEvent& event, ddDrawingView *view);
 	wxArrayString strings;
 	bool fkFromPk;

@@ -139,21 +139,6 @@ int ddSimpleTextFigure::getPadding()
 	return padding;
 }
 
-wxArrayString& ddSimpleTextFigure::popupStrings()
-{
-	if(strings.Count()<=0)
-	{
-		strings.Clear();
-		strings.Add(wxT("MENU"));
-	}
-	return strings;
-};
-
-void ddSimpleTextFigure::setPopupStrings(wxArrayString& values)
-{
-	strings = values;
-}
-
 void ddSimpleTextFigure::enablePopUp()
 {
 	showMenu = true;

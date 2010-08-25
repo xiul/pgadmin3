@@ -79,7 +79,7 @@ public:
 	void OnTextPopupClick(wxCommandEvent& event);
 	void OnOkTxtButton(wxCommandEvent& event);
 	void OnCancelTxtButton(wxCommandEvent& event);
-	void setTextPopUpList(wxArrayString &strings, wxMenu &mnu);
+	void connectPopUpMenu(wxMenu &mnu);
 	//End Hack to allow use (events) of wxmenu inside a tool like simpletexttool
 
 protected:

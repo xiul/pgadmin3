@@ -125,71 +125,38 @@ void ddRelationshipFigure::updateForeignKey()
 	}
 }
 
-wxArrayString& ddRelationshipFigure::popupStrings()
+void ddRelationshipFigure::createMenu(wxMenu &mnu)
 {
-	strings.clear();
-	
-	if(fkFromPk)
-	{
-		strings.Add(wxT("--checked**Foreign Key from Primary Key"));  //0
-		strings.Add(wxT("Foreign Key from Unique Key..."));   //1
-	}
-	else
-	{
-		strings.Add(wxT("Foreign Key from Primary Key"));   //0
-		strings.Add(wxT("--checked**Foreign Key from Unique Key(Uk#)"));   //1
-	}
-	
-	strings.Add(wxT("--separator--"));   //2
-	
-	if(fkMandatory)
-	{
-		strings.Add(wxT("--checked**Mandatory relationship kind"));   //3
-		//strings.Add(wxT("Optional relationship kind"));   //4
-
-	}
-	else
-	{
-		strings.Add(wxT("Mandatory relationship kind"));   //3
-		//strings.Add(wxT("--checked**Optional relationship kind"));   //4
-	}
-		
-	if(fkIdentifying)
-		strings.Add(wxT("--checked**Identifying relationship")); //4
-	else
-		strings.Add(wxT("Identifying relationship")); //4
-
-	strings.Add(wxT("--separator--"));   //5
-
-	if(fkOneToMany)
-	{
-		strings.Add(wxT("--checked**1:M"));   //6
-		strings.Add(wxT("1:1"));   //7
-	}
-	else
-	{
-		strings.Add(wxT("1:M"));   //6
-		strings.Add(wxT("--checked**1:1"));   //7
-	}
-	
-	strings.Add(wxT("--separator--")); 
-
-	strings.Add(wxT("Delete Relationship..."));   //9
-
-    return strings;
-}
+    wxMenuItem *item;
+    
+	item = mnu.AppendCheckItem(MNU_FKEYFROMPKEY, _("Foreign Key from Primary Key"));
+	item->Check(fkFromPk);
+	item = mnu.AppendCheckItem(MNU_FKEYFROMUKEY, _("Foreign Key from Unique Key"));
+	item->Check(!fkFromPk);
+	mnu.AppendSeparator();
+	item = mnu.AppendCheckItem(MNU_MANDATORYRELATIONSHIP, _("Mandatory relationship kind"));
+	item->Check(fkMandatory);
+	item = mnu.AppendCheckItem(MNU_IDENTIFYINGRELATIONSHIP, _("Identifying relationship"));
+	item->Check(fkIdentifying);
+	mnu.AppendSeparator();
+	item = mnu.AppendCheckItem(MNU_1MRELATIONSHIP, _("1:M"));
+	item->Check(fkOneToMany);
+	item = mnu.AppendCheckItem(MNU_11RELATIONSHIP, _("1:1"));
+	item->Check(!fkOneToMany);
+	mnu.AppendSeparator();
+    mnu.Append(MNU_DELETERELATIONSHIP, _("Delete Relationship..."));
+};
 
 void ddRelationshipFigure::OnTextPopupClick(wxCommandEvent& event, ddDrawingView *view)
 {
 	int answer;
 	switch(event.GetId())
 	{
-		case 0:
-		case 1:
-			//fkFromPk=!fkFromPk;
-			wxMessageBox(wxT("To be implemente soon..."),wxT("To be implemente soon..."),wxICON_INFORMATION, (wxScrolledWindow*) view);
+		case MNU_FKEYFROMPKEY:
+		case MNU_FKEYFROMUKEY:
+			wxMessageBox(wxT("To be implemented soon..."), wxT("To be implemented soon..."), wxICON_INFORMATION, (wxScrolledWindow*) view);
 			break;
-		case 3:
+		case MNU_MANDATORYRELATIONSHIP:
 			fkMandatory=!fkMandatory;
 			if(fkMandatory)
 			{
@@ -203,7 +170,7 @@ void ddRelationshipFigure::OnTextPopupClick(wxCommandEvent& event, ddDrawingView
 				setOptionAtForeignKeys(null);
 			}
 			break;
-		case 4:
+		case MNU_IDENTIFYINGRELATIONSHIP:
 			fkMandatory = true;
 			setLinePen(wxPen(*wxBLACK_PEN));
 			fkIdentifying=!fkIdentifying;
@@ -217,11 +184,11 @@ void ddRelationshipFigure::OnTextPopupClick(wxCommandEvent& event, ddDrawingView
 				setKindAtForeignKeys(fk);
 			}
 			break;
-		case 6:
-		case 7:
+		case MNU_1MRELATIONSHIP:
+		case MNU_11RELATIONSHIP:
 			fkOneToMany=!fkOneToMany;
 			break;
-		case 9:
+		case MNU_DELETERELATIONSHIP:
 			if(getStartFigure() && getEndFigure())
 			{
 				ddTableFigure *t1=(ddTableFigure*)getStartFigure();
@@ -297,8 +264,9 @@ void ddRelationshipFigure::removeForeignKeys()
 
 		//Hack to repeat for every time a column is elimite because hashmap is modified inside a for and now is invalid that for loop
 		bool repeat;   
-		do{
-		repeat=false;
+		do
+        {
+            repeat=false;
 			for( it = chm.begin(); it != chm.end(); ++it )
 			{
 				wxString key = it->first;
@@ -312,7 +280,7 @@ void ddRelationshipFigure::removeForeignKeys()
 					break;
 				}
 			}
-		}while(repeat);
+		} while(repeat);
 		chm.clear();
 		disconnectedEndTable=NULL;
 	}

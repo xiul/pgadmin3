@@ -59,32 +59,25 @@ void ddSimpleTextTool::mouseDown(ddMouseEvent& event)
 {	
 	setAnchorCoords(event.GetPosition().x,event.GetPosition().y);
 
+    // Right click to get the contextual menu
 	if(txtFigure->menuEnabled() && event.RightDown())
 	{
         wxMenu menu;
         getDrawingEditor()->view()->setSimpleTextToolFigure(txtFigure);
-        getDrawingEditor()->view()->setTextPopUpList(txtFigure->popupStrings(),menu);
+        txtFigure->createMenu(menu);
+        getDrawingEditor()->view()->connectPopUpMenu(menu);
         ddPoint p=event.GetPosition();
         event.getView()->CalcScrolledPosition(p.x,p.y,&p.x,&p.y);
         getDrawingEditor()->view()->PopupMenu(&menu, p);
 		return;
 	}
 
+    // Double click to rename an object
 	if(event.LeftDClick())
 	{
         wxString sNewValue = wxGetTextFromUser(_("New table name"), _("Rename table"), txtFigure->getText());
         if (!sNewValue.IsEmpty())
             txtFigure->setText(sNewValue);
-        /*
-		getDrawingEditor()->view()->setSimpleTextToolFigure(txtFigure);
-		showEdit = true;
-		edit->ChangeValue(txtFigure->getText()); //Same as SetValue but don't generated wxEVT_COMMAND_TEXT_UPDATED event
-		calculateSizeEntry(event.getView());
-		edit->SetFocus();
-		edit->Show();
-		okButton->Show();
-		cancelButton->Show();
-        */
 		return;
 	}
 	getDefaultTool()->mouseDown(event);
@@ -100,7 +93,8 @@ void ddSimpleTextTool::deactivate()
 {
 	if(edit)
 	{
-		edit->Hide();  //I can't delete this objects because view is the owner of this objects
+        // Can't delete this objects because view is the owner of this objects
+		edit->Hide();
 		okButton->Hide();
 		cancelButton->Hide();
 		getDrawingEditor()->view()->setSimpleTextToolFigure(NULL);

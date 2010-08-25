@@ -36,18 +36,6 @@ ddITool* ddAbstractMenuFigure::CreateFigureTool(ddDrawingEditor *editor, ddITool
 	return new ddMenuTool(editor,this,defaultTool);
 }
 
-wxArrayString& ddAbstractMenuFigure::popupStrings()
-{
-	strings.Clear();
-	strings.Add(wxT("MENU"));
-	return strings;
-};
-
-void ddAbstractMenuFigure::setPopupStrings(wxArrayString& values)
-{
-	strings = values;
-}
-
 void ddAbstractMenuFigure::enablePopUp()
 {
 	showMenu = true;

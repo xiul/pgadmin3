@@ -32,8 +32,7 @@ public:
 	virtual void basicDraw(wxBufferedDC& context, ddDrawingView *view);
 	virtual void basicDrawSelected(wxBufferedDC& context, ddDrawingView *view);
 	virtual ddITool* CreateFigureTool(ddDrawingEditor *editor, ddITool *defaultTool);
-	virtual wxArrayString& popupStrings();
-	virtual void setPopupStrings(wxArrayString& values);
+	virtual void createMenu(wxMenu &mnu) {}
 	virtual void enablePopUp();
 	virtual void disablePopUp();
 	virtual bool menuEnabled();

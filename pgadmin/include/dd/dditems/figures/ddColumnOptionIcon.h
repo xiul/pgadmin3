@@ -16,19 +16,25 @@
 
 class ddColumnFigure;
 
-enum ddColumnOptionType {
+enum ddColumnOptionType
+{
 	null=0,
 	notnull
 };
 
+enum
+{
+    MNU_COLNULL = 0,
+    MNU_COLNOTNULL
+};
 
 class ddColumnOptionIcon : public ddAbstractMenuFigure
 {
 public:
 	ddColumnOptionIcon(ddColumnFigure *owner);
     ~ddColumnOptionIcon();
-	virtual wxArrayString& popupStrings();
 	virtual void OnTextPopupClick(wxCommandEvent& event);
+    virtual void createMenu(wxMenu &mnu);
 	virtual void basicDraw(wxBufferedDC& context, ddDrawingView *view);
 	virtual void basicDrawSelected(wxBufferedDC& context, ddDrawingView *view);		
 	virtual void changeIcon(ddColumnOptionType type);

@@ -19,6 +19,25 @@
 //#include "dd/dditems/figures/ddColumnFigure.h"
 #include "dd/dditems/utilities/ddDataType.h"
 
+enum
+{
+    MNU_DDADDCOLUMN = 0,
+    MNU_DELCOLUMN,
+    MNU_RENAMECOLUMN,
+    MNU_NOTNULL,
+    MNU_PKEY,
+    MNU_UKEY,
+    MNU_TYPESERIAL,
+    MNU_TYPEBOOLEAN,
+    MNU_TYPEINTEGER,
+    MNU_TYPEMONEY,
+    MNU_TYPEVARCHAR,
+    MNU_TYPEOTHER,
+    MNU_TYPEPKEY_CONSTRAINTNAME,
+    MNU_TYPEUKEY_CONSTRAINTNAME,
+    MNU_DELTABLE
+};
+
 class ddColumnFigure;
 
 class ddTextColumnFigure : public ddSimpleTextFigure
@@ -27,7 +46,7 @@ public:
 	ddTextColumnFigure(wxString& columnName, ddDataType dataType, ddColumnFigure *owner);
     ~ddTextColumnFigure();
 	virtual wxString& getText(bool extended = false);
-	virtual wxArrayString& popupStrings();
+    virtual void createMenu(wxMenu &mnu);
 	virtual wxArrayString& dataTypes(bool full=false);
 	virtual void OnTextPopupClick(wxCommandEvent& event, ddDrawingView *view);
 	virtual void setText(wxString textString);

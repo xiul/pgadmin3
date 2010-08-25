@@ -81,7 +81,8 @@ ddDrawingView::~ddDrawingView()
 
 void ddDrawingView::onPaint(wxPaintEvent& event)
 {
-	wxPaintDC dcc(this);                          // Prepare Context for Buffered Draw
+    // Prepare Context for Buffered Draw
+	wxPaintDC dcc(this);
     wxBufferedDC dc(&dcc, canvasSize);
 	dc.Clear();
 	ddIFigure *toDraw=NULL;
@@ -115,7 +116,8 @@ void ddDrawingView::onPaint(wxPaintEvent& event)
 
 	delete selectionIterator;
 
-	if( drawSelRect )  //Hack to avoid selection rectangle drawing bug
+    //Hack to avoid selection rectangle drawing bug
+	if (drawSelRect)
     {
 		wxPen* pen = wxThePenList->FindOrCreatePen(*wxRED, 1, wxDOT);
 		dc.SetPen(*pen);
@@ -134,7 +136,6 @@ void ddDrawingView::onPaint(wxPaintEvent& event)
 		drawSelRect = false;
 	}
 }
-
 
 //Hack to avoid selection rectangle drawing bug
 void ddDrawingView::disableSelRectDraw()
@@ -288,7 +289,7 @@ void ddDrawingView::onMotion(wxMouseEvent& event)
 	}
 	else
 	{
-			drawingEditor->tool()->mouseMove(ddEvent);
+        drawingEditor->tool()->mouseMove(ddEvent);
 	}
 	this->Refresh();
 }
@@ -412,89 +413,30 @@ void ddDrawingView::OnTextPopupClick(wxCommandEvent& event)
 }
 
 //Hack to allow use (events) of wxmenu inside a tool like simpletexttool
-void ddDrawingView::setTextPopUpList(wxArrayString &strings, wxMenu &mnu)
+void ddDrawingView::connectPopUpMenu(wxMenu &mnu)
 {
-	static wxMenu *submenu = NULL;
-	//DD-TODO: choose a better id for event
-	mnu.Disconnect(wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)(wxEventFunction) (wxCommandEventFunction) &ddDrawingView::OnTextPopupClick,NULL,this);
-/*if(submenu)
-	submenu->Disconnect(wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)(wxEventFunction) (wxCommandEventFunction) &ddDrawingView::OnTextPopupClick,NULL,this); //DD-TODO: THIS IS A TEMPORARY SOLUTION THAT LIMIT NUMBER OF SUBMENUS TO 1;
-*/
-	int sz = strings.size();  //to avoid warning
-	wxMenuItem *item = NULL;
-	bool isSubItem;
-	bool subItemsDisable=false;
-	int numSubmenus=0;
-	for(int i=0 ; i < sz ; i++){
-			//DD-TODO: only create options for what I need, this can be improved later
-			//String "--submenu##menu item**sub menu title" and "--subitem--" create and add items to last created submenu
-			isSubItem=false;
-			item=NULL;
-			if(strings[i].Contains(wxT("--submenu"))) 
-			{
-				if(strings[i].Contains(wxT("--disable"))) 
-					subItemsDisable=true;
-				else
-					subItemsDisable=false;
-				submenu = new wxMenu(strings[i].SubString(strings[i].find(wxT("**"))+2,strings[i].length())); 
-				submenu->Connect(wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)(wxEventFunction) (wxCommandEventFunction)	&ddDrawingView::OnTextPopupClick,NULL,this);//DD-TODO: THIS IS A TEMPORARY SOLUTION THAT LIMIT NUMBER OF SUBMENUS TO 1;
-				mnu.AppendSubMenu(submenu,strings[i].SubString(strings[i].find(wxT("##"))+2,strings[i].find(wxT("**"))-1));
-				if(numSubmenus>1)
-					wxMessageBox(wxT("Bug found: Max number of submenus limit to 1 "), wxT("Please report it"),wxICON_ERROR, this);
-				numSubmenus++;
-			}
-			else if(strings[i].Contains(wxT("--subitem")))
-			{
-				isSubItem=true;
-				if(submenu)
-				{
-					if(strings[i].Contains(wxT("--checked")))
-					{
-						item=submenu->AppendCheckItem(i,strings[i].SubString(strings[i].find(wxT("**"))+2,strings[i].length()));
-					}
-					else
-					{
-						item=submenu->Append(i,strings[i].SubString(strings[i].find(wxT("**"))+2,strings[i].length()));
-					}
-				}
-				else
-				{
-					wxMessageDialog *error = new wxMessageDialog(NULL, wxT("Error setting text popup strings list"), wxT("Error!"), wxOK | wxICON_ERROR);
-					error->ShowModal();
-					delete error;
-				}
-			}
-			else if(strings[i].Contains(wxT("--separator--")))
-			{
-				mnu.AppendSeparator();
-			}
-			else if(strings[i].Contains(wxT("--checked")))
-			{
-				item = mnu.AppendCheckItem(i, strings[i].SubString(strings[i].find(wxT("**"))+2,strings[i].length()));
-			}
-			else if(strings[i].Contains(wxT("**")))
-			{
-				item = mnu.Append(i, strings[i].SubString(strings[i].find(wxT("**"))+2,strings[i].length()));
-			}
-			else 
-			{
-				item = mnu.Append(i, strings[i]);
-			}
-
-			if(item && strings[i].Contains(wxT("--checked")))
-			{
-				item->Check(true);
-			}
-			if(   item &&  ( strings[i].Contains(wxT("--disable")) || (submenu && isSubItem && subItemsDisable) )   )
-			{
-				item->Enable(false);
-			}
-
-		}
-//DD-TODO: create a better version of this hack
-	mnu.Connect(wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)(wxEventFunction) (wxCommandEventFunction) &ddDrawingView::OnTextPopupClick,NULL,this);
-    if(numSubmenus<=0)
-        submenu=NULL;
+	// Connect the main menu
+	mnu.Connect(wxEVT_COMMAND_MENU_SELECTED,
+      (wxObjectEventFunction) (wxEventFunction) (wxCommandEventFunction) &ddDrawingView::OnTextPopupClick,
+      NULL,
+      this);
+    
+    // Connect all submenus
+    wxMenuItem *item;
+    wxMenuItemList list = mnu.GetMenuItems();
+    for (unsigned int index=0; index<list.GetCount(); index++)
+    {
+        wxMenuItemList::compatibility_iterator node = list.Item(index);
+        item = (wxMenuItem*) node->GetData();
+        if (item->IsSubMenu())
+        {
+            wxMenu* submenu = item->GetSubMenu();
+            submenu->Connect(wxEVT_COMMAND_MENU_SELECTED,
+              (wxObjectEventFunction) (wxEventFunction) (wxCommandEventFunction) &ddDrawingView::OnTextPopupClick,
+              NULL,
+              this);
+        }
+    }
 }
 
 ddDrawingEditor* ddDrawingView::editor()

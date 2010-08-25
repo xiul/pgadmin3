@@ -32,8 +32,9 @@ ddColumnKindIcon::ddColumnKindIcon(ddColumnFigure *owner)
 {
 	ownerColumn=owner;
 	colType = none;
-	icon = wxBitmap(ddprimarykey_xpm);  //initialize with any image for calculate goals
-	iconToDraw = NULL;
+	// Initialize with any image for calculate goals
+	icon = wxBitmap(ddprimarykey_xpm);
+    iconToDraw = NULL;
 	getBasicDisplayBox().SetSize(wxSize(getWidth(),getHeight()));
 	ukIndex=-1;
 }
@@ -42,38 +43,16 @@ ddColumnKindIcon::~ddColumnKindIcon()
 {
 }
 
-wxArrayString& ddColumnKindIcon::popupStrings()
+void ddColumnKindIcon::createMenu(wxMenu &mnu)
 {
-	strings.Clear();
-	if(colType==pk)
-	{
-		if(getOwnerColumn()->isForeignKey())
-		{
-			strings.Add(wxT("--checked--disable**Primary Key"));
-		}
-		else
-		{
-			strings.Add(wxT("--checked**Primary Key"));
-		}
-	}
-	else
-	{
-		if(getOwnerColumn()->isForeignKey())
-		{	
-			strings.Add(wxT("--disable**Primary Key"));
-		}
-		else
-		{
-			strings.Add(wxT("Primary Key"));
-		}
-	}
-	
-	if(colType==uk)
-		strings.Add(wxT("--checked**Unique Key..."));
-	else
-		strings.Add(wxT("Unique Key"));
-	return strings;
-};
+    wxMenuItem *item;
+    
+	item = mnu.AppendCheckItem(MNU_DDCTPKEY, _("Primary key"));
+    item->Check(colType==pk);
+    item->Enable(getOwnerColumn()->isForeignKey());
+	item = mnu.AppendCheckItem(MNU_DDCTUKEY, _("Unique key"));
+    item->Check(colType==uk);
+}
 
 void ddColumnKindIcon::OnTextPopupClick(wxCommandEvent& event, ddDrawingView *view)
 {
