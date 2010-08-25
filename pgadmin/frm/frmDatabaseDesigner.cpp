@@ -102,17 +102,14 @@ END_EVENT_TABLE()
     toolBar->AddTool(MNU_HELP, _("Help"), wxBitmap(help_xpm), _("Display help"), wxITEM_NORMAL);
     toolBar->Realize();
 
-    // Add the notebook with database designer
-	wxNotebook *notebook = new wxNotebook(this, CTL_DDNOTEBOOK, wxDefaultPosition, wxDefaultSize);
-	design = new ddDatabaseDesign(notebook);
-	notebook->AddPage(design->getView(), _("Database Designer"));
-	notebook->SetSelection(0);
+    // Add the database designer
+	design = new ddDatabaseDesign(this);
 
     // Now, the scratchpad
     sqltext = new wxTextCtrl(this, -1, wxT(""), wxDefaultPosition, wxDefaultSize, wxTE_MULTILINE | wxHSCROLL);
 
     // Add the panes
-    manager.AddPane(notebook,
+    manager.AddPane(design->getView(),
       wxAuiPaneInfo().Center().
       Name(wxT("sqlQuery")).Caption(_("Database Designer")).
       CaptionVisible(true).CloseButton(true).MaximizeButton(true).
