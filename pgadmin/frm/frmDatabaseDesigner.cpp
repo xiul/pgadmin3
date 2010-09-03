@@ -59,6 +59,7 @@ END_EVENT_TABLE()
 {
 	mainForm=form;
     SetTitle(wxT("Database Designer"));
+    SetIcon(wxIcon(ddmodel_32_xpm));
 
 	RestorePosition(100, 100, 600, 500, 450, 300);
 	SetMinSize(wxSize(450,300));

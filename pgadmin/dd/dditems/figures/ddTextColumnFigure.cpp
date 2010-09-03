@@ -71,7 +71,6 @@ void ddTextColumnFigure::OnTextPopupClick(wxCommandEvent& event, ddDrawingView *
 	n=-1;
 	m=-1;
 
-    wxLogError(NumToStr((long)event.GetId()));
 	switch(event.GetId())
 	{
 		case MNU_DDADDCOLUMN:
