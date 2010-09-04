@@ -87,12 +87,12 @@ void ddTextColumnFigure::OnTextPopupClick(wxCommandEvent& event, ddDrawingView *
             getOwnerColumn()->getOwnerTable()->addColumn(new ddColumnFigure(tmpString,getOwnerColumn()->getOwnerTable()));
             break;
 		case MNU_DELCOLUMN:
-            answer = wxMessageBox(wxT("Delete column: ") + getText(true) + wxT("?"), wxT("Confirm"),wxYES_NO, view);
+            answer = wxMessageBox(wxT("Are you sure you wish to delete column ") + getText(true) + wxT("?"), wxT("Delete column?"), wxYES_NO|wxNO_DEFAULT, view);
             if (answer == wxYES)
                 getOwnerColumn()->getOwnerTable()->removeColumn(getOwnerColumn());
             break;
 		case MNU_RENAMECOLUMN:
-            nameDialog = new wxTextEntryDialog(view,wxT("Input column name"),wxT("Rename Column"),getText());   //DD-TODO: change for dialog like in option 17
+            nameDialog = new wxTextEntryDialog(view, wxT("New column name"), wxT("Rename Column"), getText());   //DD-TODO: change for dialog like in option 17
             nameDialog->ShowModal();
             setText(nameDialog->GetValue());
             delete nameDialog;
@@ -140,10 +140,10 @@ void ddTextColumnFigure::OnTextPopupClick(wxCommandEvent& event, ddDrawingView *
             break;
 		case MNU_TYPEOTHER:
             //DD-TODO: Add all types, improve and separate from quick access types
-            columnType = (ddDataType) wxGetSingleChoiceIndex(wxT("Select column datatype"),wxT("Column Datatypes"),dataTypes(true),view);
+            columnType = (ddDataType) wxGetSingleChoiceIndex(wxT("New column datatype"),wxT("Column Datatypes"),dataTypes(true),view);
             break;
 		case MNU_TYPEPKEY_CONSTRAINTNAME:
-            tmpString=wxGetTextFromUser(wxT("Change name of Primary Key constraint:"),getOwnerColumn()->getOwnerTable()->getPkConstraintName(),getOwnerColumn()->getOwnerTable()->getPkConstraintName(),view);
+            tmpString=wxGetTextFromUser(wxT("New name of primary key:"),getOwnerColumn()->getOwnerTable()->getPkConstraintName(),getOwnerColumn()->getOwnerTable()->getPkConstraintName(),view);
             if(tmpString.length()>0)
                 getOwnerColumn()->getOwnerTable()->setPkConstraintName(tmpString);
             break;
@@ -157,7 +157,7 @@ void ddTextColumnFigure::OnTextPopupClick(wxCommandEvent& event, ddDrawingView *
             }
             break;
 		case MNU_DELTABLE:
-            answer = wxMessageBox(wxT("Delete Table: ") + getOwnerColumn()->getOwnerTable()->getTableName() + wxT("?"), wxT("Confirm"),wxYES_NO, view);
+            answer = wxMessageBox(wxT("Are you sure you wish to delete table ") + getOwnerColumn()->getOwnerTable()->getTableName() + wxT("?"), wxT("Delete table?"), wxYES_NO|wxNO_DEFAULT, view);
             if (answer == wxYES)
             {
                 ddTableFigure *table = getOwnerColumn()->getOwnerTable();	

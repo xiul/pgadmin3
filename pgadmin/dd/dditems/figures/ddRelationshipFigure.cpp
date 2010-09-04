@@ -193,7 +193,7 @@ void ddRelationshipFigure::OnTextPopupClick(wxCommandEvent& event, ddDrawingView
 			{
 				ddTableFigure *t1=(ddTableFigure*)getStartFigure();
 				ddTableFigure *t2=(ddTableFigure*)getEndFigure();
-				answer = wxMessageBox(wxT("Delete Relationship between tables: ") + t1->getTableName()  + wxT(" and ")+t2->getTableName(), wxT("Confirm"),wxYES_NO, (wxScrolledWindow*)view);
+				answer = wxMessageBox(wxT("Are you sure you wish to delete relationship between tables ") + t1->getTableName() + wxT(" and ")+ t2->getTableName() + wxT("?"), wxT("Delete relationship?"), wxYES_NO|wxNO_DEFAULT, (wxScrolledWindow*)view);
 				if (answer == wxYES)
 				{
 					if(view->isFigureSelected(this))
