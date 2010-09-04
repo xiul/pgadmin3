@@ -54,7 +54,7 @@ EVT_MENU(MNU_GENERATEMODEL,     frmDatabaseDesigner::OnModelGeneration)
 EVT_CLOSE(                      frmDatabaseDesigner::OnClose)
 END_EVENT_TABLE()
 
- frmDatabaseDesigner::frmDatabaseDesigner(frmMain *form, const wxString& _title)
+ frmDatabaseDesigner::frmDatabaseDesigner(frmMain *form, const wxString& _title, pgConn *conn)
 :pgFrame(NULL, _title)
 {
 	mainForm=form;
@@ -64,6 +64,9 @@ END_EVENT_TABLE()
 	RestorePosition(100, 100, 600, 500, 450, 300);
 	SetMinSize(wxSize(450,300));
     
+    // connection
+    connection = conn;
+
     // notify wxAUI which frame to use
     manager.SetManagedWindow(this);
     manager.SetFlags(wxAUI_MGR_DEFAULT | wxAUI_MGR_TRANSPARENT_DRAG);
@@ -138,6 +141,12 @@ frmDatabaseDesigner::~frmDatabaseDesigner(){
 	
 	if (mainForm)
 		mainForm->RemoveFrame(this);
+
+    if (connection)
+    {
+        if (connection->IsAlive())
+            delete connection;
+    }
 }
 
 
@@ -185,7 +194,7 @@ bool databaseDesignerBaseFactory::CheckEnable(pgObject *obj)
 
 wxWindow *databaseDesignerBaseFactory::StartDialogDesigner(frmMain *form, pgObject *obj, const wxString &sql)
 {
-    frmDatabaseDesigner *fd = new frmDatabaseDesigner(form, wxEmptyString);
+    frmDatabaseDesigner *fd = new frmDatabaseDesigner(form, wxEmptyString, NULL);
     fd->Go();
     return fd;
 }

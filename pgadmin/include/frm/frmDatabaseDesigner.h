@@ -28,12 +28,12 @@ enum
 class frmDatabaseDesigner : public pgFrame
 {
 public:
-	frmDatabaseDesigner(frmMain *form, const wxString& _title);
-    //DD-TODO: future include need from this parameters: pgConn *conn, const wxString& qry, const wxString& file = wxEmptyString);
+	frmDatabaseDesigner(frmMain *form, const wxString& _title, pgConn *conn);
 	~frmDatabaseDesigner();
 	void Go();
 private:
 	frmMain *mainForm;
+    pgConn *connection;
 	ddDatabaseDesign *design;
     wxTextCtrl *sqltext;
 	void OnClose(wxCloseEvent& event);
