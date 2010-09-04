@@ -209,15 +209,15 @@ void ddTextColumnFigure::createMenu(wxMenu &mnu)
 	item = mnu.AppendSubMenu(submenu, _("Column datatype"));
     if(getOwnerColumn()->isForeignKey())	
         item->Enable(false);
-	item = submenu->AppendCheckItem(MNU_TYPESERIAL, _("Serial"));
+	item = submenu->AppendCheckItem(MNU_TYPESERIAL, _("serial"));
     item->Check(columnType==dt_bigint);
-	item = submenu->AppendCheckItem(MNU_TYPEBOOLEAN, _("Boolean"));
+	item = submenu->AppendCheckItem(MNU_TYPEBOOLEAN, _("boolean"));
     item->Check(columnType==dt_boolean);
-	item = submenu->AppendCheckItem(MNU_TYPEINTEGER, _("Integer"));
+	item = submenu->AppendCheckItem(MNU_TYPEINTEGER, _("integer"));
     item->Check(columnType==dt_integer);
-	item = submenu->AppendCheckItem(MNU_TYPEMONEY, _("Money"));
+	item = submenu->AppendCheckItem(MNU_TYPEMONEY, _("money"));
     item->Check(columnType==dt_money);
-    item = submenu->AppendCheckItem(MNU_TYPEVARCHAR, _("Varchar()"));
+    item = submenu->AppendCheckItem(MNU_TYPEVARCHAR, _("varchar()"));
     item->Check(columnType==dt_varchar);
 	item = submenu->Append(MNU_TYPEOTHER, _("Choose another datatype..."));
     mnu.AppendSeparator();
@@ -231,37 +231,37 @@ wxArrayString& ddTextColumnFigure::dataTypes(bool full)
 {
     datatypes.Clear();
     datatypes.Add(wxT("Not Defined"));
-    datatypes.Add(wxT("Serial"));
-    datatypes.Add(wxT("Boolean"));
-    datatypes.Add(wxT("Integer"));
-    datatypes.Add(wxT("Money"));
-    datatypes.Add(wxT("Varchar(1)"));
+    datatypes.Add(wxT("serial"));
+    datatypes.Add(wxT("boolean"));
+    datatypes.Add(wxT("integer"));
+    datatypes.Add(wxT("money"));
+    datatypes.Add(wxT("varchar(1)"));
     if (full)
     {
         //not fast access datatypes
-        datatypes.Add(wxT("Bigint"));
-        datatypes.Add(wxT("Bit(1)"));
-        datatypes.Add(wxT("Bytea"));
-        datatypes.Add(wxT("Char(n)"));
-        datatypes.Add(wxT("Cidr"));
-        datatypes.Add(wxT("Circle"));
-        datatypes.Add(wxT("Date"));
-        datatypes.Add(wxT("Double Precision"));
-        datatypes.Add(wxT("Inet"));
-        datatypes.Add(wxT("Interval(1)"));
-        datatypes.Add(wxT("Line"));
-        datatypes.Add(wxT("LSeg"));
-        datatypes.Add(wxT("MacAddr"));
-        datatypes.Add(wxT("Numeric(1,1)"));
-        datatypes.Add(wxT("Path"));
-        datatypes.Add(wxT("Point"));
-        datatypes.Add(wxT("Polygon"));
-        datatypes.Add(wxT("Real"));
-        datatypes.Add(wxT("Smallint"));
-        datatypes.Add(wxT("Text"));
-        datatypes.Add(wxT("Time"));
-        datatypes.Add(wxT("Timestamp"));
-        datatypes.Add(wxT("Varbit(1)"));
+        datatypes.Add(wxT("bigint"));
+        datatypes.Add(wxT("bit(1)"));
+        datatypes.Add(wxT("bytea"));
+        datatypes.Add(wxT("char(n)"));
+        datatypes.Add(wxT("cidr"));
+        datatypes.Add(wxT("circle"));
+        datatypes.Add(wxT("date"));
+        datatypes.Add(wxT("double precision"));
+        datatypes.Add(wxT("inet"));
+        datatypes.Add(wxT("interval(1)"));
+        datatypes.Add(wxT("line"));
+        datatypes.Add(wxT("lseg"));
+        datatypes.Add(wxT("macaddr"));
+        datatypes.Add(wxT("numeric(1,1)"));
+        datatypes.Add(wxT("path"));
+        datatypes.Add(wxT("point"));
+        datatypes.Add(wxT("polygon"));
+        datatypes.Add(wxT("real"));
+        datatypes.Add(wxT("smallint"));
+        datatypes.Add(wxT("text"));
+        datatypes.Add(wxT("time"));
+        datatypes.Add(wxT("timestamp"));
+        datatypes.Add(wxT("varbit(1)"));
     }
 	return datatypes;
 }
