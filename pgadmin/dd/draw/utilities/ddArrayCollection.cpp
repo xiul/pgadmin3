@@ -126,6 +126,13 @@ ddArrayIterator::ddArrayIterator(ddObjsArray *ddPtrsArray)
     internalArray=ddPtrsArray;
 }
 
+// Get current item in the array for the iterator
+ddObject* ddArrayIterator::Current()
+{
+    ddObject *obj = internalArray->Item(position);
+    return obj;
+}
+
 // Get next item in the array for the iterator
 ddObject* ddArrayIterator::Next()
 {
@@ -158,6 +165,13 @@ ddArrayDownIterator::ddArrayDownIterator(ddObjsArray *ddPtrsArray)
 {
     internalArray=ddPtrsArray;
 	position=internalArray->GetCount()-1;
+}
+
+// Get current item in the array for the iterator
+ddObject* ddArrayDownIterator::Current()
+{
+    ddObject *obj = internalArray->Item(position);
+    return obj;
 }
 
 // Get next item in the array for the iterator

@@ -25,6 +25,7 @@ public:
 	ddDrawingEditor* getEditor();
 	void addTable(ddIFigure *figure);
 	void removeTable(ddIFigure *figure);
+    void removeSelectedObjects(int kind = 0);
 	void setTool(ddITool* tool);
 	void refreshDraw();
 	void eraseModel();

@@ -203,7 +203,7 @@ void ddDrawingView::removeFromSelection(ddIFigure *figure)
 {
 	figure->setSelected(false);
 	if(selection)
-		selection->removeItem(figure);		
+		selection->removeItem(figure);
 }
 
 

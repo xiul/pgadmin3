@@ -38,6 +38,7 @@ private:
     wxTextCtrl *sqltext;
 	void OnClose(wxCloseEvent& event);
 	void OnAddTable(wxCommandEvent& event);
+	void OnDeleteTable(wxCommandEvent& event);
 	void OnNewModel(wxCommandEvent& event);
 	void OnModelGeneration(wxCommandEvent& event);
 	wxAuiManager manager;

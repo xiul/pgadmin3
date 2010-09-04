@@ -109,6 +109,7 @@ enum
     MNU_LF,
     
     MNU_ADDTABLE,
+    MNU_DELETETABLE,
     MNU_GENERATEMODEL,
 
     MNU_RECENT,

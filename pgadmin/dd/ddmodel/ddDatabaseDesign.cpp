@@ -53,6 +53,60 @@ void ddDatabaseDesign::removeTable(ddIFigure *figure)
 	draw->view()->remove(figure);
 }
 
+void ddDatabaseDesign::removeSelectedObjects(int kind)
+{
+    int answer;
+	ddIteratorBase *iterator=draw->model()->figuresEnumerator();
+    ddArrayCollection itemsToBeDeleted;
+	ddIFigure *tmp;
+    ddTableFigure *table;
+    while(iterator->HasNext())
+    {
+        tmp=(ddIFigure *)iterator->Next();
+        if (tmp->isSelected())
+        {
+            if(kind == 0 || tmp->getKindId() == kind)
+            {
+                itemsToBeDeleted.addItem(tmp);
+            }
+        }
+	 }
+	delete iterator;
+    
+    if (itemsToBeDeleted.count() == 1)
+    {
+		tmp = (ddIFigure*) itemsToBeDeleted.getItemAt(0);
+        table = (ddTableFigure *)tmp;	
+        answer = wxMessageBox(_("Are you sure you wish to delete table ") + table->getTableName() + wxT("?"), _("Delete table?"), wxYES_NO|wxNO_DEFAULT);
+    }
+    else if (itemsToBeDeleted.count() > 1)
+    {
+        answer = wxMessageBox(
+          wxString::Format(_("Are you sure you wish to delete %d tables?"), itemsToBeDeleted.count()),
+          _("Delete table?"), wxYES_NO|wxNO_DEFAULT);
+    }
+
+    if (answer == wxYES)
+    {
+        while(itemsToBeDeleted.count()>0)
+        {
+            tmp = (ddIFigure*) itemsToBeDeleted.getItemAt(0);
+            table = (ddTableFigure *)tmp;	
+            draw->view()->removeFromSelection(table);
+            table->processDeleteAlert(draw->view());
+            draw->view()->remove(table);
+            if(table)
+                delete table;
+            itemsToBeDeleted.removeItemAt(0);
+        }
+	}
+    else
+    {
+        while(itemsToBeDeleted.count()>0)
+            itemsToBeDeleted.removeItemAt(0);
+    }
+}
+
 void ddDatabaseDesign::setTool(ddITool* tool)
 {
 	draw->setTool(tool);

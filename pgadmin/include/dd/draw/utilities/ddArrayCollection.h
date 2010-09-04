@@ -24,6 +24,7 @@ class ddArrayIterator : public ddIteratorBase
 public:
     ddArrayIterator(ddObjsArray *ddPtrsArray);
     ddObject* Next();
+    ddObject* Current();
     bool HasNext();
     void ResetIterator();
 
@@ -37,6 +38,7 @@ class ddArrayDownIterator : public ddIteratorBase
 public:
     ddArrayDownIterator(ddObjsArray *ddPtrsArray);
     ddObject* Next();
+    ddObject* Current();
     bool HasNext();
     void ResetIterator();
 

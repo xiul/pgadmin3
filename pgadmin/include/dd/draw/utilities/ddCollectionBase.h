@@ -23,6 +23,7 @@ class ddIteratorBase : wxObject
 {
 public:
     ddIteratorBase() {};
+    virtual ddObject* Current() = 0;
     virtual ddObject* Next() = 0;
     virtual bool HasNext() = 0;
     virtual void ResetIterator() = 0;
