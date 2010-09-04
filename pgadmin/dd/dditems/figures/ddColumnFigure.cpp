@@ -295,7 +295,9 @@ bool ddColumnFigure::isForeignKey()
 
 wxString ddColumnFigure::generateSQL()
 {
-	wxString tmp;
-	tmp+=getColumnName() + wxT(" ") + columnText->dataTypes()[getDataType()];
-	return tmp;
+    wxString tmp;
+    tmp = getColumnName();
+    tmp+= wxT(" ");
+    tmp+= columnText->getType();
+    return tmp;
 }

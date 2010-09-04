@@ -35,8 +35,7 @@ ddSimpleTextFigure(columnName)
 	ownerColumn = owner;
 	showDataType = true;
 	recalculateDisplayBox();
-	n=-1;
-	m=-1;
+	precision=-1;
 }
 
 ddTextColumnFigure::~ddTextColumnFigure()
@@ -48,10 +47,10 @@ wxString& ddTextColumnFigure::getText(bool extended)
 	if(showDataType && extended)
 	{
 		wxString ddType = dataTypes(true)[columnType];
-		if(columnType==dt_varchar && n>0)
+		if(columnType==dt_varchar && precision>0)
 		{
 			ddType.Truncate(ddType.Find(wxT("(")));
-			ddType+=wxString::Format(wxT("(%d)"),n);
+			ddType+=wxString::Format(wxT("(%d)"),precision);
 		}
 		out = wxString( ddSimpleTextFigure::getText() + wxString(wxT(" : ")) + ddType );
 		return  out;
@@ -62,14 +61,24 @@ wxString& ddTextColumnFigure::getText(bool extended)
 	}
 }
 
+wxString ddTextColumnFigure::getType()
+{
+    wxString ddType = dataTypes(true)[columnType];
+    if(columnType==dt_varchar && precision>0)
+    {
+        ddType.Truncate(ddType.Find(wxT("(")));
+        ddType+=wxString::Format(wxT("(%d)"),precision);
+    }
+    return ddType;
+}
+
 //event ID must match enum ddDataType!!! this event was created on view
 void ddTextColumnFigure::OnTextPopupClick(wxCommandEvent& event, ddDrawingView *view)
 {
 	wxTextEntryDialog *nameDialog=NULL;
 	wxString tmpString;
 	int answer;
-	n=-1;
-	m=-1;
+    int tmpprecision;
 
 	switch(event.GetId())
 	{
@@ -122,7 +131,12 @@ void ddTextColumnFigure::OnTextPopupClick(wxCommandEvent& event, ddDrawingView *
             break;
 		case MNU_TYPEVARCHAR:
             columnType = dt_varchar;
-            n=wxGetNumberFromUser(wxT("Varchar Size"),wxT("Input a Valid Size for Varchar datatype"),wxT("Varchar Size"),1,0,255,view);
+            tmpprecision = wxGetNumberFromUser(_("Varchar size"),
+                _("Size for varchar datatype"),
+                _("Varchar size"),
+                precision, 0, 255, view);
+            if (tmpprecision > 0)
+                precision = tmpprecision;
             break;
 		case MNU_TYPEOTHER:
             //DD-TODO: Add all types, improve and separate from quick access types

@@ -46,6 +46,7 @@ public:
 	ddTextColumnFigure(wxString& columnName, ddDataType dataType, ddColumnFigure *owner);
     ~ddTextColumnFigure();
 	virtual wxString& getText(bool extended = false);
+	wxString getType();
     virtual void createMenu(wxMenu &mnu);
 	virtual wxArrayString& dataTypes(bool full=false);
 	virtual void OnTextPopupClick(wxCommandEvent& event, ddDrawingView *view);
@@ -65,6 +66,6 @@ private:
 	wxString out;
 	wxArrayString datatypes;  //DD-TODO: optimize this and shared between all objects
 	bool showDataType;
-	int n,m;
+	int precision;
 };
 #endif

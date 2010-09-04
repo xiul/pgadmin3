@@ -697,10 +697,6 @@ wxString ddTableFigure::generateSQL()
 		{
 			tmp+=wxT(" NOT NULL");
 		}
-		else
-		{
-			tmp+=wxT(" NULL");
-		}
 		if(iterator->HasNext())
 		{
 			tmp+=wxT(" , \n");
