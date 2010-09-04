@@ -44,7 +44,7 @@
 #include "images/ddmodel-32.xpm"
 #include "images/file_new.xpm"
 #include "images/table.xpm"
-#include "images/ddRemoveTable.xpm"
+#include "images/ddRemoveTable2.xpm"
 #include "images/continue.xpm"
 #include "images/help.xpm"
 
@@ -103,7 +103,7 @@ END_EVENT_TABLE()
     toolBar->SetToolBitmapSize(wxSize(16, 16));
     toolBar->AddTool(MNU_NEW, _("New"), wxBitmap(file_new_xpm), _("New database design"), wxITEM_NORMAL);
     toolBar->AddTool(MNU_ADDTABLE, _("Add Table"), wxBitmap(table_xpm), _("Add empty table to the current model"), wxITEM_NORMAL);
-    toolBar->AddTool(MNU_DELETETABLE, _("Delete Table"), wxBitmap(ddRemoveTable_xpm), _("Add empty table to the current model"), wxITEM_NORMAL);
+    toolBar->AddTool(MNU_DELETETABLE, _("Delete Table"), wxBitmap(ddRemoveTable2_xpm), _("Add empty table to the current model"), wxITEM_NORMAL);
 	toolBar->AddTool(MNU_GENERATEMODEL, _("Generate Model"), wxBitmap(continue_xpm), _("Generate SQL for the current model"), wxITEM_NORMAL);
 	toolBar->AddSeparator();
     toolBar->AddTool(MNU_HELP, _("Help"), wxBitmap(help_xpm), _("Display help"), wxITEM_NORMAL);
