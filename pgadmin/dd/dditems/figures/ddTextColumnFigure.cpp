@@ -230,7 +230,7 @@ void ddTextColumnFigure::createMenu(wxMenu &mnu)
 wxArrayString& ddTextColumnFigure::dataTypes(bool full)
 {
     datatypes.Clear();
-    datatypes.Add(wxT("Not Defined"));
+    datatypes.Add(wxT("ANY"));
     datatypes.Add(wxT("serial"));
     datatypes.Add(wxT("boolean"));
     datatypes.Add(wxT("integer"));
