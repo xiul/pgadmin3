@@ -18,6 +18,7 @@
 #include "dd/dditems/handles/ddAddColButtonHandle.h"
 #include "dd/dditems/figures/ddTableFigure.h"
 #include "dd/dditems/utilities/ddDataType.h"
+#include "dd/draw/main/ddDrawingView.h"
 
 //Images
 #include "images/ddAddColumnCursor.xpm"
@@ -36,8 +37,11 @@ ddAddColButtonHandle::~ddAddColButtonHandle()
 void ddAddColButtonHandle::invokeStart(ddMouseEvent &event, ddDrawingView *view)
 {
 	ddTableFigure *table = (ddTableFigure*) getOwner();
-	wxString title = wxString(wxT("NewColumn"));
-	table->addColumn(new ddColumnFigure( title, table));
+    wxTextEntryDialog *nameDialog = new wxTextEntryDialog(view, wxT("New column name"), wxT("Add a column"), wxT("NewColumn"));
+    nameDialog->ShowModal();
+    wxString title=nameDialog->GetValue();
+    delete nameDialog;
+    table->addColumn(new ddColumnFigure(title, table));
 }
 
 void ddAddColButtonHandle::invokeStep(ddMouseEvent &event, ddDrawingView *view)
