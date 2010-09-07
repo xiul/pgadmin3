@@ -170,11 +170,14 @@ void frmDatabaseDesigner::OnAddTable(wxCommandEvent& event)
 {
     wxTextEntryDialog *nameDialog = new wxTextEntryDialog(this,
         wxT("New table name"), wxT("Add table"), design->getNewTableName());
-    nameDialog->ShowModal();
-	ddTableFigure *newTable = new ddTableFigure(nameDialog->GetValue(),
-        rand()%90+200, rand()%90+140);
-	design->addTable(newTable);
-	design->refreshDraw();
+    int answer = nameDialog->ShowModal();
+	if (answer == wxID_OK)
+    {
+        ddTableFigure *newTable = new ddTableFigure(nameDialog->GetValue(),
+            rand()%90+200, rand()%90+140);
+        design->addTable(newTable);
+        design->refreshDraw();
+    }
     delete nameDialog;
 }
 

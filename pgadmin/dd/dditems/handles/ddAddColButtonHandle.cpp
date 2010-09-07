@@ -38,10 +38,13 @@ void ddAddColButtonHandle::invokeStart(ddMouseEvent &event, ddDrawingView *view)
 {
 	ddTableFigure *table = (ddTableFigure*) getOwner();
     wxTextEntryDialog *nameDialog = new wxTextEntryDialog(view, wxT("New column name"), wxT("Add a column"), wxT("NewColumn"));
-    nameDialog->ShowModal();
-    wxString title=nameDialog->GetValue();
+    int answer = nameDialog->ShowModal();
+    if (answer == wxID_OK)
+    {
+        wxString title=nameDialog->GetValue();
+        table->addColumn(new ddColumnFigure(title, table));
+    }
     delete nameDialog;
-    table->addColumn(new ddColumnFigure(title, table));
 }
 
 void ddAddColButtonHandle::invokeStep(ddMouseEvent &event, ddDrawingView *view)

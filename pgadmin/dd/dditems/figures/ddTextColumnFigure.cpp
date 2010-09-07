@@ -84,10 +84,13 @@ void ddTextColumnFigure::OnTextPopupClick(wxCommandEvent& event, ddDrawingView *
 	{
 		case MNU_DDADDCOLUMN:
             nameDialog = new wxTextEntryDialog(view, wxT("New column name"), wxT("Add a column"), wxT("NewColumn"));
-            nameDialog->ShowModal();
-            tmpString=nameDialog->GetValue();
+            answer = nameDialog->ShowModal();
+            if (answer == wxID_OK)
+            {
+                tmpString=nameDialog->GetValue();
+                getOwnerColumn()->getOwnerTable()->addColumn(new ddColumnFigure(tmpString,getOwnerColumn()->getOwnerTable()));
+            }
             delete nameDialog;
-            getOwnerColumn()->getOwnerTable()->addColumn(new ddColumnFigure(tmpString,getOwnerColumn()->getOwnerTable()));
             break;
 		case MNU_DELCOLUMN:
             answer = wxMessageBox(wxT("Are you sure you wish to delete column ") + getText(true) + wxT("?"), wxT("Delete column?"), wxYES_NO|wxNO_DEFAULT, view);
