@@ -119,15 +119,27 @@ void ddTextColumnFigure::OnTextPopupClick(wxCommandEvent& event, ddDrawingView *
             break;
 		case MNU_TYPESERIAL:
             columnType = dt_serial;
+            recalculateDisplayBox();
+            getOwnerColumn()->displayBoxUpdate();
+            getOwnerColumn()->getOwnerTable()->updateTableSize();
             break;
 		case MNU_TYPEBOOLEAN:
             columnType = dt_boolean;
+            recalculateDisplayBox();
+            getOwnerColumn()->displayBoxUpdate();
+            getOwnerColumn()->getOwnerTable()->updateTableSize();
             break;
 		case MNU_TYPEINTEGER:
 			columnType = dt_integer;
+            recalculateDisplayBox();
+            getOwnerColumn()->displayBoxUpdate();
+            getOwnerColumn()->getOwnerTable()->updateTableSize();
             break;
 		case MNU_TYPEMONEY:
             columnType = dt_money;
+            recalculateDisplayBox();
+            getOwnerColumn()->displayBoxUpdate();
+            getOwnerColumn()->getOwnerTable()->updateTableSize();
             break;
 		case MNU_TYPEVARCHAR:
             columnType = dt_varchar;
@@ -137,10 +149,16 @@ void ddTextColumnFigure::OnTextPopupClick(wxCommandEvent& event, ddDrawingView *
                 precision, 0, 255, view);
             if (tmpprecision > 0)
                 precision = tmpprecision;
+            recalculateDisplayBox();
+            getOwnerColumn()->displayBoxUpdate();
+            getOwnerColumn()->getOwnerTable()->updateTableSize();
             break;
 		case MNU_TYPEOTHER:
             //DD-TODO: Add all types, improve and separate from quick access types
             columnType = (ddDataType) wxGetSingleChoiceIndex(wxT("New column datatype"),wxT("Column Datatypes"),dataTypes(true),view);
+            recalculateDisplayBox();
+            getOwnerColumn()->displayBoxUpdate();
+            getOwnerColumn()->getOwnerTable()->updateTableSize();
             break;
 		case MNU_TYPEPKEY_CONSTRAINTNAME:
             tmpString=wxGetTextFromUser(wxT("New name of primary key:"),getOwnerColumn()->getOwnerTable()->getPkConstraintName(),getOwnerColumn()->getOwnerTable()->getPkConstraintName(),view);
