@@ -39,6 +39,7 @@ private:
 	void OnClose(wxCloseEvent& event);
 	void OnAddTable(wxCommandEvent& event);
 	void OnDeleteTable(wxCommandEvent& event);
+	void OnAddColumn(wxCommandEvent& event);
 	void OnNewModel(wxCommandEvent& event);
 	void OnModelGeneration(wxCommandEvent& event);
 	wxAuiManager manager;

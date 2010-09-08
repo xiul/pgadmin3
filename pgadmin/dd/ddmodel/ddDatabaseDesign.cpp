@@ -185,6 +185,21 @@ wxString ddDatabaseDesign::getNewTableName()
 	return out;
 }
 
+ddTableFigure* ddDatabaseDesign::getSelectedTable()
+{
+	ddIteratorBase *iterator=draw->model()->figuresEnumerator();
+	ddIFigure *tmp;
+    ddTableFigure *table = 0L;
+    while(iterator->HasNext())
+    {
+        tmp=(ddIFigure *)iterator->Next();
+        if (tmp->isSelected() && tmp->getKindId() == 100)
+            table = (ddTableFigure *)tmp;
+	 }
+	delete iterator;
+    return table;
+}
+
 bool ddDatabaseDesign::containsTable(wxString tableName)
 {
 	bool out=false;

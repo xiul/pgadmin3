@@ -14,6 +14,7 @@
 
 #include "dd/draw/main/ddDrawingEditor.h"
 #include "dd/draw/tools/ddITool.h"
+#include "dd/dditems/figures/ddTableFigure.h"
 
 // Create Array Objects used as base for gqbCollections
 class ddDatabaseDesign : public wxObject
@@ -31,6 +32,7 @@ public:
 	void eraseModel();
 	wxString generateModel();
 	wxString getNewTableName();
+    ddTableFigure* getSelectedTable();
 	bool containsTable(wxString tableName);
 
 protected:

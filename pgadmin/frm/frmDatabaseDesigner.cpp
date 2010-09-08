@@ -52,6 +52,7 @@ BEGIN_EVENT_TABLE(frmDatabaseDesigner, pgFrame)
 EVT_MENU(MNU_NEW,               frmDatabaseDesigner::OnNewModel)
 EVT_MENU(MNU_ADDTABLE,          frmDatabaseDesigner::OnAddTable)
 EVT_MENU(MNU_DELETETABLE,       frmDatabaseDesigner::OnDeleteTable)
+EVT_MENU(MNU_ADDCOLUMN,         frmDatabaseDesigner::OnAddColumn)
 EVT_MENU(MNU_GENERATEMODEL,     frmDatabaseDesigner::OnModelGeneration)
 EVT_CLOSE(                      frmDatabaseDesigner::OnClose)
 END_EVENT_TABLE()
@@ -103,7 +104,8 @@ END_EVENT_TABLE()
     toolBar->SetToolBitmapSize(wxSize(16, 16));
     toolBar->AddTool(MNU_NEW, _("New"), wxBitmap(file_new_xpm), _("New database design"), wxITEM_NORMAL);
     toolBar->AddTool(MNU_ADDTABLE, _("Add Table"), wxBitmap(table_xpm), _("Add empty table to the current model"), wxITEM_NORMAL);
-    toolBar->AddTool(MNU_DELETETABLE, _("Delete Table"), wxBitmap(ddRemoveTable2_xpm), _("Add empty table to the current model"), wxITEM_NORMAL);
+    toolBar->AddTool(MNU_DELETETABLE, _("Delete Table"), wxBitmap(ddRemoveTable2_xpm), _("Delete selected table"), wxITEM_NORMAL);
+    toolBar->AddTool(MNU_ADDCOLUMN, _("Add Column"), wxBitmap(table_xpm), _("Add new column to the selected table"), wxITEM_NORMAL);
 	toolBar->AddTool(MNU_GENERATEMODEL, _("Generate Model"), wxBitmap(continue_xpm), _("Generate SQL for the current model"), wxITEM_NORMAL);
 	toolBar->AddSeparator();
     toolBar->AddTool(MNU_HELP, _("Help"), wxBitmap(help_xpm), _("Display help"), wxITEM_NORMAL);
@@ -185,6 +187,27 @@ void frmDatabaseDesigner::OnDeleteTable(wxCommandEvent& event)
 {
     design->removeSelectedObjects(100);
 }
+
+void frmDatabaseDesigner::OnAddColumn(wxCommandEvent& event)
+{
+    ddTableFigure *table = design->getSelectedTable();
+    wxTextEntryDialog *nameDialog;
+    int answer;
+    wxString tmpString;
+    
+    if (table)
+    {
+        nameDialog = new wxTextEntryDialog(this, wxT("New column name"), wxT("Add a column"), wxT("NewColumn"));
+        answer = nameDialog->ShowModal();
+        if (answer == wxID_OK)
+        {
+            tmpString = nameDialog->GetValue();
+            table->addColumn(new ddColumnFigure(tmpString, table));
+        }
+        delete nameDialog;
+    }
+}
+
 
 void frmDatabaseDesigner::OnNewModel(wxCommandEvent& event)
 {
