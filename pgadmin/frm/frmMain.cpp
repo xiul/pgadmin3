@@ -222,8 +222,6 @@ frmMain::frmMain(const wxString& title)
 
 frmMain::~frmMain()
 {
-    StoreServers();
-
     settings->Write(wxT("frmMain/Perspective-") + wxString(FRMMAIN_PERSPECTIVE_VER), manager.SavePerspective());
     manager.UnInit();
 
