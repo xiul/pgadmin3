@@ -1703,7 +1703,7 @@ pgAppearanceFactory::pgAppearanceFactory()
 #ifdef __WXMAC__
 			else if (token.Lower().StartsWith(wxT("splashfontsizemac=")))
 #else
-				else if (token.Lower().StartsWith(wxT("splashfontsizegtk=")))
+			else if (token.Lower().StartsWith(wxT("splashfontsizegtk=")))
 #endif
 #endif
 			{
