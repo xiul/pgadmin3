@@ -41,17 +41,18 @@ ddPoint& ddRelationshipTerminal::draw (wxBufferedDC& context, ddPoint& a, ddPoin
 	ddPoint points[3];
 
 	context.SetPen(terminalLinePen);
-	
+
 	ddPoint aCopy=a,bCopy=b;
 	view->CalcScrolledPosition(aCopy.x,aCopy.y,&aCopy.x,&aCopy.y);
 	view->CalcScrolledPosition(bCopy.x,bCopy.y,&bCopy.x,&bCopy.y);
 
 	if(endTerminal)
     {
+
 		//Calc a point very far away of center of table to intersect one of the sides lines of the table rectangle figure
 		double X = aCopy.x + (bCopy.x - aCopy.x) * 0.9;
 		double Y = aCopy.y + (bCopy.y - aCopy.y) * 0.9;
-		
+
 		if(ownerFigure->getEndFigure() && ownerFigure->getOneToMany())
 		{
 			ddRect r = ownerFigure->getEndFigure()->displayBox();
@@ -66,27 +67,22 @@ ddPoint& ddRelationshipTerminal::draw (wxBufferedDC& context, ddPoint& a, ddPoin
 			
 
 			//DD-TODO: optimize this Hack to get correct size of table connector many triangle
-			double XX,YY,factor=0.1,distance;
-			bool first=true;
-			
-			factor = lastFactor;
-			do
-            {
-				XX= aCopy.x + (bCopy.x - aCopy.x) * factor;
-				YY= aCopy.y + (bCopy.y - aCopy.y) * factor;
-				distance = sqrt( (aCopy.x - XX)*(aCopy.x - XX) + (aCopy.y - YY)*(aCopy.y - YY));
-				if(first && distance > 30)
-				{
-					factor=0.1;
-					first=false;
-				}
-				lastFactor = factor;	
-				if(distance > 20)
-					factor=factor*0.75;
-				else
-					factor=factor*1.20;
-			} while(distance > 20 || distance < 10);
+			double XX,YY,distance;
 
+			//Calculate a new point to a given distance from the end of the relationship to draw many ( ----<| ) connector
+			//calculate vector from point1 & point2
+			double vectorx = aCopy.x - bCopy.x;
+			double vectory = aCopy.y - bCopy.y;
+			//calculate the length
+			double length = sqrt(vectorx*vectorx + vectory*vectory);
+			//normalize the vector to unit length
+			double normalizevx = vectorx / length;
+			double normalizevy = vectory / length;
+			distance = -15;
+			//calculate point a given distance
+			XX = bCopy.x + normalizevx * (length + distance);
+			YY = bCopy.y + normalizevy * (length + distance);
+			
 			wxPoint intersectionLine1(centerX,centerY);
 			wxPoint intersectionLine2(X,Y);
 
@@ -150,7 +146,7 @@ ddPoint& ddRelationshipTerminal::draw (wxBufferedDC& context, ddPoint& a, ddPoin
 			}
 			else  //CENTER of star figure or invalid place
 			{
-				context.DrawText(wxString(wxT("NOOOOOO!!!! porqueeeeeee")),100,100);
+				context.DrawText(wxString(wxT("NOOOOOO!!!! whyyyyyyy (temporary fix this and not show any message)")),100,100);
 			}
 			
 			value=ddPoint(XX,YY);			
