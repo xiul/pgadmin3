@@ -261,24 +261,39 @@ bool pgAdmin3::OnInit()
 		}
 	}
 
-    static const wxCmdLineEntryDesc cmdLineDesc[] = 
-    {
-        {wxCMD_LINE_SWITCH, wxT("h"), wxT("help"), _("show this help message"), wxCMD_LINE_VAL_NONE, wxCMD_LINE_OPTION_HELP },
-        {wxCMD_LINE_OPTION, wxT("s"), wxT("server"), _("auto-connect to specified server"), wxCMD_LINE_VAL_STRING},
-        {wxCMD_LINE_SWITCH, wxT("S"), wxT("serverstatus"), _("open server status window"), wxCMD_LINE_VAL_NONE},
-        {wxCMD_LINE_OPTION, wxT("Sc"), wxT("serverstatusconnect"), _("connect server status window to database"), wxCMD_LINE_VAL_STRING},
-        {wxCMD_LINE_SWITCH, wxT("q"), wxT("query"), _("open query tool"), wxCMD_LINE_VAL_NONE},
-        {wxCMD_LINE_OPTION, wxT("qc"), wxT("queryconnect"), _("connect query tool to database"), wxCMD_LINE_VAL_STRING},
-        {wxCMD_LINE_SWITCH, wxT("d"), wxT("designer"), _("open designer window"), wxCMD_LINE_VAL_NONE},
-        {wxCMD_LINE_OPTION, wxT("dc"), wxT("designerconnectconnect"), _("connect designer window to database"), wxCMD_LINE_VAL_STRING},
-        {wxCMD_LINE_OPTION, wxT("f"), wxT("file"), _("file to load into the query tool in -q or -qc mode"), wxCMD_LINE_VAL_STRING},
-        {wxCMD_LINE_OPTION, wxT("cm"), NULL, _("edit main configuration file"), wxCMD_LINE_VAL_STRING, wxCMD_LINE_PARAM_MULTIPLE},
-        {wxCMD_LINE_OPTION, wxT("ch"), NULL, _("edit HBA configuration file"), wxCMD_LINE_VAL_STRING, wxCMD_LINE_PARAM_MULTIPLE},
-        {wxCMD_LINE_OPTION, wxT("cp"), NULL, _("edit pgpass configuration file"), wxCMD_LINE_VAL_STRING, wxCMD_LINE_PARAM_MULTIPLE},
-        {wxCMD_LINE_OPTION, wxT("c"), NULL, _("edit configuration files in cluster directory"), wxCMD_LINE_VAL_STRING, wxCMD_LINE_PARAM_MULTIPLE},
-        {wxCMD_LINE_SWITCH, wxT("t"), NULL, _("dialog translation test mode"), wxCMD_LINE_VAL_NONE},
-        {wxCMD_LINE_NONE}
-    };
+	static const wxCmdLineEntryDesc cmdLineDesc[] =
+	{
+#if wxCHECK_VERSION(2, 9, 0)	
+		// wxCmdLineEntryDesc is one of the few places in 2.9 where wxT()s have any effect...they break the build
+		{wxCMD_LINE_SWITCH, "h", "help", _("show this help message"), wxCMD_LINE_VAL_NONE, wxCMD_LINE_OPTION_HELP },
+		{wxCMD_LINE_OPTION, "s", "server", _("auto-connect to specified server"), wxCMD_LINE_VAL_STRING},
+		{wxCMD_LINE_SWITCH, "S", "serverstatus", _("open server status window"), wxCMD_LINE_VAL_NONE},
+		{wxCMD_LINE_OPTION, "Sc", "serverstatusconnect", _("connect server status window to database"), wxCMD_LINE_VAL_STRING},
+		{wxCMD_LINE_SWITCH, "q", "query", _("open query tool"), wxCMD_LINE_VAL_NONE},
+		{wxCMD_LINE_OPTION, "qc", "queryconnect", _("connect query tool to database"), wxCMD_LINE_VAL_STRING},
+		{wxCMD_LINE_OPTION, "f", "file", _("file to load into the query tool in -q or -qc mode"), wxCMD_LINE_VAL_STRING},
+		{wxCMD_LINE_OPTION, "cm", NULL, _("edit main configuration file"), wxCMD_LINE_VAL_STRING, wxCMD_LINE_PARAM_MULTIPLE},
+		{wxCMD_LINE_OPTION, "ch", NULL, _("edit HBA configuration file"), wxCMD_LINE_VAL_STRING, wxCMD_LINE_PARAM_MULTIPLE},
+		{wxCMD_LINE_OPTION, "cp", NULL, _("edit pgpass configuration file"), wxCMD_LINE_VAL_STRING, wxCMD_LINE_PARAM_MULTIPLE},
+		{wxCMD_LINE_OPTION, "c", NULL, _("edit configuration files in cluster directory"), wxCMD_LINE_VAL_STRING, wxCMD_LINE_PARAM_MULTIPLE},
+		{wxCMD_LINE_SWITCH, "t", NULL, _("dialog translation test mode"), wxCMD_LINE_VAL_NONE},
+#else
+		{wxCMD_LINE_SWITCH, wxT("h"), wxT("help"), _("show this help message"), wxCMD_LINE_VAL_NONE, wxCMD_LINE_OPTION_HELP },
+		{wxCMD_LINE_OPTION, wxT("s"), wxT("server"), _("auto-connect to specified server"), wxCMD_LINE_VAL_STRING},
+		{wxCMD_LINE_SWITCH, wxT("S"), wxT("serverstatus"), _("open server status window"), wxCMD_LINE_VAL_NONE},
+		{wxCMD_LINE_OPTION, wxT("Sc"), wxT("serverstatusconnect"), _("connect server status window to database"), wxCMD_LINE_VAL_STRING},
+		{wxCMD_LINE_SWITCH, wxT("q"), wxT("query"), _("open query tool"), wxCMD_LINE_VAL_NONE},
+		{wxCMD_LINE_OPTION, wxT("qc"), wxT("queryconnect"), _("connect query tool to database"), wxCMD_LINE_VAL_STRING},
+		{wxCMD_LINE_OPTION, wxT("f"), wxT("file"), _("file to load into the query tool in -q or -qc mode"), wxCMD_LINE_VAL_STRING},
+		{wxCMD_LINE_OPTION, wxT("cm"), NULL, _("edit main configuration file"), wxCMD_LINE_VAL_STRING, wxCMD_LINE_PARAM_MULTIPLE},
+		{wxCMD_LINE_OPTION, wxT("ch"), NULL, _("edit HBA configuration file"), wxCMD_LINE_VAL_STRING, wxCMD_LINE_PARAM_MULTIPLE},
+		{wxCMD_LINE_OPTION, wxT("cp"), NULL, _("edit pgpass configuration file"), wxCMD_LINE_VAL_STRING, wxCMD_LINE_PARAM_MULTIPLE},
+		{wxCMD_LINE_OPTION, wxT("c"), NULL, _("edit configuration files in cluster directory"), wxCMD_LINE_VAL_STRING, wxCMD_LINE_PARAM_MULTIPLE},
+		{wxCMD_LINE_SWITCH, wxT("t"), NULL, _("dialog translation test mode"), wxCMD_LINE_VAL_NONE},
+#endif
+		{wxCMD_LINE_NONE}
+
+	};
 
 	frmConfig::tryMode configMode = frmConfig::NONE;
 	wxString configFile;
@@ -723,7 +738,9 @@ bool pgAdmin3::OnInit()
 			cmdParser.Found(wxT("f"), &fn);
 #endif
 			if (!fn.IsEmpty())
+			{
 				wxLogInfo(wxT("Auto-loading file: %s"), fn.c_str());
+			}
 			frmQuery *fq = new frmQuery(NULL, wxEmptyString, conn, wxEmptyString, fn);
 			fq->Go();
 		}
@@ -752,7 +769,9 @@ bool pgAdmin3::OnInit()
 						wxString fn;
 						cmdParser.Found(wxT("f"), &fn);
 						if (!fn.IsEmpty())
+						{
 							wxLogInfo(wxT("Auto-loading file: %s"), fn.c_str());
+						}
 						frmQuery *fq = new frmQuery(winMain, wxEmptyString, conn, wxEmptyString, fn);
 						fq->Go();
 						winMain->AddFrame(fq);
