@@ -594,6 +594,7 @@ void frmMain::OnCopy(wxCommandEvent &ev)
 #endif
 			row = lv->GetNextSelected(row);
 		}
+		text = text.Trim();
 	}
 
 	// ctlSQLBox
