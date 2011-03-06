@@ -1838,6 +1838,10 @@
 					>
 				</File>
 				<File
+					RelativePath=".\include\images\foreignbad.xpm"
+					>
+				</File>
+				<File
 					RelativePath=".\include\images\forward.xpm"
 					>
 				</File>
