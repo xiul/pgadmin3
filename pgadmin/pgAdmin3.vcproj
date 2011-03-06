@@ -2118,6 +2118,10 @@
 					>
 				</File>
 				<File
+					RelativePath=".\include\images\rulebad.xpm"
+					>
+				</File>
+				<File
 					RelativePath=".\include\images\rules.xpm"
 					>
 				</File>
