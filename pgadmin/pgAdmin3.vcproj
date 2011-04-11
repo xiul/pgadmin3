@@ -970,6 +970,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\dlg\dlgCollation.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\dlg\dlgColumn.cpp"
 				>
 			</File>
@@ -1542,6 +1546,18 @@
 				</File>
 				<File
 					RelativePath=".\include\images\closeddatabase.png"
+					>
+				</File>
+				<File
+					RelativePath=".\include\images\collation-sm.png"
+					>
+				</File>
+				<File
+					RelativePath=".\include\images\collation.png"
+					>
+				</File>
+				<File
+					RelativePath=".\include\images\collations.png"
 					>
 				</File>
 				<File
@@ -2661,6 +2677,10 @@
 					>
 				</File>
 				<File
+					RelativePath=".\include\dlg\dlgCollation.h"
+					>
+				</File>
+				<File
 					RelativePath=".\include\dlg\dlgColumn.h"
 					>
 				</File>
@@ -3002,6 +3022,10 @@
 				</File>
 				<File
 					RelativePath=".\include\schema\pgCheck.h"
+					>
+				</File>
+				<File
+					RelativePath=".\include\schema\pgCollation.h"
 					>
 				</File>
 				<File
@@ -4254,6 +4278,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\schema\pgCollation.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\schema\pgCollection.cpp"
 				>
 			</File>
@@ -4495,6 +4523,10 @@
 			</File>
 			<File
 				RelativePath=".\ui\dlgCheck.xrc"
+				>
+			</File>
+			<File
+				RelativePath=".\ui\dlgCollation.xrc"
 				>
 			</File>
 			<File
