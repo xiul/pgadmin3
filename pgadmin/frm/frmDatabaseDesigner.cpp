@@ -42,11 +42,11 @@
 
 // Icons
 #include "images/ddmodel-32.xpm"
-#include "images/file_new.xpm"
-#include "images/table.xpm"
+#include "images/file_new.pngc"
+#include "images/table.pngc"
 #include "images/ddRemoveTable2.xpm"
-#include "images/continue.xpm"
-#include "images/help.xpm"
+#include "images/continue.pngc"
+#include "images/help.pngc"
 
 BEGIN_EVENT_TABLE(frmDatabaseDesigner, pgFrame)
 EVT_MENU(MNU_NEW,               frmDatabaseDesigner::OnNewModel)
@@ -102,13 +102,13 @@ END_EVENT_TABLE()
     // Set toolbar
     toolBar = new ctlMenuToolbar(this, -1, wxDefaultPosition, wxDefaultSize, wxTB_FLAT | wxTB_NODIVIDER);
     toolBar->SetToolBitmapSize(wxSize(16, 16));
-    toolBar->AddTool(MNU_NEW, _("New"), wxBitmap(file_new_xpm), _("New database design"), wxITEM_NORMAL);
-    toolBar->AddTool(MNU_ADDTABLE, _("Add Table"), wxBitmap(table_xpm), _("Add empty table to the current model"), wxITEM_NORMAL);
+    toolBar->AddTool(MNU_NEW, _("New"), *file_new_png_bmp, _("New database design"), wxITEM_NORMAL);
+    toolBar->AddTool(MNU_ADDTABLE, _("Add Table"), *table_png_bmp, _("Add empty table to the current model"), wxITEM_NORMAL);
     toolBar->AddTool(MNU_DELETETABLE, _("Delete Table"), wxBitmap(ddRemoveTable2_xpm), _("Delete selected table"), wxITEM_NORMAL);
-    toolBar->AddTool(MNU_ADDCOLUMN, _("Add Column"), wxBitmap(table_xpm), _("Add new column to the selected table"), wxITEM_NORMAL);
-	toolBar->AddTool(MNU_GENERATEMODEL, _("Generate Model"), wxBitmap(continue_xpm), _("Generate SQL for the current model"), wxITEM_NORMAL);
+    toolBar->AddTool(MNU_ADDCOLUMN, _("Add Column"), *table_png_bmp, _("Add new column to the selected table"), wxITEM_NORMAL);
+	toolBar->AddTool(MNU_GENERATEMODEL, _("Generate Model"), *continue_png_bmp, _("Generate SQL for the current model"), wxITEM_NORMAL);
 	toolBar->AddSeparator();
-    toolBar->AddTool(MNU_HELP, _("Help"), wxBitmap(help_xpm), _("Display help"), wxITEM_NORMAL);
+    toolBar->AddTool(MNU_HELP, _("Help"), *help_png_bmp, _("Display help"), wxITEM_NORMAL);
     toolBar->Realize();
 
     // Add the database designer

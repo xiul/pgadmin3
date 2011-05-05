@@ -22,7 +22,7 @@
 #include "dd/draw/utilities/ddMouseEvent.h"
 
 // Images
-#include "images/check.xpm"
+#include "images/check.pngc"
 #include "images/ddcancel.xpm"
 
 
@@ -58,7 +58,7 @@ wxHSCROLL | wxVSCROLL | wxBORDER | wxRETAINED)
 	simpleTextToolEdit->Hide();
 	simpleTextFigure = NULL;
 	menuFigure = NULL;
-	okTxtButton = new wxBitmapButton(this,CTL_OKBUTTONID,wxBitmap(check_xpm),wxDefaultPosition,wxDefaultSize,wxBORDER_NONE);
+	okTxtButton = new wxBitmapButton(this,CTL_OKBUTTONID,*check_png_bmp,wxDefaultPosition,wxDefaultSize,wxBORDER_NONE);
 	okTxtButton->Hide();
 	cancelTxtButton = new wxBitmapButton(this,1981,wxBitmap(ddcancel_xpm),wxDefaultPosition,wxDefaultSize,wxBORDER_NONE);
 	cancelTxtButton->Hide();
