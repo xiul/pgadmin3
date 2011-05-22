@@ -5,7 +5,7 @@
 // Copyright (C) 2002 - 2010, The pgAdmin Development Team
 // This software is released under the PostgreSQL Licence
 //
-// ddGeometry.cpp 
+// ddGeometry.cpp - Utility Geometric Functions Shared between classes
 //
 //////////////////////////////////////////////////////////////////////////
 
@@ -19,7 +19,10 @@
 #include "dd/draw/utilities/ddRect.h"
 #include "dd/draw/utilities/ddPoint.h"
 
-//typecasting to avoid miscalculations, here need double values not int
+//
+// Warning when using it:  typecasting to avoid miscalculations functions need double values not int
+//
+
 bool ddGeometry::lineContainsPoint(double x1, double y1, double x2, double y2, double px, double py)
 {
 	ddPoint p = ddPoint(x1,y1);

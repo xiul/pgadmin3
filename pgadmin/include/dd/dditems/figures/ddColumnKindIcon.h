@@ -1,11 +1,11 @@
 //////////////////////////////////////////////////////////////////////////
 //
 // pgAdmin III - PostgreSQL Tools
-// RCS-ID:      $Id: gqbObject.h 8189 2010-02-25 22:10:21Z dpage $
-// Copyright (C) 2002 - 2010, The pgAdmin Development Team
+//
+// Copyright (C) 2002 - 2011, The pgAdmin Development Team
 // This software is released under the PostgreSQL Licence
 //
-// gqbObject.h - 
+// ddColumnKindIcon.h - Figure container for kind of Column Images
 //
 //////////////////////////////////////////////////////////////////////////
 
@@ -14,20 +14,12 @@
 
 #include "dd/draw/figures/ddAbstractMenuFigure.h"
 
-
-//#include "dd/draw/utilities/ddRect.h"
-/*
-#include "dd/draw/tools/ddITool.h"
-#include "dd/draw/handles/ddIHandle.h"
-#include "dd/draw/utilities/ddCollection.h"*/
-
 class ddColumnFigure;
 
 enum ddColumnType {
 	pk=0,
 	uk,
 	fk,
-	pkfk,
 	pkuk,
 	none
 };

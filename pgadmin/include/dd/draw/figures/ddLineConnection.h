@@ -77,12 +77,14 @@ protected:
 	virtual void updateHandlesIndexes();
 	virtual void connectFigure (ddIConnector *connector);
 	virtual void disconnectFigure (ddIConnector *connector);
+	ddIConnector *startConnector;
+	ddIConnector *endConnector;
+
 private:
 	ddIHandle *changeConnStartHandle;
 	ddIHandle *changeConnEndHandle; 
 
-	ddIConnector *startConnector;
-	ddIConnector *endConnector;
+
 	//ddCollection *connectionHandles;
 
 };

@@ -5,7 +5,7 @@
 // Copyright (C) 2002 - 2010, The pgAdmin Development Team
 // This software is released under the PostgreSQL Licence
 //
-// ddILocator.cpp 
+// ddILocator.cpp - Base class for creation of a location for a ddHandle
 //
 //////////////////////////////////////////////////////////////////////////
 
@@ -25,5 +25,3 @@ ddILocator::ddILocator()
 ddILocator::~ddILocator()
 {
 }
-
-//Al methods and properties at ddILocator.h

@@ -18,10 +18,12 @@
 #include "dd/draw/tools/ddSelectionTool.h"
 #include "dd/dditems/figures/ddTableFigure.h"
 #include "dd/dditems/figures/ddRelationshipFigure.h"
+#include "dd/dditems/utilities/ddDataType.h"
 
 
 ddDatabaseDesign::ddDatabaseDesign(wxWindow *parent)
 {
+	//initializefhkMap();
 	draw = new ddDrawingEditor(parent);
 	tool = new ddSelectionTool(draw);
 	draw->setTool(tool);
@@ -131,7 +133,7 @@ wxString ddDatabaseDesign::generateModel()
 	while(iterator->HasNext())
     {
 		tmp=(ddIFigure *)iterator->Next();
-		if(tmp->getKindId()==100)
+		if(tmp->getKindId() == ddTableFig)
 		{
 			out+=wxT(" \n");
 			table=(ddTableFigure*)tmp;
@@ -163,7 +165,7 @@ wxString ddDatabaseDesign::getNewTableName()
 		while(iterator->HasNext())
         {
 			tmp=(ddIFigure *)iterator->Next();
-			if(tmp->getKindId()==100)
+			if(tmp->getKindId() == ddTableFig)
 			{
 				table=(ddTableFigure*)tmp;
 				if(indx==0)
@@ -193,7 +195,7 @@ ddTableFigure* ddDatabaseDesign::getSelectedTable()
     while(iterator->HasNext())
     {
         tmp=(ddIFigure *)iterator->Next();
-        if (tmp->isSelected() && tmp->getKindId() == 100)
+        if (tmp->isSelected() && tmp->getKindId() == ddTableFig)
             table = (ddTableFigure *)tmp;
 	 }
 	delete iterator;
@@ -209,7 +211,7 @@ bool ddDatabaseDesign::containsTable(wxString tableName)
 	while(iterator->HasNext())
     {
 		tmp=(ddIFigure *)iterator->Next();
-		if(tmp->getKindId()==100)
+		if(tmp->getKindId() == ddTableFig)
 		{
 			table=(ddTableFigure*)tmp;
 			if(table->getTableName().Contains(tableName))

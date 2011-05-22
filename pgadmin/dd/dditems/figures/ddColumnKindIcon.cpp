@@ -1,11 +1,11 @@
 //////////////////////////////////////////////////////////////////////////
 //
 // pgAdmin III - PostgreSQL Tools
-// RCS-ID:      $Id: gqbView.cpp 8268 2010-04-15 21:49:27Z xiul $
-// Copyright (C) 2002 - 2010, The pgAdmin Development Team
+//
+// Copyright (C) 2002 - 2011, The pgAdmin Development Team
 // This software is released under the PostgreSQL Licence
 //
-// ddColumnKindIcon.cpp
+// ddColumnKindIcon.cpp - Figure container for kind of Column Images
 //
 //////////////////////////////////////////////////////////////////////////
 
@@ -32,7 +32,7 @@ ddColumnKindIcon::ddColumnKindIcon(ddColumnFigure *owner)
 {
 	ownerColumn=owner;
 	colType = none;
-	// Initialize with any image for calculate goals
+	// Initialize with an image to allow initial size calculations
 	icon = wxBitmap(ddprimarykey_xpm);
     iconToDraw = NULL;
 	getBasicDisplayBox().SetSize(wxSize(getWidth(),getHeight()));
@@ -56,7 +56,6 @@ void ddColumnKindIcon::createMenu(wxMenu &mnu)
 
 void ddColumnKindIcon::OnTextPopupClick(wxCommandEvent& event, ddDrawingView *view)
 {
-	//strings[event.GetId()]
 	changeIcon((ddColumnType)event.GetId(),view);
 }
 
@@ -69,8 +68,6 @@ void ddColumnKindIcon::changeIcon(ddColumnType type, ddDrawingView *view, bool i
 {
 	bool ukCol = colType==uk;
 	
-	//colType=type;
-
 	wxString tmpString;
 	switch(type)
 	{
@@ -101,14 +98,13 @@ void ddColumnKindIcon::changeIcon(ddColumnType type, ddDrawingView *view, bool i
 					getOwnerColumn()->getOwnerTable()->updateFkObservers();
 				}
 				break;
-		case uk: uniqueConstraintManager(ukCol,view,interaction);
+		case uk:
+				uniqueConstraintManager(ukCol,view,interaction);
 				icon = wxBitmap(ddunique_xpm);
 				break;
-		case fk:	icon = wxBitmap(ddforeignkey_xpm);
+		case fk:
+				icon = wxBitmap(ddforeignkey_xpm);
 				colType=fk;
-				break;
-		case pkfk:	// icon = wxBitmap(ddprimaryforeignkey_xpm);
-				//colType=pkfk;
 				break;
 		case pkuk:
 				break;
@@ -265,11 +261,12 @@ void ddColumnKindIcon::uniqueConstraintManager(bool ukCol, ddDrawingView *view, 
     }
 }
 
+//synchronize uk indexes when an uk is change kind from uk to other and other index should be update with that info
 void ddColumnKindIcon::syncUkIndexes()
 {
 	ddColumnFigure *col;
 	bool lastUk=true;
-	int maxIndex=-1;
+//	int maxIndex=-1;
 	ddIteratorBase *iterator = getOwnerColumn()->getOwnerTable()->figuresEnumerator();
     iterator->Next(); //First Figure is Main Rect
     iterator->Next(); //Second Figure is Table Title
@@ -277,11 +274,14 @@ void ddColumnKindIcon::syncUkIndexes()
     {
         col = (ddColumnFigure*) iterator->Next();
         
-        if(col->getUniqueConstraintIndex() >  maxIndex)
-            maxIndex = col->getUniqueConstraintIndex();
+ /*       if(col->getUniqueConstraintIndex() >  maxIndex)
+            maxIndex = col->getUniqueConstraintIndex(); */
 
         if(col!=getOwnerColumn() && (col->getUniqueConstraintIndex() == getOwnerColumn()->getUniqueConstraintIndex()))
-            lastUk=false;
+		{ 
+		  lastUk=false;
+		  break;
+		}
     }
 	if(lastUk)
 	{

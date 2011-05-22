@@ -5,7 +5,7 @@
 // Copyright (C) 2002 - 2010, The pgAdmin Development Team
 // This software is released under the PostgreSQL Licence
 //
-// ddSimpleTextTool.cpp 
+// ddSimpleTextTool.cpp - Tool to allow edition of textTool with a double click or show a menu with a right click.
 //
 //////////////////////////////////////////////////////////////////////////
 
@@ -22,7 +22,7 @@
 
 class ddDrawingEditor;
 
-//Allow Edition of textTool (double click) or show a menu to modifiy in someway text (right click).
+//
 ddSimpleTextTool::ddSimpleTextTool(ddDrawingEditor *editor, ddIFigure *fig, ddITool *dt):
 ddFigureTool(editor,fig,dt)
 {

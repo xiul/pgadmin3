@@ -5,7 +5,7 @@
 // Copyright (C) 2002 - 2010, The pgAdmin Development Team
 // This software is released under the PostgreSQL Licence
 //
-// ddPolyLineLocator.cpp 
+// ddPolyLineLocator.cpp - Return multiple location at same time for a PolyLine
 //////////////////////////////////////////////////////////////////////////
 
 #include "pgAdmin3.h"

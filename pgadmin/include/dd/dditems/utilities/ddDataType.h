@@ -19,6 +19,11 @@ enum ddMenuColumn {
 	change_datatype
 };
 
+enum ddHiddenTypes {
+	ddTableFig = 100,
+	ddRelFig = 200
+};
+
 enum ddDataType {
 	dt_null=0,
 	dt_serial,
@@ -50,6 +55,48 @@ enum ddDataType {
 	dt_timestamp,
 	dt_varbit //(n)
 };
+
+static wxArrayString ddDatatypes;
+/*
+wxArrayString& dataTypes(bool full)
+{
+    ddDatatypes.Clear();
+	//Fast access ddDatatypes
+    ddDatatypes.Add(wxT("ANY"));
+    ddDatatypes.Add(wxT("serial"));
+    ddDatatypes.Add(wxT("boolean"));
+    ddDatatypes.Add(wxT("integer"));
+    ddDatatypes.Add(wxT("money"));
+    ddDatatypes.Add(wxT("varchar(1)"));
+    if (full)
+    {
+        //Not fast access ddDatatypes
+        ddDatatypes.Add(wxT("bigint"));
+        ddDatatypes.Add(wxT("bit(1)"));
+        ddDatatypes.Add(wxT("bytea"));
+        ddDatatypes.Add(wxT("char(n)"));
+        ddDatatypes.Add(wxT("cidr"));
+        ddDatatypes.Add(wxT("circle"));
+        ddDatatypes.Add(wxT("date"));
+        ddDatatypes.Add(wxT("double precision"));
+        ddDatatypes.Add(wxT("inet"));
+        ddDatatypes.Add(wxT("interval(1)"));
+        ddDatatypes.Add(wxT("line"));
+        ddDatatypes.Add(wxT("lseg"));
+        ddDatatypes.Add(wxT("macaddr"));
+        ddDatatypes.Add(wxT("numeric(1,1)"));
+        ddDatatypes.Add(wxT("path"));
+        ddDatatypes.Add(wxT("point"));
+        ddDatatypes.Add(wxT("polygon"));
+        ddDatatypes.Add(wxT("real"));
+        ddDatatypes.Add(wxT("smallint"));
+        ddDatatypes.Add(wxT("text"));
+        ddDatatypes.Add(wxT("time"));
+        ddDatatypes.Add(wxT("timestamp"));
+        ddDatatypes.Add(wxT("varbit(1)"));
+    }
+	return ddDatatypes;
+}
 /*
 
 //DD-TODO: Add composite types later

@@ -1,12 +1,12 @@
 //////////////////////////////////////////////////////////////////////////
 //
 // pgAdmin III - PostgreSQL Tools
-// RCS-ID:      $Id: gqbView.cpp 8268 2010-04-15 21:49:27Z xiul $
-// Copyright (C) 2002 - 2010, The pgAdmin Development Team
+//
+// Copyright (C) 2002 - 2011, The pgAdmin Development Team
 // This software is released under the PostgreSQL Licence
 //
-// ddRelationshipFigure.cpp
-
+// ddRelationshipFigure.cpp - Figure to draw foreign keys between tables.
+//
 //////////////////////////////////////////////////////////////////////////
 
 #include "pgAdmin3.h"
@@ -18,11 +18,12 @@
 // App headers
 #include "dd/dditems/figures/ddRelationshipFigure.h"
 #include "dd/draw/main/ddDrawingView.h"
+#include "dd/dditems/utilities/ddDataType.h"
 
 ddRelationshipFigure::ddRelationshipFigure():
 ddLineConnection()
 {
-	setKindId(200);  //DD-TODO: improve this
+	setKindId(ddRelFig);
 	fkFromPk = true;
 	fkMandatory = true;
 	fkOneToMany = true;
@@ -52,7 +53,6 @@ ddRelationshipFigure::~ddRelationshipFigure()
 	chm.clear();
 }
 
-//DD-TODO: this function is execute two times at least each time because observers store in & out foreign key, fix this behavior
 void ddRelationshipFigure::updateForeignKey()
 {
 	if(getEndFigure() && getStartFigure() && getStartFigure()->ms_classInfo.IsKindOf(&ddTableFigure::ms_classInfo) && getEndFigure()->ms_classInfo.IsKindOf(&ddTableFigure::ms_classInfo))
@@ -60,34 +60,52 @@ void ddRelationshipFigure::updateForeignKey()
 		ddTableFigure *startTable = (ddTableFigure*) getStartFigure();
 		ddTableFigure *endTable = (ddTableFigure*) getEndFigure();
 		ddColumnFigure *col;
-		ddRelationshipItem *NewFkColumn;
+		ddRelationshipItem *fkColumnRelItem;
+
+
 
 		ddIteratorBase *iterator = startTable->figuresEnumerator();
-		iterator->Next(); //First Figure is Main Rect
-		iterator->Next(); //Second Figure is Table Title
+		iterator->Next(); //first figure is main rect
+		iterator->Next(); //second figure is table title
+		
+		//STEP 0: Before iterate over all columns of source table look if any column used at relationship, changed their name and updated it when needed
+		columnsHashMap::iterator it;
+		for (it = chm.begin(); it != chm.end(); ++it)
+		{
+			wxString key = it->first;
+			fkColumnRelItem = it->second;
+			if(!fkColumnRelItem->original->getColumnName(false).IsSameAs(fkColumnRelItem->originalStartColName,false))
+			{
+				//DD-TODO: update key of hashmap with new value because key changed
+				chm[fkColumnRelItem->original->getColumnName(false)]=fkColumnRelItem;
+				chm[fkColumnRelItem->originalStartColName]=NULL;
+				chm.erase(it);
+				fkColumnRelItem->synAutoFkName();
+				break;
+			}
+		}
+
+		//STEP 1: Look at all source table columns
 		while(iterator->HasNext())
 		{
 			col = (ddColumnFigure*) iterator->Next();
-			if(fkFromPk)  //RELATIONSHIP KIND IS USING A PK (PRIMARY KEY) AS FOREIGN KEYS
+			if(fkFromPk)  //fk is generated from a pk column: add new fk/pk(s) column(s) from source fk table to destination
 			{
-				//Add new pk columns from source fk table to destination
-				columnsHashMap::iterator it = chm.find(col->getColumnName());
-				bool NotFound = it == chm.end(); // will be true if not found
+				//STEP 1.1a: Add fk columns from table source pk if not exists using same name
+				it = chm.find(col->getColumnName());
+				bool NotFound = it == chm.end();
 
 				if( col->isPrimaryKey() && NotFound )
 				{
-					NewFkColumn = new ddRelationshipItem(col,endTable, (fkMandatory?notnull:null), (fkIdentifying?pk:fk) );
-					chm[col->getColumnName()]=NewFkColumn; //key will be original table name always
-					endTable->addColumn(NewFkColumn->fkColumn);
-					//hack to update relationship position when table size change
-					endTable->moveBy(-1,0);
+					fkColumnRelItem = new ddRelationshipItem(col,endTable, (fkMandatory?notnull:null), (fkIdentifying?pk:fk) );
+					chm[col->getColumnName()]=fkColumnRelItem; //hashmap key will be original table name always
+					endTable->addColumn(fkColumnRelItem->fkColumn);
+					endTable->moveBy(-1,0);	//hack to update relationship position when table size change
 					endTable->moveBy(1,0);
 				}
 
-				//Delete old Fk columns now not pk or deleted from source fk table.
-				//DD-TODO: optimize this later  and add deletes when needed
-
-				//Hack to repeat for every time a column is elimite because hashmap is modified inside a for and now is invalid that for loop
+				//STEP 1.2a: Delete old Fk columns not pk now or deleted from source fk table.
+				//This part of code (repeat) is a hack cause every time a column is delete hashmap is modified inside and becomes invalid iterator at that loop
 				bool repeat;   
 				do
                 {
@@ -95,16 +113,15 @@ void ddRelationshipFigure::updateForeignKey()
 					for (it = chm.begin(); it != chm.end(); ++it)
 					{
 						wxString key = it->first;
-						NewFkColumn = it->second;
-						if( !NewFkColumn->original->isPrimaryKey() || !startTable->includes(NewFkColumn->original) )
+						fkColumnRelItem = it->second;
+						if( !fkColumnRelItem->original->isPrimaryKey() || !startTable->includes(fkColumnRelItem->original) )
 						{
-							ddTableFigure *tmpTable=NewFkColumn->destinationTable;
-							NewFkColumn->destinationTable->removeColumn(NewFkColumn->fkColumn);
+							ddTableFigure *tmpTable=fkColumnRelItem->destinationTable;
+							fkColumnRelItem->destinationTable->removeColumn(fkColumnRelItem->fkColumn);
 							chm.erase(it);
-							delete NewFkColumn;
+							delete fkColumnRelItem;
 							repeat=true;
-							//hack to update relationship position when table size change
-							tmpTable->moveBy(-1,0);
+							tmpTable->moveBy(-1,0); //hack to update relationship position when table size change
 							tmpTable->moveBy(1,0);
 						}
 						if (repeat)
@@ -112,9 +129,46 @@ void ddRelationshipFigure::updateForeignKey()
 					}
 				} while(repeat);
 			}
-			else   //RELATIONSHIP KIND IS USING A UK (UNIQUE KEY) AS FOREIGN KEYS
+			else   //fk is generated from a uk column: add new fk/pk(s) column(s) from source fk table to destination
 			{
-				//DD-TODO: Add this functionality.
+				//STEP 1.1b: Add fk columns from table source uk if not exists
+				columnsHashMap::iterator it = chm.find(col->getColumnName());
+				bool NotFound = it == chm.end();
+
+				if( col->isUniqueKey(ukIndex) && NotFound )
+				{
+					fkColumnRelItem = new ddRelationshipItem(col,endTable, (fkMandatory?notnull:null), fk );
+					chm[col->getColumnName()]=fkColumnRelItem; //hashmap key will be original table name always
+					endTable->addColumn(fkColumnRelItem->fkColumn);
+					endTable->moveBy(-1,0);	//hack to update relationship position when table size change
+					endTable->moveBy(1,0);
+				}
+
+				//STEP 1.2b: Delete old Fk columns not pk now or deleted from source fk table.
+				//This part of code (repeat) is a hack cause every time a column is delete hashmap is modified inside and becomes invalid iterator at that loop
+				bool repeat;   
+				do
+                {
+					repeat=false;
+					for (it = chm.begin(); it != chm.end(); ++it)
+					{
+						wxString key = it->first;
+						fkColumnRelItem = it->second;
+						if( !fkColumnRelItem->original->isUniqueKey(ukIndex) || !startTable->includes(fkColumnRelItem->original) )
+						{
+							ddTableFigure *tmpTable=fkColumnRelItem->destinationTable;
+							fkColumnRelItem->destinationTable->removeColumn(fkColumnRelItem->fkColumn);
+							chm.erase(it);
+							delete fkColumnRelItem;
+							repeat=true;
+							tmpTable->moveBy(-1,0); //hack to update relationship position when table size change
+							tmpTable->moveBy(1,0);
+						}
+						if (repeat)
+							break;
+					}
+				} while(repeat);
+
 			}
 		}
 		delete iterator;
@@ -150,11 +204,25 @@ void ddRelationshipFigure::createMenu(wxMenu &mnu)
 void ddRelationshipFigure::OnTextPopupClick(wxCommandEvent& event, ddDrawingView *view)
 {
 	int answer;
+	ddTableFigure *startTable = NULL;
 	switch(event.GetId())
 	{
 		case MNU_FKEYFROMPKEY:
+			fkFromPk = true;
+			updateForeignKey();
+			break;
 		case MNU_FKEYFROMUKEY:
-			wxMessageBox(wxT("To be implemented soon..."), wxT("To be implemented soon..."), wxICON_INFORMATION, (wxScrolledWindow*) view);
+			fkFromPk = false;
+			startTable = (ddTableFigure*) getStartFigure();
+			if(startTable)
+				ukIndex = wxGetSingleChoiceIndex(wxT("Select Unique Key to usea as foreign Key Source"),wxT("Select Unique Key to add Column:"),startTable->getUkConstraintsNames(),view);
+			else
+				wxMessageBox(wxT("Error trying to get start table of foreign key connection"), wxT("Error trying to get start table of foreign key connection"),wxICON_ERROR, (wxScrolledWindow*)view);	
+			if(ukIndex == -1)
+			{
+				fkFromPk = true;
+			}
+			updateForeignKey();
 			break;
 		case MNU_MANDATORYRELATIONSHIP:
 			fkMandatory=!fkMandatory;
@@ -226,6 +294,14 @@ bool ddRelationshipFigure::getMandatory()
 	return fkMandatory;
 }
 
+/*
+	relationship is observed by several tables at same time, one is the
+	owner (start connector table) others are just observers of that 
+	relationship (end connectors table)
+
+	because this we don't need to register rel at 
+*/
+
 void ddRelationshipFigure::connectEnd(ddIConnector *end)
 {
 	ddLineConnection::connectEnd(end);
@@ -260,9 +336,9 @@ void ddRelationshipFigure::removeForeignKeys()
 	if(disconnectedEndTable)
 	{
 		columnsHashMap::iterator it;
-		ddRelationshipItem *NewFkColumn;
+		ddRelationshipItem *fkColumnRelItem;
 
-		//Hack to repeat for every time a column is elimite because hashmap is modified inside a for and now is invalid that for loop
+		//This part of code (repeat) is a hack cause every time a column is delete hashmap is modified inside and becomes invalid iterator at that loop
 		bool repeat;   
 		do
         {
@@ -270,12 +346,12 @@ void ddRelationshipFigure::removeForeignKeys()
 			for( it = chm.begin(); it != chm.end(); ++it )
 			{
 				wxString key = it->first;
-				NewFkColumn = it->second;
-				if(NewFkColumn->destinationTable->includes(NewFkColumn->fkColumn) )
+				fkColumnRelItem = it->second;
+				if(fkColumnRelItem->destinationTable->includes(fkColumnRelItem->fkColumn) )
 				{
-					NewFkColumn->destinationTable->removeColumn(NewFkColumn->fkColumn);
+					fkColumnRelItem->destinationTable->removeColumn(fkColumnRelItem->fkColumn);
 					chm.erase(it);
-					delete NewFkColumn;
+					delete fkColumnRelItem;
 					repeat = true;
 					break;
 				}
@@ -367,14 +443,26 @@ Items at hash map table
 ddRelationshipItem::ddRelationshipItem(ddColumnFigure *originalColumn, ddTableFigure *destination, ddColumnOptionType type, ddColumnType colType)
 {
 	original = originalColumn;
+	originalStartColName = original->getColumnName(false);
 	destinationTable = destination;
-	wxString newName = originalColumn->getOwnerTable()->getTableName();
-	newName.append(wxT("_"));
-	newName.append(originalColumn->getColumnName(false));
-	//DD-TODO: improve fk name
-	fkColumn = new ddColumnFigure(newName,destinationTable,this);
+	fkColumn = new ddColumnFigure(autoGenerateNameForFk(),destinationTable,this);
 	fkColumn->setColumnOption(type);
 	fkColumn->setColumnKind(colType);
+}
+
+wxString ddRelationshipItem::autoGenerateNameForFk()
+{
+	//DD-TODO: improve auto fk name
+	wxString newName = original->getOwnerTable()->getTableName();
+	newName.append(wxT("_"));
+	newName.append(originalStartColName);
+	return newName;
+}
+
+void ddRelationshipItem::synAutoFkName()
+{
+	originalStartColName = original->getColumnName(false);
+	fkColumn->setColumnName(autoGenerateNameForFk());
 }
 
 ddRelationshipItem::~ddRelationshipItem()

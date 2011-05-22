@@ -1,12 +1,14 @@
 //////////////////////////////////////////////////////////////////////////
 //
 // pgAdmin III - PostgreSQL Tools
-// RCS-ID:      $Id: gqbView.cpp 8268 2010-04-15 21:49:27Z xiul $
-// Copyright (C) 2002 - 2010, The pgAdmin Development Team
+//
+// Copyright (C) 2002 - 2011, The pgAdmin Development Team
 // This software is released under the PostgreSQL Licence
 //
-// ddTableFigure.cpp
-//////////////////////////////////////////////////////////////////////////
+// ddTableFigure.cpp - Draw table figure of a model
+//
+//////////////////////////////////////////////////////////////////////////// 
+
 
 #include "pgAdmin3.h"
 
@@ -48,20 +50,19 @@
 #include "images/ddRemoveTable.xpm"
 
 /*
-All figures title, cols, indxs are store at same array to improve performance
-
-[0] = table border rect
-[1] = table title
-[2] = first column index
-[maxColIndex] = last column index
-[minIdxIndex] = first index index
-[maxIdxIndex] = last index index
+All figures title, colums, indexes are store at same array to improve performance in the following order:
+	[0] = table border rect
+	[1] = table title
+	[2] = first column index
+	[maxColIndex] = last column index
+	[minIdxIndex] = first index index
+	[maxIdxIndex] = last index index
 */
 
 ddTableFigure::ddTableFigure(wxString tableName, int x, int y):
 ddCompositeFigure()
 {
-	setKindId(100);    //DD-TODO: improve this
+	setKindId(ddTableFig);
 	internalPadding = 2;
 	externalPadding = 4;
 	deleteColumnMode=false;
@@ -77,8 +78,6 @@ ddCompositeFigure()
 	tableTitle->moveTo(x,y);
 	tableTitle->disablePopUp();
 	tableTitle->setShowDataType(false);
-	//If owner == NULL then don't delete that column because it don't belong to table
-	//tableTitle->setOwnerTable(NULL); 
 	add(tableTitle);
 	tableTitle->moveTo(rectangleFigure->getBasicDisplayBox().x+internalPadding*2,rectangleFigure->getBasicDisplayBox().y+internalPadding/2);
 
@@ -95,7 +94,6 @@ ddCompositeFigure()
 	image=wxBitmap(ddMinimizeTable_xpm);
 	wxBitmap image2=wxBitmap(ddMaximizeTable_xpm);
 	figureHandles->addItem(new ddMinMaxTableButtonHandle((ddIFigure *)this,(ddILocator *)new ddMinMaxTableLocator(), image, image2,valueSize));
-// Don't use it to UI consistency, eliminate it	figureHandles->addItem(new ddNorthTableSizeHandle(this,new ddTableTopLocator()));
 	figureHandles->addItem(new ddSouthTableSizeHandle(this,(ddILocator *)new ddTableBottomLocator()));
 
 	//Intialize special handle
@@ -104,7 +102,7 @@ ddCompositeFigure()
 
 	fromSelToNOSel=false;
 	
-	//Intialize columns window (Min is always 1 in both, with or without cols & indxs)
+	//Intialize columns window (min is always 1 in both, with or without cols & indxs)
 	colsRowsSize = 0;
 	colsWindow = 0;
 	idxsRowsSize = 0;
@@ -115,8 +113,7 @@ ddCompositeFigure()
 	minIdxIndex=2;  
 	maxIdxIndex=2;
 
-	//Initialize position where start to draw cols & indxs
-	//This is value to allow scrollbars
+	//Initialize position where start to draw columns & indexes, this is the value to allow scrollbars
 	beginDrawCols=2;
 	beginDrawIdxs=2;
 
@@ -129,7 +126,6 @@ ddCompositeFigure()
 
 ddTableFigure::~ddTableFigure()
 {
-	//delete scrollbar
 	if(scrollbar)
 	{
 		if(figureHandles->existsObject(scrollbar))
@@ -139,7 +135,7 @@ ddTableFigure::~ddTableFigure()
 }
 
 
-//Columns SHOULD BE ADDED only using this function to avoid rare behaviors
+//WARNING: Columns SHOULD BE ADDED only using this function to avoid strange behaviors
 void ddTableFigure::addColumn(ddColumnFigure *column)
 {
 	column->setOwnerTable(this);
@@ -151,7 +147,7 @@ void ddTableFigure::addColumn(ddColumnFigure *column)
 		maxIdxIndex++;
 	}
 	maxColIndex++;
-	colsWindow++;  //by default add a columna increase window
+	colsWindow++;  //by default add a column increase initial window
 	colsRowsSize++;
 	calcRectsAreas();
 	recalculateColsPos();
@@ -159,7 +155,7 @@ void ddTableFigure::addColumn(ddColumnFigure *column)
 
 void ddTableFigure::removeColumn(ddColumnFigure *column)
 {
-	//hack to allow to remove Fk before delete it.
+	//Hack to allow to remove Fk before delete it.
 	if(column->isPrimaryKey())
 	{
 		column->setColumnKind(none);
@@ -170,7 +166,7 @@ void ddTableFigure::removeColumn(ddColumnFigure *column)
 	if(column)
 		delete column;
 	//Update Indexes
-	if(maxColIndex == minIdxIndex) //maxColIndex == minIdxIndex means not indexes at this table, then update too
+	if(maxColIndex == minIdxIndex) //means not indexes at this table, then update too
 	{	
 		minIdxIndex--;
 		maxIdxIndex--;
@@ -198,14 +194,14 @@ void ddTableFigure::recalculateColsPos()
 	wxFont font = settings->GetSystemFont();
 	int defaultHeight = getColDefaultHeight(font);
 
-	ddIFigure *f = (ddIFigure *) figureFigures->getItemAt(0); //First Figure is always Rect
+	ddIFigure *f = (ddIFigure *) figureFigures->getItemAt(0); //first figure is always Rect
 	int horizontalPos = f->displayBox().x+2;
 	int verticalPos = 0;
 
 	for(int i = 2; i < maxColIndex ; i++)
 	{
 		f = (ddIFigure *) figureFigures->getItemAt(i); //table title
-		if( (i >= beginDrawCols) && (i <= (colsWindow+beginDrawCols)) )  //visible to draw
+		if( (i >= beginDrawCols) && (i <= (colsWindow+beginDrawCols)) )  //Visible to draw
 		{
 			verticalPos = colsRect.y + (defaultHeight * (i-beginDrawCols) + ((i-beginDrawCols) * internalPadding));
 			f->moveTo(horizontalPos,verticalPos);
@@ -424,9 +420,9 @@ int ddTableFigure::getFiguresMaxWidth()
 	ddGeometry g;
 
 	ddIteratorBase *iterator=figuresEnumerator();
-	iterator->Next(); //First Figure is Main Rect
+	iterator->Next(); //First figure is main rect
 	int maxWidth=0;
-	f = (ddIFigure *) iterator->Next(); //Second Figure is Main Title
+	f = (ddIFigure *) iterator->Next(); //Second figure is main title
 	maxWidth = g.max(maxWidth,f->displayBox().width+20);
 	while(iterator->HasNext()){
 		f = (ddIFigure *) iterator->Next();
@@ -555,7 +551,7 @@ void ddTableFigure::setColumnsWindow(int value, bool maximize)
 		{
 			if( (beginDrawCols + colsWindow)==maxColIndex)  //if index is at max
 			{
-				int diff = value-colsWindow;  //value should be always higher tan colsWindows
+				int diff = value-colsWindow;  // value should be always higher tan colsWindows
 				if(diff > 0 && (beginDrawCols-diff)>=0 )
 				{
 					beginDrawCols-=diff;
@@ -636,6 +632,15 @@ wxString ddTableFigure::getTableName()
 	return c->getText(false);
 }
 
+
+/*
+	Note about observers:
+	A table is observed by several relationships at same time, where that observers
+	are just looking for changes that will affect relationship behavior.
+	Ex: if I delete a pk on observed table (source) all observers (destination)
+		should modify their columns to remove that fk created from that pk column.
+*/
+
 void ddTableFigure::updateFkObservers()
 {
 	ddIteratorBase *iterator = observersEnumerator();
@@ -646,11 +651,6 @@ void ddTableFigure::updateFkObservers()
 	delete iterator;
 }
 
-/*	
-	relationship is observed by several tables at same time, one is the
-	owner (start connector table) others are just observers of that 
-	relationship (end connectors table)
-*/
 //drop foreign keys with this table as origin or destination
 void ddTableFigure::processDeleteAlert(ddDrawingView *view)
 {
@@ -676,7 +676,33 @@ void ddTableFigure::processDeleteAlert(ddDrawingView *view)
 void ddTableFigure::basicMoveBy(int x, int y)
 {
 	ddIFigure *f = (ddIFigure *) figureFigures->getItemAt(0);
-	if((f->displayBox().x+x) > 0  && (f->displayBox().y+y) > 0)
+
+	//Quick Check at foreign key observers to allow or not basicMoveBy
+	bool insideProtectionArea = false;
+	ddIteratorBase *iterator = observersEnumerator();
+	while(iterator->HasNext()){
+		ddRelationshipFigure *r = (ddRelationshipFigure*) iterator->Next();
+		ddTableFigure *endTable = (ddTableFigure*) r->getEndFigure();
+		ddTableFigure *startTable = (ddTableFigure*) r->getStartFigure();				
+		ddRect thisRect = this->displayBox();
+
+		thisRect.Inflate(20,20);
+		thisRect.x += x;
+		thisRect.y += y;
+		
+		if(endTable!=this)  //Because observers are at both sides of a relationshipe: source / destination
+		{
+			insideProtectionArea = thisRect.Intersects(endTable->displayBox());
+		}
+		else
+		{
+			insideProtectionArea = startTable->displayBox().Intersects(thisRect);
+		}
+	}
+	delete iterator;
+
+	//if new absolute point is positive and not inside protection area
+	if( (f->displayBox().x + x) > 0  && (f->displayBox().y + y) > 0  && !insideProtectionArea )
 		ddCompositeFigure::basicMoveBy(x,y);
 }
 

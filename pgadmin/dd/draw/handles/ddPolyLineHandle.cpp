@@ -29,7 +29,6 @@ ddLocatorHandle((ddIFigure *)figure,loc)
 
 ddPolyLineHandle::~ddPolyLineHandle()
 {
-	//DD-TODO: delete locator here?
 }
 
 void ddPolyLineHandle::draw(wxBufferedDC& context, ddDrawingView *view)

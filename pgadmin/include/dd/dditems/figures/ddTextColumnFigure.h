@@ -16,7 +16,6 @@
 #include <wx/arrstr.h>
 
 #include "dd/draw/figures/ddSimpleTextFigure.h"
-//#include "dd/dditems/figures/ddColumnFigure.h"
 #include "dd/dditems/utilities/ddDataType.h"
 
 enum
@@ -48,7 +47,7 @@ public:
 	virtual wxString& getText(bool extended = false);
 	wxString getType();
     virtual void createMenu(wxMenu &mnu);
-	virtual wxArrayString& dataTypes(bool full=false);
+	virtual const wxArrayString dataTypes();
 	virtual void OnTextPopupClick(wxCommandEvent& event, ddDrawingView *view);
 	virtual void setText(wxString textString);
 	virtual ddColumnFigure* getOwnerColumn();
@@ -64,7 +63,6 @@ protected:
 private:
 	ddDataType columnType;
 	wxString out;
-	wxArrayString datatypes;  //DD-TODO: optimize this and shared between all objects
 	bool showDataType;
 	int precision;
 };

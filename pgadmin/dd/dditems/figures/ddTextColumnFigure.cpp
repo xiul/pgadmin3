@@ -1,12 +1,13 @@
-//////////////////	////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////
 //
 // pgAdmin III - PostgreSQL Tools
-// RCS-ID:      $Id: gqbView.cpp 8268 2010-04-15 21:49:27Z xiul $
-// Copyright (C) 2002 - 2010, The pgAdmin Development Team
+//
+// Copyright (C) 2002 - 2011, The pgAdmin Development Team
 // This software is released under the PostgreSQL Licence
 //
-// ddTextColumnFigure.cpp - 
-//////////////////////////////////////////////////////////////////////////
+// ddTextColumnFigure.cpp - Draw a column inside a table
+//
+//////////////////////////////////////////////////////////////////////////// 
 
 #include "pgAdmin3.h"
 
@@ -23,8 +24,7 @@
 #include "dd/draw/main/ddDrawingView.h"
 #include "dd/dditems/figures/ddTableFigure.h"
 
-//DD-TODO: Add composite column functionality by addin subcolumn for
-//         composite types, but care: composite types can be recursive (using inside other composite types)
+//DD-TODO: Add composite column functionality by addin subcolumn for composite types, but be careful: composite types can be recursive (using inside other composite types)
 
 ddTextColumnFigure::ddTextColumnFigure(wxString& columnName, ddDataType dataType, ddColumnFigure *owner):
 ddSimpleTextFigure(columnName)
@@ -46,7 +46,7 @@ wxString& ddTextColumnFigure::getText(bool extended)
 {
 	if(showDataType && extended)
 	{
-		wxString ddType = dataTypes(true)[columnType];
+		wxString ddType = dataTypes()[columnType];
 		if(columnType==dt_varchar && precision>0)
 		{
 			ddType.Truncate(ddType.Find(wxT("(")));
@@ -63,7 +63,7 @@ wxString& ddTextColumnFigure::getText(bool extended)
 
 wxString ddTextColumnFigure::getType()
 {
-    wxString ddType = dataTypes(true)[columnType];
+    wxString ddType = dataTypes()[columnType];
     if(columnType==dt_varchar && precision>0)
     {
         ddType.Truncate(ddType.Find(wxT("(")));
@@ -72,7 +72,7 @@ wxString ddTextColumnFigure::getType()
     return ddType;
 }
 
-//event ID must match enum ddDataType!!! this event was created on view
+//WARNING: event ID must match enum ddDataType!!! this event was created on view
 void ddTextColumnFigure::OnTextPopupClick(wxCommandEvent& event, ddDrawingView *view)
 {
 	wxTextEntryDialog *nameDialog=NULL;
@@ -98,7 +98,7 @@ void ddTextColumnFigure::OnTextPopupClick(wxCommandEvent& event, ddDrawingView *
                 getOwnerColumn()->getOwnerTable()->removeColumn(getOwnerColumn());
             break;
 		case MNU_RENAMECOLUMN:
-            nameDialog = new wxTextEntryDialog(view, wxT("New column name"), wxT("Rename Column"), getText());   //DD-TODO: change for dialog like in option 17
+            nameDialog = new wxTextEntryDialog(view, wxT("New column name"), wxT("Rename Column"), getText());
             nameDialog->ShowModal();
             setText(nameDialog->GetValue());
             delete nameDialog;
@@ -160,8 +160,7 @@ void ddTextColumnFigure::OnTextPopupClick(wxCommandEvent& event, ddDrawingView *
             getOwnerColumn()->getOwnerTable()->updateTableSize();
             break;
 		case MNU_TYPEOTHER:
-            //DD-TODO: Add all types, improve and separate from quick access types
-            columnType = (ddDataType) wxGetSingleChoiceIndex(wxT("New column datatype"),wxT("Column Datatypes"),dataTypes(true),view);
+            columnType = (ddDataType) wxGetSingleChoiceIndex(wxT("New column datatype"),wxT("Column Datatypes"),dataTypes(),view);
             recalculateDisplayBox();
             getOwnerColumn()->displayBoxUpdate();
             getOwnerColumn()->getOwnerTable()->updateTableSize();
@@ -185,14 +184,14 @@ void ddTextColumnFigure::OnTextPopupClick(wxCommandEvent& event, ddDrawingView *
             if (answer == wxYES)
             {
                 ddTableFigure *table = getOwnerColumn()->getOwnerTable();	
-                //unselect table
+                //Unselect table
                 if(view->isFigureSelected(table))
                 {
                     view->removeFromSelection(table);
                 }
-                //drop foreign keys with this table as origin or destination
+                //Drop foreign keys with this table as origin or destination
                 table->processDeleteAlert(view);
-                //drop table
+                //Drop table
                 view->remove(table);
                 if(table)
                 {
@@ -251,54 +250,55 @@ void ddTextColumnFigure::createMenu(wxMenu &mnu)
 	mnu.Append(MNU_DELTABLE, _("Delete table..."));
 };
 
-wxArrayString& ddTextColumnFigure::dataTypes(bool full)
+
+const wxArrayString ddTextColumnFigure::dataTypes()
 {
-    datatypes.Clear();
-    datatypes.Add(wxT("ANY"));
-    datatypes.Add(wxT("serial"));
-    datatypes.Add(wxT("boolean"));
-    datatypes.Add(wxT("integer"));
-    datatypes.Add(wxT("money"));
-    datatypes.Add(wxT("varchar(1)"));
-    if (full)
-    {
-        //not fast access datatypes
-        datatypes.Add(wxT("bigint"));
-        datatypes.Add(wxT("bit(1)"));
-        datatypes.Add(wxT("bytea"));
-        datatypes.Add(wxT("char(n)"));
-        datatypes.Add(wxT("cidr"));
-        datatypes.Add(wxT("circle"));
-        datatypes.Add(wxT("date"));
-        datatypes.Add(wxT("double precision"));
-        datatypes.Add(wxT("inet"));
-        datatypes.Add(wxT("interval(1)"));
-        datatypes.Add(wxT("line"));
-        datatypes.Add(wxT("lseg"));
-        datatypes.Add(wxT("macaddr"));
-        datatypes.Add(wxT("numeric(1,1)"));
-        datatypes.Add(wxT("path"));
-        datatypes.Add(wxT("point"));
-        datatypes.Add(wxT("polygon"));
-        datatypes.Add(wxT("real"));
-        datatypes.Add(wxT("smallint"));
-        datatypes.Add(wxT("text"));
-        datatypes.Add(wxT("time"));
-        datatypes.Add(wxT("timestamp"));
-        datatypes.Add(wxT("varbit(1)"));
-    }
-	return datatypes;
+	if(ddDatatypes.IsEmpty())
+	{
+	//Fast access ddDatatypes
+		ddDatatypes.Add(wxT("ANY"));
+		ddDatatypes.Add(wxT("serial"));
+		ddDatatypes.Add(wxT("boolean"));
+		ddDatatypes.Add(wxT("integer"));
+		ddDatatypes.Add(wxT("money"));
+		ddDatatypes.Add(wxT("varchar(1)"));
+	//Normal access ddDatatypes
+			ddDatatypes.Add(wxT("bigint"));
+			ddDatatypes.Add(wxT("bit(1)"));
+			ddDatatypes.Add(wxT("bytea"));
+			ddDatatypes.Add(wxT("char(n)"));
+			ddDatatypes.Add(wxT("cidr"));
+			ddDatatypes.Add(wxT("circle"));
+			ddDatatypes.Add(wxT("date"));
+			ddDatatypes.Add(wxT("double precision"));
+			ddDatatypes.Add(wxT("inet"));
+			ddDatatypes.Add(wxT("interval(1)"));
+			ddDatatypes.Add(wxT("line"));
+			ddDatatypes.Add(wxT("lseg"));
+			ddDatatypes.Add(wxT("macaddr"));
+			ddDatatypes.Add(wxT("numeric(1,1)"));
+			ddDatatypes.Add(wxT("path"));
+			ddDatatypes.Add(wxT("point"));
+			ddDatatypes.Add(wxT("polygon"));
+			ddDatatypes.Add(wxT("real"));
+			ddDatatypes.Add(wxT("smallint"));
+			ddDatatypes.Add(wxT("text"));
+			ddDatatypes.Add(wxT("time"));
+			ddDatatypes.Add(wxT("timestamp"));
+			ddDatatypes.Add(wxT("varbit(1)"));
+	}
+	return ddDatatypes;
 }
 
-//DD-TODO: when a event onfigurechange exists, replace this hack with that event
-//Hack to allow column text to submit new size of text signal to tablefigure and then recalculate displaybox
 void ddTextColumnFigure::setText(wxString textString)
 {
 	ddSimpleTextFigure::setText(textString);
+	//Hack to allow column text to submit new size of text signal to tablefigure and then recalculate displaybox
 	if(ownerColumn)
 	{
 		ownerColumn->displayBoxUpdate();
 		ownerColumn->getOwnerTable()->updateTableSize();
+		ownerColumn->getOwnerTable()->updateFkObservers();
 	}
 }
 

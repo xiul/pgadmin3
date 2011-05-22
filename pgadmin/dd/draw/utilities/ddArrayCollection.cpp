@@ -91,11 +91,45 @@ void ddArrayCollection::removeAll()
 ddObject* ddArrayCollection::getItemAt(int index)
 {
     if(!ddArray.IsEmpty())
-        //return ddArray.Item(index);
 		return ddArray[index];
     else
         return NULL;
 }
+
+/*   DD-TODO add sort by
+static int ddArrayCmpFakeRear( ddObject** a, ddObject** b )
+{
+	{
+   	if (ddFakeSortItem == *b)
+		return 0;
+
+	if (*a > *b)
+		return 1;
+	else
+		return -1;
+	}
+}
+*/
+
+//Bring item to start of array
+void ddArrayCollection::bringToFront(ddObject *item)
+{
+	ddObject *tmp = ddArray[0];
+	int index = getIndex(item);
+	ddArray[0]=ddArray[index];
+	ddArray[index]=tmp;
+}
+
+//Bring item to end of array
+void ddArrayCollection::bringToBack(ddObject *item)
+{
+	int end = count() - 1;
+	ddObject *tmp = ddArray[end];
+	int index = getIndex(item);
+	ddArray[end]=ddArray[index];
+	ddArray[index]=tmp;
+}
+
 
 int ddArrayCollection::getIndex(ddObject *item)
 {
@@ -115,9 +149,11 @@ void ddArrayCollection::replaceAtIndex(ddObject *item, int index)
 	ddArray.Insert(item,index);
 }
 
+
 //
 // ddArrayIterator - Manages iterator for the array collection concrete class, from first to last element
 //
+
 
 // Constructor
 ddArrayIterator::ddArrayIterator(ddObjsArray *ddPtrsArray)
@@ -156,9 +192,11 @@ void ddArrayIterator::ResetIterator()
     position=0;
 }
 
+
 //
 // ddArrayDownIterator - Manages iterator for the array collection concrete class from last to first element
 //
+
 
 // Constructor
 ddArrayDownIterator::ddArrayDownIterator(ddObjsArray *ddPtrsArray)

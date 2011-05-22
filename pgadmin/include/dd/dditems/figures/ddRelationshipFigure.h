@@ -1,11 +1,11 @@
 //////////////////////////////////////////////////////////////////////////
 //
 // pgAdmin III - PostgreSQL Tools
-// RCS-ID:      $Id: gqbObject.h 8189 2010-02-25 22:10:21Z dpage $
-// Copyright (C) 2002 - 2010, The pgAdmin Development Team
+//
+// Copyright (C) 2002 - 2011, The pgAdmin Development Team
 // This software is released under the PostgreSQL Licence
 //
-// gqbObject.h - 
+// ddRelationshipFigure.h - Figure to draw foreign keys between tables.
 //
 //////////////////////////////////////////////////////////////////////////
 
@@ -14,10 +14,6 @@
 #include "dd/draw/figures/ddLineConnection.h"
 #include "dd/dditems/figures/ddTableFigure.h"
 #include "dd/dditems/figures/ddColumnFigure.h"
-/*#include "dd/draw/connectors/ddIConnector.h"
-#include "dd/draw/utilities/ddPoint.h"
-#include "dd/draw/handles/ddIHandle.h"
-*/
 
 enum
 {
@@ -53,12 +49,8 @@ public:
 	virtual void connectStart(ddIConnector *start);
 	void disconnectStart();
 	void disconnectEnd();
-	//bool belongsToThisTable(ddTableFigure *possibleOwner);
 	wxString generateSQL();
 protected:
-/*	virtual void connectFigure (ddIConnector *connector);
-	virtual void disconnectFigure (ddIConnector *connector);
-	*/
 private:
 	virtual void OnTextPopupClick(wxCommandEvent& event, ddDrawingView *view);
 	wxArrayString strings;
@@ -78,9 +70,13 @@ class ddRelationshipItem : public ddObject
 public:
 	ddRelationshipItem(ddColumnFigure *originalColumn, ddTableFigure *destination, ddColumnOptionType type, ddColumnType colType);
 	~ddRelationshipItem();
+	wxString originalStartColName;
 	ddColumnFigure *original;
 	ddColumnFigure *fkColumn;
 	ddTableFigure *destinationTable;
+
+	wxString autoGenerateNameForFk();
+	void synAutoFkName();
 };
 
 #endif

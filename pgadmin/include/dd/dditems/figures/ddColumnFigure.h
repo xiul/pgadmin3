@@ -1,11 +1,11 @@
 //////////////////////////////////////////////////////////////////////////
 //
 // pgAdmin III - PostgreSQL Tools
-// RCS-ID:      $Id: gqbObject.h 8189 2010-02-25 22:10:21Z dpage $
-// Copyright (C) 2002 - 2010, The pgAdmin Development Team
+//
+// Copyright (C) 2002 - 2011, The pgAdmin Development Team
 // This software is released under the PostgreSQL Licence
 //
-// gqbObject.h - 
+// ddColumnFigure.h - Minimal Composite Figure for a column of a table
 //
 //////////////////////////////////////////////////////////////////////////
 
@@ -19,15 +19,15 @@
 class ddTableFigure;
 class ddRelationshipItem;
 
-// This figure is like composite but minimize overhead for columns
+//Minimal overhead composite figure
 class ddColumnFigure : public ddAbstractFigure
 {
 public:
 	ddColumnFigure(wxString& columnName, ddTableFigure *owner, ddRelationshipItem *sourceFk=NULL);
-	//ddColumnFigure(ddColumnFigure *column);
     ~ddColumnFigure();
 	virtual void basicMoveBy(int x, int y);
 	virtual void moveTo(int x, int y);
+	virtual void setOwnerTable(ddTableFigure *table);
 	virtual bool containsPoint(int x, int y);
 	virtual ddRect& getBasicDisplayBox();
 	virtual void draw(wxBufferedDC& context, ddDrawingView *view);
@@ -35,15 +35,13 @@ public:
 	virtual ddIFigure* findFigure(int x, int y);
 	virtual ddIFigure* getFigureAt(int pos);
 	virtual ddITool* CreateFigureTool(ddDrawingEditor *editor, ddITool *defaultTool);
-	virtual void sendToBack(ddIFigure *figure);
-	virtual void sendToFront(ddIFigure *figure);
 	virtual ddTableFigure* getOwnerTable();
-	virtual void setOwnerTable(ddTableFigure *table);
 	void displayBoxUpdate();
 	bool isNull();
 	bool isNotNull();
 	bool isPrimaryKey();
 	bool isUniqueKey();
+	bool isUniqueKey(int ukIndex);
 	int getUniqueConstraintIndex();
 	void setUniqueConstraintIndex(int i);
 	bool isPlain();
@@ -63,8 +61,8 @@ protected:
 	ddColumnOptionIcon *centerImage;
 	ddTextColumnFigure *columnText;
 	ddTableFigure *ownerTable;
+
 private:
-	//bool isForeignKey;
 	ddRelationshipItem *fkSource;
 
 	

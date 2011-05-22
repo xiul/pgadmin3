@@ -46,6 +46,8 @@ public:
     virtual int getIndex(ddObject *item) = 0;
     virtual void insertAtIndex(ddObject *item, int index) = 0;
 	virtual void replaceAtIndex(ddObject *item, int index) = 0;
+	virtual void bringToFront(ddObject *item)=0;
+	virtual void bringToBack(ddObject *item)=0;
     virtual void deleteAll()=0;
     virtual void removeAll()=0;           //remove all items from collection without deleting.
 };

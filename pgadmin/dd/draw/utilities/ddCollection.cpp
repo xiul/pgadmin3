@@ -99,3 +99,13 @@ void ddCollection::insertAtIndex(ddObject *item, int index)
 void ddCollection::replaceAtIndex(ddObject *item, int index){
 	collection->replaceAtIndex(item,index);
 }
+
+void ddCollection::bringToFront(ddObject *item)
+{
+	collection->bringToFront(item);
+}
+
+void ddCollection::bringToBack(ddObject *item)
+{
+	collection->bringToBack(item);
+}

@@ -16,7 +16,10 @@
 #include "dd/draw/tools/ddITool.h"
 #include "dd/dditems/figures/ddTableFigure.h"
 
-// Create Array Objects used as base for gqbCollections
+
+//WX_DECLARE_STRING_HASH_MAP( int, figureHiddenKindMap );
+
+// Create Array Objects used as base for gqbCollections  DD-TODO fix this comment
 class ddDatabaseDesign : public wxObject
 {
 public:
@@ -34,6 +37,7 @@ public:
 	wxString getNewTableName();
     ddTableFigure* getSelectedTable();
 	bool containsTable(wxString tableName);
+
 
 protected:
 

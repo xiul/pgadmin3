@@ -58,6 +58,8 @@ public:
     ddIteratorBase* createIterator();
 	ddIteratorBase* createDownIterator();
     ddObject* getItemAt(int index);
+	void bringToFront(ddObject *item);
+	void bringToBack(ddObject *item);
     int count();
     bool existsObject(ddObject *item);
     int getIndex(ddObject *item);
@@ -66,8 +68,7 @@ public:
     void deleteAll();
     void removeAll();
     ddObject *& operator[](size_t index) { return ddArray[index]; }
-
 private:
-    ddObjsArray ddArray;
+	ddObjsArray ddArray;
 };
 #endif

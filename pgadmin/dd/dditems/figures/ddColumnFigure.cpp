@@ -1,11 +1,12 @@
 //////////////////////////////////////////////////////////////////////////
 //
 // pgAdmin III - PostgreSQL Tools
-// RCS-ID:      $Id: gqbView.cpp 8268 2010-04-15 21:49:27Z xiul $
-// Copyright (C) 2002 - 2010, The pgAdmin Development Team
+//
+// Copyright (C) 2002 - 2011, The pgAdmin Development Team
 // This software is released under the PostgreSQL Licence
 //
-//  ddColumnFigure.cpp
+// ddColumnFigure.cpp - Minimal Composite Figure for a column of a table
+//
 //////////////////////////////////////////////////////////////////////////
 
 #include "pgAdmin3.h"
@@ -24,23 +25,15 @@
 #include "dd/dditems/utilities/ddDataType.h"
 #include "dd/dditems/figures/ddTableFigure.h"
 
-//Images
-//#include "images/foreignkey.xpm"
-//#include "images/primarykey.xpm"
-//#include "images/unique.xpm"
-//#include "images/parser.xpm"  //test for fk pk
-
-
 ddColumnFigure::ddColumnFigure(wxString& columnName, ddTableFigure *owner, ddRelationshipItem *sourceFk)
 {
 	columnText = new ddTextColumnFigure(columnName,dt_null,this);
 	leftImage = new ddColumnKindIcon(this);
 	centerImage = new ddColumnOptionIcon(this);
-	//isForeignKey = columnIsForeignKey;
 	fkSource=sourceFk;
 	setOwnerTable(owner);
 
-	//init displaybox && images position
+	//Initialize displaybox and image coords
 	basicDisplayBox.SetPosition(wxPoint(0,0));
 	basicDisplayBox.SetSize( columnText->displayBox().GetSize());
 	if(leftImage && centerImage)
@@ -52,7 +45,7 @@ ddColumnFigure::ddColumnFigure(wxString& columnName, ddTableFigure *owner, ddRel
 	}
 	else
 	{
-		basicDisplayBox.width+=22; //default value =1 + 8 + 3 + 8 +2 
+		basicDisplayBox.width+=22; //default value = 1 + 8 + 3 + 8 + 2 
 		columnText->displayBox().x+=22;
 	}
 }
@@ -89,7 +82,7 @@ void ddColumnFigure::moveTo(int x, int y)
 	}
 	else
 	{
-		distance+=11; //8+3
+		distance+=11; //value = 8 + 3
 	}
 	
     if(centerImage)
@@ -99,7 +92,7 @@ void ddColumnFigure::moveTo(int x, int y)
 	}
 	else
 	{
-		distance+=11; //8+3
+		distance+=11; //value = 8 + 3
 	}
 
 	columnText->moveTo(x+distance,y);
@@ -164,17 +157,6 @@ ddITool* ddColumnFigure::CreateFigureTool(ddDrawingEditor *editor, ddITool *defa
 	return new ddColumnFigureTool(editor, this, defaultTool);
 }
 
-void ddColumnFigure::sendToBack(ddIFigure *figure)
-{
-	//DD-TODO: Implement this function
-}
-
-void ddColumnFigure::sendToFront(ddIFigure *figure)
-{
-	//DD-TODO: Implement this function
-}
-
-
 ddIFigure* ddColumnFigure::getFigureAt(int pos)
 {
 	if(pos==0)
@@ -209,7 +191,7 @@ void ddColumnFigure::displayBoxUpdate()
 	}
 	else
 	{
-		basicDisplayBox.width+=22; //default value =1 + 8 + 3 + 8 +2 
+		basicDisplayBox.width+=22; //default value = 1 + 8 + 3 + 8 +2 
 	}
 }
 
@@ -231,6 +213,14 @@ bool ddColumnFigure::isPrimaryKey()
 bool ddColumnFigure::isUniqueKey()
 {
 	return leftImage->getKind()==uk;
+}
+
+bool ddColumnFigure::isUniqueKey(int ukIndex)
+{
+	if(leftImage->getKind()==uk)
+		return ukIndex==getUniqueConstraintIndex();
+	else
+		return false;
 }
 
 bool ddColumnFigure::isPlain()

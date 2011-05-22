@@ -5,7 +5,7 @@
 // Copyright (C) 2002 - 2010, The pgAdmin Development Team
 // This software is released under the PostgreSQL Licence
 //
-// ddMouseEvent.cpp
+// ddMouseEvent.cpp - Wrapper Class to integrate conversion CalcUnscrolledPosition in a mouse event.
 //
 //////////////////////////////////////////////////////////////////////////
 
@@ -18,11 +18,9 @@
 #include "dd/draw/utilities/ddMouseEvent.h"
 #include "dd/draw/main/ddDrawingView.h"
 
-//This allow only to use selected functions from event and for conversion reason as main goal (unscrolled points)
 ddMouseEvent::ddMouseEvent(wxMouseEvent& event, ddDrawingView *owner):
 mouseEvent(event)
 {
-    // mouseEvent is a private reference that should be initialized in constructor
 	view=owner;
 	m_shiftDown = event.m_shiftDown;
 }

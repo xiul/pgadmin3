@@ -105,12 +105,12 @@ void ddDrawing::recalculateDisplayBox(){
 
 void ddDrawing::bringToFront(ddIFigure *figure)
 {
-	//DD-TODO: do it
+	figures->bringToFront(figure);
 }
 
 void ddDrawing::sendToBack(ddIFigure *figure)
 {
-	//DD-TODO: do it
+	figures->bringToBack(figure);
 }
 
 ddRect& ddDrawing::DisplayBox()

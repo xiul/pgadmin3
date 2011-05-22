@@ -1,11 +1,11 @@
 //////////////////////////////////////////////////////////////////////////
 //
 // pgAdmin III - PostgreSQL Tools
-// RCS-ID:      $Id: gqbView.cpp 8268 2010-04-15 21:49:27Z xiul $
-// Copyright (C) 2002 - 2010, The pgAdmin Development Team
+//
+// Copyright (C) 2002 - 2011, The pgAdmin Development Team
 // This software is released under the PostgreSQL Licence
 //
-// ddRelationshipTerminal.cpp
+// ddRelationshipTerminal.cpp - Draw inverse arrows at fk terminal based on kind of relationship.
 //
 //////////////////////////////////////////////////////////////////////////
 
@@ -24,8 +24,6 @@
 
 ddRelationshipTerminal::ddRelationshipTerminal(ddRelationshipFigure *owner, bool endFigureTerminal)
 {
-	//lineDistance = 8;
-	//pointDistance = 22;
 	ownerFigure = owner;
 	endTerminal = endFigureTerminal;
 }
@@ -34,7 +32,6 @@ ddRelationshipTerminal::~ddRelationshipTerminal()
 {
 }
 
-//DD-TODO: this need this ddDrawingView *view ??? or just avoid this and always pass calcscrolled points
 ddPoint& ddRelationshipTerminal::draw (wxBufferedDC& context, ddPoint& a, ddPoint& b, ddDrawingView *view)
 {
 	ddGeometry g;
@@ -64,28 +61,21 @@ ddPoint& ddRelationshipTerminal::draw (wxBufferedDC& context, ddPoint& a, ddPoin
 			context.SetPen(*wxBLACK_PEN);
 			context.SetBrush(*wxBLACK_BRUSH);
 			
+			double XX,YY,distance;
 
-			//DD-TODO: optimize this Hack to get correct size of table connector many triangle
-			double XX,YY,factor=0.1,distance;
-			bool first=true;
-			
-			factor = lastFactor;
-			do
-            {
-				XX= aCopy.x + (bCopy.x - aCopy.x) * factor;
-				YY= aCopy.y + (bCopy.y - aCopy.y) * factor;
-				distance = sqrt( (aCopy.x - XX)*(aCopy.x - XX) + (aCopy.y - YY)*(aCopy.y - YY));
-				if(first && distance > 30)
-				{
-					factor=0.1;
-					first=false;
-				}
-				lastFactor = factor;	
-				if(distance > 20)
-					factor=factor*0.75;
-				else
-					factor=factor*1.20;
-			} while(distance > 20 || distance < 10);
+			//Calculate a new point to a given distance from the end of the relationship to draw many ( ----<| ) connector
+			//first calculate vector from point1 & point2
+			double vectorx = aCopy.x - bCopy.x;
+			double vectory = aCopy.y - bCopy.y;
+			//calculate the length
+			double length = sqrt(vectorx*vectorx + vectory*vectory);
+			//normalize the vector to unit length
+			double normalizevx = vectorx / length;
+			double normalizevy = vectory / length;
+			distance = -15;
+			//calculate point a given distance
+			XX = bCopy.x + normalizevx * (length + distance);
+			YY = bCopy.y + normalizevy * (length + distance);
 
 			wxPoint intersectionLine1(centerX,centerY);
 			wxPoint intersectionLine2(X,Y);
@@ -148,7 +138,7 @@ ddPoint& ddRelationshipTerminal::draw (wxBufferedDC& context, ddPoint& a, ddPoin
 					context.SetPen(*wxBLACK_PEN);
 				}
 			}
-			else  //CENTER of star figure or invalid place
+			else  //DD-TODO: CENTER of star figure or invalid place
 			{
 				context.DrawText(wxString(wxT("NOOOOOO!!!! porqueeeeeee")),100,100);
 			}
