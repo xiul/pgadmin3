@@ -70,6 +70,7 @@ int ddGeometry::max(double a, double b)
 	return(a>=b)?a:b;
 }
 
+//Gets the angle of a point relative to a rectangle.
 double ddGeometry::angleFromPoint(ddRect r, ddPoint point)
 {
 	double rx = point.x - r.center().x;
@@ -77,6 +78,7 @@ double ddGeometry::angleFromPoint(ddRect r, ddPoint point)
 	return atan2 (ry * r.width, rx * r.height);
 }
 
+//Gets the point on a rectangle that corresponds to the given angle.
 ddPoint ddGeometry::edgePointFromAngle(ddRect r, double angle)
 {
 	static ddPoint locationPoint; //Hack to allow bug in linux & ddabs
@@ -138,6 +140,8 @@ double ddGeometry::lineSize (ddPoint p1, ddPoint p2)
 	return sqrt (perimeter);
 }
 
+// source: http://vision.dai.ed.ac.uk/andrewfg/c-g-a-faq.html
+// Standard line intersection algorithm, Return true intersection if it exists, else false.
 bool ddGeometry::intersection(ddPoint p1, ddPoint p2, ddPoint p3, ddPoint p4)
 {
     // Store the values for fast access and easy

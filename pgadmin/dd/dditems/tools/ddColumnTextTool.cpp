@@ -17,17 +17,18 @@
 
 // App headers
 #include "dd/dditems/tools/ddColumnTextTool.h"
-#include "dd/dditems/figures/ddTextColumnFigure.h"
+#include "dd/dditems/figures/ddTextTableItemFigure.h"
 #include "dd/dditems/figures/ddTableFigure.h"
+#include "dd/draw/utilities/ddDialogs.h"
 
 class ddDrawingEditor;
 
 
-ddColumnTextTool::ddColumnTextTool(ddDrawingEditor *editor, ddIFigure *fig, ddITool *dt):
-ddSimpleTextTool(editor,fig,dt)
+ddColumnTextTool::ddColumnTextTool(ddDrawingEditor *editor, ddIFigure *fig, ddITool *dt, bool fastEdit , wxString dialogCaption, wxString dialogMessage):
+ddSimpleTextTool(editor,fig,dt, fastEdit, dialogCaption, dialogMessage)
 {
-	if(colTextFigure->ms_classInfo.IsKindOf(&ddTextColumnFigure::ms_classInfo))
-		colTextFigure = (ddTextColumnFigure *) fig;
+	if(colTextFigure->ms_classInfo.IsKindOf(&ddTextTableItemFigure::ms_classInfo))
+		colTextFigure = (ddTextTableItemFigure *) fig;
 	else
 		colTextFigure = NULL;
 }
@@ -67,5 +68,30 @@ void ddColumnTextTool::mouseDown(ddMouseEvent& event)
 	}
 	if(colTextFigure && colTextFigure->getOwnerColumn() &&  colTextFigure->getOwnerColumn()->getOwnerTable()) //if click on any other place disable column delete
 		colTextFigure->getOwnerColumn()->getOwnerTable()->toggleColumnDeleteMode(true);
+
 	ddSimpleTextTool::mouseDown(event);
+}
+
+void ddColumnTextTool::callDialog()
+{
+	if(colTextFigure->getOwnerColumn()==NULL)
+	{
+	ddTwoInputsDialog *nameAliasDialog = new ddTwoInputsDialog(
+												getDrawingEditor()->view(),
+												DDTWODIALOGSINPUT,
+												wxT("Rename Table"),
+												wxT("New Table Name"),
+												colTextFigure->getText(),
+												wxT("Alias"),
+												colTextFigure->getAlias()
+												);
+	nameAliasDialog->ShowModal();
+	colTextFigure->setText(nameAliasDialog->GetValue1());
+	colTextFigure->setAlias(nameAliasDialog->GetValue2());
+	delete nameAliasDialog;
+	}
+	else
+	{
+		ddSimpleTextTool::callDialog();
+	}
 }

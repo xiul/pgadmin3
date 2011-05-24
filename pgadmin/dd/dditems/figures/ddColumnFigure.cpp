@@ -18,7 +18,7 @@
 
 // App headers
 #include "dd/dditems/figures/ddColumnFigure.h"
-#include "dd/dditems/figures/ddTextColumnFigure.h"
+#include "dd/dditems/figures/ddTextTableItemFigure.h"
 #include "dd/dditems/tools/ddColumnFigureTool.h"
 #include "dd/dditems/figures/ddColumnKindIcon.h"
 #include "dd/dditems/figures/ddColumnOptionIcon.h"
@@ -27,7 +27,7 @@
 
 ddColumnFigure::ddColumnFigure(wxString& columnName, ddTableFigure *owner, ddRelationshipItem *sourceFk)
 {
-	columnText = new ddTextColumnFigure(columnName,dt_null,this);
+	columnText = new ddTextTableItemFigure(columnName,dt_null,this);
 	leftImage = new ddColumnKindIcon(this);
 	centerImage = new ddColumnOptionIcon(this);
 	fkSource=sourceFk;

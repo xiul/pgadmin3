@@ -38,7 +38,7 @@ public:
 //	virtual void removeDependentFigure (ddIFigure *figure);
 	virtual void addHandle (ddIHandle *handle);
 	virtual void removeHandle (ddIHandle *handle);
-	ddIConnector* connectorAt (int x, int y);
+	virtual ddIConnector* connectorAt (int x, int y);
 	virtual void moveBy(int x, int y);
 	virtual void moveTo(int x, int y);
 	virtual bool containsPoint(int x, int y);
@@ -66,9 +66,9 @@ protected:
 	void setDefaultSelectedBrush(wxBrush& brush);
 	wxPen defaultPen, defaultSelectedPen;
 	wxBrush defaultBrush, defaultSelectedBrush;
+	ddIConnector *connector;
 private:
 	bool selected;
-	ddIConnector *connector;
 	int kindHiddenId;
 
 };

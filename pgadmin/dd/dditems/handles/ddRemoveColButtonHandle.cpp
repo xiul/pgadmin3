@@ -35,7 +35,7 @@ ddRemoveColButtonHandle::~ddRemoveColButtonHandle()
 void ddRemoveColButtonHandle::invokeStart(ddMouseEvent &event, ddDrawingView *view)
 {
 	ddTableFigure *table = (ddTableFigure*) getOwner();
-	ddTextColumnFigure *column = (ddTextColumnFigure*) table->findFigure(event.GetPosition().x,event.GetPosition().y);
+	ddTextTableItemFigure *column = (ddTextTableItemFigure*) table->findFigure(event.GetPosition().x,event.GetPosition().y);
 	if(column)
 			table->toggleColumnDeleteMode();
 }

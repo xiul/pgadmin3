@@ -19,7 +19,7 @@
 
 // App headers
 #include "dd/dditems/figures/ddTableFigure.h"
-#include "dd/dditems/figures/ddTextColumnFigure.h"
+#include "dd/dditems/figures/ddTextTableItemFigure.h"
 #include "dd/dditems/figures/ddColumnFigure.h"
 #include "dd/draw/main/ddDrawingView.h"
 #include "dd/dditems/utilities/ddDataType.h"
@@ -39,7 +39,7 @@
 #include "dd/dditems/locators/ddTableBottomLocator.h"
 #include "dd/draw/utilities/ddGeometry.h"
 #include "dd/dditems/figures/ddRelationshipFigure.h"
-
+#include "dd/draw/connectors/ddLocatorConnector.h"
 
 //Images
 #include "images/ddAddColumn.xpm"
@@ -73,11 +73,12 @@ ddCompositeFigure()
 	add(rectangleFigure);
 	
 	//DD-TODO: improve table name automatic creation
-	tableTitle = new ddTextColumnFigure(tableName,dt_null,NULL);
+	tableTitle = new ddTextTableItemFigure(tableName,dt_null,NULL);
 	tableTitle->setEditable(true);
 	tableTitle->moveTo(x,y);
 	tableTitle->disablePopUp();
 	tableTitle->setShowDataType(false);
+	tableTitle->setAlias(wxEmptyString);
 	add(tableTitle);
 	tableTitle->moveTo(rectangleFigure->getBasicDisplayBox().x+internalPadding*2,rectangleFigure->getBasicDisplayBox().y+internalPadding/2);
 
@@ -628,7 +629,7 @@ wxArrayString& ddTableFigure::getUkConstraintsNames()
 
 wxString ddTableFigure::getTableName()
 {
-	ddTextColumnFigure *c = (ddTextColumnFigure*) figureFigures->getItemAt(1);
+	ddTextTableItemFigure *c = (ddTextTableItemFigure*) figureFigures->getItemAt(1);
 	return c->getText(false);
 }
 

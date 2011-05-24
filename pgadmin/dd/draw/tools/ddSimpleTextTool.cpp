@@ -23,9 +23,12 @@
 class ddDrawingEditor;
 
 //
-ddSimpleTextTool::ddSimpleTextTool(ddDrawingEditor *editor, ddIFigure *fig, ddITool *dt):
+ddSimpleTextTool::ddSimpleTextTool(ddDrawingEditor *editor, ddIFigure *fig, ddITool *dt, bool fastEdit , wxString dialogCaption, wxString dialogMessage):
 ddFigureTool(editor,fig,dt)
 {
+	dlgMessage = dialogMessage;
+	dlgCaption = dialogCaption;
+	withoutDialog = fastEdit;
 	showEdit = false;
 	//DD-TODO: set this value: edit.SetFont();  and fix layout and fix ID of edit because it should be a constant
 	txtFigure = ((ddSimpleTextFigure *)this->getFigure());
@@ -75,9 +78,21 @@ void ddSimpleTextTool::mouseDown(ddMouseEvent& event)
     // Double click to rename an object
 	if(event.LeftDClick())
 	{
-        wxString sNewValue = wxGetTextFromUser(_("New table name"), _("Rename table"), txtFigure->getText());
-        if (!sNewValue.IsEmpty())
-            txtFigure->setText(sNewValue);
+		if(withoutDialog)
+		{
+			getDrawingEditor()->view()->setSimpleTextToolFigure(txtFigure);
+			showEdit = true;
+			edit->ChangeValue(txtFigure->getText()); //Same as SetValue but don't generated wxEVT_COMMAND_TEXT_UPDATED event
+			calculateSizeEntry(event.getView());
+			edit->SetFocus();
+			edit->Show();
+			okButton->Show();
+			cancelButton->Show();
+		}
+		else
+		{
+			callDialog();
+		}
 		return;
 	}
 	getDefaultTool()->mouseDown(event);
@@ -113,4 +128,11 @@ void ddSimpleTextTool::mouseDrag(ddMouseEvent& event)
 void ddSimpleTextTool::OnTextPopupClick(wxCommandEvent& event, ddDrawingView *view)
 {
 	txtFigure->OnTextPopupClick(event,view);
+}
+
+void ddSimpleTextTool::callDialog()
+{
+			wxString sNewValue = wxGetTextFromUser(dlgMessage, dlgCaption, txtFigure->getText(),getDrawingEditor()->view());
+			if (!sNewValue.IsEmpty())
+				txtFigure->setText(sNewValue);
 }

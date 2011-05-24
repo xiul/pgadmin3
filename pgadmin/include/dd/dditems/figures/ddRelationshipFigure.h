@@ -51,6 +51,7 @@ public:
 	void disconnectEnd();
 	wxString generateSQL();
 protected:
+
 private:
 	virtual void OnTextPopupClick(wxCommandEvent& event, ddDrawingView *view);
 	wxArrayString strings;

@@ -5,7 +5,7 @@
 // Copyright (C) 2002 - 2011, The pgAdmin Development Team
 // This software is released under the PostgreSQL Licence
 //
-// ddTextColumnFigure.cpp - Draw a column inside a table
+// ddTextTableItemFigure.cpp - Draw a column inside a table
 //
 //////////////////////////////////////////////////////////////////////////// 
 
@@ -17,7 +17,7 @@
 #include <wx/numdlg.h>
 
 // App headers
-#include "dd/dditems/figures/ddTextColumnFigure.h"
+#include "dd/dditems/figures/ddTextTableItemFigure.h"
 #include "dd/dditems/tools/ddColumnTextTool.h"
 #include "dd/dditems/utilities/ddDataType.h"
 #include "dd/draw/figures/ddSimpleTextFigure.h"
@@ -26,25 +26,27 @@
 
 //DD-TODO: Add composite column functionality by addin subcolumn for composite types, but be careful: composite types can be recursive (using inside other composite types)
 
-ddTextColumnFigure::ddTextColumnFigure(wxString& columnName, ddDataType dataType, ddColumnFigure *owner):
+ddTextTableItemFigure::ddTextTableItemFigure(wxString& columnName, ddDataType dataType, ddColumnFigure *owner):
 ddSimpleTextFigure(columnName)
 {
+	oneTimeNoAlias = false;
 	columnType = dataType;
 	this->setEditable(true);
 	enablePopUp();
 	ownerColumn = owner;
 	showDataType = true;
+	showAlias=false;
 	recalculateDisplayBox();
 	precision=-1;
 }
 
-ddTextColumnFigure::~ddTextColumnFigure()
+ddTextTableItemFigure::~ddTextTableItemFigure()
 {
 }
 
-wxString& ddTextColumnFigure::getText(bool extended)
+wxString& ddTextTableItemFigure::getText(bool extended)
 {
-	if(showDataType && extended)
+	if(showDataType && extended && getOwnerColumn())
 	{
 		wxString ddType = dataTypes()[columnType];
 		if(columnType==dt_varchar && precision>0)
@@ -55,13 +57,24 @@ wxString& ddTextColumnFigure::getText(bool extended)
 		out = wxString( ddSimpleTextFigure::getText() + wxString(wxT(" : ")) + ddType );
 		return  out;
 	}
-	else
+	else if( showAlias && getOwnerColumn()==NULL )
+	{
+		if(!oneTimeNoAlias)
+			out = wxString( ddSimpleTextFigure::getText() + wxString(wxT(" ( ")) + colAlias + wxString(wxT(" ) ")) );
+		else
+		{
+			out = wxString( ddSimpleTextFigure::getText() );
+			oneTimeNoAlias = false;
+		}
+		return out;
+	}
+	else 
 	{
 		return ddSimpleTextFigure::getText();
 	}
 }
 
-wxString ddTextColumnFigure::getType()
+wxString ddTextTableItemFigure::getType()
 {
     wxString ddType = dataTypes()[columnType];
     if(columnType==dt_varchar && precision>0)
@@ -73,7 +86,7 @@ wxString ddTextColumnFigure::getType()
 }
 
 //WARNING: event ID must match enum ddDataType!!! this event was created on view
-void ddTextColumnFigure::OnTextPopupClick(wxCommandEvent& event, ddDrawingView *view)
+void ddTextTableItemFigure::OnTextPopupClick(wxCommandEvent& event, ddDrawingView *view)
 {
 	wxTextEntryDialog *nameDialog=NULL;
 	wxString tmpString;
@@ -98,10 +111,10 @@ void ddTextColumnFigure::OnTextPopupClick(wxCommandEvent& event, ddDrawingView *
                 getOwnerColumn()->getOwnerTable()->removeColumn(getOwnerColumn());
             break;
 		case MNU_RENAMECOLUMN:
-            nameDialog = new wxTextEntryDialog(view, wxT("New column name"), wxT("Rename Column"), getText());
-            nameDialog->ShowModal();
-            setText(nameDialog->GetValue());
-            delete nameDialog;
+				nameDialog = new wxTextEntryDialog(view, wxT("New column name"), wxT("Rename Column"), getText());
+				nameDialog->ShowModal();
+				setText(nameDialog->GetValue());
+				delete nameDialog;
             break;
 		case MNU_NOTNULL:
             if(getOwnerColumn()->isNotNull())
@@ -202,7 +215,7 @@ void ddTextColumnFigure::OnTextPopupClick(wxCommandEvent& event, ddDrawingView *
 	}
 }
 
-void ddTextColumnFigure::createMenu(wxMenu &mnu)
+void ddTextTableItemFigure::createMenu(wxMenu &mnu)
 {
     wxMenu *submenu;
     wxMenuItem *item;
@@ -251,7 +264,7 @@ void ddTextColumnFigure::createMenu(wxMenu &mnu)
 };
 
 
-const wxArrayString ddTextColumnFigure::dataTypes()
+const wxArrayString ddTextTableItemFigure::dataTypes()
 {
 	if(ddDatatypes.IsEmpty())
 	{
@@ -290,7 +303,7 @@ const wxArrayString ddTextColumnFigure::dataTypes()
 	return ddDatatypes;
 }
 
-void ddTextColumnFigure::setText(wxString textString)
+void ddTextTableItemFigure::setText(wxString textString)
 {
 	ddSimpleTextFigure::setText(textString);
 	//Hack to allow column text to submit new size of text signal to tablefigure and then recalculate displaybox
@@ -302,46 +315,74 @@ void ddTextColumnFigure::setText(wxString textString)
 	}
 }
 
-ddColumnFigure* ddTextColumnFigure::getOwnerColumn()
+
+wxString ddTextTableItemFigure::getAlias()
+{
+	return colAlias;
+}
+
+void ddTextTableItemFigure::setAlias(wxString alias)
+{
+	if(alias.length()>0)
+		showAlias=true;
+	else
+		showAlias=false;
+	
+	colAlias = alias;
+	recalculateDisplayBox();
+}
+
+void ddTextTableItemFigure::setOneTimeNoAlias()
+{
+	oneTimeNoAlias = true;
+}
+
+ddColumnFigure* ddTextTableItemFigure::getOwnerColumn()
 {
 	return ownerColumn;
 }
 
-void ddTextColumnFigure::setOwnerColumn(ddColumnFigure *column)
+void ddTextTableItemFigure::setOwnerColumn(ddColumnFigure *column)
 {
 	ownerColumn = column;
 }
 
-void ddTextColumnFigure::setShowDataType(bool value)
+void ddTextTableItemFigure::setShowDataType(bool value)
 {
 	showDataType = value;
 }
 
-ddITool* ddTextColumnFigure::CreateFigureTool(ddDrawingEditor *editor, ddITool *defaultTool)
+ddITool* ddTextTableItemFigure::CreateFigureTool(ddDrawingEditor *editor, ddITool *defaultTool)
 {
-	return textEditable ? new ddColumnTextTool(editor,this,defaultTool) : defaultTool;
+	if(ownerColumn)
+		return textEditable ? new ddColumnTextTool(editor,this,defaultTool,false,wxT("New Column Name"),wxT("Rename Column")) : defaultTool;
+	else
+	{
+		setOneTimeNoAlias();
+		return textEditable ? new ddColumnTextTool(editor,this,defaultTool,false,wxT("New Table Name"),wxT("Rename Table")) : defaultTool;
+	}
 }
 
-int ddTextColumnFigure::getTextWidth()
+int ddTextTableItemFigure::getTextWidth()
 {
 	int w,h;
 	getFontMetrics(w,h);
 	return w;
 }
 
-int ddTextColumnFigure::getTextHeight()
+int ddTextTableItemFigure::getTextHeight()
 {
 	int w,h;
 	getFontMetrics(w,h);
 	return h;
 }
 
-ddDataType ddTextColumnFigure::getDataType()
+ddDataType ddTextTableItemFigure::getDataType()
 {
 	return columnType;
 }
 
-void ddTextColumnFigure::setDataType(ddDataType type)
+void ddTextTableItemFigure::setDataType(ddDataType type)
 {
 	columnType=type;
 }

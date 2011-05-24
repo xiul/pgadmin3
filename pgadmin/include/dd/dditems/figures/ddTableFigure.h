@@ -14,7 +14,7 @@
 #include "dd/draw/figures/ddCompositeFigure.h"
 #include "dd/draw/figures/ddRectangleFigure.h"
 #include "dd/draw/figures/ddSimpleTextFigure.h"
-#include "dd/dditems/figures/ddTextColumnFigure.h"
+#include "dd/dditems/figures/ddTextTableItemFigure.h"
 #include "dd/dditems/figures/ddColumnFigure.h"
 
 class ddScrollBarHandle;
@@ -87,7 +87,7 @@ private:
 	
 	//Default Figures
 	ddRectangleFigure *rectangleFigure;
-	ddTextColumnFigure *tableTitle;
+	ddTextTableItemFigure *tableTitle;
 
 	//helper variables
 	bool fromSelToNOSel;

@@ -13,16 +13,17 @@
 #define DDCOLUMNTEXTTOOL_H
 
 #include "dd/draw/tools/ddSimpleTextTool.h"
-#include "dd/dditems/figures/ddTextColumnFigure.h"
+#include "dd/dditems/figures/ddTextTableItemFigure.h"
 
 
 class ddColumnTextTool : public ddSimpleTextTool
 {
 
 public:
-	ddColumnTextTool(ddDrawingEditor *editor, ddIFigure *fig, ddITool *dt);
+	ddColumnTextTool(ddDrawingEditor *editor, ddIFigure *fig, ddITool *dt,  bool fastEdit = true, wxString dialogCaption = wxEmptyString, wxString dialogMessage = wxEmptyString);
     ~ddColumnTextTool();
 	virtual void mouseDown(ddMouseEvent& event);  //Mouse Right Click
+	virtual void callDialog();
 //	virtual void activate();
 //	virtual void deactivate();
 //	virtual void mouseDrag(ddMouseEvent& event);
@@ -30,7 +31,7 @@ public:
 	//Because a bug it was move to main View class as a hack. virtual void changeHandler(wxCommandEvent& event);
 protected:
 private:
-	ddTextColumnFigure *colTextFigure;
+	ddTextTableItemFigure *colTextFigure;
 /*	void calculateSizeEntry();
 	bool showEdit;
 	ddSimpleTextFigure *txtFigure;

@@ -9,8 +9,8 @@
 //
 //////////////////////////////////////////////////////////////////////////
 
-#ifndef DDTEXTCOLUMNFIGURE_H
-#define DDTEXTCOLUMNFIGURE_H
+#ifndef DDTEXTTABLEITEMFIGURE_H
+#define DDTEXTTABLEITEMFIGURE_H
 
 
 #include <wx/arrstr.h>
@@ -39,14 +39,17 @@ enum
 
 class ddColumnFigure;
 
-class ddTextColumnFigure : public ddSimpleTextFigure
+class ddTextTableItemFigure : public ddSimpleTextFigure
 {
 public:
-	ddTextColumnFigure(wxString& columnName, ddDataType dataType, ddColumnFigure *owner);
-    ~ddTextColumnFigure();
+	ddTextTableItemFigure(wxString& columnName, ddDataType dataType, ddColumnFigure *owner);
+    ~ddTextTableItemFigure();
 	virtual wxString& getText(bool extended = false);
 	wxString getType();
-    virtual void createMenu(wxMenu &mnu);
+    virtual void setAlias(wxString alias);
+	virtual wxString getAlias();
+	virtual void setOneTimeNoAlias();
+	virtual void createMenu(wxMenu &mnu);
 	virtual const wxArrayString dataTypes();
 	virtual void OnTextPopupClick(wxCommandEvent& event, ddDrawingView *view);
 	virtual void setText(wxString textString);
@@ -60,10 +63,13 @@ public:
 	void setDataType(ddDataType type);
 protected:
 	ddColumnFigure *ownerColumn;
+	wxString colAlias;
 private:
 	ddDataType columnType;
 	wxString out;
 	bool showDataType;
+	bool showAlias;
+	bool oneTimeNoAlias;
 	int precision;
 };
 #endif

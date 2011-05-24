@@ -36,7 +36,7 @@
 #include "dd/ddmodel/ddDatabaseDesign.h"
 #include "dd/ddmodel/ddTextEditor.h"
 
-#include "dd/dditems/figures/ddTextColumnFigure.h"
+#include "dd/dditems/figures/ddTextTableItemFigure.h"
 #include "dd/dditems/figures/ddColumnFigure.h"
 #include "dd/dditems/figures/ddTableFigure.h"
 

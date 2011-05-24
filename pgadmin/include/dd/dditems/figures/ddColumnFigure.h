@@ -14,7 +14,7 @@
 #include "dd/draw/figures/ddAbstractFigure.h"
 #include "dd/dditems/figures/ddColumnKindIcon.h"
 #include "dd/dditems/figures/ddColumnOptionIcon.h"
-#include "dd/dditems/figures/ddTextColumnFigure.h"
+#include "dd/dditems/figures/ddTextTableItemFigure.h"
 
 class ddTableFigure;
 class ddRelationshipItem;
@@ -59,7 +59,7 @@ public:
 protected:
 	ddColumnKindIcon *leftImage;
 	ddColumnOptionIcon *centerImage;
-	ddTextColumnFigure *columnText;
+	ddTextTableItemFigure *columnText;
 	ddTableFigure *ownerTable;
 
 private:

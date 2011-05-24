@@ -3899,7 +3899,7 @@
 							>
 						</File>
 						<File
-							RelativePath=".\include\dd\dditems\figures\ddTextColumnFigure.h"
+							RelativePath=".\include\dd\dditems\figures\ddTextTableItemFigure.h"
 							>
 						</File>
 					</Filter>
@@ -4167,6 +4167,10 @@
 							>
 						</File>
 						<File
+							RelativePath=".\include\dd\draw\utilities\ddDialogs.h"
+							>
+						</File>
+						<File
 							RelativePath=".\include\dd\draw\utilities\ddGeometry.h"
 							>
 						</File>
@@ -4212,6 +4216,14 @@
 						</File>
 						<File
 							RelativePath=".\include\dd\draw\connectors\ddIConnector.h"
+							>
+						</File>
+						<File
+							RelativePath=".\include\dd\draw\connectors\ddLocatorConnector.h"
+							>
+						</File>
+						<File
+							RelativePath=".\include\dd\draw\connectors\ddStickyRectangleConnector.h"
 							>
 						</File>
 					</Filter>
@@ -5692,7 +5704,7 @@
 						>
 					</File>
 					<File
-						RelativePath=".\dd\dditems\figures\ddTextColumnFigure.cpp"
+						RelativePath=".\dd\dditems\figures\ddTextTableItemFigure.cpp"
 						>
 					</File>
 				</Filter>
@@ -5947,6 +5959,14 @@
 						RelativePath=".\dd\draw\connectors\ddIConnector.cpp"
 						>
 					</File>
+					<File
+						RelativePath=".\dd\draw\connectors\ddLocatorConnector.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\dd\draw\connectors\ddStickyRectangleConnector.cpp"
+						>
+					</File>
 				</Filter>
 				<Filter
 					Name="utilitites"
@@ -5957,6 +5977,10 @@
 					</File>
 					<File
 						RelativePath=".\dd\draw\utilities\ddCollection.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\dd\draw\utilities\ddDialogs.cpp"
 						>
 					</File>
 					<File

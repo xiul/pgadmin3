@@ -20,15 +20,18 @@ class ddSimpleTextTool : public ddFigureTool
 {
 
 public:
-	ddSimpleTextTool(ddDrawingEditor *editor, ddIFigure *fig, ddITool *dt);
+	ddSimpleTextTool(ddDrawingEditor *editor, ddIFigure *fig, ddITool *dt, bool fastEdit = true, wxString dialogCaption = wxEmptyString, wxString dialogMessage = wxEmptyString);
     ~ddSimpleTextTool();
 	virtual void mouseDown(ddMouseEvent& event);  //Mouse Right Click
 	virtual void activate();
 	virtual void deactivate();
 	virtual void mouseDrag(ddMouseEvent& event);
 	virtual void OnTextPopupClick(wxCommandEvent& event, ddDrawingView *view);
+	virtual void callDialog();
 	//Because a bug it was move to main View class as a hack. virtual void changeHandler(wxCommandEvent& event);
 protected:
+	bool withoutDialog;
+	wxString dlgMessage, dlgCaption;
 private:
 	ddSimpleTextFigure *txtFigure;
 	void calculateSizeEntry(ddDrawingView *view);
