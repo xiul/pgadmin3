@@ -315,12 +315,12 @@ void ddTextTableItemFigure::setText(wxString textString)
 	}
 }
 
-
 wxString ddTextTableItemFigure::getAlias()
 {
 	return colAlias;
 }
 
+//Activate use of alias or short names at ddtextTableItems like TableNames
 void ddTextTableItemFigure::setAlias(wxString alias)
 {
 	if(alias.length()>0)
