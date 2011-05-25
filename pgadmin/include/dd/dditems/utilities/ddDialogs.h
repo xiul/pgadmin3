@@ -12,20 +12,22 @@
 #ifndef DDDIALOGS_H
 #define DDDIALOGS_H
 
+#include "dd/dditems/figures/ddTextTableItemFigure.h"
 
 enum {
-    DDTWODIALOGSINPUT=10000,
+    DDTABLENAMEDIALOG=10000,
 	DDVALUE1 = 10001,
-    DDVALUE2 = 10002
+    DDVALUE2 = 10002,
+	DDGENBUTTON = 10003
 };
 
-class ddTwoInputsDialog : public wxDialog
+class ddTableNameDialog : public wxDialog
 {
-	DECLARE_CLASS( ddTwoInputsDialog )
+	DECLARE_CLASS( ddTableNameDialog )
     DECLARE_EVENT_TABLE()
 public:
-	ddTwoInputsDialog();
-	ddTwoInputsDialog(	wxWindow* parent,
+	ddTableNameDialog();
+	ddTableNameDialog(	wxWindow* parent,
 						wxWindowID id,
 						const wxString& caption = wxT("Input Dialog"),
 						const wxString& captionLabel1 = wxEmptyString,
@@ -34,7 +36,9 @@ public:
 						const wxString& defaultValue2 = wxEmptyString,
 						const wxPoint& pos = wxDefaultPosition,
 						const wxSize& size = wxDefaultSize,
-						long style = wxCAPTION );
+						long style = wxCAPTION,
+						ddTextTableItemFigure* tableItem=NULL
+						);
 
 	// Member initialization
     void Init();
@@ -66,12 +70,20 @@ public:
     void SetValue2(wxString value) { m_value2 = value; }
     wxString GetValue2() { return m_value2; }
 
+	// CheckBox accessors
+    void SetValueGenerate(bool value) { checkGenerate = value; }
+    bool GetValueGenerate() { return checkGenerate; }
+
+	//wxEVT_COMMAND_BUTTON_CLICKED event_hander for DDGENBUTTON
+	void OnGenButtonClicked( wxCommandEvent& event );
 
 
 protected:
 	    /// Data members
     wxString m_value1, m_value2;
 	wxString label1, label2;
+	bool checkGenerate;
+	ddTextTableItemFigure* tabItem;
 private:
 
 };

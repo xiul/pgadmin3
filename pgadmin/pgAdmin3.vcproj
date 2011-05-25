@@ -3986,6 +3986,10 @@
 							RelativePath=".\include\dd\dditems\utilities\ddDataType.h"
 							>
 						</File>
+						<File
+							RelativePath=".\include\dd\dditems\utilities\ddDialogs.h"
+							>
+						</File>
 					</Filter>
 				</Filter>
 				<Filter
@@ -4164,10 +4168,6 @@
 						</File>
 						<File
 							RelativePath=".\include\dd\draw\utilities\ddCollectionBase.h"
-							>
-						</File>
-						<File
-							RelativePath=".\include\dd\draw\utilities\ddDialogs.h"
 							>
 						</File>
 						<File
@@ -5784,6 +5784,14 @@
 						>
 					</File>
 				</Filter>
+				<Filter
+					Name="utilities"
+					>
+					<File
+						RelativePath=".\dd\dditems\utilities\ddDialogs.cpp"
+						>
+					</File>
+				</Filter>
 			</Filter>
 			<Filter
 				Name="draw"
@@ -5969,7 +5977,7 @@
 					</File>
 				</Filter>
 				<Filter
-					Name="utilitites"
+					Name="utilities"
 					>
 					<File
 						RelativePath=".\dd\draw\utilities\ddArrayCollection.cpp"
@@ -5977,10 +5985,6 @@
 					</File>
 					<File
 						RelativePath=".\dd\draw\utilities\ddCollection.cpp"
-						>
-					</File>
-					<File
-						RelativePath=".\dd\draw\utilities\ddDialogs.cpp"
 						>
 					</File>
 					<File

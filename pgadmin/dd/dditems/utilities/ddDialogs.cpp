@@ -14,14 +14,17 @@
 #include <wx/wx.h>
 #include <wx/statline.h>
 // App headers
-#include "dd/draw/utilities/ddDialogs.h"
+#include "dd/dditems/utilities/ddDialogs.h"
 
-IMPLEMENT_CLASS( ddTwoInputsDialog, wxDialog )
+//DD-TODO: class leaks??? because objects create without destructor??
 
-BEGIN_EVENT_TABLE( ddTwoInputsDialog, wxDialog )
+IMPLEMENT_CLASS( ddTableNameDialog, wxDialog )
+
+BEGIN_EVENT_TABLE( ddTableNameDialog, wxDialog )
+EVT_BUTTON(DDGENBUTTON,ddTableNameDialog::OnGenButtonClicked )
 END_EVENT_TABLE()
 
-ddTwoInputsDialog::ddTwoInputsDialog(	wxWindow* parent,
+ddTableNameDialog::ddTableNameDialog(	wxWindow* parent,
 										wxWindowID id,
 										const wxString& caption,
 										const wxString& captionLabel1,
@@ -30,10 +33,13 @@ ddTwoInputsDialog::ddTwoInputsDialog(	wxWindow* parent,
 										const wxString& defaultValue2,
 										const wxPoint& pos,
 										const wxSize& size,
-										long style 
+										long style,
+										ddTextTableItemFigure* tableItem
 										)
 {	
 	Init();
+	tabItem = tableItem;
+	checkGenerate = false;
 	label1=captionLabel1;
 	SetValue1(defaultValue1);
 	label2=captionLabel2;
@@ -41,19 +47,19 @@ ddTwoInputsDialog::ddTwoInputsDialog(	wxWindow* parent,
     Create(parent, id, caption, pos, size, style);    
 }
 
-ddTwoInputsDialog::ddTwoInputsDialog()
+ddTableNameDialog::ddTableNameDialog()
 {
 	Init();
 }
 
-void ddTwoInputsDialog::Init( )
+void ddTableNameDialog::Init( )
 {
     m_value1 = wxEmptyString;
     m_value2 = wxEmptyString;
 }
 
-bool ddTwoInputsDialog::Create(	wxWindow* parent,
-					wxWindowID id = DDTWODIALOGSINPUT,
+bool ddTableNameDialog::Create(	wxWindow* parent,
+					wxWindowID id = DDTABLENAMEDIALOG,
 					const wxString& caption = wxT("Input Dialog"),
 					const wxPoint& pos = wxDefaultPosition,
 					const wxSize& size = wxDefaultSize,
@@ -82,17 +88,21 @@ bool ddTwoInputsDialog::Create(	wxWindow* parent,
     return true;
 }
 
-void ddTwoInputsDialog::CreateControls()
+void ddTableNameDialog::CreateControls()
 {
     // A top-level sizer
 
     wxBoxSizer* topSizer = new wxBoxSizer(wxHORIZONTAL );
     this->SetSizer(topSizer);
 
+	// A horizontal box sizer to contain auto generate short name checkbox
+	wxBoxSizer* nameGenBox = new wxBoxSizer(wxVERTICAL);
+    topSizer->Add(nameGenBox, 0, wxALIGN_CENTER_HORIZONTAL|wxALL, 5);
+
     // A second box sizer to give more space around the controls
 
     wxBoxSizer* boxSizer = new wxBoxSizer(wxHORIZONTAL );
-    topSizer->Add(boxSizer, 0, wxALIGN_CENTER_HORIZONTAL|wxALL, 5);
+    nameGenBox->Add(boxSizer, 0, wxALIGN_CENTER_HORIZONTAL|wxALL, 5);
 
     // Label for the Value 1
     wxStaticText* value1Label = new wxStaticText ( this, wxID_STATIC,
@@ -113,18 +123,25 @@ void ddTwoInputsDialog::CreateControls()
    wxTextCtrl* value2Ctrl = new wxTextCtrl ( this, DDVALUE2, m_value2, wxDefaultPosition,
  wxDefaultSize, 0 );
     boxSizer->Add(value2Ctrl, 0, wxGROW|wxALL, 5);
+    
+	//A check box to allow select automatic short name generation
 
+    wxButton* generateButton = new wxButton ( this, DDGENBUTTON, wxT("&Generate Short Name"),
+       wxDefaultPosition, wxDefaultSize, 0 );
+	nameGenBox->Add(generateButton, 0, wxALIGN_CENTER_HORIZONTAL|wxALL, 5);
+	
     // A dividing line before the OK and Cancel buttons
 
     wxStaticLine* line = new wxStaticLine ( this, wxID_STATIC,
         wxDefaultPosition, wxDefaultSize, wxLI_HORIZONTAL );
-    boxSizer->Add(line, 0, wxGROW|wxALL, 5);
-    // A horizontal box sizer to contain Reset, OK, Cancel and Help
+    nameGenBox->Add(line, 0, wxGROW|wxALL, 5);
 
-    wxBoxSizer* okCancelBox = new wxBoxSizer(wxHORIZONTAL);
-    boxSizer->Add(okCancelBox, 0, wxALIGN_CENTER_HORIZONTAL|wxALL, 5);
+     // A horizontal box sizer to contain Reset, OK, Cancel and Help
 
-    // The OK button
+	wxBoxSizer* okCancelBox = new wxBoxSizer(wxHORIZONTAL);
+    nameGenBox->Add(okCancelBox, 0, wxALIGN_CENTER_HORIZONTAL|wxALL, 5);
+
+	// The OK button
 
     wxButton* ok = new wxButton ( this, wxID_OK, wxT("&OK"),
         wxDefaultPosition, wxDefaultSize, 0 );
@@ -141,37 +158,46 @@ void ddTwoInputsDialog::CreateControls()
 }
 
 //Transfer data to the window
-bool ddTwoInputsDialog::TransferDataToWindow()
+bool ddTableNameDialog::TransferDataToWindow()
 {
     wxTextCtrl* val1Ctrl = (wxTextCtrl*) FindWindow(DDVALUE1);
 	wxTextCtrl* val2Ctrl = (wxTextCtrl*) FindWindow(DDVALUE2);
+	wxCheckBox* valCheckbox = (wxCheckBox*) FindWindow(DDGENBUTTON);
 
     val1Ctrl->SetValue(m_value1);
 	val2Ctrl->SetValue(m_value2);
+	valCheckbox->SetValue(checkGenerate);
+
+
 
     return true;
 }
 
 //Transfer data from the window
-bool ddTwoInputsDialog::TransferDataFromWindow()
+bool ddTableNameDialog::TransferDataFromWindow()
 {
     wxTextCtrl* val1Ctrl = (wxTextCtrl*) FindWindow(DDVALUE1);
 	wxTextCtrl* val2Ctrl = (wxTextCtrl*) FindWindow(DDVALUE2);
+	wxCheckBox* valCheckbox = (wxCheckBox*) FindWindow(DDGENBUTTON);
 
     m_value1 = val1Ctrl->GetValue();
 	m_value2 = val2Ctrl->GetValue();
+	checkGenerate = valCheckbox->GetValue();
 
     return true;
 }
 
-
-/*
-// Set the validators for the dialog controls
-void ddTwoInputsDialog::SetDialogValidators()
+//Generation CheckBox Event to generata short name when checkbox clicked
+void ddTableNameDialog::OnGenButtonClicked( wxCommandEvent& event )
 {
-    FindWindow(DDVALUE1)->SetValidator(
-        wxTextValidator(wxFILTER_NONE, & m_value1));
-    FindWindow(DDVALUE2)->SetValidator(
-        wxTextValidator(wxFILTER_ALPHANUMERIC, & m_value2));
+	wxTextCtrl* val1Ctrl = (wxTextCtrl*) FindWindow(DDVALUE1);
+	wxCheckBox* valCheckbox = (wxCheckBox*) FindWindow(DDGENBUTTON);
+	wxTextCtrl* val2Ctrl = (wxTextCtrl*) FindWindow(DDVALUE2);
+
+	if(tabItem!=NULL)
+	{
+			tabItem->generateShortName(val1Ctrl->GetValue());
+			val2Ctrl->SetValue(tabItem->getAlias());
+	}
 }
-*/
+

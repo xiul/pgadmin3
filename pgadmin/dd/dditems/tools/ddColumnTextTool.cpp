@@ -19,7 +19,7 @@
 #include "dd/dditems/tools/ddColumnTextTool.h"
 #include "dd/dditems/figures/ddTextTableItemFigure.h"
 #include "dd/dditems/figures/ddTableFigure.h"
-#include "dd/draw/utilities/ddDialogs.h"
+#include "dd/dditems/utilities/ddDialogs.h"
 
 class ddDrawingEditor;
 
@@ -76,14 +76,18 @@ void ddColumnTextTool::callDialog()
 {
 	if(colTextFigure->getOwnerColumn()==NULL)
 	{
-	ddTwoInputsDialog *nameAliasDialog = new ddTwoInputsDialog(
+	ddTableNameDialog *nameAliasDialog = new ddTableNameDialog(
 												getDrawingEditor()->view(),
-												DDTWODIALOGSINPUT,
+												DDTABLENAMEDIALOG,
 												wxT("Rename Table"),
 												wxT("New Table Name"),
 												colTextFigure->getText(),
 												wxT("Alias"),
-												colTextFigure->getAlias()
+												colTextFigure->getAlias(),
+												wxDefaultPosition,
+												wxDefaultSize,
+												wxCAPTION,
+												colTextFigure
 												);
 	nameAliasDialog->ShowModal();
 	colTextFigure->setText(nameAliasDialog->GetValue1());

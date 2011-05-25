@@ -59,6 +59,7 @@ public:
 	
 	//metadata
 	wxString getTableName();
+	wxString getShortTableName();
 	wxString generateSQL();
 
 	//uk pk constraints

@@ -627,6 +627,13 @@ wxArrayString& ddTableFigure::getUkConstraintsNames()
 	return ukNames;
 }
 
+wxString ddTableFigure::getShortTableName()
+{
+	ddTextTableItemFigure *c = (ddTextTableItemFigure*) figureFigures->getItemAt(1);
+	return c->getAlias();
+}
+
+
 wxString ddTableFigure::getTableName()
 {
 	ddTextTableItemFigure *c = (ddTextTableItemFigure*) figureFigures->getItemAt(1);
