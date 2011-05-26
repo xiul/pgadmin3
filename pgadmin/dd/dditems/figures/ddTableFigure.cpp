@@ -160,10 +160,11 @@ void ddTableFigure::removeColumn(ddColumnFigure *column)
 	if(column->isPrimaryKey())
 	{
 		column->setColumnKind(none);
-		updateFkObservers();
 	}
+
 	column->setOwnerTable(NULL);
 	remove(column);
+
 	if(column)
 		delete column;
 	//Update Indexes
@@ -500,6 +501,7 @@ void ddTableFigure::calcRectsAreas()
 
 void ddTableFigure::updateTableSize()
 {
+	calcRectsAreas();  //DD-TODO: I just add this here, test don't change in bad way other parts
 	wxSize value=fullSizeRect.GetSize();
 	rectangleFigure->setSize(value);
 	//hack to update relationship position when table size change

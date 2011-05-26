@@ -72,30 +72,42 @@ void ddColumnTextTool::mouseDown(ddMouseEvent& event)
 	ddSimpleTextTool::mouseDown(event);
 }
 
-void ddColumnTextTool::callDialog()
+bool ddColumnTextTool::callDialog()
 {
 	if(colTextFigure->getOwnerColumn()==NULL)
 	{
-	ddTableNameDialog *nameAliasDialog = new ddTableNameDialog(
+		wxString colName = colTextFigure->getText();
+		wxString colShortName = colTextFigure->getAlias();
+		ddTableNameDialog *nameAliasDialog = new ddTableNameDialog(
 												getDrawingEditor()->view(),
 												DDTABLENAMEDIALOG,
 												wxT("Rename Table"),
 												wxT("New Table Name"),
-												colTextFigure->getText(),
+												colName,
 												wxT("Alias"),
-												colTextFigure->getAlias(),
+												colShortName,
 												wxDefaultPosition,
 												wxDefaultSize,
 												wxCAPTION,
 												colTextFigure
 												);
-	nameAliasDialog->ShowModal();
-	colTextFigure->setText(nameAliasDialog->GetValue1());
-	colTextFigure->setAlias(nameAliasDialog->GetValue2());
-	delete nameAliasDialog;
+		nameAliasDialog->ShowModal();
+	
+		colTextFigure->setText(nameAliasDialog->GetValue1());
+		colTextFigure->setAlias(nameAliasDialog->GetValue2());
+	
+		//check if names changed
+		bool noChange = colShortName.IsSameAs(nameAliasDialog->GetValue1()) && colShortName.IsSameAs(nameAliasDialog->GetValue2());
+
+		delete nameAliasDialog;
+
+		return !noChange;
 	}
 	else
 	{
-		ddSimpleTextTool::callDialog();
+		bool change = ddSimpleTextTool::callDialog();
+		if(  change && colTextFigure->getOwnerColumn()->isForeignKey()) //after a manual user column rename, deactivated automatic generation of fk name.
+			colTextFigure->getOwnerColumn()->deactivateGenFkName();
+		return change;
 	}
 }

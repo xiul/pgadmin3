@@ -23,7 +23,7 @@ public:
 	ddColumnTextTool(ddDrawingEditor *editor, ddIFigure *fig, ddITool *dt,  bool fastEdit = true, wxString dialogCaption = wxEmptyString, wxString dialogMessage = wxEmptyString);
     ~ddColumnTextTool();
 	virtual void mouseDown(ddMouseEvent& event);  //Mouse Right Click
-	virtual void callDialog();
+	virtual bool callDialog();
 //	virtual void activate();
 //	virtual void deactivate();
 //	virtual void mouseDrag(ddMouseEvent& event);

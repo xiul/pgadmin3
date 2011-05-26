@@ -130,9 +130,14 @@ void ddSimpleTextTool::OnTextPopupClick(wxCommandEvent& event, ddDrawingView *vi
 	txtFigure->OnTextPopupClick(event,view);
 }
 
-void ddSimpleTextTool::callDialog()
+bool ddSimpleTextTool::callDialog()
 {
 			wxString sNewValue = wxGetTextFromUser(dlgMessage, dlgCaption, txtFigure->getText(),getDrawingEditor()->view());
 			if (!sNewValue.IsEmpty())
+			{
 				txtFigure->setText(sNewValue);
+				return true;
+			}
+			else
+				return false;
 }

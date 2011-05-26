@@ -18,6 +18,7 @@
 
 // App headers
 #include "dd/dditems/figures/ddTextTableItemFigure.h"
+#include "dd/dditems/figures/ddRelationshipFigure.h"  //DD-TODO: replace with item onlu class when available
 #include "dd/dditems/tools/ddColumnTextTool.h"
 #include "dd/dditems/utilities/ddDataType.h"
 #include "dd/draw/figures/ddSimpleTextFigure.h"
@@ -110,9 +111,16 @@ void ddTextTableItemFigure::OnTextPopupClick(wxCommandEvent& event, ddDrawingVie
             if (answer == wxYES)
                 getOwnerColumn()->getOwnerTable()->removeColumn(getOwnerColumn());
             break;
+		case MNU_AUTONAMCOLUMN:
+				getOwnerColumn()->activateGenFkName(); 
+				getOwnerColumn()->getFkSource()->syncAutoFkName();
+				//DD-TODO: añadir de una el nombre automatico si se activa
+			break;
 		case MNU_RENAMECOLUMN:
 				nameDialog = new wxTextEntryDialog(view, wxT("New column name"), wxT("Rename Column"), getText());
 				nameDialog->ShowModal();
+				if(getOwnerColumn()->isForeignKey()) //after a manual user column rename, deactivated automatic generation of fk name.
+					getOwnerColumn()->deactivateGenFkName();
 				setText(nameDialog->GetValue());
 				delete nameDialog;
             break;
@@ -225,6 +233,8 @@ void ddTextTableItemFigure::createMenu(wxMenu &mnu)
     if(getOwnerColumn()->isForeignKey())
         item->Enable(false);
     mnu.Append(MNU_RENAMECOLUMN, _("Rename the selected column..."));
+	if(getOwnerColumn()->isForeignKey() && !getOwnerColumn()->isFkNameGenerated())
+		mnu.Append(MNU_AUTONAMCOLUMN, _("Activate fk auto-naming..."));
     mnu.AppendSeparator();
 	item = mnu.AppendCheckItem(MNU_NOTNULL, _("Not NULL constraint"));
     if(getOwnerColumn()->isNotNull())
@@ -450,8 +460,10 @@ void ddTextTableItemFigure::setShowDataType(bool value)
 
 ddITool* ddTextTableItemFigure::CreateFigureTool(ddDrawingEditor *editor, ddITool *defaultTool)
 {
-	if(ownerColumn)
+	if(getOwnerColumn())
+	{
 		return textEditable ? new ddColumnTextTool(editor,this,defaultTool,false,wxT("New Column Name"),wxT("Rename Column")) : defaultTool;
+	}
 	else
 	{
 		setOneTimeNoAlias();

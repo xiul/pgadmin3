@@ -352,7 +352,7 @@ void ddDrawingView::OnCancelTxtButton(wxCommandEvent& event)
 //Hack to avoid event problem with simpleTextTool wxTextCrtl at EVT_TEXT event
 void ddDrawingView::simpleTextToolChangeHandler(wxCommandEvent& event)
 {
-	if(simpleTextFigure)
+	if(simpleTextFigure) //DD-TODO with a right click go inside this function but it shouldn't go there
 	{
 		simpleTextFigure->setText(simpleTextToolEdit->GetValue());
 		//getFontMetrics

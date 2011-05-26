@@ -69,7 +69,7 @@ private:
 class ddRelationshipItem : public ddObject
 {
 public:
-	ddRelationshipItem(ddColumnFigure *originalColumn, ddTableFigure *destination, ddColumnOptionType type, ddColumnType colType);
+	ddRelationshipItem(ddRelationshipFigure *owner, ddColumnFigure *originalColumn, ddTableFigure *destination, ddColumnOptionType type, ddColumnType colType);
 	~ddRelationshipItem();
 	wxString originalStartColName;
 	ddColumnFigure *original;
@@ -77,7 +77,9 @@ public:
 	ddTableFigure *destinationTable;
 
 	wxString autoGenerateNameForFk();
-	void synAutoFkName();
+	void syncAutoFkName();
+private:
+	ddRelationshipFigure *ownerRel;
 };
 
 #endif

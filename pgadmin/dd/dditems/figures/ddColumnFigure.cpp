@@ -27,6 +27,7 @@
 
 ddColumnFigure::ddColumnFigure(wxString& columnName, ddTableFigure *owner, ddRelationshipItem *sourceFk)
 {
+	activateGenFkName(); //by default fk name is generate by using ( alias | tableName) . ColumnName combination
 	columnText = new ddTextTableItemFigure(columnName,dt_null,this);
 	leftImage = new ddColumnKindIcon(this);
 	centerImage = new ddColumnOptionIcon(this);
@@ -283,6 +284,21 @@ bool ddColumnFigure::isForeignKey()
 	return fkSource!=NULL;
 }
 
+bool ddColumnFigure::isFkNameGenerated()
+{
+	return generateFkName;
+}
+
+void ddColumnFigure::activateGenFkName()
+{
+	generateFkName = true;
+}
+
+void ddColumnFigure::deactivateGenFkName()
+{
+	generateFkName = false;
+}
+
 wxString ddColumnFigure::generateSQL()
 {
     wxString tmp;
@@ -290,4 +306,9 @@ wxString ddColumnFigure::generateSQL()
     tmp+= wxT(" ");
     tmp+= columnText->getType();
     return tmp;
+}
+
+ddRelationshipItem* ddColumnFigure::getFkSource()
+{
+	return fkSource;
 }

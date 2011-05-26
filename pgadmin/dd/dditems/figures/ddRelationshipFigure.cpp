@@ -80,7 +80,7 @@ void ddRelationshipFigure::updateForeignKey()
 				chm[fkColumnRelItem->original->getColumnName(false)]=fkColumnRelItem;
 				chm[fkColumnRelItem->originalStartColName]=NULL;
 				chm.erase(it);
-				fkColumnRelItem->synAutoFkName();
+				fkColumnRelItem->syncAutoFkName();
 				break;
 			}
 		}
@@ -97,11 +97,10 @@ void ddRelationshipFigure::updateForeignKey()
 
 				if( col->isPrimaryKey() && NotFound )
 				{
-					fkColumnRelItem = new ddRelationshipItem(col,endTable, (fkMandatory?notnull:null), (fkIdentifying?pk:fk) );
+					fkColumnRelItem = new ddRelationshipItem(this,col,endTable, (fkMandatory?notnull:null), (fkIdentifying?pk:fk) );
 					chm[col->getColumnName()]=fkColumnRelItem; //hashmap key will be original table name always
 					endTable->addColumn(fkColumnRelItem->fkColumn);
-					endTable->moveBy(-1,0);	//hack to update relationship position when table size change
-					endTable->moveBy(1,0);
+					updateConnection();
 				}
 
 				//STEP 1.2a: Delete old Fk columns not pk now or deleted from source fk table.
@@ -121,8 +120,7 @@ void ddRelationshipFigure::updateForeignKey()
 							chm.erase(it);
 							delete fkColumnRelItem;
 							repeat=true;
-							tmpTable->moveBy(-1,0); //hack to update relationship position when table size change
-							tmpTable->moveBy(1,0);
+							updateConnection();
 						}
 						if (repeat)
 							break;
@@ -137,11 +135,10 @@ void ddRelationshipFigure::updateForeignKey()
 
 				if( col->isUniqueKey(ukIndex) && NotFound )
 				{
-					fkColumnRelItem = new ddRelationshipItem(col,endTable, (fkMandatory?notnull:null), fk );
+					fkColumnRelItem = new ddRelationshipItem(this,col,endTable, (fkMandatory?notnull:null), fk );
 					chm[col->getColumnName()]=fkColumnRelItem; //hashmap key will be original table name always
 					endTable->addColumn(fkColumnRelItem->fkColumn);
-					endTable->moveBy(-1,0);	//hack to update relationship position when table size change
-					endTable->moveBy(1,0);
+					updateConnection();
 				}
 
 				//STEP 1.2b: Delete old Fk columns not pk now or deleted from source fk table.
@@ -161,8 +158,7 @@ void ddRelationshipFigure::updateForeignKey()
 							chm.erase(it);
 							delete fkColumnRelItem;
 							repeat=true;
-							tmpTable->moveBy(-1,0); //hack to update relationship position when table size change
-							tmpTable->moveBy(1,0);
+							updateConnection();
 						}
 						if (repeat)
 							break;
@@ -440,29 +436,39 @@ wxString ddRelationshipFigure::generateSQL()
 Items at hash map table
 *************************/
 
-ddRelationshipItem::ddRelationshipItem(ddColumnFigure *originalColumn, ddTableFigure *destination, ddColumnOptionType type, ddColumnType colType)
+ddRelationshipItem::ddRelationshipItem(ddRelationshipFigure *owner, ddColumnFigure *originalColumn, ddTableFigure *destination, ddColumnOptionType type, ddColumnType colType)
 {
+	ownerRel=owner;
 	original = originalColumn;
 	originalStartColName = original->getColumnName(false);
 	destinationTable = destination;
 	fkColumn = new ddColumnFigure(autoGenerateNameForFk(),destinationTable,this);
 	fkColumn->setColumnOption(type);
 	fkColumn->setColumnKind(colType);
+	fkColumn->activateGenFkName();
 }
 
 wxString ddRelationshipItem::autoGenerateNameForFk()
 {
 	//DD-TODO: improve auto fk name
-	wxString newName = original->getOwnerTable()->getTableName();
+	wxString newName;
+	if(original->getOwnerTable()->getShortTableName().IsEmpty())
+		newName = original->getOwnerTable()->getTableName();
+	else
+		newName = original->getOwnerTable()->getShortTableName();
 	newName.append(wxT("_"));
 	newName.append(originalStartColName);
 	return newName;
 }
 
-void ddRelationshipItem::synAutoFkName()
+void ddRelationshipItem::syncAutoFkName()
 {
-	originalStartColName = original->getColumnName(false);
-	fkColumn->setColumnName(autoGenerateNameForFk());
+	originalStartColName = original->getColumnName(false);  //Because original name was probably changed, now I should update it.
+	if(fkColumn->isForeignKey() && fkColumn->isFkNameGenerated() ) 
+	{
+		fkColumn->setColumnName(autoGenerateNameForFk());
+		ownerRel->updateConnection();
+	}
 }
 
 ddRelationshipItem::~ddRelationshipItem()

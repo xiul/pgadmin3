@@ -55,12 +55,17 @@ public:
 	void setColumnName(wxString name);
 	bool isForeignKey();
 	wxString generateSQL();
+	bool isFkNameGenerated();
+	void activateGenFkName();
+	void deactivateGenFkName();
+	ddRelationshipItem* getFkSource();
 
 protected:
 	ddColumnKindIcon *leftImage;
 	ddColumnOptionIcon *centerImage;
 	ddTextTableItemFigure *columnText;
 	ddTableFigure *ownerTable;
+	bool generateFkName;
 
 private:
 	ddRelationshipItem *fkSource;
