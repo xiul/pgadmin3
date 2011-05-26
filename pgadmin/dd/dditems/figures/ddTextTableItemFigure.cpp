@@ -18,7 +18,7 @@
 
 // App headers
 #include "dd/dditems/figures/ddTextTableItemFigure.h"
-#include "dd/dditems/figures/ddRelationshipFigure.h"  //DD-TODO: replace with item onlu class when available
+#include "dd/dditems/figures/ddRelationshipItem.h"
 #include "dd/dditems/tools/ddColumnTextTool.h"
 #include "dd/dditems/utilities/ddDataType.h"
 #include "dd/draw/figures/ddSimpleTextFigure.h"
@@ -333,13 +333,18 @@ wxString ddTextTableItemFigure::getAlias()
 //Activate use of alias or short names at ddtextTableItems like TableNames
 void ddTextTableItemFigure::setAlias(wxString alias)
 {
-	if(alias.length()>0)
-		showAlias=true;
-	else
+//DD-TODO empty alias update table size
+	if(alias.length()<=0 || alias.length()>3 )
+	{
 		showAlias=false;
-	
-	colAlias = alias;
-	recalculateDisplayBox();
+		colAlias = wxEmptyString;
+	}
+	else
+	{
+		showAlias=true;
+		colAlias = alias;
+		recalculateDisplayBox();
+	}
 }
 
 void ddTextTableItemFigure::setOneTimeNoAlias()

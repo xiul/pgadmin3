@@ -30,7 +30,7 @@ public:
 	virtual void enablePopUp();
 	virtual void disablePopUp();
 	virtual bool menuEnabled();
-	virtual void OnTextPopupClick(wxCommandEvent& event, ddDrawingView *view);
+	virtual void OnTextPopupClick(wxCommandEvent& event, ddDrawingView *view=NULL);
 protected:
 	wxArrayString strings;
 	bool showMenu;

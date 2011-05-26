@@ -17,6 +17,7 @@
 
 // App headers
 #include "dd/dditems/figures/ddRelationshipFigure.h"
+#include "dd/dditems/figures/ddRelationshipItem.h"
 #include "dd/draw/main/ddDrawingView.h"
 #include "dd/dditems/utilities/ddDataType.h"
 
@@ -31,7 +32,6 @@ ddLineConnection()
 	ukIndex = -1;
 	disconnectedEndTable = NULL;
 	enablePopUp();
-
 }
 
 ddRelationshipFigure::ddRelationshipFigure(ddIFigure *figure1, ddIFigure *figure2):
@@ -430,48 +430,5 @@ wxString ddRelationshipFigure::generateSQL()
 		}
 	}
 	return tmp;
-}
-
-/************************
-Items at hash map table
-*************************/
-
-ddRelationshipItem::ddRelationshipItem(ddRelationshipFigure *owner, ddColumnFigure *originalColumn, ddTableFigure *destination, ddColumnOptionType type, ddColumnType colType)
-{
-	ownerRel=owner;
-	original = originalColumn;
-	originalStartColName = original->getColumnName(false);
-	destinationTable = destination;
-	fkColumn = new ddColumnFigure(autoGenerateNameForFk(),destinationTable,this);
-	fkColumn->setColumnOption(type);
-	fkColumn->setColumnKind(colType);
-	fkColumn->activateGenFkName();
-}
-
-wxString ddRelationshipItem::autoGenerateNameForFk()
-{
-	//DD-TODO: improve auto fk name
-	wxString newName;
-	if(original->getOwnerTable()->getShortTableName().IsEmpty())
-		newName = original->getOwnerTable()->getTableName();
-	else
-		newName = original->getOwnerTable()->getShortTableName();
-	newName.append(wxT("_"));
-	newName.append(originalStartColName);
-	return newName;
-}
-
-void ddRelationshipItem::syncAutoFkName()
-{
-	originalStartColName = original->getColumnName(false);  //Because original name was probably changed, now I should update it.
-	if(fkColumn->isForeignKey() && fkColumn->isFkNameGenerated() ) 
-	{
-		fkColumn->setColumnName(autoGenerateNameForFk());
-		ownerRel->updateConnection();
-	}
-}
-
-ddRelationshipItem::~ddRelationshipItem()
-{
 }
 

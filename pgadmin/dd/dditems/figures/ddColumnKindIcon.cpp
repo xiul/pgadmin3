@@ -49,7 +49,7 @@ void ddColumnKindIcon::createMenu(wxMenu &mnu)
     
 	item = mnu.AppendCheckItem(MNU_DDCTPKEY, _("Primary key"));
     item->Check(colType==pk);
-    item->Enable(getOwnerColumn()->isForeignKey());
+    item->Enable(!getOwnerColumn()->isForeignKey());
 	item = mnu.AppendCheckItem(MNU_DDCTUKEY, _("Unique key"));
     item->Check(colType==uk);
 }
@@ -101,6 +101,7 @@ void ddColumnKindIcon::changeIcon(ddColumnType type, ddDrawingView *view, bool i
 		case uk:
 				uniqueConstraintManager(ukCol,view,interaction);
 				icon = wxBitmap(ddunique_xpm);
+				getOwnerColumn()->getOwnerTable()->updateFkObservers();								
 				break;
 		case fk:
 				icon = wxBitmap(ddforeignkey_xpm);
@@ -186,17 +187,16 @@ void ddColumnKindIcon::uniqueConstraintManager(bool ukCol, ddDrawingView *view, 
 {
     wxString tmpString;
     colType=uk;
-    if(ukCol)
+    if(ukCol) //if already this column kind is Unique Key then convert in a normal column
     {
         syncUkIndexes();
         getOwnerColumn()->setUniqueConstraintIndex(-1);
         colType=none;
-        //getOwnerColumn()->setColumnKind(none);
     }
     else //colType!=uk
     {
         if(interaction)
-        {
+		{
             if(ownerColumn->getOwnerTable()->getUkConstraintsNames().Count()==0)   //DD-TODO: solve problem of charging values without user interaction (save/load)
             {
                 tmpString = getOwnerColumn()->getOwnerTable()->getTableName();

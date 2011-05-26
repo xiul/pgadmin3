@@ -64,22 +64,4 @@ private:
 	ddTableFigure *disconnectedEndTable;
 };
 
-
-
-class ddRelationshipItem : public ddObject
-{
-public:
-	ddRelationshipItem(ddRelationshipFigure *owner, ddColumnFigure *originalColumn, ddTableFigure *destination, ddColumnOptionType type, ddColumnType colType);
-	~ddRelationshipItem();
-	wxString originalStartColName;
-	ddColumnFigure *original;
-	ddColumnFigure *fkColumn;
-	ddTableFigure *destinationTable;
-
-	wxString autoGenerateNameForFk();
-	void syncAutoFkName();
-private:
-	ddRelationshipFigure *ownerRel;
-};
-
 #endif

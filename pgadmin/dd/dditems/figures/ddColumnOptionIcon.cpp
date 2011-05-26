@@ -5,7 +5,7 @@
 // Copyright (C) 2002 - 2011, The pgAdmin Development Team
 // This software is released under the PostgreSQL Licence
 //
-// ddColumnOptionIcon.cpp -
+// ddColumnOptionIcon.cpp - Part of composite column figure, allow to choose between: not null and null
 //
 //////////////////////////////////////////////////////////////////////////
 
@@ -50,7 +50,7 @@ void ddColumnOptionIcon::createMenu(wxMenu &mnu)
 	item->Enable(!getOwnerColumn()->isForeignKey());
 }
 
-void ddColumnOptionIcon::OnTextPopupClick(wxCommandEvent& event)
+void ddColumnOptionIcon::OnTextPopupClick(wxCommandEvent& event, ddDrawingView *view)
 {
 	changeIcon((ddColumnOptionType)event.GetId());
 }

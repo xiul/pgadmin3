@@ -33,7 +33,8 @@ class ddColumnOptionIcon : public ddAbstractMenuFigure
 public:
 	ddColumnOptionIcon(ddColumnFigure *owner);
     ~ddColumnOptionIcon();
-	virtual void OnTextPopupClick(wxCommandEvent& event);
+	virtual void OnTextPopupClick(wxCommandEvent& event, ddDrawingView *view=NULL);
+	//	virtual void OnTextPopupClick(wxCommandEvent& event);
     virtual void createMenu(wxMenu &mnu);
 	virtual void basicDraw(wxBufferedDC& context, ddDrawingView *view);
 	virtual void basicDrawSelected(wxBufferedDC& context, ddDrawingView *view);		
