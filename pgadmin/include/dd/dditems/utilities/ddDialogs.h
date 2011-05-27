@@ -12,6 +12,7 @@
 #ifndef DDDIALOGS_H
 #define DDDIALOGS_H
 
+#include <wx/statline.h>
 #include "dd/dditems/figures/ddTextTableItemFigure.h"
 
 enum {
@@ -27,6 +28,7 @@ class ddTableNameDialog : public wxDialog
     DECLARE_EVENT_TABLE()
 public:
 	ddTableNameDialog();
+	~ddTableNameDialog();
 	ddTableNameDialog(	wxWindow* parent,
 						wxWindowID id,
 						const wxString& caption = wxT("Input Dialog"),
@@ -79,11 +81,18 @@ public:
 
 
 protected:
-	    /// Data members
+	    // Data members
     wxString m_value1, m_value2;
 	wxString label1, label2;
 	bool checkGenerate;
 	ddTextTableItemFigure* tabItem;
+		// Dialog controls
+	wxBoxSizer *topSizer, *nameGenBox, *boxSizer, *okCancelBox;
+	wxStaticText *value1Label, *value2Label;
+	wxTextCtrl *value1Ctrl, *value2Ctrl;
+	wxButton *generateButton,  *ok, *cancel;
+	wxStaticLine *line;
+
 private:
 
 };

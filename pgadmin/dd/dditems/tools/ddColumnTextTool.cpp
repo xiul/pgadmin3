@@ -98,7 +98,7 @@ bool ddColumnTextTool::callDialog()
 	
 		//check if names changed
 		bool noChange = colShortName.IsSameAs(nameAliasDialog->GetValue1()) && colShortName.IsSameAs(nameAliasDialog->GetValue2());
-
+		
 		delete nameAliasDialog;
 
 		return !noChange;

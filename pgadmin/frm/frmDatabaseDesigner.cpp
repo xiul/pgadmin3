@@ -191,21 +191,38 @@ void frmDatabaseDesigner::OnDeleteTable(wxCommandEvent& event)
 void frmDatabaseDesigner::OnAddColumn(wxCommandEvent& event)
 {
     ddTableFigure *table = design->getSelectedTable();
-    wxTextEntryDialog *nameDialog;
+	wxTextEntryDialog nameDialog (this, wxT("New column name"), wxT("Add a column"), wxT("NewColumn"));
     int answer;
     wxString tmpString;
     
     if (table)
     {
-        nameDialog = new wxTextEntryDialog(this, wxT("New column name"), wxT("Add a column"), wxT("NewColumn"));
-        answer = nameDialog->ShowModal();
-        if (answer == wxID_OK)
-        {
-            tmpString = nameDialog->GetValue();
-            table->addColumn(new ddColumnFigure(tmpString, table));
-        }
-        delete nameDialog;
+		bool again;
+		do{
+			again=false;
+			answer = nameDialog.ShowModal();
+			if (answer == wxID_OK)
+			{
+				tmpString = nameDialog.GetValue();
+				if(table->colNameAvailable(tmpString))
+					table->addColumn(new ddColumnFigure(tmpString, table));
+				else
+				{
+					wxString msg(wxT("Error trying to add new column '"));
+					msg.Append(tmpString);
+					msg.Append(wxT("' column name already in use"));
+					wxMessageDialog info( this, msg ,
+						wxT("Column name already in use"),
+						wxNO_DEFAULT|wxOK|wxICON_EXCLAMATION);
+					again=true;
+					info.ShowModal();
+				}
+
+			}
+		}
+		while(again);
     }
+	this->Refresh();
 }
 
 

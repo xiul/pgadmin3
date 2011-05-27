@@ -50,7 +50,7 @@ public:
     virtual void setAlias(wxString alias);
 	virtual wxString getAlias();
 	virtual void setOneTimeNoAlias();
-	void generateShortName(wxString longName);
+	wxString generateShortName(wxString longName);
 	virtual void createMenu(wxMenu &mnu);
 	virtual const wxArrayString dataTypes();
 	virtual void OnTextPopupClick(wxCommandEvent& event, ddDrawingView *view);

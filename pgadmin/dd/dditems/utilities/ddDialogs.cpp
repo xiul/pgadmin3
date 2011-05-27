@@ -47,6 +47,18 @@ ddTableNameDialog::ddTableNameDialog(	wxWindow* parent,
     Create(parent, id, caption, pos, size, style);    
 }
 
+ddTableNameDialog::~ddTableNameDialog()
+{
+	delete value1Label;
+	delete value2Label;
+	delete value1Ctrl;
+	delete value2Ctrl;
+	delete generateButton;
+	delete ok;
+	delete cancel;
+	delete line;
+}
+
 ddTableNameDialog::ddTableNameDialog()
 {
 	Init();
@@ -92,64 +104,65 @@ void ddTableNameDialog::CreateControls()
 {
     // A top-level sizer
 
-    wxBoxSizer* topSizer = new wxBoxSizer(wxHORIZONTAL );
+    topSizer = new wxBoxSizer(wxHORIZONTAL );
     this->SetSizer(topSizer);
 
 	// A horizontal box sizer to contain auto generate short name checkbox
-	wxBoxSizer* nameGenBox = new wxBoxSizer(wxVERTICAL);
+	nameGenBox = new wxBoxSizer(wxVERTICAL);
     topSizer->Add(nameGenBox, 0, wxALIGN_CENTER_HORIZONTAL|wxALL, 5);
 
     // A second box sizer to give more space around the controls
 
-    wxBoxSizer* boxSizer = new wxBoxSizer(wxHORIZONTAL );
+    boxSizer = new wxBoxSizer(wxHORIZONTAL );
     nameGenBox->Add(boxSizer, 0, wxALIGN_CENTER_HORIZONTAL|wxALL, 5);
 
     // Label for the Value 1
-    wxStaticText* value1Label = new wxStaticText ( this, wxID_STATIC,
+   value1Label = new wxStaticText ( this, wxID_STATIC,
         label1, wxDefaultPosition, wxDefaultSize, 0 );
     boxSizer->Add(value1Label, 0, wxALIGN_LEFT|wxALL, 5);
 
     // A text control for Value 1
-   wxTextCtrl* value1Ctrl = new wxTextCtrl ( this, DDVALUE1, m_value1 , wxDefaultPosition,
+   value1Ctrl = new wxTextCtrl ( this, DDVALUE1, m_value1 , wxDefaultPosition,
  wxDefaultSize, 0 );
     boxSizer->Add(value1Ctrl, 0, wxGROW|wxALL, 5);
 
     // Label for the Value 2
-    wxStaticText* value2Label = new wxStaticText ( this, wxID_STATIC,
+    value2Label = new wxStaticText ( this, wxID_STATIC,
         label2, wxDefaultPosition, wxDefaultSize, 0 );
     boxSizer->Add(value2Label, 0, wxALIGN_LEFT|wxALL, 5);
 
     // A text control for Value 2
-   wxTextCtrl* value2Ctrl = new wxTextCtrl ( this, DDVALUE2, m_value2, wxDefaultPosition,
+   value2Ctrl = new wxTextCtrl ( this, DDVALUE2, m_value2, wxDefaultPosition,
  wxDefaultSize, 0 );
+   value2Ctrl->SetMaxLength(3);
     boxSizer->Add(value2Ctrl, 0, wxGROW|wxALL, 5);
     
 	//A check box to allow select automatic short name generation
 
-    wxButton* generateButton = new wxButton ( this, DDGENBUTTON, wxT("&Generate Short Name"),
+    generateButton = new wxButton ( this, DDGENBUTTON, wxT("&Generate Short Name"),
        wxDefaultPosition, wxDefaultSize, 0 );
 	nameGenBox->Add(generateButton, 0, wxALIGN_CENTER_HORIZONTAL|wxALL, 5);
 	
     // A dividing line before the OK and Cancel buttons
 
-    wxStaticLine* line = new wxStaticLine ( this, wxID_STATIC,
+    line = new wxStaticLine ( this, wxID_STATIC,
         wxDefaultPosition, wxDefaultSize, wxLI_HORIZONTAL );
     nameGenBox->Add(line, 0, wxGROW|wxALL, 5);
 
      // A horizontal box sizer to contain Reset, OK, Cancel and Help
 
-	wxBoxSizer* okCancelBox = new wxBoxSizer(wxHORIZONTAL);
+	okCancelBox = new wxBoxSizer(wxHORIZONTAL);
     nameGenBox->Add(okCancelBox, 0, wxALIGN_CENTER_HORIZONTAL|wxALL, 5);
 
 	// The OK button
 
-    wxButton* ok = new wxButton ( this, wxID_OK, wxT("&OK"),
+    ok = new wxButton ( this, wxID_OK, wxT("&OK"),
         wxDefaultPosition, wxDefaultSize, 0 );
     okCancelBox->Add(ok, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
     // The Cancel button
 
-    wxButton* cancel = new wxButton ( this, wxID_CANCEL,
+    cancel = new wxButton ( this, wxID_CANCEL,
         wxT("&Cancel"), wxDefaultPosition, wxDefaultSize, 0 );
     okCancelBox->Add(cancel, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
@@ -196,8 +209,8 @@ void ddTableNameDialog::OnGenButtonClicked( wxCommandEvent& event )
 
 	if(tabItem!=NULL)
 	{
-			tabItem->generateShortName(val1Ctrl->GetValue());
-			val2Ctrl->SetValue(tabItem->getAlias());
+			wxString shortName = tabItem->generateShortName(val1Ctrl->GetValue());
+			val2Ctrl->SetValue(shortName);
 	}
 }
 

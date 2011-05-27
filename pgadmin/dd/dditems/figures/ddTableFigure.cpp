@@ -135,6 +135,27 @@ ddTableFigure::~ddTableFigure()
 	}
 }
 
+bool ddTableFigure::colNameAvailable(wxString name)
+{
+	bool out = true;
+	ddColumnFigure *f;
+
+	ddIteratorBase *iterator=figuresEnumerator();
+	iterator->Next(); //First figure is main rect
+	iterator->Next(); //Second figure is main title
+
+	while(iterator->HasNext()){
+		f = (ddColumnFigure *) iterator->Next();
+		if(f->getColumnName(false).IsSameAs(name))
+		{
+			out=false;
+			break;
+		}
+	}
+	delete iterator;
+
+	return out;
+}
 
 //WARNING: Columns SHOULD BE ADDED only using this function to avoid strange behaviors
 void ddTableFigure::addColumn(ddColumnFigure *column)
@@ -639,6 +660,7 @@ wxString ddTableFigure::getShortTableName()
 wxString ddTableFigure::getTableName()
 {
 	ddTextTableItemFigure *c = (ddTextTableItemFigure*) figureFigures->getItemAt(1);
+	c->setOneTimeNoAlias();
 	return c->getText(false);
 }
 

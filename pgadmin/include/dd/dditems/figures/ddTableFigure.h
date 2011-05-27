@@ -27,6 +27,7 @@ public:
     ~ddTableFigure();
 	
 	//add remove items
+	bool colNameAvailable(wxString name);
 	void addColumn(ddColumnFigure *column);
 	void removeColumn(ddColumnFigure *column);
 	

@@ -37,14 +37,31 @@ ddAddColButtonHandle::~ddAddColButtonHandle()
 void ddAddColButtonHandle::invokeStart(ddMouseEvent &event, ddDrawingView *view)
 {
 	ddTableFigure *table = (ddTableFigure*) getOwner();
-    wxTextEntryDialog *nameDialog = new wxTextEntryDialog(view, wxT("New column name"), wxT("Add a column"), wxT("NewColumn"));
-    int answer = nameDialog->ShowModal();
-    if (answer == wxID_OK)
-    {
-        wxString title=nameDialog->GetValue();
-        table->addColumn(new ddColumnFigure(title, table));
-    }
-    delete nameDialog;
+	wxTextEntryDialog nameDialog(view, wxT("New column name"), wxT("Add a column"), wxT("NewColumn"));
+	bool again;
+	do
+	{
+		again=false;
+		int answer = nameDialog.ShowModal();
+		if (answer == wxID_OK)
+		{
+			wxString name=nameDialog.GetValue();
+			if(table->colNameAvailable(name))
+				table->addColumn(new ddColumnFigure(name, table));
+			else
+			{
+				wxString msg(wxT("Error trying to add new column '"));
+				msg.Append(name);
+				msg.Append(wxT("' column name already in use"));
+				wxMessageDialog info( view, msg ,
+					wxT("Column name already in use"),
+					wxNO_DEFAULT|wxOK|wxICON_EXCLAMATION);
+				again=true;
+				info.ShowModal();
+			}
+		}
+
+	}while(again);
 }
 
 void ddAddColButtonHandle::invokeStep(ddMouseEvent &event, ddDrawingView *view)

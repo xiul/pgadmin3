@@ -333,11 +333,11 @@ wxString ddTextTableItemFigure::getAlias()
 //Activate use of alias or short names at ddtextTableItems like TableNames
 void ddTextTableItemFigure::setAlias(wxString alias)
 {
-//DD-TODO empty alias update table size
 	if(alias.length()<=0 || alias.length()>3 )
 	{
 		showAlias=false;
 		colAlias = wxEmptyString;
+		recalculateDisplayBox();
 	}
 	else
 	{
@@ -370,7 +370,7 @@ Rules to auto generate short names:
 		first 3 letters of the word
 */
 
-void ddTextTableItemFigure::generateShortName(wxString longName)
+wxString ddTextTableItemFigure::generateShortName(wxString longName)
 {
 	wxString nameT = longName;
 	//filter not desiree characters
@@ -445,7 +445,7 @@ void ddTextTableItemFigure::generateShortName(wxString longName)
 	}
 	wxString out=wxString::Format(wxT("%c%c%c"),f,s,l); 
 	out.UpperCase();
-	setAlias(out);
+	return out;
 }
 
 ddColumnFigure* ddTextTableItemFigure::getOwnerColumn()
