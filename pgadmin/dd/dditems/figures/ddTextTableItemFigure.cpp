@@ -45,11 +45,16 @@ ddTextTableItemFigure::~ddTextTableItemFigure()
 {
 }
 
+void ddTextTableItemFigure::displayBoxUpdate()
+{
+	recalculateDisplayBox();
+}
+
 wxString& ddTextTableItemFigure::getText(bool extended)
 {
 	if(showDataType && extended && getOwnerColumn())
 	{
-		wxString ddType = dataTypes()[columnType];
+		wxString ddType = dataTypes()[getDataType()];   //Should use getDataType(), becuase when column is fk, type is not taken from this column, instead from original column (source of fk)
 		if(columnType==dt_varchar && precision>0)
 		{
 			ddType.Truncate(ddType.Find(wxT("(")));
@@ -145,31 +150,31 @@ void ddTextTableItemFigure::OnTextPopupClick(wxCommandEvent& event, ddDrawingVie
             getOwnerColumn()->setColumnKind(uk,view);
             break;
 		case MNU_TYPESERIAL:
-            columnType = dt_serial;
+            setDataType(dt_serial);  //Should use setDataType always to set this value to allow fk to work flawlessly
             recalculateDisplayBox();
             getOwnerColumn()->displayBoxUpdate();
             getOwnerColumn()->getOwnerTable()->updateTableSize();
             break;
 		case MNU_TYPEBOOLEAN:
-            columnType = dt_boolean;
+            setDataType(dt_boolean);
             recalculateDisplayBox();
             getOwnerColumn()->displayBoxUpdate();
             getOwnerColumn()->getOwnerTable()->updateTableSize();
             break;
 		case MNU_TYPEINTEGER:
-			columnType = dt_integer;
+			setDataType(dt_integer);
             recalculateDisplayBox();
             getOwnerColumn()->displayBoxUpdate();
             getOwnerColumn()->getOwnerTable()->updateTableSize();
             break;
 		case MNU_TYPEMONEY:
-            columnType = dt_money;
+            setDataType(dt_money);
             recalculateDisplayBox();
             getOwnerColumn()->displayBoxUpdate();
             getOwnerColumn()->getOwnerTable()->updateTableSize();
             break;
 		case MNU_TYPEVARCHAR:
-            columnType = dt_varchar;
+            setDataType(dt_varchar);
             tmpprecision = wxGetNumberFromUser(_("Varchar size"),
                 _("Size for varchar datatype"),
                 _("Varchar size"),
@@ -181,10 +186,11 @@ void ddTextTableItemFigure::OnTextPopupClick(wxCommandEvent& event, ddDrawingVie
             getOwnerColumn()->getOwnerTable()->updateTableSize();
             break;
 		case MNU_TYPEOTHER:
-            columnType = (ddDataType) wxGetSingleChoiceIndex(wxT("New column datatype"),wxT("Column Datatypes"),dataTypes(),view);
+            setDataType((ddDataType) wxGetSingleChoiceIndex(wxT("New column datatype"),wxT("Column Datatypes"),dataTypes(),view));
             recalculateDisplayBox();
             getOwnerColumn()->displayBoxUpdate();
             getOwnerColumn()->getOwnerTable()->updateTableSize();
+			//6667
             break;
 		case MNU_TYPEPKEY_CONSTRAINTNAME:
             tmpString=wxGetTextFromUser(wxT("New name of primary key:"),getOwnerColumn()->getOwnerTable()->getPkConstraintName(),getOwnerColumn()->getOwnerTable()->getPkConstraintName(),view);
@@ -492,10 +498,14 @@ int ddTextTableItemFigure::getTextHeight()
 
 ddDataType ddTextTableItemFigure::getDataType()
 {
-	return columnType;
+	if(!getOwnerColumn()->isForeignKey())
+		return columnType;
+	else
+		return getOwnerColumn()->getFkSource()->original->getDataType();
 }
 
 void ddTextTableItemFigure::setDataType(ddDataType type)
 {
 	columnType=type;
+	ownerColumn->getOwnerTable()->updateSizeOfObservers();
 }

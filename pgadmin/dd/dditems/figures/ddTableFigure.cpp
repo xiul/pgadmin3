@@ -439,17 +439,18 @@ void ddTableFigure::toggleColumnDeleteMode(bool disable)
 
 int ddTableFigure::getFiguresMaxWidth()
 {
-	ddIFigure *f;
+	ddColumnFigure *cf;
 	ddGeometry g;
 
 	ddIteratorBase *iterator=figuresEnumerator();
 	iterator->Next(); //First figure is main rect
 	int maxWidth=0;
-	f = (ddIFigure *) iterator->Next(); //Second figure is main title
-	maxWidth = g.max(maxWidth,f->displayBox().width+20);
+	cf = (ddColumnFigure *) iterator->Next(); //Second figure is main title
+	maxWidth = g.max(maxWidth,cf->displayBox().width+20);
 	while(iterator->HasNext()){
-		f = (ddIFigure *) iterator->Next();
-		maxWidth = g.max(maxWidth,f->displayBox().width);
+		cf = (ddColumnFigure *) iterator->Next();
+		//cf->displayBoxUpdate(); 666
+		maxWidth = g.max(maxWidth,cf->displayBox().width);
 	}
 	delete iterator;
 	if(figureHandles->existsObject(scrollbar))
@@ -522,6 +523,18 @@ void ddTableFigure::calcRectsAreas()
 
 void ddTableFigure::updateTableSize()
 {
+	//Step 0: Recalculate displaybox size, in case of an external modification as change of datatype in a fk from a source (data is stored in original table)
+	ddColumnFigure *cf;
+	ddIteratorBase *iterator=figuresEnumerator();
+	iterator->Next(); //First figure is main rect
+	cf = (ddColumnFigure *) iterator->Next(); //Second figure is main title
+	while(iterator->HasNext()){
+		cf = (ddColumnFigure *) iterator->Next();
+		cf->displayBoxUpdate();
+	}
+	delete iterator;
+
+	//Step 1: Update table size
 	calcRectsAreas();  //DD-TODO: I just add this here, test don't change in bad way other parts
 	wxSize value=fullSizeRect.GetSize();
 	rectangleFigure->setSize(value);
@@ -679,6 +692,19 @@ void ddTableFigure::updateFkObservers()
 	while(iterator->HasNext()){
 	ddRelationshipFigure *r = (ddRelationshipFigure*) iterator->Next();
 		r->updateForeignKey();
+	}
+	delete iterator;
+}
+
+//If a column change datatype, should alert all others table to adjust their size with new values
+void ddTableFigure::updateSizeOfObservers()
+{
+	//For all tables that are observing this table, update their size
+	ddIteratorBase *iterator = observersEnumerator();
+	while(iterator->HasNext()){
+		ddRelationshipFigure *r = (ddRelationshipFigure*) iterator->Next();
+		ddTableFigure *destFkTable=(ddTableFigure*) r->getEndFigure();
+		destFkTable->updateTableSize();
 	}
 	delete iterator;
 }

@@ -70,6 +70,7 @@ public:
 	
 	//fk related
 	void updateFkObservers();
+	void updateSizeOfObservers();
 
 protected:
 

@@ -59,6 +59,7 @@ public:
 	virtual void setOwnerColumn(ddColumnFigure *column);
 	virtual void setShowDataType(bool value);
 	ddITool* CreateFigureTool(ddDrawingEditor *editor, ddITool *defaultTool);
+	virtual void displayBoxUpdate();
 	int getTextWidth();
 	int getTextHeight();
 	ddDataType getDataType();

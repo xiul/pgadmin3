@@ -27,11 +27,11 @@
 
 ddColumnFigure::ddColumnFigure(wxString& columnName, ddTableFigure *owner, ddRelationshipItem *sourceFk)
 {
+	fkSource=sourceFk;
 	activateGenFkName(); //by default fk name is generate by using ( alias | tableName) . ColumnName combination
 	columnText = new ddTextTableItemFigure(columnName,dt_null,this);
 	leftImage = new ddColumnKindIcon(this);
 	centerImage = new ddColumnOptionIcon(this);
-	fkSource=sourceFk;
 	setOwnerTable(owner);
 
 	//Initialize displaybox and image coords
@@ -186,12 +186,14 @@ void ddColumnFigure::displayBoxUpdate()
 {
 	if(leftImage && centerImage)
 	{
+		columnText->displayBoxUpdate();
 		basicDisplayBox.width=columnText->displayBox().GetSize().GetWidth();
 		basicDisplayBox.width+=leftImage->displayBox().GetSize().GetWidth()+3;
 		basicDisplayBox.width+=centerImage->displayBox().GetSize().GetWidth()+3;
 	}
 	else
 	{
+		columnText->displayBoxUpdate();
 		basicDisplayBox.width+=22; //default value = 1 + 8 + 3 + 8 +2 
 	}
 }
