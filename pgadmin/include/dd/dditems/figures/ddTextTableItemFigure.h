@@ -39,6 +39,7 @@ enum
 };
 
 class ddColumnFigure;
+class ddTableFigure;
 
 class ddTextTableItemFigure : public ddSimpleTextFigure
 {
@@ -64,8 +65,10 @@ public:
 	int getTextHeight();
 	ddDataType getDataType();
 	void setDataType(ddDataType type);
+	void setOwnerTable(ddTableFigure *table);  //only used by columns working as table title figure for setAlias method
 protected:
 	ddColumnFigure *ownerColumn;
+	ddTableFigure *ownerTable;  
 	wxString colAlias;
 private:
 	ddDataType columnType;

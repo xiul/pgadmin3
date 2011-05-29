@@ -72,8 +72,8 @@ ddCompositeFigure()
 	rectangleFigure->moveTo(x,y);
 	add(rectangleFigure);
 	
-	//DD-TODO: improve table name automatic creation
 	tableTitle = new ddTextTableItemFigure(tableName,dt_null,NULL);
+	tableTitle->setOwnerTable(this);
 	tableTitle->setEditable(true);
 	tableTitle->moveTo(x,y);
 	tableTitle->disablePopUp();
@@ -677,7 +677,6 @@ wxString ddTableFigure::getTableName()
 	return c->getText(false);
 }
 
-
 /*
 	Note about observers:
 	A table is observed by several relationships at same time, where that observers
@@ -685,7 +684,6 @@ wxString ddTableFigure::getTableName()
 	Ex: if I delete a pk on observed table (source) all observers (destination)
 		should modify their columns to remove that fk created from that pk column.
 */
-
 void ddTableFigure::updateFkObservers()
 {
 	ddIteratorBase *iterator = observersEnumerator();

@@ -62,21 +62,18 @@ void ddRelationshipFigure::updateForeignKey()
 		ddColumnFigure *col;
 		ddRelationshipItem *fkColumnRelItem;
 
-
-
-		ddIteratorBase *iterator = startTable->figuresEnumerator();
-		iterator->Next(); //first figure is main rect
-		iterator->Next(); //second figure is table title
+		//STEP 0: Look for changes on source columns names and short table names.
 		
-		//STEP 0: Before iterate over all columns of source table look if any column used at relationship, changed their name and updated it when needed
+		//Before iterate over all columns of source table look if any column used at relationship
+		//and changed their name and updated it when needed
 		columnsHashMap::iterator it;
 		for (it = chm.begin(); it != chm.end(); ++it)
 		{
 			wxString key = it->first;
 			fkColumnRelItem = it->second;
+			
 			if(!fkColumnRelItem->original->getColumnName(false).IsSameAs(fkColumnRelItem->originalStartColName,false))
 			{
-				//DD-TODO: update key of hashmap with new value because key changed
 				chm[fkColumnRelItem->original->getColumnName(false)]=fkColumnRelItem;
 				chm[fkColumnRelItem->originalStartColName]=NULL;
 				chm.erase(it);
@@ -85,7 +82,20 @@ void ddRelationshipFigure::updateForeignKey()
 			}
 		}
 
-		//STEP 1: Look at all source table columns
+		//Update all column with auto FK naming with different shortname
+		for (it = chm.begin(); it != chm.end(); ++it)
+		{
+			fkColumnRelItem = it->second;
+			if(!fkColumnRelItem->original->getOwnerTable()->getShortTableName().IsSameAs(fkColumnRelItem->originalShortName,false))
+			{
+				fkColumnRelItem->syncAutoFkName();
+			}
+		}
+
+		//STEP 1: Look at all source table columns add and delete fk
+		ddIteratorBase *iterator = startTable->figuresEnumerator();
+		iterator->Next(); //first figure is main rect
+		iterator->Next(); //second figure is table title
 		while(iterator->HasNext())
 		{
 			col = (ddColumnFigure*) iterator->Next();
@@ -388,6 +398,7 @@ void ddRelationshipFigure::setKindAtForeignKeys(ddColumnType type)
 }
 wxString ddRelationshipFigure::generateSQL()
 {
+	//DD-TODO generate name for fk with table shortnames
 	wxString tmp;
 	if(chm.size() > 0)
 	{

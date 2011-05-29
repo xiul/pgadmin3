@@ -21,6 +21,7 @@ public:
 	ddRelationshipItem(ddRelationshipFigure *owner, ddColumnFigure *originalColumn, ddTableFigure *destination, ddColumnOptionType type, ddColumnType colType);
 	~ddRelationshipItem();
 	wxString originalStartColName;
+	wxString originalShortName;
 	ddColumnFigure *original;
 	ddColumnFigure *fkColumn;
 	ddTableFigure *destinationTable;

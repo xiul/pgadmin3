@@ -25,6 +25,7 @@ ddRelationshipItem::ddRelationshipItem(ddRelationshipFigure *owner, ddColumnFigu
 {
 	ownerRel=owner;
 	original = originalColumn;
+	originalShortName = original->getOwnerTable()->getShortTableName();
 	originalStartColName = original->getColumnName(false);
 	destinationTable = destination;
 	fkColumn = new ddColumnFigure(autoGenerateNameForFk(),destinationTable,this);
@@ -35,7 +36,6 @@ ddRelationshipItem::ddRelationshipItem(ddRelationshipFigure *owner, ddColumnFigu
 
 wxString ddRelationshipItem::autoGenerateNameForFk()
 {
-	//DD-TODO: improve auto fk name
 	wxString newName;
 	if(original->getOwnerTable()->getShortTableName().IsEmpty())
 		newName = original->getOwnerTable()->getTableName();
@@ -49,6 +49,7 @@ wxString ddRelationshipItem::autoGenerateNameForFk()
 void ddRelationshipItem::syncAutoFkName()
 {
 	originalStartColName = original->getColumnName(false);  //Because original name was probably changed, now I should update it.
+	originalShortName = original->getOwnerTable()->getShortTableName(); //Because original short name was probably changed, now I should update it.
 	if(fkColumn->isForeignKey() && fkColumn->isFkNameGenerated() ) 
 	{
 		fkColumn->setColumnName(autoGenerateNameForFk());

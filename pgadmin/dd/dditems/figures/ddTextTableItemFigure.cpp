@@ -30,6 +30,7 @@
 ddTextTableItemFigure::ddTextTableItemFigure(wxString& columnName, ddDataType dataType, ddColumnFigure *owner):
 ddSimpleTextFigure(columnName)
 {
+	ownerTable = NULL;
 	oneTimeNoAlias = false;
 	columnType = dataType;
 	this->setEditable(true);
@@ -48,6 +49,11 @@ ddTextTableItemFigure::~ddTextTableItemFigure()
 void ddTextTableItemFigure::displayBoxUpdate()
 {
 	recalculateDisplayBox();
+}
+
+void ddTextTableItemFigure::setOwnerTable(ddTableFigure *table)
+{
+	ownerTable = table;
 }
 
 wxString& ddTextTableItemFigure::getText(bool extended)
@@ -322,7 +328,9 @@ const wxArrayString ddTextTableItemFigure::dataTypes()
 void ddTextTableItemFigure::setText(wxString textString)
 {
 	ddSimpleTextFigure::setText(textString);
-	//Hack to allow column text to submit new size of text signal to tablefigure and then recalculate displaybox
+	
+	//Hack to allow column text to submit new size of text signal to tablefigure 
+	//and then recalculate displaybox. Helps with fk autorenaming too.
 	if(ownerColumn)
 	{
 		ownerColumn->displayBoxUpdate();
@@ -336,7 +344,7 @@ wxString ddTextTableItemFigure::getAlias()
 	return colAlias;
 }
 
-//Activate use of alias or short names at ddtextTableItems like TableNames
+//Activate use of alias or short names at ddtextTableItems like TableNames [Columns don' use it]
 void ddTextTableItemFigure::setAlias(wxString alias)
 {
 	if(alias.length()<=0 || alias.length()>3 )
@@ -351,6 +359,8 @@ void ddTextTableItemFigure::setAlias(wxString alias)
 		colAlias = alias;
 		recalculateDisplayBox();
 	}
+	
+	ownerTable->updateFkObservers(); //Only triggered by a tableName item [Not a column]
 }
 
 void ddTextTableItemFigure::setOneTimeNoAlias()
