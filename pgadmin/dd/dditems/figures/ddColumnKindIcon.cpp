@@ -134,8 +134,13 @@ void ddColumnKindIcon::basicDraw(wxBufferedDC& context, ddDrawingView *view)
 	{
 		ddRect copy = displayBox();
 		view->CalcScrolledPosition(copy.x,copy.y,&copy.x,&copy.y);
+		//Adding a yellow circle to increase visibility of uk index
+		context.SetBrush(wxBrush(wxColour(wxT("YELLOW")), wxSOLID));
+		context.SetPen(wxPen(wxColour(wxT("YELLOW"))));
+		context.DrawCircle(copy.x+6,copy.y+7,4);
+		//Draw Uk icon
 		context.DrawBitmap(*iconToDraw,copy.GetPosition(),true);
-		//DD-TODO: improve this number
+		//Draw Uk index if needed
 		if(colType==uk && ukIndex>0)
 		{
 			wxFont font = settings->GetSystemFont();
@@ -197,7 +202,7 @@ void ddColumnKindIcon::uniqueConstraintManager(bool ukCol, ddDrawingView *view, 
     {
         if(interaction)
 		{
-            if(ownerColumn->getOwnerTable()->getUkConstraintsNames().Count()==0)   //DD-TODO: solve problem of charging values without user interaction (save/load)
+            if(ownerColumn->getOwnerTable()->getUkConstraintsNames().Count()==0)
             {
                 tmpString = getOwnerColumn()->getOwnerTable()->getTableName();
                 tmpString.append(wxT("_uk"));
@@ -258,6 +263,10 @@ void ddColumnKindIcon::uniqueConstraintManager(bool ukCol, ddDrawingView *view, 
                 }
             }
         }
+		else //without user interaction for
+		{
+			//DD-TODO: solve problem of setting values without user interaction for model persistence
+		}
     }
 }
 
@@ -266,7 +275,6 @@ void ddColumnKindIcon::syncUkIndexes()
 {
 	ddColumnFigure *col;
 	bool lastUk=true;
-//	int maxIndex=-1;
 	ddIteratorBase *iterator = getOwnerColumn()->getOwnerTable()->figuresEnumerator();
     iterator->Next(); //First Figure is Main Rect
     iterator->Next(); //Second Figure is Table Title
@@ -274,9 +282,6 @@ void ddColumnKindIcon::syncUkIndexes()
     {
         col = (ddColumnFigure*) iterator->Next();
         
- /*       if(col->getUniqueConstraintIndex() >  maxIndex)
-            maxIndex = col->getUniqueConstraintIndex(); */
-
         if(col!=getOwnerColumn() && (col->getUniqueConstraintIndex() == getOwnerColumn()->getUniqueConstraintIndex()))
 		{ 
 		  lastUk=false;
@@ -285,7 +290,7 @@ void ddColumnKindIcon::syncUkIndexes()
     }
 	if(lastUk)
 	{
-		//fix uks indexes
+		//here uks indexes are fixed
 		iterator->ResetIterator();
 		iterator->Next(); //First Figure is Main Rect
 		iterator->Next(); //Second Figure is Table Title

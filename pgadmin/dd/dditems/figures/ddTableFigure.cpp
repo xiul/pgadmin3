@@ -731,35 +731,11 @@ void ddTableFigure::processDeleteAlert(ddDrawingView *view)
 
 void ddTableFigure::basicMoveBy(int x, int y)
 {
-	ddIFigure *f = (ddIFigure *) figureFigures->getItemAt(0);
 
-	//Quick Check at foreign key observers to allow or not basicMoveBy
-	bool insideProtectionArea = false;
-	ddIteratorBase *iterator = observersEnumerator();
-	while(iterator->HasNext()){
-		ddRelationshipFigure *r = (ddRelationshipFigure*) iterator->Next();
-		ddTableFigure *endTable = (ddTableFigure*) r->getEndFigure();
-		ddTableFigure *startTable = (ddTableFigure*) r->getStartFigure();				
-		ddRect thisRect = this->displayBox();
+ddIFigure *f = (ddIFigure *) figureFigures->getItemAt(0);
+if((f->displayBox().x+x) > 0 && (f->displayBox().y+y) > 0)
+ddCompositeFigure::basicMoveBy(x,y);
 
-		thisRect.Inflate(20,20);
-		thisRect.x += x;
-		thisRect.y += y;
-		
-		if(endTable!=this)  //Because observers are at both sides of a relationshipe: source / destination
-		{
-			insideProtectionArea = thisRect.Intersects(endTable->displayBox());
-		}
-		else
-		{
-			insideProtectionArea = startTable->displayBox().Intersects(thisRect);
-		}
-	}
-	delete iterator;
-
-	//if new absolute point is positive and not inside protection area
-	if( (f->displayBox().x + x) > 0  && (f->displayBox().y + y) > 0  && !insideProtectionArea )
-		ddCompositeFigure::basicMoveBy(x,y);
 }
 
 //DD-TODO: fix all model to allow all options from http://www.postgresql.org/docs/8.1/static/sql-createtable.html
