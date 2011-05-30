@@ -135,10 +135,13 @@ void ddColumnKindIcon::basicDraw(wxBufferedDC& context, ddDrawingView *view)
 		ddRect copy = displayBox();
 		view->CalcScrolledPosition(copy.x,copy.y,&copy.x,&copy.y);
 		//Adding a yellow circle to increase visibility of uk index
-		context.SetBrush(wxBrush(wxColour(wxT("YELLOW")), wxSOLID));
-		context.SetPen(wxPen(wxColour(wxT("YELLOW"))));
-		context.DrawCircle(copy.x+6,copy.y+7,4);
-		//Draw Uk icon
+		if(colType==uk)
+		{
+			context.SetBrush(wxBrush(wxColour(wxT("YELLOW")), wxSOLID));
+			context.SetPen(wxPen(wxColour(wxT("YELLOW"))));
+			context.DrawCircle(copy.x+6,copy.y+7,4);
+		}
+		//Draw icon
 		context.DrawBitmap(*iconToDraw,copy.GetPosition(),true);
 		//Draw Uk index if needed
 		if(colType==uk && ukIndex>0)

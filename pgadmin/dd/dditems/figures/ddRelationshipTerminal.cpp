@@ -138,9 +138,9 @@ ddPoint& ddRelationshipTerminal::draw (wxBufferedDC& context, ddPoint& a, ddPoin
 					context.SetPen(*wxBLACK_PEN);
 				}
 			}
-			else  //DD-TODO: CENTER of star figure or invalid place
+			else 
 			{
-				context.DrawText(wxString(wxT("NOOOOOO!!!! porqueeeeeee")),100,100);
+				 //CENTER of star figure or invalid place, do nothing
 			}
 			
 			value=ddPoint(XX,YY);			

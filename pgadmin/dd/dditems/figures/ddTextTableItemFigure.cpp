@@ -125,7 +125,6 @@ void ddTextTableItemFigure::OnTextPopupClick(wxCommandEvent& event, ddDrawingVie
 		case MNU_AUTONAMCOLUMN:
 				getOwnerColumn()->activateGenFkName(); 
 				getOwnerColumn()->getFkSource()->syncAutoFkName();
-				//DD-TODO: añadir de una el nombre automatico si se activa
 			break;
 		case MNU_RENAMECOLUMN:
 				nameDialog = new wxTextEntryDialog(view, wxT("New column name"), wxT("Rename Column"), getText());
@@ -196,7 +195,6 @@ void ddTextTableItemFigure::OnTextPopupClick(wxCommandEvent& event, ddDrawingVie
             recalculateDisplayBox();
             getOwnerColumn()->displayBoxUpdate();
             getOwnerColumn()->getOwnerTable()->updateTableSize();
-			//6667
             break;
 		case MNU_TYPEPKEY_CONSTRAINTNAME:
             tmpString=wxGetTextFromUser(wxT("New name of primary key:"),getOwnerColumn()->getOwnerTable()->getPkConstraintName(),getOwnerColumn()->getOwnerTable()->getPkConstraintName(),view);

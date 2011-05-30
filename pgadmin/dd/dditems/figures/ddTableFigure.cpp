@@ -535,7 +535,7 @@ void ddTableFigure::updateTableSize()
 	delete iterator;
 
 	//Step 1: Update table size
-	calcRectsAreas();  //DD-TODO: I just add this here, test don't change in bad way other parts
+	calcRectsAreas();
 	wxSize value=fullSizeRect.GetSize();
 	rectangleFigure->setSize(value);
 	//hack to update relationship position when table size change
@@ -689,6 +689,7 @@ void ddTableFigure::updateFkObservers()
 	ddIteratorBase *iterator = observersEnumerator();
 	while(iterator->HasNext()){
 	ddRelationshipFigure *r = (ddRelationshipFigure*) iterator->Next();
+	if(r->getStartFigure()==this)	//Only update FK of connection with this table as source. source ---<| destination
 		r->updateForeignKey();
 	}
 	delete iterator;

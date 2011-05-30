@@ -178,6 +178,12 @@ void ddRelationshipFigure::updateForeignKey()
 			}
 		}
 		delete iterator;
+		//Now if relationship is an identifying one, I should alert all observers of my observer to update it.
+		if(fkIdentifying)
+		{
+			if(endTable)
+				endTable->updateFkObservers();
+		}
 	}
 	else 
 	{
@@ -300,14 +306,10 @@ bool ddRelationshipFigure::getMandatory()
 	return fkMandatory;
 }
 
-/*
-	relationship is observed by several tables at same time, one is the
-	owner (start connector table) others are just observers of that 
-	relationship (end connectors table)
 
-	because this we don't need to register rel at 
-*/
-
+//	relationship is observed by several tables at same time, one is the
+//	owner (start connector table) others are just observers of that 
+//	relationship (end connectors table)
 void ddRelationshipFigure::connectEnd(ddIConnector *end)
 {
 	ddLineConnection::connectEnd(end);
@@ -398,7 +400,7 @@ void ddRelationshipFigure::setKindAtForeignKeys(ddColumnType type)
 }
 wxString ddRelationshipFigure::generateSQL()
 {
-	//DD-TODO generate name for fk with table shortnames
+	//DD-TODO generate SQL code with name for fk with table shortnames
 	wxString tmp;
 	if(chm.size() > 0)
 	{
