@@ -63,7 +63,7 @@ public:
 
 	//Hack to avoid event problem with simpleTextTool wxTextCrtl at EVT_TEXT event
 	void simpleTextToolChangeHandler(wxCommandEvent& event);
-	void setSimpleTextToolFigure(ddSimpleTextFigure *figure);
+	void setSimpleTextToolFigure(ddSimpleTextFigure *figure, bool onlySetFigure=false);
 	wxTextCtrl* getSimpleTextToolEdit();
 	wxBitmapButton* getOkTxt();
 	wxBitmapButton* getCancelTxt();

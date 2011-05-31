@@ -82,6 +82,7 @@ void ddColumnKindIcon::changeIcon(ddColumnType type, ddDrawingView *view, bool i
 				}
 
 				if(colType==pk){
+					getOwnerColumn()->getOwnerTable()->prepareForDeleteFkColumn(getOwnerColumn());
 					colType=none;
 				}
 				else
@@ -93,15 +94,15 @@ void ddColumnKindIcon::changeIcon(ddColumnType type, ddDrawingView *view, bool i
 					}
 					colType=pk;
 				}
-				if(!getOwnerColumn()->isForeignKey())
-				{
+//				if(!getOwnerColumn()->isForeignKey())
+//				{
 					getOwnerColumn()->getOwnerTable()->updateFkObservers();
-				}
+//				}
 				break;
 		case uk:
 				uniqueConstraintManager(ukCol,view,interaction);
 				icon = wxBitmap(ddunique_xpm);
-				getOwnerColumn()->getOwnerTable()->updateFkObservers();								
+				getOwnerColumn()->getOwnerTable()->updateFkObservers();					
 				break;
 		case fk:
 				icon = wxBitmap(ddforeignkey_xpm);
@@ -109,7 +110,10 @@ void ddColumnKindIcon::changeIcon(ddColumnType type, ddDrawingView *view, bool i
 				break;
 		case pkuk:
 				break;
-		case none: colType=none;
+		case none: 
+			    colType=none;
+				if(colType==uk || fk)
+					getOwnerColumn()->getOwnerTable()->prepareForDeleteFkColumn(getOwnerColumn());
 				break;
 	}
     if(colType!=none)
@@ -120,10 +124,11 @@ void ddColumnKindIcon::changeIcon(ddColumnType type, ddDrawingView *view, bool i
 	{
 		iconToDraw = NULL;
 		ukIndex=-1;
-		if(!getOwnerColumn()->isForeignKey())
-		{
+/*		if(!getOwnerColumn()->isForeignKey())  //this is not fk column
+		{*/
+			//getOwnerColumn()->getOwnerTable()->prepareForDeleteFkColumn(getOwnerColumn());
 			getOwnerColumn()->getOwnerTable()->updateFkObservers();
-		}
+		//}
 	}
 	getBasicDisplayBox().SetSize(wxSize(getWidth(),getHeight()));
 }

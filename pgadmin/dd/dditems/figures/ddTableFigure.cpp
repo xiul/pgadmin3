@@ -178,7 +178,7 @@ void ddTableFigure::addColumn(ddColumnFigure *column)
 void ddTableFigure::removeColumn(ddColumnFigure *column)
 {
 	//Hack to allow to remove Fk before delete it.
-	if(column->isPrimaryKey())
+	if(column->isPrimaryKey() || column->isUniqueKey())
 	{
 		column->setColumnKind(none);
 	}
@@ -210,6 +210,7 @@ void ddTableFigure::removeColumn(ddColumnFigure *column)
 	//hack to update relationship position when table size change
 	moveBy(-1,0);
 	moveBy(1,0);
+	column = NULL;
 }
 
 void ddTableFigure::recalculateColsPos()
@@ -677,13 +678,28 @@ wxString ddTableFigure::getTableName()
 	return c->getText(false);
 }
 
-/*
-	Note about observers:
-	A table is observed by several relationships at same time, where that observers
-	are just looking for changes that will affect relationship behavior.
-	Ex: if I delete a pk on observed table (source) all observers (destination)
-		should modify their columns to remove that fk created from that pk column.
-*/
+//set Null on all relationship items with a fk column to be delete
+void ddTableFigure::prepareForDeleteFkColumn(ddColumnFigure *column)
+{
+	ddIteratorBase *iterator = observersEnumerator();
+	while(iterator->HasNext()){
+	ddRelationshipFigure *r = (ddRelationshipFigure*) iterator->Next();
+	if(r->getStartFigure()==this)	//Only update FK of connection with this table as source. source ---<| destination
+		r->prepareFkForDelete(column);
+	}
+	delete iterator;
+
+}
+
+//	Note about observers:
+//	A table is observed by several relationships at same time, where that observers
+//	are just looking for changes that will affect relationship behavior.
+//	Ex: if I delete a pk on observed table (source) all observers (destination)
+//		should modify their columns to remove that fk created from that pk column.
+// Warning: when a relationship is created an observer is added to both sides of relationship
+// because this behavior (needed for update connection) to identify if is an observer
+// of source table or destination table, should be check end figure, start!=end and end=this is end figure
+// If start = and is recursive
 void ddTableFigure::updateFkObservers()
 {
 	ddIteratorBase *iterator = observersEnumerator();

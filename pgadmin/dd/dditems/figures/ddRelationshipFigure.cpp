@@ -53,6 +53,25 @@ ddRelationshipFigure::~ddRelationshipFigure()
 	chm.clear();
 }
 
+//This function avoid a bug with recursive indentifying relationships when
+//a column is removed from pk or delete.
+void ddRelationshipFigure::prepareFkForDelete(ddColumnFigure *column)
+{
+		ddTableFigure *endTable = (ddTableFigure*) getEndFigure();
+		ddRelationshipItem *fkColumnRelItem;
+		
+		columnsHashMap::iterator it;
+		for (it = chm.begin(); it != chm.end(); ++it)
+		{
+			fkColumnRelItem = it->second;
+			if(fkColumnRelItem->original == column)
+				fkColumnRelItem->original = NULL;
+		}
+		//go recursive to next table
+		if(endTable)
+			endTable->prepareForDeleteFkColumn(column);
+}
+
 void ddRelationshipFigure::updateForeignKey()
 {
 	if(getEndFigure() && getStartFigure() && getStartFigure()->ms_classInfo.IsKindOf(&ddTableFigure::ms_classInfo) && getEndFigure()->ms_classInfo.IsKindOf(&ddTableFigure::ms_classInfo))
@@ -71,24 +90,29 @@ void ddRelationshipFigure::updateForeignKey()
 		{
 			wxString key = it->first;
 			fkColumnRelItem = it->second;
-			
-			if(!fkColumnRelItem->original->getColumnName(false).IsSameAs(fkColumnRelItem->originalStartColName,false))
+			if(fkColumnRelItem->original!=NULL)  //original column wasn't mark for delete.
 			{
-				chm[fkColumnRelItem->original->getColumnName(false)]=fkColumnRelItem;
-				chm[fkColumnRelItem->originalStartColName]=NULL;
-				chm.erase(it);
-				fkColumnRelItem->syncAutoFkName();
-				break;
+				if(!fkColumnRelItem->original->getColumnName(false).IsSameAs(fkColumnRelItem->originalStartColName,false))
+				{
+					chm[fkColumnRelItem->original->getColumnName(false)]=fkColumnRelItem;
+					chm[fkColumnRelItem->originalStartColName]=NULL;
+					chm.erase(it);
+					fkColumnRelItem->syncAutoFkName();
+					break;
+				}
 			}
 		}
 
 		//Update all column with auto FK naming with different shortname
 		for (it = chm.begin(); it != chm.end(); ++it)
 		{
-			fkColumnRelItem = it->second;
-			if(!fkColumnRelItem->original->getOwnerTable()->getShortTableName().IsSameAs(fkColumnRelItem->originalShortName,false))
+			if(fkColumnRelItem->original!=NULL)  //original column wasn't mark for delete.
 			{
-				fkColumnRelItem->syncAutoFkName();
+				fkColumnRelItem = it->second;
+				if(!fkColumnRelItem->original->getOwnerTable()->getShortTableName().IsSameAs(fkColumnRelItem->originalShortName,false))
+				{
+					fkColumnRelItem->syncAutoFkName();
+				}
 			}
 		}
 
@@ -123,7 +147,7 @@ void ddRelationshipFigure::updateForeignKey()
 					{
 						wxString key = it->first;
 						fkColumnRelItem = it->second;
-						if( !fkColumnRelItem->original->isPrimaryKey() || !startTable->includes(fkColumnRelItem->original) )
+						if( fkColumnRelItem->original==NULL || !fkColumnRelItem->original->isPrimaryKey() || !startTable->includes(fkColumnRelItem->original) ) //order matters fkColumnRelItem->original==NULL short circuit evaluation should be first
 						{
 							ddTableFigure *tmpTable=fkColumnRelItem->destinationTable;
 							fkColumnRelItem->destinationTable->removeColumn(fkColumnRelItem->fkColumn);
@@ -161,7 +185,7 @@ void ddRelationshipFigure::updateForeignKey()
 					{
 						wxString key = it->first;
 						fkColumnRelItem = it->second;
-						if( !fkColumnRelItem->original->isUniqueKey(ukIndex) || !startTable->includes(fkColumnRelItem->original) )
+						if( fkColumnRelItem->original==NULL || !fkColumnRelItem->original->isUniqueKey(ukIndex) || !startTable->includes(fkColumnRelItem->original) ) //order matters fkColumnRelItem->original==NULL short circuit evaluation should be first
 						{
 							ddTableFigure *tmpTable=fkColumnRelItem->destinationTable;
 							fkColumnRelItem->destinationTable->removeColumn(fkColumnRelItem->fkColumn);

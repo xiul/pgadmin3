@@ -38,6 +38,8 @@ public:
 	ddRelationshipFigure(ddIFigure *figure1, ddIFigure *figure2);
 	~ddRelationshipFigure();
     virtual void createMenu(wxMenu &mnu);
+	
+	void prepareFkForDelete(ddColumnFigure *column);
 	void updateForeignKey();
 	void removeForeignKeys();
 	bool getIdentifying();

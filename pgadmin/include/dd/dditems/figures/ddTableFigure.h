@@ -71,6 +71,7 @@ public:
 	//fk related
 	void updateFkObservers();
 	void updateSizeOfObservers();
+	void prepareForDeleteFkColumn(ddColumnFigure *column);
 
 protected:
 

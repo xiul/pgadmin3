@@ -309,11 +309,11 @@ void ddDrawingView::onMouseUp(wxMouseEvent& event)
 }
 
 //Hack to avoid event problem with simpleTextTool wxTextCrtl at EVT_TEXT event
-void ddDrawingView::setSimpleTextToolFigure(ddSimpleTextFigure *figure)
+void ddDrawingView::setSimpleTextToolFigure(ddSimpleTextFigure *figure, bool onlySetFigure)
 {
 	simpleTextFigure=figure;
 	menuFigure=NULL;
-	if(simpleTextFigure)
+	if(simpleTextFigure && !onlySetFigure)
 	{
 		oldText=simpleTextFigure->getText();
 		simpleTextToolEdit->SetValue(simpleTextFigure->getText());
@@ -349,10 +349,10 @@ void ddDrawingView::OnCancelTxtButton(wxCommandEvent& event)
 	setSimpleTextToolFigure(NULL);
 }
 
-//Hack to avoid event problem with simpleTextTool wxTextCrtl at EVT_TEXT event
+//Hack to avoid event problem with simpleTextTool wxTextCrtl at EVT_TEXT event (when text is set at edit it generate this event not sure ????)
 void ddDrawingView::simpleTextToolChangeHandler(wxCommandEvent& event)
 {
-	if(simpleTextFigure) //DD-TODO with a right click go inside this function but it shouldn't go there
+	if(!simpleTextToolEdit->IsModified() && simpleTextFigure) //DD-TODO with a right click go inside this function but it shouldn't go there
 	{
 		simpleTextFigure->setText(simpleTextToolEdit->GetValue());
 		//getFontMetrics
@@ -375,7 +375,7 @@ void ddDrawingView::simpleTextToolChangeHandler(wxCommandEvent& event)
 		okTxtButton->SetPosition(wxPoint(p.x+simpleTextToolEdit->GetSize().GetWidth()+4,p.y));
 		cancelTxtButton->SetPosition(wxPoint(okTxtButton->GetPosition().x+okTxtButton->GetSize().GetWidth()+4,p.y));
 	}
-	else
+	else if(!simpleTextFigure)
 	{
 		wxMessageDialog *error = new wxMessageDialog(NULL, wxT("Error locating ddSimpleTextTool figure"), wxT("Error!"), wxOK | wxICON_ERROR);
 		error->ShowModal();

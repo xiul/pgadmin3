@@ -66,7 +66,7 @@ void ddSimpleTextTool::mouseDown(ddMouseEvent& event)
 	if(txtFigure->menuEnabled() && event.RightDown())
 	{
         wxMenu menu;
-        getDrawingEditor()->view()->setSimpleTextToolFigure(txtFigure);
+        getDrawingEditor()->view()->setSimpleTextToolFigure(txtFigure,true);
         txtFigure->createMenu(menu);
         getDrawingEditor()->view()->connectPopUpMenu(menu);
         ddPoint p=event.GetPosition();
