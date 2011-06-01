@@ -1,11 +1,12 @@
 //////////////////////////////////////////////////////////////////////////
 //
 // pgAdmin III - PostgreSQL Tools
-// RCS-ID:      $Id: gqbView.cpp 8268 2010-04-15 21:49:27Z xiul $
-// Copyright (C) 2002 - 2010, The pgAdmin Development Team
+//
+// Copyright (C) 2002 - 2011, The pgAdmin Development Team
 // This software is released under the PostgreSQL Licence
 //
-// ddSouthTableSizeHandle.cpp 
+// ddSouthTableSizeHandle.cpp - Allow to change table size by using drag and drop from south side of table rectangle
+//
 //////////////////////////////////////////////////////////////////////////
 
 #include "pgAdmin3.h"
@@ -21,7 +22,6 @@
 ddSouthTableSizeHandle::ddSouthTableSizeHandle(ddTableFigure *owner, ddILocator *locator):
 ddLocatorHandle(owner,locator)
 {
-	//drawTempRect=false;
 }
 
 ddRect& ddSouthTableSizeHandle::getDisplayBox()
@@ -69,19 +69,15 @@ void ddSouthTableSizeHandle::invokeStep(ddMouseEvent& event, ddDrawingView *view
 	{
 		if((anchorY-y)>0)
 		{
-			table->setColumnsWindow(table->getColumnsWindow()-1);   //validated at table that dont't bypass max & min indexes
-			//startPoint.y=y-10;
+			table->setColumnsWindow(table->getColumnsWindow()-1);   
 		}
 		else
 		{
-			table->setColumnsWindow(table->getColumnsWindow()+1);   //validated at table that dont't bypass max & min indexes
+			table->setColumnsWindow(table->getColumnsWindow()+1);   
 		}
 		anchorY=y;
 	}
 
-/*	endPoint.x=table->getFullSpace().x+table->getFullSpace().width;
-	endPoint.y=y;
-	*/
 	//hack to update relationship position when table size change
 	table->moveBy(-1,0);
 	table->moveBy(1,0);
@@ -89,8 +85,6 @@ void ddSouthTableSizeHandle::invokeStep(ddMouseEvent& event, ddDrawingView *view
 
 void ddSouthTableSizeHandle::invokeEnd(ddMouseEvent& event, ddDrawingView *view)
 {
-	//drawTempRect=false;
-
 	//hack to update relationship position when table size change
 	ddTableFigure *table = (ddTableFigure*) getOwner();
 	table->moveBy(-1,0);

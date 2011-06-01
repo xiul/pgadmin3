@@ -1,11 +1,11 @@
 //////////////////////////////////////////////////////////////////////////
 //
 // pgAdmin III - PostgreSQL Tools
-// RCS-ID:      $Id: gqbObject.h 8189 2010-02-25 22:10:21Z dpage $
-// Copyright (C) 2002 - 2010, The pgAdmin Development Team
+//
+// Copyright (C) 2002 - 2011, The pgAdmin Development Team
 // This software is released under the PostgreSQL Licence
 //
-// gqbObject.h - 
+// ddMinMaxTableButtonHandle.h - A handle for a table figure that allow to graphically minimize or maximize table window size
 //
 //////////////////////////////////////////////////////////////////////////
 
@@ -13,9 +13,6 @@
 #define DDMINMAXTABLEBUTTONHANDLE_H
 
 #include "dd/draw/handles/ddButtonHandle.h"
-
-//class ddDrawingView;  //Hack-Fix to avoid circular reference
-//class ddIFigure;
 
 class ddMinMaxTableButtonHandle : public ddButtonHandle
 {
