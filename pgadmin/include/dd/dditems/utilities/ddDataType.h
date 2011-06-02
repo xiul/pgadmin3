@@ -1,11 +1,11 @@
 //////////////////////////////////////////////////////////////////////////
 //
 // pgAdmin III - PostgreSQL Tools
-// RCS-ID:      $Id: gqbObject.h 8189 2010-02-25 22:10:21Z dpage $
-// Copyright (C) 2002 - 2010, The pgAdmin Development Team
+//
+// Copyright (C) 2002 - 2011, The pgAdmin Development Team
 // This software is released under the PostgreSQL Licence
 //
-// gqbObject.h - 
+// ddDataType.h - data types related info for table use
 //
 //////////////////////////////////////////////////////////////////////////
 
@@ -57,48 +57,8 @@ enum ddDataType {
 };
 
 static wxArrayString ddDatatypes;
-/*
-wxArrayString& dataTypes(bool full)
-{
-    ddDatatypes.Clear();
-	//Fast access ddDatatypes
-    ddDatatypes.Add(wxT("ANY"));
-    ddDatatypes.Add(wxT("serial"));
-    ddDatatypes.Add(wxT("boolean"));
-    ddDatatypes.Add(wxT("integer"));
-    ddDatatypes.Add(wxT("money"));
-    ddDatatypes.Add(wxT("varchar(1)"));
-    if (full)
-    {
-        //Not fast access ddDatatypes
-        ddDatatypes.Add(wxT("bigint"));
-        ddDatatypes.Add(wxT("bit(1)"));
-        ddDatatypes.Add(wxT("bytea"));
-        ddDatatypes.Add(wxT("char(n)"));
-        ddDatatypes.Add(wxT("cidr"));
-        ddDatatypes.Add(wxT("circle"));
-        ddDatatypes.Add(wxT("date"));
-        ddDatatypes.Add(wxT("double precision"));
-        ddDatatypes.Add(wxT("inet"));
-        ddDatatypes.Add(wxT("interval(1)"));
-        ddDatatypes.Add(wxT("line"));
-        ddDatatypes.Add(wxT("lseg"));
-        ddDatatypes.Add(wxT("macaddr"));
-        ddDatatypes.Add(wxT("numeric(1,1)"));
-        ddDatatypes.Add(wxT("path"));
-        ddDatatypes.Add(wxT("point"));
-        ddDatatypes.Add(wxT("polygon"));
-        ddDatatypes.Add(wxT("real"));
-        ddDatatypes.Add(wxT("smallint"));
-        ddDatatypes.Add(wxT("text"));
-        ddDatatypes.Add(wxT("time"));
-        ddDatatypes.Add(wxT("timestamp"));
-        ddDatatypes.Add(wxT("varbit(1)"));
-    }
-	return ddDatatypes;
-}
-/*
 
+/*
 //DD-TODO: Add composite types later
 
 http://www.postgresql.org/docs/8.1/static/rowtypes.html
@@ -174,8 +134,6 @@ tsvector	 	text search document
 txid_snapshot	 	user-level transaction ID snapshot
 uuid	 	universally unique identifier
 xml	 	XML data
-
-
 */
 
 #endif

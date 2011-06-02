@@ -1,8 +1,8 @@
 //////////////////////////////////////////////////////////////////////////
 //
 // pgAdmin III - PostgreSQL Tools
-// RCS-ID:      $Id: ddArrayCollection.cpp 8189 2010-02-25 22:10:21Z dpage $
-// Copyright (C) 2002 - 2010, The pgAdmin Development Team
+//
+// Copyright (C) 2002 - 2011, The pgAdmin Development Team
 // This software is released under the PostgreSQL Licence
 //
 // ddArrayCollection.cpp - Implementation of Collection Using Arrays
@@ -96,7 +96,7 @@ ddObject* ddArrayCollection::getItemAt(int index)
         return NULL;
 }
 
-/*   DD-TODO add sort by
+/*   DD-TODO add sort by function
 static int ddArrayCmpFakeRear( ddObject** a, ddObject** b )
 {
 	{

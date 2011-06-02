@@ -1,11 +1,12 @@
 //////////////////////////////////////////////////////////////////////////
 //
 // pgAdmin III - PostgreSQL Tools
-// RCS-ID:      $Id: gqbView.cpp 8268 2010-04-15 21:49:27Z xiul $
-// Copyright (C) 2002 - 2010, The pgAdmin Development Team
+//
+// Copyright (C) 2002 - 2011, The pgAdmin Development Team
 // This software is released under the PostgreSQL Licence
 //
-// ddColumnTextTool.cpp 
+// ddColumnTextTool.cpp - Modification of simple text tool for editing composite figure columns
+//
 //////////////////////////////////////////////////////////////////////////
 
 #include "pgAdmin3.h"
@@ -19,7 +20,7 @@
 #include "dd/dditems/tools/ddColumnTextTool.h"
 #include "dd/dditems/figures/ddTextTableItemFigure.h"
 #include "dd/dditems/figures/ddTableFigure.h"
-#include "dd/dditems/utilities/ddDialogs.h"
+#include "dd/dditems/utilities/ddTableNameDialog.h"
 
 class ddDrawingEditor;
 

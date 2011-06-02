@@ -1,11 +1,11 @@
 //////////////////////////////////////////////////////////////////////////
 //
 // pgAdmin III - PostgreSQL Tools
-// RCS-ID:      $Id: gqbObject.h 8189 2010-02-25 22:10:21Z dpage $
-// Copyright (C) 2002 - 2010, The pgAdmin Development Team
+//
+// Copyright (C) 2002 - 2011, The pgAdmin Development Team
 // This software is released under the PostgreSQL Licence
 //
-// gqbObject.h - 
+// ddMouseEvent.h - Wrapper Class to integrate conversion CalcUnscrolledPosition in a mouse event.
 //
 //////////////////////////////////////////////////////////////////////////
 
@@ -14,9 +14,9 @@
 #include "dd/draw/utilities/ddPoint.h"
 #include "dd/draw/main/ddObject.h"
 
-class ddDrawingView;	// FIX-HACK for circular reference
+class ddDrawingView;
 
-// DD-TODO: this chould be a customized event in the future
+// DD-TODO: Should this class be converted in a real event in the future?
 class ddMouseEvent : public ddObject
 {
 	public:

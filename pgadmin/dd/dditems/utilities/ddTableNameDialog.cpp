@@ -1,11 +1,12 @@
 //////////////////////////////////////////////////////////////////////////
 //
 // pgAdmin III - PostgreSQL Tools
-// RCS-ID:      $Id: gqbView.cpp 8268 2010-04-15 21:49:27Z xiul $
-// Copyright (C) 2002 - 2010, The pgAdmin Development Team
+//
+// Copyright (C) 2002 - 2011, The pgAdmin Development Team
 // This software is released under the PostgreSQL Licence
 //
-// ddRect.cpp 
+// ddTableNameDialog.cpp - Utility dialog class to allow user input of table name and short name
+//
 //////////////////////////////////////////////////////////////////////////
 
 #include "pgAdmin3.h"
@@ -14,7 +15,7 @@
 #include <wx/wx.h>
 #include <wx/statline.h>
 // App headers
-#include "dd/dditems/utilities/ddDialogs.h"
+#include "dd/dditems/utilities/ddTableNameDialog.h"
 
 //DD-TODO: class leaks??? because objects create without destructor??
 
@@ -112,7 +113,6 @@ void ddTableNameDialog::CreateControls()
     topSizer->Add(nameGenBox, 0, wxALIGN_CENTER_HORIZONTAL|wxALL, 5);
 
     // A second box sizer to give more space around the controls
-
     boxSizer = new wxBoxSizer(wxHORIZONTAL );
     nameGenBox->Add(boxSizer, 0, wxALIGN_CENTER_HORIZONTAL|wxALL, 5);
 

@@ -1,8 +1,8 @@
 //////////////////////////////////////////////////////////////////////////
 //
 // pgAdmin III - PostgreSQL Tools
-// RCS-ID:      $Id: gqbView.cpp 8268 2010-04-15 21:49:27Z xiul $
-// Copyright (C) 2002 - 2010, The pgAdmin Development Team
+//
+// Copyright (C) 2002 - 2011, The pgAdmin Development Team
 // This software is released under the PostgreSQL Licence
 //
 // ddSimpleTextTool.cpp - Tool to allow edition of textTool with a double click or show a menu with a right click.
@@ -30,7 +30,7 @@ ddFigureTool(editor,fig,dt)
 	dlgCaption = dialogCaption;
 	withoutDialog = fastEdit;
 	showEdit = false;
-	//DD-TODO: set this value: edit.SetFont();  and fix layout and fix ID of edit because it should be a constant
+	//DD-TODO: set this value: edit.SetFont();  and fix layout
 	txtFigure = ((ddSimpleTextFigure *)this->getFigure());
 	editor->view()->setSimpleTextToolFigure(NULL);
 	edit = getDrawingEditor()->view()->getSimpleTextToolEdit();
@@ -47,7 +47,6 @@ void ddSimpleTextTool::calculateSizeEntry(ddDrawingView *view)
 {
 	if(edit)
 	{
-	//	edit->SetPosition(txtFigure->displayBox().GetPosition());
 		ddPoint p=txtFigure->displayBox().GetPosition();
 		view->CalcScrolledPosition(p.x,p.y,&p.x,&p.y);
 		edit->SetPosition(p);

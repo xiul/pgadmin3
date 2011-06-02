@@ -1,11 +1,11 @@
 //////////////////////////////////////////////////////////////////////////
 //
 // pgAdmin III - PostgreSQL Tools
-// RCS-ID:      $Id: gqbView.cpp 8268 2010-04-15 21:49:27Z xiul $
-// Copyright (C) 2002 - 2010, The pgAdmin Development Team
+//
+// Copyright (C) 2002 - 2011, The pgAdmin Development Team
 // This software is released under the PostgreSQL Licence
 //
-// ddPolyLineFigureTool.cpp
+// ddPolyLineFigureTool.cpp - Tool to allow creation of flexibility points at polylines figures
 //
 //////////////////////////////////////////////////////////////////////////
 
@@ -35,7 +35,8 @@ void ddPolyLineFigureTool::mouseDown(ddMouseEvent& event)
 {
 	int x=event.GetPosition().x, y=event.GetPosition().y;
 	setAnchorCoords(x,y);
-	//DD-TODO: middle down or right and left down?
+	//Other events like other mouse button click (no left double click) should be done at handle
+	//because this tool only add flexibility points to polylines.
 	if(event.LeftDClick())
     {
 		ddPolyLineFigure *connection = (ddPolyLineFigure*) figure;
@@ -43,8 +44,7 @@ void ddPolyLineFigureTool::mouseDown(ddMouseEvent& event)
 		getDrawingEditor()->view()->clearSelection();
 		getDrawingEditor()->view()->addToSelection(figure);
 		ddIHandle *handle = getDrawingEditor()->view()->findHandle(x,y);
-		//DD-TODO: set cursor to handle cursor
-		getDrawingEditor()->view()->SetCursor(wxCURSOR_CROSS);//Temporary fix delete and change this.
+		getDrawingEditor()->view()->SetCursor(handle->createCursor());
 		if(defaultTool)
 			delete defaultTool;
 		defaultTool = new ddHandleTrackerTool(getDrawingEditor(), handle);

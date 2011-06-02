@@ -1,11 +1,12 @@
 //////////////////////////////////////////////////////////////////////////
 //
 // pgAdmin III - PostgreSQL Tools
-// RCS-ID:      $Id: gqbView.cpp 8268 2010-04-15 21:49:27Z xiul $
-// Copyright (C) 2002 - 2010, The pgAdmin Development Team
+//
+// Copyright (C) 2002 - 2011, The pgAdmin Development Team
 // This software is released under the PostgreSQL Licence
 //
-// ddTextEditor.cpp
+// ddTextEditor.cpp - class used to show generate SQL from model
+//
 //////////////////////////////////////////////////////////////////////////
 
 #include "pgAdmin3.h"
@@ -16,9 +17,7 @@
 // App headers
 #include "dd/ddmodel/ddTextEditor.h"
 
-//Temporary Class use to show generated model
-//DD-TODO: this class should be replace by a new and better one
-
+//DD-TODO: This Temporary Class used to show generate SQL from model class should be replace by a new and better one
 BEGIN_EVENT_TABLE(ddTextEditor, wxFrame)
     EVT_MENU(idSave, ddTextEditor::OnSave)
     EVT_MENU(idOpen, ddTextEditor::OnOpen)

@@ -1,11 +1,11 @@
 //////////////////////////////////////////////////////////////////////////
 //
 // pgAdmin III - PostgreSQL Tools
-// RCS-ID:      $Id: gqbObject.h 8189 2010-02-25 22:10:21Z dpage $
-// Copyright (C) 2002 - 2010, The pgAdmin Development Team
+//
+// Copyright (C) 2002 - 2011, The pgAdmin Development Team
 // This software is released under the PostgreSQL Licence
 //
-// gqbObject.h - 
+// ddGeometry.h - Utility Geometric Functions Shared between classes
 //
 //////////////////////////////////////////////////////////////////////////
 
@@ -24,7 +24,6 @@ public:
 	static double angleFromPoint(ddRect r, ddPoint point);
 	static ddPoint edgePointFromAngle(ddRect r, double angle);
 	static double range(double min, double max, double num);
-	//static void arrowPoints (ddPoint a, ddPoint b, int lineDistance, int pointDistance,	ddPoint *p, ddPoint *p2, ddPoint *m);
 	static double lineSize (ddPoint p1, ddPoint p2);
 	static bool intersection(ddPoint p1, ddPoint p2, ddPoint p3, ddPoint p4);
 	static double ddabs(double value);

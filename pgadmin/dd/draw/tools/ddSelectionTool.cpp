@@ -1,11 +1,12 @@
 //////////////////////////////////////////////////////////////////////////
 //
 // pgAdmin III - PostgreSQL Tools
-// RCS-ID:      $Id: gqbView.cpp 8268 2010-04-15 21:49:27Z xiul $
-// Copyright (C) 2002 - 2010, The pgAdmin Development Team
+//
+// Copyright (C) 2002 - 2011, The pgAdmin Development Team
 // This software is released under the PostgreSQL Licence
 //
-// ddITool.cpp 
+// ddSelectionTool.cpp - Tool to allow selection of figures
+//
 //////////////////////////////////////////////////////////////////////////
 
 #include "pgAdmin3.h"
@@ -14,8 +15,8 @@
 #include <wx/wx.h>
 
 // App headers
-#include "dd/draw/tools/ddITool.h"
 #include "dd/draw/tools/ddSelectionTool.h"
+#include "dd/draw/tools/ddITool.h"
 #include "dd/draw/main/ddDrawingView.h"
 #include "dd/draw/main/ddDrawingEditor.h"
 #include "dd/draw/tools/ddHandleTrackerTool.h"
@@ -85,18 +86,13 @@ void ddSelectionTool::mouseMove(ddMouseEvent& event)
 
 	if(handle)
     {
-		//DD-TODO: widget.GdkWindow.Cursor = handle.CreateCursor ();
-		//view->SetCursor(wxCursor(wxCURSOR_MIDDLE_BUTTON));
-		
 		view->SetCursor(handle->createCursor());
-		//view->SetCursor(wxCursor(wxCURSOR_SIZENS));
 	}
 	else
 	{
 		ddIFigure *figure = view->getDrawing()->findFigure(x,y);
 		if(figure)
 		{
-			//DD-TODO: change cursor for a nice one
 			view->SetCursor(wxCursor(wxCURSOR_HAND));
 		}
 		else

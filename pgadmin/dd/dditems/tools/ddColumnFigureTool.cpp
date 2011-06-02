@@ -1,11 +1,11 @@
 //////////////////////////////////////////////////////////////////////////
 //
 // pgAdmin III - PostgreSQL Tools
-// RCS-ID:      $Id: gqbView.cpp 8268 2010-04-15 21:49:27Z xiul $
-// Copyright (C) 2002 - 2010, The pgAdmin Development Team
+//
+// Copyright (C) 2002 - 2011, The pgAdmin Development Team
 // This software is released under the PostgreSQL Licence
 //
-// ddColumnFigureTool.cpp 
+// ddColumnFigureTool.cpp - Improvement to ddFigureTool to work with composite table figures
 //
 //////////////////////////////////////////////////////////////////////////
 
@@ -28,8 +28,7 @@ ddFigureTool(editor,fig,dt)
 
 ddColumnFigureTool::~ddColumnFigureTool()
 {
-//This tool destructor is at compositeTool, because this is only a selection tool and neither tool belongs to it.
-
+	//This tool destructor is at compositeTool, because this is only a selection tool and neither tool belongs to it.
 	ddITool *tmpDefault=ddFigureTool::getDefaultTool();
 	ddFigureTool *tmpDelegateDefault;
 

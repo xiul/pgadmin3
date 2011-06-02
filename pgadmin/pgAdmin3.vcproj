@@ -3991,7 +3991,7 @@
 							>
 						</File>
 						<File
-							RelativePath=".\include\dd\dditems\utilities\ddDialogs.h"
+							RelativePath=".\include\dd\dditems\utilities\ddTableNameDialog.h"
 							>
 						</File>
 					</Filter>
@@ -5796,7 +5796,7 @@
 					Name="utilities"
 					>
 					<File
-						RelativePath=".\dd\dditems\utilities\ddDialogs.cpp"
+						RelativePath=".\dd\dditems\utilities\ddTableNameDialog.cpp"
 						>
 					</File>
 				</Filter>

@@ -1,11 +1,11 @@
 //////////////////////////////////////////////////////////////////////////
 //
 // pgAdmin III - PostgreSQL Tools
-// RCS-ID:      $Id: gqbObject.h 8189 2010-02-25 22:10:21Z dpage $
-// Copyright (C) 2002 - 2010, The pgAdmin Development Team
+//
+// Copyright (C) 2002 - 2011, The pgAdmin Development Team
 // This software is released under the PostgreSQL Licence
 //
-// gqbObject.h - 
+// ddSimpleTextTool.h - Tool to allow edition of textTool with a double click or show a menu with a right click.
 //
 //////////////////////////////////////////////////////////////////////////
 
@@ -14,7 +14,6 @@
 
 #include "dd/draw/tools/ddFigureTool.h"
 #include "dd/draw/figures/ddSimpleTextFigure.h"
-
 
 class ddSimpleTextTool : public ddFigureTool
 {
@@ -28,7 +27,7 @@ public:
 	virtual void mouseDrag(ddMouseEvent& event);
 	virtual void OnTextPopupClick(wxCommandEvent& event, ddDrawingView *view);
 	virtual bool callDialog();
-	//Because a bug it was move to main View class as a hack. virtual void changeHandler(wxCommandEvent& event);
+	//Because a bug it was move to main View class instance as a hack. virtual void changeHandler(wxCommandEvent& event);
 protected:
 	bool withoutDialog;
 	wxString dlgMessage, dlgCaption;
@@ -38,6 +37,7 @@ private:
 	bool showEdit;
 	wxTextCtrl *edit;
 	wxBitmapButton *okButton, *cancelButton;
-	//Because a bug in the way wxwidgets connect events I can't declare it here, wxTextCtrl *edit, instead I do it on the view.
+	//Because a bug in the way wxwidgets connect events I can't declare it here, wxTextCtrl *edit, instead I do it on the view instance.
 };
+
 #endif
