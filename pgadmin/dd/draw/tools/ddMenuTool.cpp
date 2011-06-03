@@ -1,11 +1,12 @@
 //////////////////////////////////////////////////////////////////////////
 //
 // pgAdmin III - PostgreSQL Tools
-// RCS-ID:      $Id: gqbView.cpp 8268 2010-04-15 21:49:27Z xiul $
-// Copyright (C) 2002 - 2010, The pgAdmin Development Team
+//
+// Copyright (C) 2002 - 2011, The pgAdmin Development Team
 // This software is released under the PostgreSQL Licence
 //
-// ddMenuTool.cpp 
+// ddMenuTool.cpp - Allow Edition of textTool (double click) or show a menu to modifiy in someway text (right click).
+//
 //////////////////////////////////////////////////////////////////////////
 
 #include "pgAdmin3.h"
@@ -21,7 +22,6 @@
 
 class ddDrawingEditor;
 
-//Allow Edition of textTool (double click) or show a menu to modifiy in someway text (right click).
 ddMenuTool::ddMenuTool(ddDrawingEditor *editor, ddIFigure *fig, ddITool *dt):
 ddFigureTool(editor,fig,dt)
 {
@@ -33,22 +33,9 @@ ddMenuTool::~ddMenuTool()
 {
 }
 
-/*void ddSimpleTextTool::calculateSizeEntry(ddDrawingView *view)
-{
-	if(edit)
-	{
-	//	edit->SetPosition(txtFigure->displayBox().GetPosition());
-		ddPoint p=txtFigure->displayBox().GetPosition();
-		view->CalcScrolledPosition(p.x,p.y,&p.x,&p.y);
-		edit->SetPosition(p);
-		edit->SetSize(txtFigure->displayBox().GetSize());
-		//DD-TODO: avoid in a future twin function in DrawingView because tool hack
-	}
-}*/
-
 void ddMenuTool::mouseDown(ddMouseEvent& event)
 {	
-	//linux hack for bug
+	//Linux hack for bug
 	int x=event.GetPosition().x, y=event.GetPosition().y;
 	setAnchorCoords(x,y);
 	

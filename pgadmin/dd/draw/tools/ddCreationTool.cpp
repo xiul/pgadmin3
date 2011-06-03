@@ -1,11 +1,11 @@
 //////////////////////////////////////////////////////////////////////////
 //
 // pgAdmin III - PostgreSQL Tools
-// RCS-ID:      $Id: gqbView.cpp 8268 2010-04-15 21:49:27Z xiul $
-// Copyright (C) 2002 - 2010, The pgAdmin Development Team
+//
+// Copyright (C) 2002 - 2011, The pgAdmin Development Team
 // This software is released under the PostgreSQL Licence
 //
-// ddCreationTool.cpp 
+// ddCreationTool.cpp - A Tool that create a figure by just click on view
 //
 //////////////////////////////////////////////////////////////////////////
 
@@ -44,7 +44,6 @@ void ddCreationTool::mouseDown(ddMouseEvent& event)
 void ddCreationTool::mouseUp(ddMouseEvent& event)
 {
 	ddAbstractTool::mouseUp(event);
-	//DD-TODO: delete tool before overwrite??
 	getDrawingEditor()->setTool(new ddSelectionTool(getDrawingEditor()));
 }
 

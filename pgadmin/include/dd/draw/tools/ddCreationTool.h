@@ -1,11 +1,11 @@
 //////////////////////////////////////////////////////////////////////////
 //
 // pgAdmin III - PostgreSQL Tools
-// RCS-ID:      $Id: gqbObject.h 8189 2010-02-25 22:10:21Z dpage $
-// Copyright (C) 2002 - 2010, The pgAdmin Development Team
+//
+// Copyright (C) 2002 - 2011, The pgAdmin Development Team
 // This software is released under the PostgreSQL Licence
 //
-// gqbObject.h - 
+// ddCreationTool.h - A Tool that create a figure by just click on view
 //
 //////////////////////////////////////////////////////////////////////////
 
@@ -27,7 +27,6 @@ public:
 	virtual void deactivate();
 	virtual void setPrototype(ddIFigure *prototype);
 	virtual ddIFigure* getPrototype();
-	//DD-TODO: add this virtual IDrawingEditor editor and undoactivity
 
 protected:
 	ddIFigure *figurePrototype;

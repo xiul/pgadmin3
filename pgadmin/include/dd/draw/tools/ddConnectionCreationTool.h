@@ -1,11 +1,11 @@
 //////////////////////////////////////////////////////////////////////////
 //
 // pgAdmin III - PostgreSQL Tools
-// RCS-ID:      $Id: gqbObject.h 8189 2010-02-25 22:10:21Z dpage $
-// Copyright (C) 2002 - 2010, The pgAdmin Development Team
+//
+// Copyright (C) 2002 - 2011, The pgAdmin Development Team
 // This software is released under the PostgreSQL Licence
 //
-// gqbObject.h - 
+// ddConnectionCreationTool.h - A Tool that allow to create a connection figure between two figures
 //
 //////////////////////////////////////////////////////////////////////////
 
@@ -26,21 +26,9 @@ public:
 	virtual void mouseDown(ddMouseEvent& event);  //Mouse Right Click
 	virtual void mouseUp(ddMouseEvent& event);
 	virtual void mouseMove(ddMouseEvent& event);
-
-	/*
-	void setAnchorCoords(int x, int y);
-	
-
-
-	
-	virtual void keyDown(wxKeyEvent& event);
-	virtual void keyUp(wxKeyEvent& event);
-	ddDrawingEditor* getDrawingEditor();
-*/
 protected:
-//	int anchorX, anchorY;
+
 private:
-//	ddDrawingEditor *ownerEditor;
 	ddLineConnection *toolConnection;
 	ddIHandle *handle;
 	int numClicks;

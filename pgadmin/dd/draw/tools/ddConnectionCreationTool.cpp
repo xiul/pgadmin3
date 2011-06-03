@@ -1,11 +1,11 @@
 //////////////////////////////////////////////////////////////////////////
 //
 // pgAdmin III - PostgreSQL Tools
-// RCS-ID:      $Id: gqbView.cpp 8268 2010-04-15 21:49:27Z xiul $
-// Copyright (C) 2002 - 2010, The pgAdmin Development Team
+//
+// Copyright (C) 2002 - 2011, The pgAdmin Development Team
 // This software is released under the PostgreSQL Licence
 //
-// ddConnectionCreationTool.cpp 
+// ddConnectionCreationTool.cpp - A Tool that allow to create a connection figure between two figures
 //
 //////////////////////////////////////////////////////////////////////////
 
@@ -39,7 +39,6 @@ void ddConnectionCreationTool::mouseDrag(ddMouseEvent& event)
 	if(handle && event.LeftIsDown())
 	{
 		dragged=true;
-		//int x=event.GetPosition().x, y=event.GetPosition().y;
 		handle->invokeStep(event,getDrawingEditor()->view());
 	}
 }
@@ -75,7 +74,6 @@ void ddConnectionCreationTool::mouseDown(ddMouseEvent& event)
 		}
 		else
 		{
-			//DD-TODO: fix memory leaks when set a tool
 			getDrawingEditor()->setTool(new ddSelectionTool(getDrawingEditor()));
 		}
 	}
@@ -85,7 +83,6 @@ void ddConnectionCreationTool::mouseUp(ddMouseEvent& event)
 {
 	if(event.LeftUp())
 	{
-		//int x=event.GetPosition().x, y=event.GetPosition().y;
 		if(handle)
 		{
 			handle->invokeEnd(event,getDrawingEditor()->view());
@@ -97,10 +94,9 @@ void ddConnectionCreationTool::mouseUp(ddMouseEvent& event)
 			toolConnection->disconnectEnd();
 			getDrawingEditor()->view()->remove(toolConnection);
 			getDrawingEditor()->view()->clearSelection();
-			//DD-TODO: should I delete here toolConnection???
+			delete toolConnection;
 		}
 	}
-		//DD-TODO: fix memory leaks when set a tool
 	if(dragged || numClicks>1)   //if drag to select a figure or is second or higher click (to select end figure) then this tool ends.
 	{
 		getDrawingEditor()->setTool(new ddSelectionTool(getDrawingEditor()));

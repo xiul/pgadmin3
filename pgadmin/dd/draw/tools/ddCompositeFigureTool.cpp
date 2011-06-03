@@ -1,11 +1,11 @@
 //////////////////////////////////////////////////////////////////////////
 //
 // pgAdmin III - PostgreSQL Tools
-// RCS-ID:      $Id: gqbView.cpp 8268 2010-04-15 21:49:27Z xiul $
-// Copyright (C) 2002 - 2010, The pgAdmin Development Team
+//
+// Copyright (C) 2002 - 2011, The pgAdmin Development Team
 // This software is released under the PostgreSQL Licence
 //
-// ddCompositeFigureTool.cpp 
+// ddCompositeFigureTool.cpp - A Tool that allow to change between all tools in a composite figure
 //
 //////////////////////////////////////////////////////////////////////////
 
@@ -37,7 +37,7 @@ ddCompositeFigureTool::~ddCompositeFigureTool()
 
 	if(delegateTool && delegateTool!=tmpDefault)
 	{
-		//Hack to avoid delete defaultTool (Delegate->defaultTool) of delegate tool 
+		// Hack to avoid delete defaultTool (Delegate->defaultTool) of delegate tool 
 		// if this is the same as defaultTool (this->defaultTool) of this Object.
 		if(tmpDelegateDefault && tmpDelegateDefault->getDefaultTool()==tmpDefault)  
 			tmpDelegateDefault->setDefaultTool(NULL);   
