@@ -36,8 +36,6 @@ ddLocatorHandle(owner,scrollBarLocator)
 
 ddScrollBarHandle::~ddScrollBarHandle()
 {
-	if(scrollLocator)
-		delete scrollLocator;
 }
 
 

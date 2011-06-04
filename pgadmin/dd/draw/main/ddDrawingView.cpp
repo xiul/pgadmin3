@@ -1,11 +1,12 @@
 //////////////////////////////////////////////////////////////////////////
 //
 // pgAdmin III - PostgreSQL Tools
-// RCS-ID:      $Id: gqbView.cpp 8268 2010-04-15 21:49:27Z xiul $
-// Copyright (C) 2002 - 2010, The pgAdmin Development Team
+//
+// Copyright (C) 2002 - 2011, The pgAdmin Development Team
 // This software is released under the PostgreSQL Licence
 //
-// ddDrawingView.cpp 
+// ddDrawingView.cpp - Main canvas where all figures are drawn
+//
 //////////////////////////////////////////////////////////////////////////
 
 #include "pgAdmin3.h"
@@ -90,8 +91,6 @@ void ddDrawingView::onPaint(wxPaintEvent& event)
 	while(iterator->HasNext())
     {
 		 toDraw =(ddIFigure *)iterator->Next();
-		 //wxPoint ptOrigin = wxPoint(toDraw->displayBox().GetPosition());
-		 //this->CalcScrolledPosition(ptOrigin.x,ptOrigin.y,&ptOrigin.x,&ptOrigin.y);
 		 if(toDraw->isSelected())
 			toDraw->drawSelected(dc,this);	
 		 else
@@ -230,12 +229,78 @@ void ddDrawingView::clearSelection()
 	delete iterator;
 }
 
-void ddDrawingView::ScrollToMakeVisible(wxPoint p)
+ddRect ddDrawingView::getVisibleArea()
 {
+	int x,y,w,h;
+	GetViewStart(&x,&y);
+	GetClientSize(&w,&h);
+	ddRect visibleArea(x,y,w,h);
+	return visibleArea;
+}
+
+ddRect ddDrawingView::getVirtualSize()
+{	int w,h;
+	GetVirtualSize(&w,&h);
+	ddRect virtualSize(0,0,w,h);
+	return virtualSize;
+}
+
+//DD-TODO: Add new resize function when user drag mouse to a border
+void ddDrawingView::ScrollToMakeVisible(ddPoint p)
+{
+	//DD-TODO: create this function, because like 20 tryouts don't works, don't waste time here
+	// right now, I wasted a full day yet 
+
+/*	ddRect visible=getVisibleArea();
+	int pixelsX, pixelsY;
+	GetScrollPixelsPerUnit(&pixelsX,&pixelsY);
+	int xfactorThreshold = wxRound(visible.width * 0.25);
+	int xfactorReal = wxRound(visible.width * 0.3);	
+	int yfactorThreshold = wxRound(visible.height * 0.25);
+	int yfactorReal = wxRound(visible.height * 0.3);	
+
+int diffx = p.x - startDrag.x;
+int diffy = p.y - startDrag.y;
+bool scroll = false;
+int yunits=0, xunits=0;
+
+if( abs(diffx) > (xfactorReal-xfactorThreshold) )
+{
+	xunits = diffx / pixelsX;
+	scroll = true;
+}
+
+if( abs(diffy) > (yfactorReal-yfactorThreshold) )
+{
+	yunits = diffy / pixelsY;
+	scroll = true;
+}*/
+/*
+	int x,y;
+	GetViewStart( &x, &y );
+	int pixelsX, pixelsY;
+	GetScrollPixelsPerUnit(&pixelsX,&pixelsY);
+
+
+
+	int diffx = p.x - startDrag.x;
+	int diffy = p.y - startDrag.y;
+	int yunits=0, xunits=0;
+	//xunits = (x / pixelsX) +x ;
+	yunits = (diffy / pixelsY) +y;
+	int cont=0;
+	if(xx != 0 || yunits != 0)
+	{
+		Scroll(xx,yunits);
+		startDrag = p;
+		
+	}
+	*/
 }
 
 void ddDrawingView::ScrollToMakeVisible (ddRect r)
 {
+	//DD-TODO: create this function
 }
 
 ddIHandle* ddDrawingView::findHandle(double x, double y)
@@ -243,8 +308,8 @@ ddIHandle* ddDrawingView::findHandle(double x, double y)
 	ddIFigure *tmpFigure=NULL;
 	ddIHandle *tmpHandle=NULL, *out=NULL;
 
-	//DD-TODO: for each figure in SelectionEnumerator
-
+	
+	//Look for handles at each figure in SelectionEnumerator
 	ddIteratorBase *selectionIterator=selection->createIterator();
 	while(selectionIterator->HasNext()){
 		 tmpFigure=(ddIFigure *)selectionIterator->Next();
@@ -285,7 +350,6 @@ void ddDrawingView::onMotion(wxMouseEvent& event)
 	if(event.Dragging())
 	{
 		drawingEditor->tool()->mouseDrag(ddEvent);
-		//DD-TODO: need this ScrollToMakeVisible (point)??? 
 	}
 	else
 	{
@@ -296,6 +360,7 @@ void ddDrawingView::onMotion(wxMouseEvent& event)
 
 void ddDrawingView::onMouseDown(wxMouseEvent& event)
 {
+	startDrag = event.GetPosition();
 	ddMouseEvent ddEvent = ddMouseEvent(event,this);
 	drawingEditor->tool()->mouseDown(ddEvent);
 	this->Refresh();
@@ -403,12 +468,12 @@ wxBitmapButton* ddDrawingView::getCancelTxt()
 }
 
 //Hack to allow use (events) of wxmenu inside a tool like simpletexttool
-void ddDrawingView::OnTextPopupClick(wxCommandEvent& event)
+void ddDrawingView::OnGenericPopupClick(wxCommandEvent& event)
 {
 	if(simpleTextFigure)
-		simpleTextFigure->OnTextPopupClick(event,this);
+		simpleTextFigure->OnGenericPopupClick(event,this);
 	else if(menuFigure)
-		menuFigure->OnTextPopupClick(event,this);
+		menuFigure->OnGenericPopupClick(event,this);
 	event.Skip();
 }
 
@@ -417,7 +482,7 @@ void ddDrawingView::connectPopUpMenu(wxMenu &mnu)
 {
 	// Connect the main menu
 	mnu.Connect(wxEVT_COMMAND_MENU_SELECTED,
-      (wxObjectEventFunction) (wxEventFunction) (wxCommandEventFunction) &ddDrawingView::OnTextPopupClick,
+      (wxObjectEventFunction) (wxEventFunction) (wxCommandEventFunction) &ddDrawingView::OnGenericPopupClick,
       NULL,
       this);
     
@@ -432,7 +497,7 @@ void ddDrawingView::connectPopUpMenu(wxMenu &mnu)
         {
             wxMenu* submenu = item->GetSubMenu();
             submenu->Connect(wxEVT_COMMAND_MENU_SELECTED,
-              (wxObjectEventFunction) (wxEventFunction) (wxCommandEventFunction) &ddDrawingView::OnTextPopupClick,
+              (wxObjectEventFunction) (wxEventFunction) (wxCommandEventFunction) &ddDrawingView::OnGenericPopupClick,
               NULL,
               this);
         }
@@ -443,46 +508,3 @@ ddDrawingEditor* ddDrawingView::editor()
 {
 	return drawingEditor;
 }
-
-
-/*void ddDrawingView::OnKeyDown(wxKeyEvent& event)
-{
-    if(event.GetKeyCode() == WXK_DELETE)
-    {
-        if(collectionSelected)
-        {
-            this->joinsGridTable->removeJoins(collectionSelected);
-            controller->removeTableFromModel(collectionSelected,gridTable,orderByLGridTable,orderByRGridTable);
-            collectionSelected=NULL;
-            this->Refresh();
-        }
-
-        if(joinSelected)
-        {
-            this->joinsGridTable->removeJoin(joinSelected);
-            controller->removeJoin(joinSelected);
-            joinSelected=NULL;
-            this->Refresh();
-        }
-    }
-}
-
-wxPoint ddDrawingView::drawingToView(double x, double y){
-}
-
-wxPoint ddDrawingView::viewToDrawing(double x, double y){
-}
-
-ddIDrawing* ddDrawingView::drawing(){
-}
-
-ddIDrawing* ddDrawingView::editor(){   //DD-TODO: debe retornar un editor
-}
-
-
-
-int ddDrawingView::selectionCount(){
-}
-ddRect ddDrawingView::visibleArea(){
-}
-*/

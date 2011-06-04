@@ -1,11 +1,11 @@
 //////////////////////////////////////////////////////////////////////////
 //
 // pgAdmin III - PostgreSQL Tools
-// RCS-ID:      $Id: gqbObject.h 8189 2010-02-25 22:10:21Z dpage $
-// Copyright (C) 2002 - 2010, The pgAdmin Development Team
+//
+// Copyright (C) 2002 - 2011, The pgAdmin Development Team
 // This software is released under the PostgreSQL Licence
 //
-// gqbObject.h - 
+// ddDrawing.h - Main storage class for all objects of the model
 //
 //////////////////////////////////////////////////////////////////////////
 
@@ -22,10 +22,6 @@ public:
 	virtual ~ddDrawing();
 	virtual void add(ddIFigure *figure);
 	virtual void remove(ddIFigure *figure);
-    /*
-    virtual void draw(wxBufferedDC& context, ddCollection figures)=0;
-	virtual void draw(wxBufferedDC& context)=0;
-	*/
 	virtual bool includes(ddIFigure *figure);
 	virtual ddIFigure* findFigure(int x, int y);
 	virtual void recalculateDisplayBox();

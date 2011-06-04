@@ -1,11 +1,11 @@
 //////////////////////////////////////////////////////////////////////////
 //
 // pgAdmin III - PostgreSQL Tools
-// RCS-ID:      $Id: gqbView.cpp 8268 2010-04-15 21:49:27Z xiul $
-// Copyright (C) 2002 - 2010, The pgAdmin Development Team
+//
+// Copyright (C) 2002 - 2011, The pgAdmin Development Team
 // This software is released under the PostgreSQL Licence
 //
-// ddLineConnectionHandle.cpp 
+// ddLineConnectionHandle.cpp - Base class for Handles that are located at locator position
 //
 //////////////////////////////////////////////////////////////////////////
 
@@ -32,7 +32,6 @@ void ddLineConnectionHandle::invokeEnd(ddMouseEvent& event, ddDrawingView *view)
 	ddPolyLineFigure *figure = (ddPolyLineFigure *) getOwner();
 	//eliminate all handles in the middle of a straight line
 	
-	//DD-TODO: verify index are well defined here and it's doing what is suppossed to do
 	if( figure->pointCount() > 2 && getIndex() != 0 && getIndex() != (figure->pointCount()-1) )
 	{
 		ddPoint p1 = figure->pointAt(getIndex()-1);

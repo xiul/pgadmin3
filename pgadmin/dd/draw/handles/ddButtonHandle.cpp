@@ -1,11 +1,12 @@
 //////////////////////////////////////////////////////////////////////////
 //
 // pgAdmin III - PostgreSQL Tools
-// RCS-ID:      $Id: gqbView.cpp 8268 2010-04-15 21:49:27Z xiul $
-// Copyright (C) 2002 - 2010, The pgAdmin Development Team
+//
+// Copyright (C) 2002 - 2011, The pgAdmin Development Team
 // This software is released under the PostgreSQL Licence
 //
-// ddButtonHandle.cpp -
+// ddButtonHandle.cpp - Handle to allow creation of buttons at figures
+//
 //////////////////////////////////////////////////////////////////////////
 
 #include "pgAdmin3.h"
@@ -23,7 +24,6 @@
 ddButtonHandle::ddButtonHandle(ddIFigure *owner, ddILocator *buttonLocator ,wxBitmap &buttonImage, wxSize &size):
 ddIHandle(owner)
 {
-	//buttonIcon=buttonImage; FOR TEST REASON USE DEFAULT ONE UNCOMMENT THIS FOR FINAL VERSION
 	buttonIcon = buttonImage;
 	clicked=false;
 	bLocator = buttonLocator;
@@ -38,11 +38,9 @@ ddButtonHandle::~ddButtonHandle()
 
 wxCursor ddButtonHandle::createCursor()
 {
-	//DD-TODO:  Should I use reference or a pointer here?
 	return wxCursor(wxCURSOR_PENCIL);
 }
 
-//DD-TODO: avoid this memory leak throught every call to locate()
 ddRect& ddButtonHandle::getDisplayBox()
 {
 	ddPoint p = locate();		

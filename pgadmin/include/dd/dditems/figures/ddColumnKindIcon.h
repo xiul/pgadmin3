@@ -35,7 +35,7 @@ class ddColumnKindIcon : public ddAbstractMenuFigure
 public:
 	ddColumnKindIcon(ddColumnFigure *owner);
     ~ddColumnKindIcon();
-	virtual void OnTextPopupClick(wxCommandEvent& event, ddDrawingView *view=NULL);
+	virtual void OnGenericPopupClick(wxCommandEvent& event, ddDrawingView *view=NULL);
     virtual void createMenu(wxMenu &mnu);
 	virtual void basicDraw(wxBufferedDC& context, ddDrawingView *view);
 	virtual void basicDrawSelected(wxBufferedDC& context, ddDrawingView *view);		

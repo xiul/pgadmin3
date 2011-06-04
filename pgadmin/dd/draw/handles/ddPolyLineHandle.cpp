@@ -1,11 +1,12 @@
 //////////////////////////////////////////////////////////////////////////
 //
 // pgAdmin III - PostgreSQL Tools
-// RCS-ID:      $Id: gqbView.cpp 8268 2010-04-15 21:49:27Z xiul $
-// Copyright (C) 2002 - 2010, The pgAdmin Development Team
+//
+// Copyright (C) 2002 - 2011, The pgAdmin Development Team
 // This software is released under the PostgreSQL Licence
 //
-// ddPolyLineHandle.cpp
+// ddPolyLineHandle.cpp - Handle for manipulation of multiple flexibility points lines.
+//
 //////////////////////////////////////////////////////////////////////////
 
 #include "pgAdmin3.h"
@@ -45,13 +46,6 @@ void ddPolyLineHandle::draw(wxBufferedDC& context, ddDrawingView *view)
 	//DD-TODO: improve this draw
 }
 
-
-/*ddPoint* ddPolyLineHandle::locate()
-{
-	return NULL;
-}
-*/
-
 void ddPolyLineHandle::invokeStep(ddMouseEvent& event, ddDrawingView *view)
 {
 	int x=event.GetPosition().x, y=event.GetPosition().y;
@@ -69,7 +63,7 @@ void ddPolyLineHandle::invokeStart(ddMouseEvent& event, ddDrawingView *view)
 wxCursor ddPolyLineHandle::createCursor()
 {
 	return wxCursor(wxCURSOR_CROSS);
-	//DD-TODO:  Should I use reference or a pointer here?
+
 }
 
 int ddPolyLineHandle::getIndex()

@@ -1,11 +1,12 @@
 //////////////////////////////////////////////////////////////////////////
 //
 // pgAdmin III - PostgreSQL Tools
-// RCS-ID:      $Id: gqbView.cpp 8268 2010-04-15 21:49:27Z xiul $
-// Copyright (C) 2002 - 2010, The pgAdmin Development Team
+//
+// Copyright (C) 2002 - 2011, The pgAdmin Development Team
 // This software is released under the PostgreSQL Licence
 //
-// ddChangeConnectionStartHandle.cpp 
+// ddChangeConnectionStartHandle.cpp - Handle to allow change connected figure at start of connection figure
+//
 //////////////////////////////////////////////////////////////////////////
 
 #include "pgAdmin3.h"
@@ -61,5 +62,4 @@ bool ddChangeConnectionStartHandle::isConnectionPossible(ddIFigure *figure)
 void ddChangeConnectionStartHandle::setPoint(ddPoint p)
 {
 	connection->setStartPoint(p);
-	//DD-TODO: avoid this memory leak when a point have been overwritten
 }

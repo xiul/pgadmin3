@@ -1,11 +1,11 @@
 //////////////////////////////////////////////////////////////////////////
 //
 // pgAdmin III - PostgreSQL Tools
-// RCS-ID:      $Id: gqbObject.h 8189 2010-02-25 22:10:21Z dpage $
-// Copyright (C) 2002 - 2010, The pgAdmin Development Team
+//
+// Copyright (C) 2002 - 2011, The pgAdmin Development Team
 // This software is released under the PostgreSQL Licence
 //
-// gqbObject.h - 
+// ddDrawingView.h - Main canvas where all figures are drawn
 //
 //////////////////////////////////////////////////////////////////////////
 
@@ -39,7 +39,7 @@ public:
 	virtual void removeFromSelection(ddIFigure *figure);
 	virtual void toggleSelection(ddIFigure *figure);
 	virtual void clearSelection();
-	virtual void ScrollToMakeVisible(wxPoint p);
+	virtual void ScrollToMakeVisible(ddPoint p);
 	virtual void ScrollToMakeVisible (ddRect r);
 	virtual ddIHandle* findHandle(double x, double y);
 	virtual ddDrawing* getDrawing();
@@ -50,36 +50,27 @@ public:
 	virtual void onMouseDown(wxMouseEvent& event);
 	virtual void onMouseUp(wxMouseEvent& event);
 	virtual void onMotion(wxMouseEvent& event);
+	virtual ddRect getVisibleArea();
+	virtual ddRect getVirtualSize();
 	ddDrawingEditor* editor();  
-	//virtual void OnKeyDown(wxKeyEvent& event);
 	wxSize canvasSize;
 	
 	//Hack to avoid selection rectangle drawing bug
 	void setSelRect(ddRect& selectionRect);
 	void disableSelRectDraw();
-	//End Hack to avoid selection rectangle drawing bug
-
 	//Hack to avoid event problem with simpleTextTool wxTextCrtl at EVT_TEXT event
 	void simpleTextToolChangeHandler(wxCommandEvent& event);
 	void setSimpleTextToolFigure(ddSimpleTextFigure *figure, bool onlySetFigure=false);
 	wxTextCtrl* getSimpleTextToolEdit();
 	wxBitmapButton* getOkTxt();
 	wxBitmapButton* getCancelTxt();
-	//End Hack to avoid event problem with simpleTextTool wxTextCrtl at EVT_TEXT event
-
 	//Hack to allow use (events) of wxmenu inside a tool Generic Way
 	void setMenuToolFigure(ddAbstractMenuFigure *figure);
-	//End Hack to allow use (events) of wxmenu inside a tool 
-
-	//DD-TODO: Below functions aren't exclusively used by simpletexttool change their names in a more generic way
-
 	//Hack to allow use (events) of wxmenu inside a tool like simpletexttool
-	void OnTextPopupClick(wxCommandEvent& event);
+	void OnGenericPopupClick(wxCommandEvent& event);
 	void OnOkTxtButton(wxCommandEvent& event);
 	void OnCancelTxtButton(wxCommandEvent& event);
 	void connectPopUpMenu(wxMenu &mnu);
-	//End Hack to allow use (events) of wxmenu inside a tool like simpletexttool
-
 protected:
 
 private:
@@ -87,6 +78,9 @@ private:
 	ddCollection *selection;
 	ddDrawing *drawing;
 	ddDrawingEditor *drawingEditor;
+	
+	//Hack to allow auto scrolling when dragging mouse.
+	ddPoint startDrag;
 
 	//Hack to avoid selection rectangle drawing bug
 	ddRect selRect;  

@@ -54,7 +54,7 @@ public:
 	wxString generateShortName(wxString longName);
 	virtual void createMenu(wxMenu &mnu);
 	virtual const wxArrayString dataTypes();
-	virtual void OnTextPopupClick(wxCommandEvent& event, ddDrawingView *view);
+	virtual void OnGenericPopupClick(wxCommandEvent& event, ddDrawingView *view);
 	virtual void setText(wxString textString);
 	virtual ddColumnFigure* getOwnerColumn();
 	virtual void setOwnerColumn(ddColumnFigure *column);

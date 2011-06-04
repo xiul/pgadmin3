@@ -91,6 +91,7 @@ void ddSelectAreaTool::mouseDrag(ddMouseEvent& event)
 		selectionRect.y=anchorY;
 		selectionRect.SetBottomRight(wxPoint(x,y));
 		drawSelectionRect();
+		view->ScrollToMakeVisible(event.GetPosition());
 	}
 }
 

@@ -1,11 +1,11 @@
 //////////////////////////////////////////////////////////////////////////
 //
 // pgAdmin III - PostgreSQL Tools
-// RCS-ID:      $Id: gqbView.cpp 8268 2010-04-15 21:49:27Z xiul $
-// Copyright (C) 2002 - 2010, The pgAdmin Development Team
+//
+// Copyright (C) 2002 - 2011, The pgAdmin Development Team
 // This software is released under the PostgreSQL Licence
 //
-// ddDrawing.cpp 
+// ddDrawing.cpp - Main storage class for all objects of the model
 //
 //////////////////////////////////////////////////////////////////////////
 
@@ -97,10 +97,8 @@ void ddDrawing::recalculateDisplayBox(){
 	}
 
 	delete iterator;	
-	/*
-    //DD-TODO: generate this event
-    OnSizeAllocated ();
-    */
+
+    //DD-TODO: generate this event OnSizeAllocated ();
 }
 
 void ddDrawing::bringToFront(ddIFigure *figure)
@@ -128,10 +126,8 @@ ddIteratorBase* ddDrawing::figuresInverseEnumerator()
 	return figures->createDownIterator();
 }
 
-//DD-TODO: need to do this delete to handles too?
 void ddDrawing::deleteFigures()
 {
-	//figures->deleteAll();
 	ddIFigure *tmp;
 	while(figures->count()>0)
 	{
@@ -139,4 +135,5 @@ void ddDrawing::deleteFigures()
 		figures->removeItemAt(0);
 		delete tmp;
 	}
+	//handles delete it together with figures
 }

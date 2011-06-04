@@ -50,7 +50,7 @@ void ddColumnOptionIcon::createMenu(wxMenu &mnu)
 	item->Enable(!getOwnerColumn()->isForeignKey());
 }
 
-void ddColumnOptionIcon::OnTextPopupClick(wxCommandEvent& event, ddDrawingView *view)
+void ddColumnOptionIcon::OnGenericPopupClick(wxCommandEvent& event, ddDrawingView *view)
 {
 	changeIcon((ddColumnOptionType)event.GetId());
 }

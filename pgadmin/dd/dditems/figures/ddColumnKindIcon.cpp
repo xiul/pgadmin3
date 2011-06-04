@@ -54,7 +54,7 @@ void ddColumnKindIcon::createMenu(wxMenu &mnu)
     item->Check(colType==uk);
 }
 
-void ddColumnKindIcon::OnTextPopupClick(wxCommandEvent& event, ddDrawingView *view)
+void ddColumnKindIcon::OnGenericPopupClick(wxCommandEvent& event, ddDrawingView *view)
 {
 	changeIcon((ddColumnType)event.GetId(),view);
 }

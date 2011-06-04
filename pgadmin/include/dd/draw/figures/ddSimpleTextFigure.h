@@ -36,7 +36,7 @@ public:
 	virtual void enablePopUp();
 	virtual void disablePopUp();
 	virtual bool menuEnabled();
-	virtual void OnTextPopupClick(wxCommandEvent& event, ddDrawingView *view);
+	virtual void OnGenericPopupClick(wxCommandEvent& event, ddDrawingView *view);
 protected:
 	virtual void getFontMetrics(int &width, int &height);
 	virtual void recalculateDisplayBox();

@@ -55,7 +55,7 @@ public:
 protected:
 
 private:
-	virtual void OnTextPopupClick(wxCommandEvent& event, ddDrawingView *view);
+	virtual void OnGenericPopupClick(wxCommandEvent& event, ddDrawingView *view);
 	wxArrayString strings;
 	bool fkFromPk;
 	bool fkMandatory;

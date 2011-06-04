@@ -124,9 +124,9 @@ void ddSimpleTextTool::mouseDrag(ddMouseEvent& event)
 	}
 }
 
-void ddSimpleTextTool::OnTextPopupClick(wxCommandEvent& event, ddDrawingView *view)
+void ddSimpleTextTool::OnGenericPopupClick(wxCommandEvent& event, ddDrawingView *view)
 {
-	txtFigure->OnTextPopupClick(event,view);
+	txtFigure->OnGenericPopupClick(event,view);
 }
 
 bool ddSimpleTextTool::callDialog()

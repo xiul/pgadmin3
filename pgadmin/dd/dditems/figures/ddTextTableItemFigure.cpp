@@ -98,7 +98,7 @@ wxString ddTextTableItemFigure::getType()
 }
 
 //WARNING: event ID must match enum ddDataType!!! this event was created on view
-void ddTextTableItemFigure::OnTextPopupClick(wxCommandEvent& event, ddDrawingView *view)
+void ddTextTableItemFigure::OnGenericPopupClick(wxCommandEvent& event, ddDrawingView *view)
 {
 	wxTextEntryDialog *nameDialog=NULL;
 	wxString tmpString;

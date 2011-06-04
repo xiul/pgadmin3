@@ -1,11 +1,11 @@
 //////////////////////////////////////////////////////////////////////////
 //
 // pgAdmin III - PostgreSQL Tools
-// RCS-ID:      $Id: gqbObject.h 8189 2010-02-25 22:10:21Z dpage $
-// Copyright (C) 2002 - 2010, The pgAdmin Development Team
+//
+// Copyright (C) 2002 - 2011, The pgAdmin Development Team
 // This software is released under the PostgreSQL Licence
 //
-// gqbObject.h - 
+// ddDrawingEditor.h - Main class that manages all other classes
 //
 //////////////////////////////////////////////////////////////////////////
 
@@ -15,8 +15,6 @@
 #include "dd/draw/main/ddDrawingView.h"
 #include "dd/draw/tools/ddITool.h"
 
-
-// Create Array Objects used as base for gqbCollections
 class ddDrawingEditor : public ddObject
 {
 public:
@@ -33,8 +31,5 @@ private:
 	ddDrawing *_model;
 	ddDrawingView *_view;
 	ddITool *_tool;
-
-
-
 };
 #endif

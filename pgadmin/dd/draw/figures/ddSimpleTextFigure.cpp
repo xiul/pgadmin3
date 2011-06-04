@@ -154,7 +154,7 @@ bool ddSimpleTextFigure::menuEnabled()
 	return 	showMenu;
 }
 
-void ddSimpleTextFigure::OnTextPopupClick(wxCommandEvent& event, ddDrawingView *view)
+void ddSimpleTextFigure::OnGenericPopupClick(wxCommandEvent& event, ddDrawingView *view)
 {
 	setText(strings[event.GetId()]);
 }

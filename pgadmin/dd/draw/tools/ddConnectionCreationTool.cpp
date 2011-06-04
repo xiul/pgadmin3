@@ -94,7 +94,7 @@ void ddConnectionCreationTool::mouseUp(ddMouseEvent& event)
 			toolConnection->disconnectEnd();
 			getDrawingEditor()->view()->remove(toolConnection);
 			getDrawingEditor()->view()->clearSelection();
-			delete toolConnection;
+			//DD-TODO666 delete toolConnection;
 		}
 	}
 	if(dragged || numClicks>1)   //if drag to select a figure or is second or higher click (to select end figure) then this tool ends.

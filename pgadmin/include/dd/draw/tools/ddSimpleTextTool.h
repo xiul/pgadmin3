@@ -25,7 +25,7 @@ public:
 	virtual void activate();
 	virtual void deactivate();
 	virtual void mouseDrag(ddMouseEvent& event);
-	virtual void OnTextPopupClick(wxCommandEvent& event, ddDrawingView *view);
+	virtual void OnGenericPopupClick(wxCommandEvent& event, ddDrawingView *view);
 	virtual bool callDialog();
 	//Because a bug it was move to main View class instance as a hack. virtual void changeHandler(wxCommandEvent& event);
 protected:

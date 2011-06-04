@@ -51,7 +51,7 @@ bool ddAbstractMenuFigure::menuEnabled()
 	return 	showMenu;
 }
 
-void ddAbstractMenuFigure::OnTextPopupClick(wxCommandEvent& event, ddDrawingView *view)
+void ddAbstractMenuFigure::OnGenericPopupClick(wxCommandEvent& event, ddDrawingView *view)
 {
 	//Action on popup goes here
 	//strings[event.GetId()]

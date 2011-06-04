@@ -237,7 +237,7 @@ void ddRelationshipFigure::createMenu(wxMenu &mnu)
     mnu.Append(MNU_DELETERELATIONSHIP, _("Delete Relationship..."));
 };
 
-void ddRelationshipFigure::OnTextPopupClick(wxCommandEvent& event, ddDrawingView *view)
+void ddRelationshipFigure::OnGenericPopupClick(wxCommandEvent& event, ddDrawingView *view)
 {
 	int answer;
 	ddTableFigure *startTable = NULL;
