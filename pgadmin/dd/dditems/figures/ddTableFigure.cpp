@@ -78,8 +78,8 @@ ddCompositeFigure()
 	tableTitle->moveTo(x,y);
 	tableTitle->disablePopUp();
 	tableTitle->setShowDataType(false);
-	tableTitle->setAlias(wxEmptyString);
 	add(tableTitle);
+	tableTitle->setAlias(wxEmptyString);  //Should be here to avoid a null pointer bug
 	tableTitle->moveTo(rectangleFigure->getBasicDisplayBox().x+internalPadding*2,rectangleFigure->getBasicDisplayBox().y+internalPadding/2);
 
 	//Intialize handles
@@ -450,7 +450,6 @@ int ddTableFigure::getFiguresMaxWidth()
 	maxWidth = g.max(maxWidth,cf->displayBox().width+20);
 	while(iterator->HasNext()){
 		cf = (ddColumnFigure *) iterator->Next();
-		//cf->displayBoxUpdate(); 666
 		maxWidth = g.max(maxWidth,cf->displayBox().width);
 	}
 	delete iterator;
@@ -705,8 +704,10 @@ void ddTableFigure::updateFkObservers()
 	ddIteratorBase *iterator = observersEnumerator();
 	while(iterator->HasNext()){
 	ddRelationshipFigure *r = (ddRelationshipFigure*) iterator->Next();
-	if(r->getStartFigure()==this)	//Only update FK of connection with this table as source. source ---<| destination
-		r->updateForeignKey();
+		if(r->getStartFigure()==this)	//Only update FK of connection with this table as source. source ---<| destination
+		{
+			r->updateForeignKey();
+		}
 	}
 	delete iterator;
 }

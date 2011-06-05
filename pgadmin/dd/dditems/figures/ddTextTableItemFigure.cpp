@@ -349,16 +349,15 @@ void ddTextTableItemFigure::setAlias(wxString alias)
 	{
 		showAlias=false;
 		colAlias = wxEmptyString;
-		recalculateDisplayBox();
 	}
 	else
 	{
 		showAlias=true;
 		colAlias = alias;
-		recalculateDisplayBox();
 	}
 	
 	ownerTable->updateFkObservers(); //Only triggered by a tableName item [Not a column]
+	ownerTable->updateTableSize();
 }
 
 void ddTextTableItemFigure::setOneTimeNoAlias()
