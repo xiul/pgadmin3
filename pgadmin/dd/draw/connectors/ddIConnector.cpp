@@ -1,11 +1,11 @@
 //////////////////////////////////////////////////////////////////////////
 //
 // pgAdmin III - PostgreSQL Tools
-// RCS-ID:      $Id: gqbView.cpp 8268 2010-04-15 21:49:27Z xiul $
-// Copyright (C) 2002 - 2010, The pgAdmin Development Team
+//
+// Copyright (C) 2002 - 2011, The pgAdmin Development Team
 // This software is released under the PostgreSQL Licence
 //
-// ddIConnector.cpp 
+// ddIConnector.cpp - Base class for all connectors
 //
 //////////////////////////////////////////////////////////////////////////
 
@@ -15,11 +15,9 @@
 #include <wx/wx.h>
 
 // App headers
-//#include "dd/draw/figures/ddIFigure.h"
-#include "dd/draw/figures/ddLineConnection.h"
 #include "dd/draw/connectors/ddIConnector.h"
 
-class ddLineConnection;  //HACK-FIX to circular reference
+class ddLineConnection;
 class ddIFigure;
 
 ddIConnector::ddIConnector(ddIFigure *owner):

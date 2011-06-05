@@ -1,11 +1,11 @@
 //////////////////////////////////////////////////////////////////////////
 //
 // pgAdmin III - PostgreSQL Tools
-// RCS-ID:      $Id: gqbView.cpp 8268 2010-04-15 21:49:27Z xiul $
-// Copyright (C) 2002 - 2010, The pgAdmin Development Team
+//
+// Copyright (C) 2002 - 2011, The pgAdmin Development Team
 // This software is released under the PostgreSQL Licence
 //
-// ddChopBoxConnector.cpp 
+// ddChopBoxConnector.cpp - Connector for center of figure to line crossing one limit line of rect
 //
 //////////////////////////////////////////////////////////////////////////
 
@@ -27,9 +27,8 @@ ddChopBoxConnector::~ddChopBoxConnector()
 {
 }
 
-//DD-TODO: change to reference ddPoint&
+
 ddPoint ddChopBoxConnector::chop(ddIFigure *target, ddPoint point){
-	
 	if(target && target->containsPoint(point.x, point.y))
 	{
 		point=target->displayBox().center();
