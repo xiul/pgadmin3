@@ -1,11 +1,11 @@
 //////////////////////////////////////////////////////////////////////////
 //
 // pgAdmin III - PostgreSQL Tools
-// RCS-ID:      $Id: gqbView.cpp 8268 2010-04-15 21:49:27Z xiul $
-// Copyright (C) 2002 - 2010, The pgAdmin Development Team
+//
+// Copyright (C) 2002 - 2011, The pgAdmin Development Team
 // This software is released under the PostgreSQL Licence
 //
-// ddLineTerminal.cpp 
+// ddLineTerminal.cpp - Base class for line terminal figure
 //
 //////////////////////////////////////////////////////////////////////////
 
@@ -37,7 +37,6 @@ void ddLineTerminal::setLinePen(wxPen pen)
 	terminalLinePen=pen;
 }
 
-//DD-TODO: this need this ddDrawingView *view ??? or just avoid this and always pass calcscrolled points
 ddPoint& ddLineTerminal::draw (wxBufferedDC& context, ddPoint& a, ddPoint& b, ddDrawingView *view)
 {
 	ddGeometry g;
@@ -50,12 +49,10 @@ ddPoint& ddLineTerminal::draw (wxBufferedDC& context, ddPoint& a, ddPoint& b, dd
 	context.DrawLine(copyA, copyB);
 	
 	context.SetPen(wxPen(wxString(wxT("BLACK")),1,wxSOLID));
-	//DD-TODO: improve this function is bad just for testing, fix memory leak
 	int x=copyA.x+g.ddabs(copyA.x - copyB.x);
 	int y=copyA.y+g.ddabs(copyA.y - copyB.y);
 	middle = ddPoint(x,y);
 
-	//context.DrawCircle(*middle,10);
 	context.DrawRectangle(wxRect(copyA.x,copyA.y,5,5));
 	context.DrawCircle(copyA,10);
 	return middle;

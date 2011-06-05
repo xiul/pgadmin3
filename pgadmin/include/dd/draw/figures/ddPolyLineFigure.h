@@ -1,11 +1,11 @@
 //////////////////////////////////////////////////////////////////////////
 //
 // pgAdmin III - PostgreSQL Tools
-// RCS-ID:      $Id: gqbObject.h 8189 2010-02-25 22:10:21Z dpage $
-// Copyright (C) 2002 - 2010, The pgAdmin Development Team
+//
+// Copyright (C) 2002 - 2011, The pgAdmin Development Team
 // This software is released under the PostgreSQL Licence
 //
-// gqbObject.h - 
+// ddPolyLineFigure.h - A simple line figure that can be split on several lines joined by flexibility points
 //
 //////////////////////////////////////////////////////////////////////////
 
@@ -17,7 +17,6 @@
 #include "dd/draw/utilities/ddArrayCollection.h"
 #include "dd/draw/utilities/ddPoint.h"
 
-// Create Array Objects used as base for gqbCollections
 class ddPolyLineFigure : public ddAbstractMenuFigure
 {
 public:
@@ -42,7 +41,6 @@ public:
 	virtual void changed();
 
 	virtual void addPoint (int x, int y);
-//	virtual void removePoint (int index);
 	virtual void clearPoints ();
 	virtual void insertPointAt (int index, int x, int y);
 	virtual void setPointAt (int index, int x, int y);
@@ -55,13 +53,12 @@ public:
 	virtual void setLinePen(wxPen pen);
 
 protected:
-	//DD-TODO: need to store dashes?
 	virtual void updateHandlesIndexes();
 	ddArrayCollection *points;
 	ddPoint endPoint, startPoint, pointAtPos;
 private:
 	ddLineTerminal *startTerminal, *endTerminal;
-	bool handlesChanged;//, primero;
+	bool handlesChanged;
 	wxPen linePen;
 
 };

@@ -1,11 +1,11 @@
 //////////////////////////////////////////////////////////////////////////
 //
 // pgAdmin III - PostgreSQL Tools
-// RCS-ID:      $Id: gqbView.cpp 8268 2010-04-15 21:49:27Z xiul $
-// Copyright (C) 2002 - 2010, The pgAdmin Development Team
+//
+// Copyright (C) 2002 - 2011, The pgAdmin Development Team
 // This software is released under the PostgreSQL Licence
 //
-// ddCompositeFigure.cpp
+// ddCompositeFigure.cpp - Base class for all figures composite with figures
 //
 //////////////////////////////////////////////////////////////////////////
 
@@ -31,7 +31,7 @@ ddCompositeFigure::ddCompositeFigure()
 ddCompositeFigure::~ddCompositeFigure()
 {
 	ddIHandle *tmpH;
-	//figureHandles->removeAll();  //Handles should be delete by their owner (figure)
+	//Handles should be delete by their owner (figure)
 	while(figureHandles->count()>0)
 	{
 		tmpH = (ddIHandle*) figureHandles->getItemAt(0);
@@ -89,7 +89,7 @@ ddIteratorBase* ddCompositeFigure::figuresInverseEnumerator()
 	return figureFigures->createDownIterator();
 }
 
-//ignore figures at negative positions
+//Ignore figures at negative positions
 ddRect& ddCompositeFigure::getBasicDisplayBox()
 {
 	basicDisplayBox.SetPosition(wxPoint(0,0));
@@ -151,12 +151,10 @@ void ddCompositeFigure::remove(ddIFigure *figure)
 	{
 		ddIHandle *h = (ddIHandle *) handlesIterator->Next();
 		figureHandles->removeItem(h);
-		//DD-TODO: should I delete this handle?
 	}
 	delete handlesIterator;
 	//Remove figure
 	figureFigures->removeItem(figure);
-	//DD-TODO: should I delete this figure?
 }
 
 bool ddCompositeFigure::includes(ddIFigure *figure)
@@ -224,17 +222,6 @@ ddITool* ddCompositeFigure::CreateFigureTool(ddDrawingEditor *editor, ddITool *d
 {
 	return new ddCompositeFigureTool(editor, this, defaultTool);
 }
-
-void ddCompositeFigure::sendToBack(ddIFigure *figure)
-{
-	//DD-TODO: Implement this function
-}
-
-void ddCompositeFigure::sendToFront(ddIFigure *figure)
-{
-	//DD-TODO: Implement this function
-}
-
 
 ddIFigure* ddCompositeFigure::getFigureAt(int pos)
 {

@@ -1,11 +1,11 @@
 //////////////////////////////////////////////////////////////////////////
 //
 // pgAdmin III - PostgreSQL Tools
-// RCS-ID:      $Id: gqbObject.h 8189 2010-02-25 22:10:21Z dpage $
-// Copyright (C) 2002 - 2010, The pgAdmin Development Team
+//
+// Copyright (C) 2002 - 2011, The pgAdmin Development Team
 // This software is released under the PostgreSQL Licence
 //
-// gqbObject.h - 
+// ddAbstractFigure.h - Base class for all figures
 //
 //////////////////////////////////////////////////////////////////////////
 
@@ -17,9 +17,6 @@
 #include "dd/draw/handles/ddIHandle.h"
 #include "dd/draw/utilities/ddCollection.h"
 
-
-
-// Create Array Objects used as base for gqbCollections
 class ddAbstractFigure : public ddIFigure
 {
 public:
@@ -37,10 +34,8 @@ public:
 	virtual bool containsPoint(int x, int y);
 	virtual void onFigureChanged(ddIFigure *figure);
 
-//DD-TODO: public virtual IConnector ConnectorAt (double x, double y)
-//DD-TODO: public void Visit (IFigureVisitor visitor) 
-//DD-TODO: public event EventHandler <FigureEventArgs> FigureInvalidated;
-//DD-TODO: public event EventHandler <FigureEventArgs> FigureChanged;
+//DD-TODO: events OnFigureInvalidated
+//DD-TODO: events OnFigureChanged
 
 protected:
 	virtual void basicDraw(wxBufferedDC& context, ddDrawingView *view);
@@ -48,7 +43,6 @@ protected:
 	void willChange();
 	void changed();
 	void invalidate();
-		//DD-TODO: OnFigureChanged event implement
 	wxColour fillColor, lineColor;
 	double lineWidth;
 

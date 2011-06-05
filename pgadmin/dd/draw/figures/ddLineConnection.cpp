@@ -1,11 +1,11 @@
 //////////////////////////////////////////////////////////////////////////
 //
 // pgAdmin III - PostgreSQL Tools
-// RCS-ID:      $Id: gqbView.cpp 8268 2010-04-15 21:49:27Z xiul $
-// Copyright (C) 2002 - 2010, The pgAdmin Development Team
+//
+// Copyright (C) 2002 - 2011, The pgAdmin Development Team
 // This software is released under the PostgreSQL Licence
 //
-// ddLineConnection.cpp
+// ddLineConnection.cpp - Base class for line connection figure
 //
 //////////////////////////////////////////////////////////////////////////
 
@@ -30,7 +30,6 @@ ddPolyLineFigure()
 	endConnector = NULL;
 	changeConnStartHandle = NULL;
 	changeConnEndHandle = NULL; 
-	//connectionHandles = new ddCollection(new ddArrayCollection());
 }
 
 ddLineConnection::ddLineConnection(ddIFigure *figure1, ddIFigure *figure2):
@@ -52,12 +51,6 @@ ddPolyLineFigure()
 
 ddLineConnection::~ddLineConnection()
 {
-/*	if(changeConnStartHandle)
-		delete changeConnStartHandle;
-
-	if(changeConnEndHandle)
-		delete changeConnEndHandle;
-*/
 }
 
 ddIConnector* ddLineConnection::getStartConnector()
@@ -147,7 +140,6 @@ ddIFigure* ddLineConnection::getEndFigure()
 }
 
 void ddLineConnection::updateConnection(){
-	//DD-TODO: avoid memory leak from thiw new ddPoint
 	if(startConnector)
 	{
 		setStartPoint(startConnector->findStart(this));  
@@ -178,13 +170,6 @@ ddIHandle* ddLineConnection::getEndHandle()
 
 void ddLineConnection::basicMoveBy(int x, int y)
 {
-	/*ddPoint *newPoint;
-	for(int i=1 ; i<points->count()-1 ; i++){
-		newPoint = (ddPoint *) points->getItemAt(i);  //DD-TODO: replace and test with pointAt
-		newPoint->x += x;
-		newPoint->y += y;
-		points->replaceAtIndex((ddObject *) newPoint,i); //DD-TODO: this is neede because I'm working with pointers??
-	}*/
 	ddPolyLineFigure::basicMoveBy(x,y);
 	updateConnection();
 }
@@ -202,14 +187,6 @@ void ddLineConnection::setPointAt (int index, int x, int y)
 
 ddCollection* ddLineConnection::handlesEnumerator()
 {
-	//DD-TODO: HIGH-PRIORITY-FINISH-THIS optimize this, not create a new instance everytime invoke function
-	
-	// //ARREGLAR ESTO PQ SI HAGO ESTO DARA PROBLEMAS CUANDO ELIMINE O AGREGUE COSAS
-	//connectionHandles->removeAll(); //
-
-	if( points->count()< 2 )
-		return handles;  //return empty handle
-	
 	return handles;
 }
 
@@ -218,11 +195,7 @@ void ddLineConnection::connectFigure (ddIConnector *connector)
 {
 	if(connector)
 	{
-		//connector->getOwner()->figureChangedEvent ADD handler (observer pattern)
-		//DD-TODO: HIGH-PRIORITY-FINISH-THIS observer pattern
-		//connector->getOwner()->onFigureChanged((ddIFigure*)this);
 		connector->getOwner()->addObserver(this);
-		//connector->getOwner()->addDependentFigure((ddIFigure*)this);
 	}
 }
 
@@ -230,18 +203,12 @@ void ddLineConnection::disconnectFigure (ddIConnector *connector)
 {
 	if(connector)
 	{
-		//DD-TODO: HIGH-PRIORITY-FINISH-THIS observer pattern
-		//connector->getOwner()->onFigureChanged(this);
 		connector->getOwner()->removeObserver(this);
-		//connector->getOwner()->removeDependentFigure(this);
 	}
 }
 
-//DD-TODO: HIGH-PRIORITY-FINISH-THIS observer pattern
 void ddLineConnection::onFigureChanged(ddIFigure *figure)
 {
-//		ddIConnectionFigure::onFigureChanged(figure);
-		//BUGSISIMO  ver si debe ir aqui pq da un super error 
 	updateConnection();
 }
 
@@ -292,7 +259,6 @@ void ddLineConnection::insertPointAt (int index, int x, int y)
 	changed();
 }
 
-//DD-TODO: this functions is deprecated and should be delete in the future
 void ddLineConnection::updateHandlesIndexes()
 {
 	//DD-TODO: simplify this in the future, probably implementing locator in other way
@@ -304,17 +270,4 @@ void ddLineConnection::updateHandlesIndexes()
 		h = (ddPolyLineHandle*) handles->getItemAt(i);
 		h->setIndex(i);
 	}
-
-/*	for(int i=0;i<points->count()-1;i++)  //not include start and end handles
-	{
-		handles->removeItemAt(i);
-	}
-	handles->removeAll();  //don't delete because it cause start & end handle to be loss
-	
-	handles->addItem(getStartHandle());
-	for(int i=1;i<points->count()-1;i++){
-		handles->addItem(new ddLineConnectionHandle(this, new ddPolyLineLocator(i), i));
-	}
-	handles->addItem(getEndHandle());	
-*/
 }

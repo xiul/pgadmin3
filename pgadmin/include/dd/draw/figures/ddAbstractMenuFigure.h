@@ -1,11 +1,11 @@
 //////////////////////////////////////////////////////////////////////////
 //
 // pgAdmin III - PostgreSQL Tools
-// RCS-ID:      $Id: gqbObject.h 8189 2010-02-25 22:10:21Z dpage $
-// Copyright (C) 2002 - 2010, The pgAdmin Development Team
+//
+// Copyright (C) 2002 - 2011, The pgAdmin Development Team
 // This software is released under the PostgreSQL Licence
 //
-// gqbObject.h - 
+// ddAbstractMenuFigure.h - Base class for figures that show a menu with right click
 //
 //////////////////////////////////////////////////////////////////////////
 
@@ -17,9 +17,6 @@
 #include "dd/draw/handles/ddIHandle.h"
 #include "dd/draw/utilities/ddCollection.h"
 
-
-
-// Create Array Objects used as base for gqbCollections
 class ddAbstractMenuFigure : public ddAbstractFigure
 {
 public:

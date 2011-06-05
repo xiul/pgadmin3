@@ -1,11 +1,11 @@
 //////////////////////////////////////////////////////////////////////////
 //
 // pgAdmin III - PostgreSQL Tools
-// RCS-ID:      $Id: gqbView.cpp 8268 2010-04-15 21:49:27Z xiul $
-// Copyright (C) 2002 - 2010, The pgAdmin Development Team
+//
+// Copyright (C) 2002 - 2011, The pgAdmin Development Team
 // This software is released under the PostgreSQL Licence
 //
-// ddIFigure.cpp 
+// ddIFigure.cpp - Base class for all figures
 //
 //////////////////////////////////////////////////////////////////////////
 
@@ -25,15 +25,13 @@
 
 ddIFigure::ddIFigure()
 {
-	figures=new ddCollection(new ddArrayCollection());  //DD-TODO: really need this???
 	handles=new ddCollection(new ddArrayCollection());
-//	dependentFigures=new ddCollection(new ddArrayCollection());
 	observers=new ddCollection(new ddArrayCollection());
 	selected=false;
 	connector=NULL;
 	basicDisplayBox.SetSize(wxSize(0,0));
 	//DD-TODO: this should be initialize here
-	
+
 	//Default color and pen defined
 	defaultPen = wxPen(wxColour(0, 0, 0),1,wxSOLID);
 	defaultBrush = wxBrush (wxColour(255, 255, 255),wxSOLID);
@@ -45,17 +43,8 @@ ddIFigure::~ddIFigure()
 {
 	if(connector)
 		delete connector;
-	if(figures)
-		delete figures;
 	if(handles)
 		delete handles;
-/*
-	if(dependentFigures)
-	{
-		dependentFigures->removeAll();
-		delete dependentFigures;
-	}
-*/
 	if(observers){
 		observers->removeAll();
 		delete observers;
@@ -93,25 +82,6 @@ ddCollection* ddIFigure::handlesEnumerator()
 {
 	return handles;
 }
-
-
-/*void ddIFigure::addDependentFigure (ddIFigure *figure)
-{
-	if(!dependentFigures)
-    {
-		dependentFigures = new ddCollection(new ddArrayCollection());
-	}
-	dependentFigures->addItem(figure);	
-}
-
-
-void ddIFigure::removeDependentFigure (ddIFigure *figure)
-{
-	if(dependentFigures)
-    {
-		dependentFigures->removeItem(figure);		
-	}
-}*/
 
 void ddIFigure::addHandle (ddIHandle *handle)
 {
@@ -190,7 +160,6 @@ void ddIFigure::removeObserver(ddIFigure *observer)
 {
 	if(observers){
 		observers->removeItem(observer);
-		//DD-TODO: this delete the figure???? wxwidgets api is very bad documented
 	}
 }
 
@@ -224,7 +193,8 @@ void ddIFigure::setKindId(int hiddenId)
 	kindHiddenId=hiddenId;
 }
 
-int ddIFigure::getKindId()  //because is kindof in not powerful as it should be, need to implement this hack
+//Hack because is kindof in not powerful as it should be
+int ddIFigure::getKindId()  
 {
 	return kindHiddenId;
 }

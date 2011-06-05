@@ -1,11 +1,11 @@
 //////////////////////////////////////////////////////////////////////////
 //
 // pgAdmin III - PostgreSQL Tools
-// RCS-ID:      $Id: gqbObject.h 8189 2010-02-25 22:10:21Z dpage $
-// Copyright (C) 2002 - 2010, The pgAdmin Development Team
+//
+// Copyright (C) 2002 - 2011, The pgAdmin Development Team
 // This software is released under the PostgreSQL Licence
 //
-// gqbObject.h - 
+// ddIFigure.h - Base class for all figures
 //
 //////////////////////////////////////////////////////////////////////////
 
@@ -15,10 +15,8 @@
 #include "dd/draw/main/ddObject.h"
 #include "dd/draw/utilities/ddCollection.h"
 #include "dd/draw/handles/ddIHandle.h"
-//#include "dd/draw/connectors/ddIConnector.h"
 
-
-class ddITool;			// HACK-FIX circular reference
+class ddITool;
 class ddDrawingEditor;
 class ddIConnector;
 class ddITool;
@@ -34,8 +32,6 @@ public:
 	virtual void draw (wxBufferedDC& context, ddDrawingView *view);
 	virtual void drawSelected (wxBufferedDC& context, ddDrawingView *view);
 	virtual ddCollection* handlesEnumerator();
-//	virtual void addDependentFigure (ddIFigure *figure);
-//	virtual void removeDependentFigure (ddIFigure *figure);
 	virtual void addHandle (ddIHandle *handle);
 	virtual void removeHandle (ddIHandle *handle);
 	virtual ddIConnector* connectorAt (int x, int y);
@@ -56,9 +52,7 @@ public:
 
 protected:
 	ddRect basicDisplayBox;
-	ddCollection *figures;
 	ddCollection *handles;
-//	ddCollection *dependentFigures;
 	ddCollection *observers;
 	void setDefaultPen(wxPen& pen);
 	void setDefaultSelectedPen(wxPen& pen);

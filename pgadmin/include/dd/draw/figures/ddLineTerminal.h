@@ -1,11 +1,11 @@
 //////////////////////////////////////////////////////////////////////////
 //
 // pgAdmin III - PostgreSQL Tools
-// RCS-ID:      $Id: gqbObject.h 8189 2010-02-25 22:10:21Z dpage $
-// Copyright (C) 2002 - 2010, The pgAdmin Development Team
+//
+// Copyright (C) 2002 - 2011, The pgAdmin Development Team
 // This software is released under the PostgreSQL Licence
 //
-// gqbObject.h - 
+// ddLineTerminal.h - Base class for line terminal figure
 //
 //////////////////////////////////////////////////////////////////////////
 
@@ -14,9 +14,6 @@
 #include "dd/draw/figures/ddIFigure.h"
 #include "dd/draw/utilities/ddPoint.h"
 
-
-
-// Create Array Objects used as base for gqbCollections
 class ddLineTerminal : public ddObject
 {
 public:
