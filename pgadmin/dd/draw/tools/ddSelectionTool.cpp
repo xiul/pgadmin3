@@ -56,7 +56,8 @@ void ddSelectionTool::mouseDown(ddMouseEvent& event)
         ddIFigure *figure = view->getDrawing()->findFigure(x,y);
         if(figure)
         {
-            setDelegateTool(figure->CreateFigureTool(getDrawingEditor(),new ddDragTrackerTool(getDrawingEditor(),figure)));
+			view->getDrawing()->bringToFront(figure);
+			setDelegateTool(figure->CreateFigureTool(getDrawingEditor(),new ddDragTrackerTool(getDrawingEditor(),figure)));
         }
         else
         {

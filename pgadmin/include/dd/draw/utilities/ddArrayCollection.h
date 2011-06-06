@@ -59,7 +59,7 @@ public:
 	ddIteratorBase* createDownIterator();
     ddObject* getItemAt(int index);
 	void bringToFront(ddObject *item);
-	void bringToBack(ddObject *item);
+	void sendToBack(ddObject *item);
     int count();
     bool existsObject(ddObject *item);
     int getIndex(ddObject *item);

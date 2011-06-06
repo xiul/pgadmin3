@@ -33,7 +33,7 @@ public:
     void insertAtIndex(ddObject *item, int index);
 	void replaceAtIndex(ddObject *item, int index);
 	void bringToFront(ddObject *item);
-	void bringToBack(ddObject *item);
+	void sendToBack(ddObject *item);
     ddIteratorBase* createIterator();
 	ddIteratorBase* createDownIterator();
 

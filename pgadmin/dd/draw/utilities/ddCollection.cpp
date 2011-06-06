@@ -105,7 +105,7 @@ void ddCollection::bringToFront(ddObject *item)
 	collection->bringToFront(item);
 }
 
-void ddCollection::bringToBack(ddObject *item)
+void ddCollection::sendToBack(ddObject *item)
 {
-	collection->bringToBack(item);
+	collection->sendToBack(item);
 }

@@ -121,7 +121,7 @@ void ddArrayCollection::bringToFront(ddObject *item)
 }
 
 //Bring item to end of array
-void ddArrayCollection::bringToBack(ddObject *item)
+void ddArrayCollection::sendToBack(ddObject *item)
 {
 	int end = count() - 1;
 	ddObject *tmp = ddArray[end];

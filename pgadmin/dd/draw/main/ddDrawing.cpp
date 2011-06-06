@@ -103,12 +103,16 @@ void ddDrawing::recalculateDisplayBox(){
 
 void ddDrawing::bringToFront(ddIFigure *figure)
 {
-	figures->bringToFront(figure);
+	//To bring to front this figure need to be at last position when is draw
+	//because this reason sendToBack (last position) is used.
+	figures->sendToBack(figure);
 }
 
 void ddDrawing::sendToBack(ddIFigure *figure)
 {
-	figures->bringToBack(figure);
+	//To send to back this figure need to be at first position when is draw
+	//because this reason bringToFront (1st position) is used.
+	figures->bringToFront(figure);
 }
 
 ddRect& ddDrawing::DisplayBox()
