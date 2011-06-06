@@ -85,7 +85,7 @@ bool ddColumnTextTool::callDialog()
 												wxT("Rename Table"),
 												wxT("New Table Name"),
 												colName,
-												wxT("Alias"),
+												wxT("Short Name"),
 												colShortName,
 												wxDefaultPosition,
 												wxDefaultSize,

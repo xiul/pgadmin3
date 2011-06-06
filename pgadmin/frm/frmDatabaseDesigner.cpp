@@ -39,6 +39,7 @@
 #include "dd/dditems/figures/ddTextTableItemFigure.h"
 #include "dd/dditems/figures/ddColumnFigure.h"
 #include "dd/dditems/figures/ddTableFigure.h"
+#include "dd/dditems/utilities/ddTableNameDialog.h"
 
 // Icons
 #include "images/ddmodel-32.xpm"
@@ -170,17 +171,31 @@ void frmDatabaseDesigner::OnClose(wxCloseEvent& event)
 
 void frmDatabaseDesigner::OnAddTable(wxCommandEvent& event)
 {
-    wxTextEntryDialog *nameDialog = new wxTextEntryDialog(this,
-        wxT("New table name"), wxT("Add table"), design->getNewTableName());
-    int answer = nameDialog->ShowModal();
-	if (answer == wxID_OK)
+	ddTableNameDialog *newTableDialog = new ddTableNameDialog(
+											this,
+											DDTABLENAMEDIALOG,
+											wxT("New Table Name"),
+											wxT("Table Name"),
+											design->getNewTableName(),
+											wxT("Short Name"),
+											wxEmptyString,
+											wxDefaultPosition,
+											wxDefaultSize,
+											wxCAPTION,
+											NULL
+											);
+	int answer = newTableDialog->ShowModal();
+	if (answer == wxID_OK && !newTableDialog->GetValue1().IsEmpty())
     {
-        ddTableFigure *newTable = new ddTableFigure(nameDialog->GetValue(),
-            rand()%90+200, rand()%90+140);
+		ddTableFigure *newTable = new ddTableFigure(newTableDialog->GetValue1(),
+													rand()%90+200,
+													rand()%90+140,
+													newTableDialog->GetValue2()
+													);
         design->addTable(newTable);
-        design->refreshDraw();
+		design->refreshDraw();
     }
-    delete nameDialog;
+	delete newTableDialog;	
 }
 
 void frmDatabaseDesigner::OnDeleteTable(wxCommandEvent& event)

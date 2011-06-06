@@ -23,7 +23,7 @@ class ddRelationshipFigure;
 class ddTableFigure : public ddCompositeFigure
 {
 public:
-	ddTableFigure(wxString tableName, int x, int y);
+	ddTableFigure(wxString tableName, int x, int y, wxString shortName=wxEmptyString);
     ~ddTableFigure();
 	
 	//add remove items
@@ -60,8 +60,10 @@ public:
 	
 	//metadata
 	wxString getTableName();
+	void setShortTableName(wxString shortName);
 	wxString getShortTableName();
 	wxString generateSQL();
+	static wxString generateShortName(wxString longName);
 
 	//uk pk constraints
 	void setPkConstraintName(wxString name);

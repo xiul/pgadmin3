@@ -51,7 +51,6 @@ public:
     virtual void setAlias(wxString alias);
 	virtual wxString getAlias();
 	virtual void setOneTimeNoAlias();
-	wxString generateShortName(wxString longName);
 	virtual void createMenu(wxMenu &mnu);
 	virtual const wxArrayString dataTypes();
 	virtual void OnGenericPopupClick(wxCommandEvent& event, ddDrawingView *view);

@@ -16,8 +16,7 @@
 #include <wx/statline.h>
 // App headers
 #include "dd/dditems/utilities/ddTableNameDialog.h"
-
-//DD-TODO: class leaks??? because objects create without destructor??
+#include "dd/dditems/figures/ddTableFigure.h"
 
 IMPLEMENT_CLASS( ddTableNameDialog, wxDialog )
 
@@ -204,13 +203,8 @@ bool ddTableNameDialog::TransferDataFromWindow()
 void ddTableNameDialog::OnGenButtonClicked( wxCommandEvent& event )
 {
 	wxTextCtrl* val1Ctrl = (wxTextCtrl*) FindWindow(DDVALUE1);
-	wxCheckBox* valCheckbox = (wxCheckBox*) FindWindow(DDGENBUTTON);
 	wxTextCtrl* val2Ctrl = (wxTextCtrl*) FindWindow(DDVALUE2);
-
-	if(tabItem!=NULL)
-	{
-			wxString shortName = tabItem->generateShortName(val1Ctrl->GetValue());
-			val2Ctrl->SetValue(shortName);
-	}
+	wxString shortName = ddTableFigure::generateShortName(val1Ctrl->GetValue());
+	val2Ctrl->SetValue(shortName);
 }
 
