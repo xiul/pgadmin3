@@ -31,6 +31,9 @@ ddLineConnection()
 	fkIdentifying = false;
 	ukIndex = -1;
 	disconnectedEndTable = NULL;
+	//DD-TODO: implement DEFERRABLE, NOT DEFERRABLE, INITIALLY IMMEDIATE, INITIALLY DEFERRED
+	onUpdateAction = FK_ACTION_NO;
+	onDeleteAction = FK_ACTION_NO;
 	enablePopUp();
 }
 
@@ -217,7 +220,8 @@ void ddRelationshipFigure::updateForeignKey()
 
 void ddRelationshipFigure::createMenu(wxMenu &mnu)
 {
-    wxMenuItem *item;
+    wxMenu *submenu;
+	wxMenuItem *item;
     
 	item = mnu.AppendCheckItem(MNU_FKEYFROMPKEY, _("Foreign Key from Primary Key"));
 	item->Check(fkFromPk);
@@ -235,12 +239,67 @@ void ddRelationshipFigure::createMenu(wxMenu &mnu)
 	item->Check(!fkOneToMany);
 	mnu.AppendSeparator();
 	mnu.Append(MNU_FKCONSTRAINTNAME, _("Foreign Key Constraint Name"));
+	
+	submenu = new wxMenu(_("Select one")); 
+	item = submenu->AppendCheckItem(MNU_FKMATCHTYPESIMPLE, _("Type Simple"));
+	item->Check(matchSimple);
+	item = submenu->AppendCheckItem(MNU_FKMATCHTYPEFULL, _("Type Full"));
+	item->Check(!matchSimple);
+	wxString tmp = _("Match Type ");
 	if(matchSimple)
-		mnu.Append(MNU_FKMATCHTYPE, _("Match Type: Simple"));
+		tmp += _("[ Simple ]");
 	else
-		mnu.Append(MNU_FKMATCHTYPE, _("Match Type: Full"));
-	mnu.Append(MNU_FKONDELETE, _("On Delete: No Action"));
-	mnu.Append(MNU_FKONUPDATE, _("On Update: No Action"));
+		tmp += _("[ Full ]");
+	mnu.AppendSubMenu(submenu,tmp);
+	
+	tmp = _("On Delete ");
+	submenu = new wxMenu(_("Select one")); 
+	item = submenu->AppendCheckItem(MNU_FKONDELETENOACTION, _("No Action"));
+	item->Check(onDeleteAction==FK_ACTION_NO);
+	if(onDeleteAction==FK_ACTION_NO)
+		tmp += _("[ No Action ]");
+	item = submenu->AppendCheckItem(MNU_FKONDELETERESTRICT, _("Restrict"));
+	item->Check(onDeleteAction==FK_RESTRICT);
+	if(onDeleteAction==FK_RESTRICT)
+		tmp += _("[ Restrict ]");
+	item = submenu->AppendCheckItem(MNU_FKONDELETECASCADE, _("Cascade"));
+	item->Check(onDeleteAction==FK_CASCADE);
+	if(onDeleteAction==FK_CASCADE)
+		tmp += _("[ Cascade ]");
+	item = submenu->AppendCheckItem(MNU_FKONDELETESETNULL, _("Set Null"));
+	item->Check(onDeleteAction==FK_SETNULL);
+	if(onDeleteAction==FK_SETNULL)
+		tmp += _("[ Set Null ]");
+	item = submenu->AppendCheckItem(MNU_FKONDELETESETDEFAULT, _("Set Default"));
+	item->Check(onDeleteAction==FK_SETDEFAULT);
+	if(onDeleteAction==FK_SETDEFAULT)
+		tmp += _("[ Set Default ]");
+	mnu.AppendSubMenu(submenu,tmp);
+
+	tmp = _("On Update ");
+	submenu = new wxMenu(_("Select one")); 
+	item = submenu->AppendCheckItem(MNU_FKONUPDATENOACTION, _("No Action"));
+	item->Check(onUpdateAction==FK_ACTION_NO);
+	if(onUpdateAction==FK_ACTION_NO)
+		tmp += _("[ No Action ]");
+	item = submenu->AppendCheckItem(MNU_FKONUPDATERESTRICT, _("Restrict"));
+	item->Check(onUpdateAction==FK_RESTRICT);
+	if(onUpdateAction==FK_RESTRICT)
+		tmp += _("[ Restrict ]");
+	item = submenu->AppendCheckItem(MNU_FKONUPDATECASCADE, _("Cascade"));
+	item->Check(onUpdateAction==FK_CASCADE);
+	if(onUpdateAction==FK_CASCADE)
+		tmp += _("[ Cascade ]");
+	item = submenu->AppendCheckItem(MNU_FKONUPDATESETNULL, _("Set Null"));
+	item->Check(onUpdateAction==FK_SETNULL);
+	if(onUpdateAction==FK_SETNULL)
+		tmp += _("[ Set Null ]");
+	item = submenu->AppendCheckItem(MNU_FKONUPDATESETDEFAULT, _("Set Default"));
+	item->Check(onUpdateAction==FK_SETDEFAULT);
+	if(onUpdateAction==FK_SETDEFAULT)
+		tmp += _("[ Set Default ]");
+	mnu.AppendSubMenu(submenu,tmp);
+
     mnu.AppendSeparator();
 	mnu.Append(MNU_DELETERELATIONSHIP, _("Delete Relationship..."));
 };
@@ -296,6 +355,46 @@ void ddRelationshipFigure::OnGenericPopupClick(wxCommandEvent& event, ddDrawingV
 				setKindAtForeignKeys(fk);
 			}
 			break;
+
+		case MNU_FKMATCHTYPEFULL:
+				matchSimple=false;
+			break;
+		case MNU_FKMATCHTYPESIMPLE:
+				matchSimple=true;
+			break;
+
+		case MNU_FKONDELETENOACTION:
+				onDeleteAction = FK_ACTION_NO;
+			break;
+		case MNU_FKONDELETERESTRICT:
+				onDeleteAction = FK_RESTRICT;
+			break;
+		case MNU_FKONDELETECASCADE:
+				onDeleteAction = FK_CASCADE;
+			break;
+		case MNU_FKONDELETESETNULL:
+				onDeleteAction = FK_SETNULL;
+			break;
+		case MNU_FKONDELETESETDEFAULT:
+				onDeleteAction = FK_SETDEFAULT;
+			break;
+
+		case MNU_FKONUPDATENOACTION:
+				onUpdateAction = FK_ACTION_NO;
+			break;
+		case MNU_FKONUPDATERESTRICT:
+				onUpdateAction = FK_RESTRICT;
+			break;
+		case MNU_FKONUPDATECASCADE:
+				onUpdateAction = FK_CASCADE;
+			break;
+		case MNU_FKONUPDATESETNULL:
+				onUpdateAction = FK_SETNULL;
+			break;
+		case MNU_FKONUPDATESETDEFAULT:
+				onUpdateAction = FK_SETDEFAULT;
+			break;
+
 		case MNU_1MRELATIONSHIP:
 		case MNU_11RELATIONSHIP:
 			fkOneToMany=!fkOneToMany;
