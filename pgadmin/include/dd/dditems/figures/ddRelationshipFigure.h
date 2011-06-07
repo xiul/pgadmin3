@@ -23,9 +23,21 @@ enum
 	MNU_IDENTIFYINGRELATIONSHIP,
 	MNU_1MRELATIONSHIP,
 	MNU_11RELATIONSHIP,
-	MNU_DELETERELATIONSHIP
+	MNU_DELETERELATIONSHIP,
+	MNU_FKCONSTRAINTNAME,
+	MNU_FKMATCHTYPE,
+	MNU_FKONDELETE,
+	MNU_FKONUPDATE
 };
 
+enum
+{
+	FK_ACTION_NO = 600,
+	FK_RESTRICT,
+	FK_CASCADE,
+	FK_SETNULL,
+	FK_SETDEFAULT
+};
 class ddRelationshipItem;
 
 WX_DECLARE_STRING_HASH_MAP( ddRelationshipItem*, columnsHashMap );
@@ -61,6 +73,8 @@ private:
 	bool fkMandatory;
 	bool fkOneToMany;
 	bool fkIdentifying;
+	bool matchSimple;
+
 	int ukIndex;
 	columnsHashMap chm;
 	ddTableFigure *disconnectedEndTable;

@@ -234,7 +234,15 @@ void ddRelationshipFigure::createMenu(wxMenu &mnu)
 	item = mnu.AppendCheckItem(MNU_11RELATIONSHIP, _("1:1"));
 	item->Check(!fkOneToMany);
 	mnu.AppendSeparator();
-    mnu.Append(MNU_DELETERELATIONSHIP, _("Delete Relationship..."));
+	mnu.Append(MNU_FKCONSTRAINTNAME, _("Foreign Key Constraint Name"));
+	if(matchSimple)
+		mnu.Append(MNU_FKMATCHTYPE, _("Match Type: Simple"));
+	else
+		mnu.Append(MNU_FKMATCHTYPE, _("Match Type: Full"));
+	mnu.Append(MNU_FKONDELETE, _("On Delete: No Action"));
+	mnu.Append(MNU_FKONUPDATE, _("On Update: No Action"));
+    mnu.AppendSeparator();
+	mnu.Append(MNU_DELETERELATIONSHIP, _("Delete Relationship..."));
 };
 
 void ddRelationshipFigure::OnGenericPopupClick(wxCommandEvent& event, ddDrawingView *view)
