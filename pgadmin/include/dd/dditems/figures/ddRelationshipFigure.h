@@ -84,6 +84,7 @@ private:
 	bool fkIdentifying;
 	bool matchSimple;
 	actionKind onUpdateAction, onDeleteAction;
+	wxString constraintName;
 
 	int ukIndex;
 	columnsHashMap chm;

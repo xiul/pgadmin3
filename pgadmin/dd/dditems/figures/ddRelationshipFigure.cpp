@@ -24,6 +24,7 @@
 ddRelationshipFigure::ddRelationshipFigure():
 ddLineConnection()
 {
+	constraintName = wxEmptyString;
 	setKindId(ddRelFig);
 	fkFromPk = true;
 	fkMandatory = true;
@@ -308,6 +309,10 @@ void ddRelationshipFigure::OnGenericPopupClick(wxCommandEvent& event, ddDrawingV
 {
 	int answer;
 	ddTableFigure *startTable = NULL;
+	ddTableFigure *endTable = NULL;
+	wxTextEntryDialog *nameDialog=NULL;
+	wxString tmpString;
+
 	switch(event.GetId())
 	{
 		case MNU_FKEYFROMPKEY:
@@ -355,7 +360,30 @@ void ddRelationshipFigure::OnGenericPopupClick(wxCommandEvent& event, ddDrawingV
 				setKindAtForeignKeys(fk);
 			}
 			break;
-
+		case MNU_FKCONSTRAINTNAME:
+			startTable = (ddTableFigure*) getStartFigure();
+			endTable = (ddTableFigure*) getEndFigure();
+			if(constraintName.IsEmpty() && startTable && endTable )
+			{
+				if(!endTable->getShortTableName().IsEmpty())
+					constraintName = endTable->getShortTableName();
+				else
+					constraintName = endTable->getTableName();
+				constraintName +=_("_");
+				if(!startTable->getShortTableName().IsEmpty())
+					constraintName += startTable->getShortTableName();
+				else
+					constraintName += startTable->getTableName();
+			}
+			nameDialog = new wxTextEntryDialog(view, wxT("Change Constraint Name"), wxT("Constraint Name"), constraintName );
+            answer = nameDialog->ShowModal();
+            if (answer == wxID_OK)
+            {
+                tmpString=nameDialog->GetValue();
+                constraintName = tmpString;
+            }
+            delete nameDialog;
+			break;
 		case MNU_FKMATCHTYPEFULL:
 				matchSimple=false;
 			break;
@@ -531,11 +559,15 @@ void ddRelationshipFigure::setKindAtForeignKeys(ddColumnType type)
 }
 wxString ddRelationshipFigure::generateSQL()
 {
-	//DD-TODO generate SQL code with name for fk with table shortnames
 	wxString tmp;
 	if(chm.size() > 0)
 	{
-		tmp=wxT("FOREIGN KEY ( ");
+		if(!constraintName.IsEmpty()){
+			tmp=_("CONSTRAINT ");
+			tmp+=constraintName;
+			tmp+=_(" ");
+		}
+		tmp+=wxT("FOREIGN KEY ( ");
 		columnsHashMap::iterator it, end;
 		ddRelationshipItem *item;
 		for( it = chm.begin(); it != chm.end(); ++it )

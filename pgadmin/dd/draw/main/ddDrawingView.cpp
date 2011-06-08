@@ -245,12 +245,9 @@ ddRect ddDrawingView::getVirtualSize()
 	return virtualSize;
 }
 
-//DD-TODO: Add new resize function when user drag mouse to a border
+//DD-TODO: create this function function, it's needed when user drag mouse to a border to scroll canvas
 void ddDrawingView::ScrollToMakeVisible(ddPoint p)
 {
-	//DD-TODO: create this function, because like 20 tryouts don't works, don't waste time here
-	// right now, I wasted a full day yet 
-
 /*	ddRect visible=getVisibleArea();
 	int pixelsX, pixelsY;
 	GetScrollPixelsPerUnit(&pixelsX,&pixelsY);
@@ -417,7 +414,7 @@ void ddDrawingView::OnCancelTxtButton(wxCommandEvent& event)
 //Hack to avoid event problem with simpleTextTool wxTextCrtl at EVT_TEXT event (when text is set at edit it generate this event not sure ????)
 void ddDrawingView::simpleTextToolChangeHandler(wxCommandEvent& event)
 {
-	if(!simpleTextToolEdit->IsModified() && simpleTextFigure) //DD-TODO with a right click go inside this function but it shouldn't go there
+	if(!simpleTextToolEdit->IsModified() && simpleTextFigure)
 	{
 		simpleTextFigure->setText(simpleTextToolEdit->GetValue());
 		//getFontMetrics

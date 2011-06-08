@@ -261,9 +261,6 @@ void ddLineConnection::insertPointAt (int index, int x, int y)
 
 void ddLineConnection::updateHandlesIndexes()
 {
-	//DD-TODO: simplify this in the future, probably implementing locator in other way
-	//start and end don't have index
-	//update point between start and end
 	ddPolyLineHandle *h = NULL;
 	for(int i=1;i<handles->count()-1;i++)
 	{

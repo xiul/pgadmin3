@@ -78,8 +78,6 @@ ddITool* ddAbstractFigure::CreateFigureTool(ddDrawingEditor *editor, ddITool *de
 	return defaultTool;
 }
 
-//DD-TODO: HIGH-PRIORITY-FINISH-THIS: Add connection methods and others
-
 void ddAbstractFigure::moveBy(int x, int y)
 {
 	willChange();
@@ -113,12 +111,11 @@ void ddAbstractFigure::changed()
 {
     invalidate();
     onFigureChanged(this);
-    //DD-TODO: this is really needed
 }
 
 void ddAbstractFigure::invalidate()
 {
-    //DD-TODO: OnFigureInvalidated ( FigureEventArgs (this, InvalidateDisplayBox));
+
 }
 
 bool ddAbstractFigure::containsPoint(int x, int y)
@@ -128,13 +125,6 @@ bool ddAbstractFigure::containsPoint(int x, int y)
 
 void ddAbstractFigure::onFigureChanged(ddIFigure *figure)
 {
-	//go to ifigure procedure to alert observers of changes on this figure
+	//go to figure procedure to alert observers of changes on this figure
 	ddIFigure::onFigureChanged(figure);
 }
-
-/*
-ConnectorAt
-InvalidateDisplayBox
-Visit ??? needed????
-
-*/
