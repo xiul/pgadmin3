@@ -604,7 +604,60 @@ wxString ddRelationshipFigure::generateSQL()
 				tmp+=wxT(" )");
 			}
 		}
+		
+		if(matchSimple)
+			tmp+=wxT(" MATCH SIMPLE ");
+		else
+			tmp+=wxT(" MATCH FULL ");
+
+		tmp+=wxT(" ON DELETE ");
+		switch(onDeleteAction)
+		{
+		case FK_ACTION_NO:
+				tmp+=wxT(" NO ACTION ");
+				break;
+		case FK_RESTRICT:
+				tmp+=wxT(" RESTRICT ");
+				break;
+		case FK_CASCADE:
+				tmp+=wxT(" CASCADE ");
+				break;
+		case FK_SETNULL:
+				tmp+=wxT(" SET NULL ");
+			break;
+		case FK_SETDEFAULT:
+				tmp+=wxT(" SET DEFAULT ");
+			break;
+		}
+
+		tmp+=wxT(" ON UPDATE ");
+		switch(onUpdateAction)
+		{
+		case FK_ACTION_NO:
+				tmp+=wxT(" NO ACTION ");
+				break;
+		case FK_RESTRICT:
+				tmp+=wxT(" RESTRICT ");
+				break;
+		case FK_CASCADE:
+				tmp+=wxT(" CASCADE ");
+				break;
+		case FK_SETNULL:
+				tmp+=wxT(" SET NULL ");
+			break;
+		case FK_SETDEFAULT:
+				tmp+=wxT(" SET DEFAULT ");
+			break;
+		}
+
 	}
 	return tmp;
 }
 
+/*
+	 = 600,
+	,
+	,
+	,
+	
+	*/
