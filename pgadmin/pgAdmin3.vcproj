@@ -4011,6 +4011,10 @@
 							>
 						</File>
 						<File
+							RelativePath=".\include\dd\draw\figures\ddAttribute.h"
+							>
+						</File>
+						<File
 							RelativePath=".\include\dd\draw\figures\ddAttributeFigure.h"
 							>
 						</File>
@@ -5802,7 +5806,7 @@
 				</Filter>
 			</Filter>
 			<Filter
-				Name="draw"
+				Name="wxhotdraw"
 				>
 				<Filter
 					Name="figures"
@@ -5813,6 +5817,10 @@
 					</File>
 					<File
 						RelativePath=".\dd\draw\figures\ddAbstractMenuFigure.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\dd\draw\figures\ddAttribute.cpp"
 						>
 					</File>
 					<File

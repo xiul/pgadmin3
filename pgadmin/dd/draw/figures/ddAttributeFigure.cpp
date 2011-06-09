@@ -19,24 +19,6 @@
 // App headers
 #include "dd/draw/figures/ddAttributeFigure.h"
 
-ddAttribute::ddAttribute():
-ddObject()
-{
-}
-
-ddAttribute::ddAttribute(wxString val, wxString defaultVal):
-ddObject()
-{
-	value = val;
-	defaultValue = defaultVal;
-}
-
-void ddAttribute::apply(wxBufferedDC& context)
-{
-	//DD-TODO: do it for default attributtes below
-}
-
-
 ddAttributeFigure::ddAttributeFigure()
 {
 	initializeDefaultAttributes();
@@ -51,9 +33,9 @@ ddAttribute& ddAttributeFigure::getAttribute(wxString name)
 	return attributes[name];
 }
 
-void ddAttributeFigure::addAttribute(wxString name, wxString value)
+void ddAttributeFigure::addAttribute(wxString name, ddAttribute attribute)
 {
-	attributes[name]=ddAttribute(name,value);
+	attributes[name]=attribute;
 }
 
 bool ddAttributeFigure::removeAttribute(wxString name)
@@ -64,10 +46,10 @@ bool ddAttributeFigure::removeAttribute(wxString name)
 		return false;
 }
 
-void ddAttributeFigure::modifyValueAttribute(wxString name, wxString newValue)
+void ddAttributeFigure::modifyValueAttribute(wxString name, ddAttribute attribute)
 {
-	ddAttribute &temp=attributes[name];
-	temp.value=newValue;
+	attributes[name]=attribute;
+
 }
 
 void ddAttributeFigure::initializeDefaultAttributes()
@@ -82,6 +64,8 @@ void ddAttributeFigure::initializeDefaultAttributes()
 	defaultAttributes.Add(wxT("LineColor"));
 	defaultAttributes.Add(wxT("LineWidth"));
 
+/*  Should be removed and changed by new class hierarchy
+
 	addAttribute(wxT("FontAlignment"),wxT("LEFT"));
 	addAttribute(wxT("FontFamily"),wxT("San Serif"));
 	addAttribute(wxT("FontSize"),wxT("10"));
@@ -89,5 +73,5 @@ void ddAttributeFigure::initializeDefaultAttributes()
 	addAttribute(wxT("FontColor"),wxT(""));  //SetTextForeground
 	addAttribute(wxT("FillColor"),wxT(""));  //SetTextBackground
 	addAttribute(wxT("LineColor"),wxT(""));
-	addAttribute(wxT("LineWidth"),wxT("1.0"));
+	addAttribute(wxT("LineWidth"),wxT("1.0"));*/
 }

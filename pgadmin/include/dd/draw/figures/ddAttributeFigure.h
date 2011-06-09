@@ -12,19 +12,9 @@
 #ifndef DDATTRIBUTEFIGURE_H
 #define DDATTRIBUTEFIGURE_H
 #include "dd/draw/figures/ddAbstractFigure.h"
+#include "dd/draw/figures/ddAttribute.h"
 #include "dd/draw/main/ddObject.h"
 #include <wx/arrstr.h>
-
-class ddAttribute : public ddObject
-{
-public:
-	ddAttribute();
-	ddAttribute(wxString val, wxString defaultVal);
-	
-	virtual void apply(wxBufferedDC& context);
-	wxString defaultValue;
-	wxString value;
-};
 
 WX_DECLARE_STRING_HASH_MAP( ddAttribute, attributesHashMap );
 
@@ -37,8 +27,8 @@ public:
 	attributesHashMap attributes;
 
 	ddAttribute& getAttribute(wxString name);
-	void addAttribute(wxString name, wxString value);
-	void modifyValueAttribute(wxString name, wxString newValue);
+	void addAttribute(wxString name, ddAttribute attribute);
+	void modifyValueAttribute(wxString name, ddAttribute attribute);
 	bool removeAttribute(wxString name);
 	void initializeDefaultAttributes();
 
