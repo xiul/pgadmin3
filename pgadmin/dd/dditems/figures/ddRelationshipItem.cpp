@@ -28,7 +28,8 @@ ddRelationshipItem::ddRelationshipItem(ddRelationshipFigure *owner, ddColumnFigu
 	originalShortName = original->getOwnerTable()->getShortTableName();
 	originalStartColName = original->getColumnName(false);
 	destinationTable = destination;
-	fkColumn = new ddColumnFigure(autoGenerateNameForFk(),destinationTable,this);
+	generatedName = autoGenerateNameForFk();
+	fkColumn = new ddColumnFigure( generatedName,destinationTable,this);
 	fkColumn->setColumnOption(type);
 	fkColumn->setColumnKind(colType);
 	fkColumn->activateGenFkName();

@@ -30,6 +30,7 @@ public:
 	void syncAutoFkName();
 private:
 	ddRelationshipFigure *ownerRel;
+	wxString generatedName;   //avoid linux bug
 };
 
 #endif
