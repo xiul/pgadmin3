@@ -14,9 +14,10 @@ pgadmin3_SOURCES += \
 	$(srcdir)/dd/dditems/figures/ddColumnKindIcon.cpp \
 	$(srcdir)/dd/dditems/figures/ddColumnOptionIcon.cpp \
 	$(srcdir)/dd/dditems/figures/ddRelationshipFigure.cpp \
+	$(srcdir)/dd/dditems/figures/ddRelationshipItem.cpp \
 	$(srcdir)/dd/dditems/figures/ddRelationshipTerminal.cpp \
 	$(srcdir)/dd/dditems/figures/ddTableFigure.cpp \
-	$(srcdir)/dd/dditems/figures/ddTextColumnFigure.cpp
+	$(srcdir)/dd/dditems/figures/ddTextTableItemFigure.cpp
 
 EXTRA_DIST += \
 	$(srcdir)/dd/dditems/figures/module.mk

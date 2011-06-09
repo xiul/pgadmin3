@@ -16,7 +16,7 @@ pgadmin3_SOURCES += \
 	$(srcdir)/include/dd/dditems/figures/ddRelationshipFigure.h \
 	$(srcdir)/include/dd/dditems/figures/ddRelationshipTerminal.h \
 	$(srcdir)/include/dd/dditems/figures/ddTableFigure.h \
-	$(srcdir)/include/dd/dditems/figures/ddTextColumnFigure.h
+	$(srcdir)/include/dd/dditems/figures/ddTextTableItemFigure.h
 
 EXTRA_DIST += \
 	$(srcdir)/include/dd/dditems/figures/module.mk

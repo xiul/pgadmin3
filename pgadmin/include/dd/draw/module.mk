@@ -12,7 +12,7 @@
 include $(srcdir)/include/dd/draw/connectors/module.mk
 include $(srcdir)/include/dd/draw/figures/module.mk
 include $(srcdir)/include/dd/draw/handles/module.mk
-include $(srcdir)/include/dd/draw/locator/module.mk
+include $(srcdir)/include/dd/draw/locators/module.mk
 include $(srcdir)/include/dd/draw/main/module.mk
 include $(srcdir)/include/dd/draw/tools/module.mk
 include $(srcdir)/include/dd/draw/utilities/module.mk

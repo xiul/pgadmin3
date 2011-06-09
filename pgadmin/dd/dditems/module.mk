@@ -13,6 +13,7 @@ include $(srcdir)/dd/dditems/figures/module.mk
 include $(srcdir)/dd/dditems/handles/module.mk
 include $(srcdir)/dd/dditems/locators/module.mk
 include $(srcdir)/dd/dditems/tools/module.mk
+include $(srcdir)/dd/dditems/utilities/module.mk
 
 EXTRA_DIST += \
 	$(srcdir)/dd/dditems/module.mk

@@ -12,7 +12,8 @@
 pgadmin3_SOURCES += \
 	$(srcdir)/include/dd/draw/main/ddDrawing.h \
 	$(srcdir)/include/dd/draw/main/ddDrawingEditor.h \
-	$(srcdir)/include/dd/draw/main/ddDrawingView.h
+	$(srcdir)/include/dd/draw/main/ddDrawingView.h \
+	$(srcdir)/include/dd/draw/main/ddObject.h
 
 EXTRA_DIST += \
 	$(srcdir)/include/dd/draw/main/module.mk

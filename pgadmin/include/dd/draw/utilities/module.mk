@@ -12,6 +12,7 @@
 pgadmin3_SOURCES += \
 	$(srcdir)/include/dd/draw/utilities/ddArrayCollection.h \
 	$(srcdir)/include/dd/draw/utilities/ddCollection.h \
+	$(srcdir)/include/dd/draw/utilities/ddCollectionBase.h \
 	$(srcdir)/include/dd/draw/utilities/ddGeometry.h \
 	$(srcdir)/include/dd/draw/utilities/ddMouseEvent.h \
 	$(srcdir)/include/dd/draw/utilities/ddPoint.h \

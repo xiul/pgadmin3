@@ -12,6 +12,8 @@
 pgadmin3_SOURCES += \
 	$(srcdir)/include/dd/draw/figures/ddAbstractFigure.h \
 	$(srcdir)/include/dd/draw/figures/ddAbstractMenuFigure.h \
+	$(srcdir)/include/dd/draw/figures/ddAttribute.h \
+	$(srcdir)/include/dd/draw/figures/ddAttributeFigure.h \
 	$(srcdir)/include/dd/draw/figures/ddBitmapFigure.h \
 	$(srcdir)/include/dd/draw/figures/ddCompositeFigure.h \
 	$(srcdir)/include/dd/draw/figures/ddIConnectionFigure.h \

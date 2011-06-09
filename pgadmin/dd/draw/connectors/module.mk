@@ -11,7 +11,9 @@
 
 pgadmin3_SOURCES += \
 	$(srcdir)/dd/draw/connectors/ddChopBoxConnector.cpp \
-	$(srcdir)/dd/draw/connectors/ddIConnector.cpp
+	$(srcdir)/dd/draw/connectors/ddIConnector.cpp \
+	$(srcdir)/dd/draw/connectors/ddLocatorConnector.cpp \
+	$(srcdir)/dd/draw/connectors/ddStickyRectangleConnector.cpp
 
 EXTRA_DIST += \
 	$(srcdir)/dd/draw/connectors/module.mk
