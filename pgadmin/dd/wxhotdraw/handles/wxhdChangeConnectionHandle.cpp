@@ -1,0 +1,112 @@
+//////////////////////////////////////////////////////////////////////////
+//
+// pgAdmin III - PostgreSQL Tools
+//
+// Copyright (C) 2002 - 2011, The pgAdmin Development Team
+// This software is released under the PostgreSQL Licence
+//
+// ddChangeConnectionHandle.cpp - Base Handle to allow change connected figures at connection figures 
+//
+//////////////////////////////////////////////////////////////////////////
+
+#include "pgAdmin3.h"
+
+// wxWindows headers
+#include <wx/wx.h>
+#include <wx/dcbuffer.h>
+
+// App headers
+#include "dd/wxhotdraw/handles/wxhdChangeConnectionHandle.h"
+#include "dd/wxhotdraw/figures/wxhdLineConnection.h"
+#include "dd/wxhotdraw/utilities/wxhdPoint.h"
+#include "dd/wxhotdraw/main/wxhdDrawingView.h"
+
+
+ddChangeConnectionHandle::ddChangeConnectionHandle(ddLineConnection *owner):
+ddIHandle(owner)
+{
+	connection = owner;
+	targetFigure = NULL;
+	originalTarget = NULL;
+}
+
+ddChangeConnectionHandle::~ddChangeConnectionHandle(){
+	
+}
+
+void ddChangeConnectionHandle::draw(wxBufferedDC& context, ddDrawingView *view)
+{
+
+	ddRect copy = getDisplayBox();
+	view->CalcScrolledPosition(copy.x,copy.y,&copy.x,&copy.y);
+
+	copy.Deflate(2,2);
+	context.SetPen(*wxGREEN_PEN);
+	context.SetBrush(*wxGREEN_BRUSH);
+	context.DrawRectangle(copy);
+}
+
+wxCursor ddChangeConnectionHandle::createCursor()
+{
+	return wxCursor(wxCURSOR_CROSS);
+}
+
+void ddChangeConnectionHandle::invokeStart(ddMouseEvent& event, ddDrawingView *view)
+{
+	originalTarget = target();
+	disconnect();
+}
+
+void ddChangeConnectionHandle::invokeStep(ddMouseEvent& event, ddDrawingView *view)
+{
+	int x=event.GetPosition().x, y=event.GetPosition().y;
+	ddPoint p = ddPoint(x,y);
+	ddIFigure *figure = findConnectableFigure(x,y,view->getDrawing());
+	targetFigure = figure;
+	ddIConnector *target = findConnectionTarget(x,y,view->getDrawing());
+	if(target)
+	{
+		p = target->getDisplayBox().center();
+	}
+	setPoint(p); 
+	connection->updateConnection();
+}
+
+void ddChangeConnectionHandle::invokeEnd(ddMouseEvent& event, ddDrawingView *view)
+{
+	int x=event.GetPosition().x, y=event.GetPosition().y;
+	ddIConnector *target = findConnectionTarget(x,y,view->getDrawing()); 
+		if(!target)
+		{
+			target=originalTarget;
+		}
+	ddPoint p = ddPoint(x,y);
+	connect(target);
+	connection->updateConnection();
+}
+
+
+ddIFigure* ddChangeConnectionHandle::findConnectableFigure (int x, int y, ddDrawing *drawing)
+{
+	ddIFigure *out=NULL;
+	ddIteratorBase *iterator=drawing->figuresInverseEnumerator();
+	while(iterator->HasNext())
+	{
+		ddIFigure *figure = (ddIFigure*) iterator->Next();
+		if(figure->containsPoint(x,y) && isConnectionPossible(figure))
+		{
+			out=figure;
+			break;
+		}
+	}
+	delete iterator;
+	return out;
+}
+ddIConnector* ddChangeConnectionHandle::findConnectionTarget(int x, int y, ddDrawing *drawing)
+{
+	ddIFigure *target = findConnectableFigure(x,y,drawing);
+	if(target)
+		return target->connectorAt(x,y);
+	else
+		return NULL;
+}

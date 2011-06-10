@@ -12,8 +12,8 @@
 #ifndef DDADDCOLLOCATOR_H
 #define DDADDCOLLOCATOR_H
 
-#include "dd/wxhotdraw/locators/ddILocator.h"
-#include "dd/wxhotdraw/figures/ddIFigure.h"
+#include "dd/wxhotdraw/locators/wxhdILocator.h"
+#include "dd/wxhotdraw/figures/wxhdIFigure.h"
 
 class ddAddColLocator : public ddILocator
 {

@@ -16,7 +16,7 @@
 
 // App headers
 #include "dd/ddmodel/ddDatabaseDesign.h"
-#include "dd/wxhotdraw/tools/ddSelectionTool.h"
+#include "dd/wxhotdraw/tools/wxhdSelectionTool.h"
 #include "dd/dditems/figures/ddTableFigure.h"
 #include "dd/dditems/figures/ddRelationshipFigure.h"
 #include "dd/dditems/utilities/ddDataType.h"

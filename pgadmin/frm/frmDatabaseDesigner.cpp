@@ -26,12 +26,12 @@
 
 // Designer headers
 #include "dd/dditems/figures/ddColumnKindIcon.h"
-#include "dd/wxhotdraw/figures/ddPolyLineFigure.h"
-#include "dd/wxhotdraw/figures/ddSimpleTextFigure.h"
+#include "dd/wxhotdraw/figures/wxhdPolyLineFigure.h"
+#include "dd/wxhotdraw/figures/wxhdSimpleTextFigure.h"
 #include "dd/dditems/figures/ddTableFigure.h"
-#include "dd/wxhotdraw/figures/ddRectangleFigure.h"
-#include "dd/wxhotdraw/figures/ddBitmapFigure.h"
-#include "dd/wxhotdraw/tools/ddConnectionCreationTool.h"
+#include "dd/wxhotdraw/figures/wxhdRectangleFigure.h"
+#include "dd/wxhotdraw/figures/wxhdBitmapFigure.h"
+#include "dd/wxhotdraw/tools/wxhdConnectionCreationTool.h"
 
 #include "dd/ddmodel/ddDatabaseDesign.h"
 #include "dd/ddmodel/ddTextEditor.h"

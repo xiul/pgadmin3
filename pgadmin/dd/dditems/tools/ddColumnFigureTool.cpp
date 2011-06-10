@@ -17,7 +17,7 @@
 // App headers
 #include "dd/dditems/tools/ddColumnFigureTool.h"
 #include "dd/dditems/figures/ddColumnFigure.h"
-#include "dd/wxhotdraw/tools/ddDragTrackerTool.h"
+#include "dd/wxhotdraw/tools/wxhdDragTrackerTool.h"
 
 
 ddColumnFigureTool::ddColumnFigureTool(ddDrawingEditor *editor, ddIFigure *fig, ddITool *dt):

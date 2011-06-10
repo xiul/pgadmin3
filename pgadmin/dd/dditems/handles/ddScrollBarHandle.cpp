@@ -16,9 +16,9 @@
 
 // App headers
 #include "dd/dditems/handles/ddScrollBarHandle.h"
-#include "dd/wxhotdraw/utilities/ddPoint.h"
-#include "dd/wxhotdraw/main/ddDrawingView.h"
-#include "dd/wxhotdraw/utilities/ddGeometry.h"
+#include "dd/wxhotdraw/utilities/wxhdPoint.h"
+#include "dd/wxhotdraw/main/wxhdDrawingView.h"
+#include "dd/wxhotdraw/utilities/wxhdGeometry.h"
 
 //Images
 #include "images/ddUp.xpm"

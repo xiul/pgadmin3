@@ -12,7 +12,7 @@
 #ifndef DDREMOVECOLBUTTONHANDLE_H
 #define DDREMOVECOLBUTTONHANDLE_H
 
-#include "dd/wxhotdraw/handles/ddButtonHandle.h"
+#include "dd/wxhotdraw/handles/wxhdButtonHandle.h"
 
 class ddRemoveColButtonHandle : public ddButtonHandle
 {

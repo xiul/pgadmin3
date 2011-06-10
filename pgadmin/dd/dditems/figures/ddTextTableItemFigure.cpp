@@ -21,8 +21,8 @@
 #include "dd/dditems/figures/ddRelationshipItem.h"
 #include "dd/dditems/tools/ddColumnTextTool.h"
 #include "dd/dditems/utilities/ddDataType.h"
-#include "dd/wxhotdraw/figures/ddSimpleTextFigure.h"
-#include "dd/wxhotdraw/main/ddDrawingView.h"
+#include "dd/wxhotdraw/figures/wxhdSimpleTextFigure.h"
+#include "dd/wxhotdraw/main/wxhdDrawingView.h"
 #include "dd/dditems/figures/ddTableFigure.h"
 
 ddTextTableItemFigure::ddTextTableItemFigure(wxString& columnName, ddDataType dataType, ddColumnFigure *owner):

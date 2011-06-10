@@ -11,7 +11,7 @@
 
 #ifndef DDRELATIONSHIPITEM_H
 #define DDRELATIONSHIPITEM_H
-#include "dd/wxhotdraw/figures/ddLineConnection.h"
+#include "dd/wxhotdraw/figures/wxhdLineConnection.h"
 #include "dd/dditems/figures/ddTableFigure.h"
 #include "dd/dditems/figures/ddColumnFigure.h"
 

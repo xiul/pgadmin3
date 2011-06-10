@@ -12,7 +12,7 @@
 #ifndef DDCOLUMNFIGURETOOL_H
 #define DDCOLUMNFIGURETOOL_H
 
-#include "dd/wxhotdraw/tools/ddFigureTool.h"
+#include "dd/wxhotdraw/tools/wxhdFigureTool.h"
 
 
 class ddColumnFigureTool : public ddFigureTool

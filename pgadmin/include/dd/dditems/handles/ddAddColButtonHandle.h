@@ -12,7 +12,7 @@
 #ifndef DDADDCOLBUTTONHANDLE_H
 #define DDADDCOLBUTTONHANDLE_H
 
-#include "dd/wxhotdraw/handles/ddButtonHandle.h"
+#include "dd/wxhotdraw/handles/wxhdButtonHandle.h"
 
 class ddAddColButtonHandle : public ddButtonHandle
 {

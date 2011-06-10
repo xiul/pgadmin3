@@ -19,7 +19,7 @@
 #include "dd/dditems/figures/ddTableFigure.h"
 #include "dd/dditems/figures/ddRelationshipFigure.h"
 #include "dd/dditems/utilities/ddDataType.h"
-#include "dd/wxhotdraw/main/ddDrawingView.h"
+#include "dd/wxhotdraw/main/wxhdDrawingView.h"
 
 //Images
 #include "images/ddDeleteTableCursor.xpm"

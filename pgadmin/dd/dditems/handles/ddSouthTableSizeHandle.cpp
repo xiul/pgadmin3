@@ -17,7 +17,7 @@
 // App headers
 #include "dd/dditems/handles/ddSouthTableSizeHandle.h"
 #include "dd/dditems/figures/ddTableFigure.h"
-#include "dd/wxhotdraw/utilities/ddGeometry.h"
+#include "dd/wxhotdraw/utilities/wxhdGeometry.h"
 
 ddSouthTableSizeHandle::ddSouthTableSizeHandle(ddTableFigure *owner, ddILocator *locator):
 ddLocatorHandle(owner,locator)
