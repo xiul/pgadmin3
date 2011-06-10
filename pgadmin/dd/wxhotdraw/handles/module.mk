@@ -10,14 +10,14 @@
 #######################################################################
 
 pgadmin3_SOURCES += \
-	$(srcdir)/dd/wxhotdraw/handles/ddButtonHandle.cpp \
-	$(srcdir)/dd/wxhotdraw/handles/ddChangeConnectionEndHandle.cpp \
-	$(srcdir)/dd/wxhotdraw/handles/ddChangeConnectionHandle.cpp \
-	$(srcdir)/dd/wxhotdraw/handles/ddChangeConnectionStartHandle.cpp \
-	$(srcdir)/dd/wxhotdraw/handles/ddIHandle.cpp \
-	$(srcdir)/dd/wxhotdraw/handles/ddLineConnectionHandle.cpp \
-	$(srcdir)/dd/wxhotdraw/handles/ddLocatorHandle.cpp \
-	$(srcdir)/dd/wxhotdraw/handles/ddPolyLineHandle.cpp
+	$(srcdir)/dd/wxhotdraw/handles/wxhdButtonHandle.cpp \
+	$(srcdir)/dd/wxhotdraw/handles/wxhdChangeConnectionEndHandle.cpp \
+	$(srcdir)/dd/wxhotdraw/handles/wxhdChangeConnectionHandle.cpp \
+	$(srcdir)/dd/wxhotdraw/handles/wxhdChangeConnectionStartHandle.cpp \
+	$(srcdir)/dd/wxhotdraw/handles/wxhdIHandle.cpp \
+	$(srcdir)/dd/wxhotdraw/handles/wxhdLineConnectionHandle.cpp \
+	$(srcdir)/dd/wxhotdraw/handles/wxhdLocatorHandle.cpp \
+	$(srcdir)/dd/wxhotdraw/handles/wxhdPolyLineHandle.cpp
 
 EXTRA_DIST += \
 	$(srcdir)/dd/wxhotdraw/handles/module.mk

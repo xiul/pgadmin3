@@ -10,20 +10,20 @@
 #######################################################################
 
 pgadmin3_SOURCES += \
-	$(srcdir)/dd/wxhotdraw/tools/ddAbstractTool.cpp \
-	$(srcdir)/dd/wxhotdraw/tools/ddCompositeFigureTool.cpp \
-	$(srcdir)/dd/wxhotdraw/tools/ddConnectionCreationTool.cpp \
-	$(srcdir)/dd/wxhotdraw/tools/ddCreationTool.cpp \
-	$(srcdir)/dd/wxhotdraw/tools/ddDragCreationTool.cpp \
-	$(srcdir)/dd/wxhotdraw/tools/ddDragTrackerTool.cpp \
-	$(srcdir)/dd/wxhotdraw/tools/ddFigureTool.cpp \
-	$(srcdir)/dd/wxhotdraw/tools/ddHandleTrackerTool.cpp \
-	$(srcdir)/dd/wxhotdraw/tools/ddITool.cpp \
-	$(srcdir)/dd/wxhotdraw/tools/ddMenuTool.cpp \
-	$(srcdir)/dd/wxhotdraw/tools/ddPolyLineFigureTool.cpp \
-	$(srcdir)/dd/wxhotdraw/tools/ddSelectAreaTool.cpp \
-	$(srcdir)/dd/wxhotdraw/tools/ddSelectionTool.cpp \
-	$(srcdir)/dd/wxhotdraw/tools/ddSimpleTextTool.cpp
+	$(srcdir)/dd/wxhotdraw/tools/wxhdAbstractTool.cpp \
+	$(srcdir)/dd/wxhotdraw/tools/wxhdCompositeFigureTool.cpp \
+	$(srcdir)/dd/wxhotdraw/tools/wxhdConnectionCreationTool.cpp \
+	$(srcdir)/dd/wxhotdraw/tools/wxhdCreationTool.cpp \
+	$(srcdir)/dd/wxhotdraw/tools/wxhdDragCreationTool.cpp \
+	$(srcdir)/dd/wxhotdraw/tools/wxhdDragTrackerTool.cpp \
+	$(srcdir)/dd/wxhotdraw/tools/wxhdFigureTool.cpp \
+	$(srcdir)/dd/wxhotdraw/tools/wxhdHandleTrackerTool.cpp \
+	$(srcdir)/dd/wxhotdraw/tools/wxhdITool.cpp \
+	$(srcdir)/dd/wxhotdraw/tools/wxhdMenuTool.cpp \
+	$(srcdir)/dd/wxhotdraw/tools/wxhdPolyLineFigureTool.cpp \
+	$(srcdir)/dd/wxhotdraw/tools/wxhdSelectAreaTool.cpp \
+	$(srcdir)/dd/wxhotdraw/tools/wxhdSelectionTool.cpp \
+	$(srcdir)/dd/wxhotdraw/tools/wxhdSimpleTextTool.cpp
 
 EXTRA_DIST += \
 	$(srcdir)/dd/wxhotdraw/tools/module.mk

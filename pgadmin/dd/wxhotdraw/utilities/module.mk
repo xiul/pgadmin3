@@ -10,12 +10,12 @@
 #######################################################################
 
 pgadmin3_SOURCES += \
-	$(srcdir)/dd/wxhotdraw/utilities/ddArrayCollection.cpp \
-	$(srcdir)/dd/wxhotdraw/utilities/ddCollection.cpp \
-	$(srcdir)/dd/wxhotdraw/utilities/ddGeometry.cpp \
-	$(srcdir)/dd/wxhotdraw/utilities/ddMouseEvent.cpp \
-	$(srcdir)/dd/wxhotdraw/utilities/ddPoint.cpp \
-	$(srcdir)/dd/wxhotdraw/utilities/ddRect.cpp
+	$(srcdir)/dd/wxhotdraw/utilities/wxhdArrayCollection.cpp \
+	$(srcdir)/dd/wxhotdraw/utilities/wxhdCollection.cpp \
+	$(srcdir)/dd/wxhotdraw/utilities/wxhdGeometry.cpp \
+	$(srcdir)/dd/wxhotdraw/utilities/wxhdMouseEvent.cpp \
+	$(srcdir)/dd/wxhotdraw/utilities/wxhdPoint.cpp \
+	$(srcdir)/dd/wxhotdraw/utilities/wxhdRect.cpp
 
 EXTRA_DIST += \
 	$(srcdir)/dd/wxhotdraw/utilities/module.mk

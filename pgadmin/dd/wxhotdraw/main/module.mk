@@ -10,9 +10,9 @@
 #######################################################################
 
 pgadmin3_SOURCES += \
-	$(srcdir)/dd/wxhotdraw/main/ddDrawing.cpp \
-	$(srcdir)/dd/wxhotdraw/main/ddDrawingEditor.cpp \
-	$(srcdir)/dd/wxhotdraw/main/ddDrawingView.cpp
+	$(srcdir)/dd/wxhotdraw/main/wxhdDrawing.cpp \
+	$(srcdir)/dd/wxhotdraw/main/wxhdDrawingEditor.cpp \
+	$(srcdir)/dd/wxhotdraw/main/wxhdDrawingView.cpp
 
 EXTRA_DIST += \
 	$(srcdir)/dd/wxhotdraw/main/module.mk

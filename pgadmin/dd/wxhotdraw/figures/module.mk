@@ -10,19 +10,19 @@
 #######################################################################
 
 pgadmin3_SOURCES += \
-	$(srcdir)/dd/wxhotdraw/figures/ddAbstractFigure.cpp \
-	$(srcdir)/dd/wxhotdraw/figures/ddAbstractMenuFigure.cpp \
-	$(srcdir)/dd/wxhotdraw/figures/ddAttribute.cpp \
-	$(srcdir)/dd/wxhotdraw/figures/ddAttributeFigure.cpp \
-	$(srcdir)/dd/wxhotdraw/figures/ddBitmapFigure.cpp \
-	$(srcdir)/dd/wxhotdraw/figures/ddCompositeFigure.cpp \
-	$(srcdir)/dd/wxhotdraw/figures/ddIConnectionFigure.cpp \
-	$(srcdir)/dd/wxhotdraw/figures/ddIFigure.cpp \
-	$(srcdir)/dd/wxhotdraw/figures/ddLineConnection.cpp \
-	$(srcdir)/dd/wxhotdraw/figures/ddLineTerminal.cpp \
-	$(srcdir)/dd/wxhotdraw/figures/ddPolyLineFigure.cpp \
-	$(srcdir)/dd/wxhotdraw/figures/ddRectangleFigure.cpp \
-	$(srcdir)/dd/wxhotdraw/figures/ddSimpleTextFigure.cpp
+	$(srcdir)/dd/wxhotdraw/figures/wxhdAbstractFigure.cpp \
+	$(srcdir)/dd/wxhotdraw/figures/wxhdAbstractMenuFigure.cpp \
+	$(srcdir)/dd/wxhotdraw/figures/wxhdAttribute.cpp \
+	$(srcdir)/dd/wxhotdraw/figures/wxhdAttributeFigure.cpp \
+	$(srcdir)/dd/wxhotdraw/figures/wxhdBitmapFigure.cpp \
+	$(srcdir)/dd/wxhotdraw/figures/wxhdCompositeFigure.cpp \
+	$(srcdir)/dd/wxhotdraw/figures/wxhdIConnectionFigure.cpp \
+	$(srcdir)/dd/wxhotdraw/figures/wxhdIFigure.cpp \
+	$(srcdir)/dd/wxhotdraw/figures/wxhdLineConnection.cpp \
+	$(srcdir)/dd/wxhotdraw/figures/wxhdLineTerminal.cpp \
+	$(srcdir)/dd/wxhotdraw/figures/wxhdPolyLineFigure.cpp \
+	$(srcdir)/dd/wxhotdraw/figures/wxhdRectangleFigure.cpp \
+	$(srcdir)/dd/wxhotdraw/figures/wxhdSimpleTextFigure.cpp
 
 EXTRA_DIST += \
 	$(srcdir)/dd/wxhotdraw/figures/module.mk

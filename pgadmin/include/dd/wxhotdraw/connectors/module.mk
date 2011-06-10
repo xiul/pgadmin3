@@ -10,10 +10,10 @@
 #######################################################################
 
 pgadmin3_SOURCES += \
-	$(srcdir)/include/dd/wxhotdraw/connectors/ddChopBoxConnector.h \
-	$(srcdir)/include/dd/wxhotdraw/connectors/ddIConnector.h \
-	$(srcdir)/include/dd/wxhotdraw/connectors/ddLocatorConnector.h \
-	$(srcdir)/include/dd/wxhotdraw/connectors/ddStickyRectangleConnector.h
+	$(srcdir)/include/dd/wxhotdraw/connectors/wxhdChopBoxConnector.h \
+	$(srcdir)/include/dd/wxhotdraw/connectors/wxhdIConnector.h \
+	$(srcdir)/include/dd/wxhotdraw/connectors/wxhdLocatorConnector.h \
+	$(srcdir)/include/dd/wxhotdraw/connectors/wxhdStickyRectangleConnector.h
 
 EXTRA_DIST += \
 	$(srcdir)/include/dd/wxhotdraw/connectors/module.mk

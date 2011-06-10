@@ -10,19 +10,19 @@
 #######################################################################
 
 pgadmin3_SOURCES += \
-	$(srcdir)/include/dd/wxhotdraw/figures/ddAbstractFigure.h \
-	$(srcdir)/include/dd/wxhotdraw/figures/ddAbstractMenuFigure.h \
-	$(srcdir)/include/dd/wxhotdraw/figures/ddAttribute.h \
-	$(srcdir)/include/dd/wxhotdraw/figures/ddAttributeFigure.h \
-	$(srcdir)/include/dd/wxhotdraw/figures/ddBitmapFigure.h \
-	$(srcdir)/include/dd/wxhotdraw/figures/ddCompositeFigure.h \
-	$(srcdir)/include/dd/wxhotdraw/figures/ddIConnectionFigure.h \
-	$(srcdir)/include/dd/wxhotdraw/figures/ddIFigure.h \
-	$(srcdir)/include/dd/wxhotdraw/figures/ddLineConnection.h \
-	$(srcdir)/include/dd/wxhotdraw/figures/ddLineTerminal.h \
-	$(srcdir)/include/dd/wxhotdraw/figures/ddPolyLineFigure.h \
-	$(srcdir)/include/dd/wxhotdraw/figures/ddRectangleFigure.h \
-	$(srcdir)/include/dd/wxhotdraw/figures/ddSimpleTextFigure.h
+	$(srcdir)/include/dd/wxhotdraw/figures/wxhdAbstractFigure.h \
+	$(srcdir)/include/dd/wxhotdraw/figures/wxhdAbstractMenuFigure.h \
+	$(srcdir)/include/dd/wxhotdraw/figures/wxhdAttribute.h \
+	$(srcdir)/include/dd/wxhotdraw/figures/wxhdAttributeFigure.h \
+	$(srcdir)/include/dd/wxhotdraw/figures/wxhdBitmapFigure.h \
+	$(srcdir)/include/dd/wxhotdraw/figures/wxhdCompositeFigure.h \
+	$(srcdir)/include/dd/wxhotdraw/figures/wxhdIConnectionFigure.h \
+	$(srcdir)/include/dd/wxhotdraw/figures/wxhdIFigure.h \
+	$(srcdir)/include/dd/wxhotdraw/figures/wxhdLineConnection.h \
+	$(srcdir)/include/dd/wxhotdraw/figures/wxhdLineTerminal.h \
+	$(srcdir)/include/dd/wxhotdraw/figures/wxhdPolyLineFigure.h \
+	$(srcdir)/include/dd/wxhotdraw/figures/wxhdRectangleFigure.h \
+	$(srcdir)/include/dd/wxhotdraw/figures/wxhdSimpleTextFigure.h
 
 EXTRA_DIST += \
 	$(srcdir)/include/dd/wxhotdraw/figures/module.mk
