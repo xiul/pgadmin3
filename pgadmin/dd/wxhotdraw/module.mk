@@ -12,7 +12,7 @@
 include $(srcdir)/dd/wxhotdraw/connectors/module.mk
 include $(srcdir)/dd/wxhotdraw/figures/module.mk
 include $(srcdir)/dd/wxhotdraw/handles/module.mk
-include $(srcdir)/dd/wxhotdraw/locator/module.mk
+include $(srcdir)/dd/wxhotdraw/locators/module.mk
 include $(srcdir)/dd/wxhotdraw/main/module.mk
 include $(srcdir)/dd/wxhotdraw/tools/module.mk
 include $(srcdir)/dd/wxhotdraw/utilities/module.mk
