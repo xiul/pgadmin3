@@ -5964,11 +5964,11 @@
 					Name="locators"
 					>
 					<File
-						RelativePath=".\dd\wxhotdraw\locator\wxhdILocator.cpp"
+						RelativePath=".\dd\wxhotdraw\locators\wxhdILocator.cpp"
 						>
 					</File>
 					<File
-						RelativePath=".\dd\wxhotdraw\locator\wxhdPolyLineLocator.cpp"
+						RelativePath=".\dd\wxhotdraw\locators\wxhdPolyLineLocator.cpp"
 						>
 					</File>
 				</Filter>
