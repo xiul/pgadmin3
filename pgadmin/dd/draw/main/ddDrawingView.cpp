@@ -245,59 +245,14 @@ ddRect ddDrawingView::getVirtualSize()
 	return virtualSize;
 }
 
-//DD-TODO: create this function function, it's needed when user drag mouse to a border to scroll canvas
 void ddDrawingView::ScrollToMakeVisible(ddPoint p)
 {
-/*	ddRect visible=getVisibleArea();
-	int pixelsX, pixelsY;
-	GetScrollPixelsPerUnit(&pixelsX,&pixelsY);
-	int xfactorThreshold = wxRound(visible.width * 0.25);
-	int xfactorReal = wxRound(visible.width * 0.3);	
-	int yfactorThreshold = wxRound(visible.height * 0.25);
-	int yfactorReal = wxRound(visible.height * 0.3);	
-
-int diffx = p.x - startDrag.x;
-int diffy = p.y - startDrag.y;
-bool scroll = false;
-int yunits=0, xunits=0;
-
-if( abs(diffx) > (xfactorReal-xfactorThreshold) )
-{
-	xunits = diffx / pixelsX;
-	scroll = true;
-}
-
-if( abs(diffy) > (yfactorReal-yfactorThreshold) )
-{
-	yunits = diffy / pixelsY;
-	scroll = true;
-}*/
-/*
-	int x,y;
-	GetViewStart( &x, &y );
-	int pixelsX, pixelsY;
-	GetScrollPixelsPerUnit(&pixelsX,&pixelsY);
-
-
-
-	int diffx = p.x - startDrag.x;
-	int diffy = p.y - startDrag.y;
-	int yunits=0, xunits=0;
-	//xunits = (x / pixelsX) +x ;
-	yunits = (diffy / pixelsY) +y;
-	int cont=0;
-	if(xx != 0 || yunits != 0)
-	{
-		Scroll(xx,yunits);
-		startDrag = p;
-		
-	}
-	*/
+	//implement this function
 }
 
 void ddDrawingView::ScrollToMakeVisible (ddRect r)
 {
-	//DD-TODO: create this function
+	//implement this function
 }
 
 ddIHandle* ddDrawingView::findHandle(double x, double y)

@@ -198,7 +198,6 @@ void ddPolyLineFigure::basicDraw(wxBufferedDC& context, ddDrawingView *view)
 	{
 		return;
 	}
-	//DD-TODO: HIGH-PRIORITY-FINISH-THIS set context attributes: width, round join, color, dashes
 	ddPoint start, end;
 
 	if(startTerminal)

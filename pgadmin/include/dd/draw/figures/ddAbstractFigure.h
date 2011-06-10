@@ -34,9 +34,6 @@ public:
 	virtual bool containsPoint(int x, int y);
 	virtual void onFigureChanged(ddIFigure *figure);
 
-//DD-TODO: events OnFigureInvalidated
-//DD-TODO: events OnFigureChanged
-
 protected:
 	virtual void basicDraw(wxBufferedDC& context, ddDrawingView *view);
 	virtual void basicDrawSelected(wxBufferedDC& context, ddDrawingView *view);		

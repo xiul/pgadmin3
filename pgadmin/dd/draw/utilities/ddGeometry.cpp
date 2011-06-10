@@ -70,6 +70,17 @@ int ddGeometry::max(double a, double b)
 	return(a>=b)?a:b;
 }
 
+
+int ddGeometry::min(int a, int b)
+{
+	return(a<=b)?a:b;
+}
+
+int ddGeometry::max(int a, int b)
+{
+	return(a>=b)?a:b;
+}
+
 //Gets the angle of a point relative to a rectangle.
 double ddGeometry::angleFromPoint(ddRect r, ddPoint point)
 {

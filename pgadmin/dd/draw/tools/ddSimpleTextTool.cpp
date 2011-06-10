@@ -22,7 +22,6 @@
 
 class ddDrawingEditor;
 
-//
 ddSimpleTextTool::ddSimpleTextTool(ddDrawingEditor *editor, ddIFigure *fig, ddITool *dt, bool fastEdit , wxString dialogCaption, wxString dialogMessage):
 ddFigureTool(editor,fig,dt)
 {
@@ -30,7 +29,6 @@ ddFigureTool(editor,fig,dt)
 	dlgCaption = dialogCaption;
 	withoutDialog = fastEdit;
 	showEdit = false;
-	//DD-TODO: set this value: edit.SetFont();  and fix layout
 	txtFigure = ((ddSimpleTextFigure *)this->getFigure());
 	editor->view()->setSimpleTextToolFigure(NULL);
 	edit = getDrawingEditor()->view()->getSimpleTextToolEdit();
@@ -53,7 +51,7 @@ void ddSimpleTextTool::calculateSizeEntry(ddDrawingView *view)
 		edit->SetSize(txtFigure->displayBox().GetSize());
 		okButton->SetPosition(wxPoint(p.x+edit->GetSize().GetWidth()+4,p.y));
 		cancelButton->SetPosition(wxPoint(okButton->GetPosition().x+okButton->GetSize().GetWidth()+4,p.y));
-		//DD-TODO: avoid in a future twin function in DrawingView because tool hack
+		//Right now implemented with a hack (function at main view), but source of bug, probably can be tracked.
 	}
 }
 

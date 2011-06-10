@@ -43,8 +43,6 @@ protected:
 private:
 	ddIFigure *figureOwner;
 	double lineWidth;
-	//DD-TODO: Add	fillColor and addColor
-
 
 };
 #endif

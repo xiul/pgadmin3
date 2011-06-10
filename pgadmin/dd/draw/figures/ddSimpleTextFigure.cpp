@@ -111,8 +111,6 @@ void ddSimpleTextFigure::setupLayout(wxBufferedDC& context)
 	context.SetBrush(textBackground);
 }
 
-//DD-TODO: Add event onTextChanged
-
 void ddSimpleTextFigure::basicMoveBy(int x, int y)
 {
 	displayBox().x += x;

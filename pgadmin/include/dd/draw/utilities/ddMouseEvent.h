@@ -16,7 +16,6 @@
 
 class ddDrawingView;
 
-// DD-TODO: Should this class be converted in a real event in the future?
 class ddMouseEvent : public ddObject
 {
 	public:

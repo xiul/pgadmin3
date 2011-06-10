@@ -30,7 +30,6 @@ ddIFigure::ddIFigure()
 	selected=false;
 	connector=NULL;
 	basicDisplayBox.SetSize(wxSize(0,0));
-	//DD-TODO: this should be initialize here
 
 	//Default color and pen defined
 	defaultPen = wxPen(wxColour(0, 0, 0),1,wxSOLID);

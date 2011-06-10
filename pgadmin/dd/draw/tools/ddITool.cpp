@@ -18,7 +18,6 @@
 #include "dd/draw/tools/ddITool.h"
 #include "dd/draw/utilities/ddMouseEvent.h"
 
-//DD-TODO: Add Undo Activity 
 ddITool::ddITool()
 {
 	activatedValue=false;

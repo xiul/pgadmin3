@@ -34,7 +34,6 @@ ddPolyLineHandle::~ddPolyLineHandle()
 
 void ddPolyLineHandle::draw(wxBufferedDC& context, ddDrawingView *view)
 {
-	//DD-TODO: set graphic style
 	ddRect copy = getDisplayBox();
 	view->CalcScrolledPosition(copy.x,copy.y,&copy.x,&copy.y);
 
@@ -43,7 +42,6 @@ void ddPolyLineHandle::draw(wxBufferedDC& context, ddDrawingView *view)
         wxPoint(copy.x+middle,copy.y+middle),
         wxCoord(middle)
         );
-	//DD-TODO: improve this draw
 }
 
 void ddPolyLineHandle::invokeStep(ddMouseEvent& event, ddDrawingView *view)

@@ -271,9 +271,9 @@ void ddColumnKindIcon::uniqueConstraintManager(bool ukCol, ddDrawingView *view, 
                 }
             }
         }
-		else //without user interaction for
+		else //without user interaction
 		{
-			//DD-TODO: solve problem of setting values without user interaction for model persistence
+
 		}
     }
 }

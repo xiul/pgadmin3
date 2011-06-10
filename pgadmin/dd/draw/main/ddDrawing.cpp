@@ -97,8 +97,6 @@ void ddDrawing::recalculateDisplayBox(){
 	}
 
 	delete iterator;	
-
-    //DD-TODO: generate this event OnSizeAllocated ();
 }
 
 void ddDrawing::bringToFront(ddIFigure *figure)

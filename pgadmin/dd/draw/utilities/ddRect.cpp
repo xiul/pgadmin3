@@ -16,6 +16,7 @@
 
 // App headers
 #include "dd/draw/utilities/ddRect.h"
+#include "dd/draw/utilities/ddGeometry.h"
 
 ddRect::ddRect()
 {
@@ -43,10 +44,10 @@ wxRect(point.x,point.y,0,0)
 
 void ddRect::add (int newX, int newY)
 {
-	int x1 = min(x , newX);
-	int x2 = max(x+width , newX);
-	int y1 = min(y , newY);
-	int y2 = max(y+height , newY);
+	int x1 = ddGeometry::min(x , newX);
+	int x2 = ddGeometry::max(x+width , newX);
+	int y1 = ddGeometry::min(y , newY);
+	int y2 = ddGeometry::max(y+height , newY);
 
 	SetX(x1);
 	SetWidth(x2-x1);
@@ -72,15 +73,7 @@ void ddRect::add(ddPoint *p)
 	add(p->x,p->y);
 }
 
-int ddRect::min(int a, int b)
-{
-	return(a<=b)?a:b;
-}
 
-int ddRect::max(int a, int b)
-{
-	return(a>=b)?a:b;
-}
 
 ddPoint ddRect::center()
 {

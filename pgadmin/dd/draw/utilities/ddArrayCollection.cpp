@@ -96,21 +96,6 @@ ddObject* ddArrayCollection::getItemAt(int index)
         return NULL;
 }
 
-/*   DD-TODO add sort by function
-static int ddArrayCmpFakeRear( ddObject** a, ddObject** b )
-{
-	{
-   	if (ddFakeSortItem == *b)
-		return 0;
-
-	if (*a > *b)
-		return 1;
-	else
-		return -1;
-	}
-}
-*/
-
 //Bring item to start of array
 void ddArrayCollection::bringToFront(ddObject *item)
 {

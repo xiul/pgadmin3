@@ -25,8 +25,6 @@
 #include "dd/draw/main/ddDrawingView.h"
 #include "dd/dditems/figures/ddTableFigure.h"
 
-//DD-TODO: Add composite column functionality by addin subcolumn for composite types, but be careful: composite types can be recursive (using inside other composite types)
-
 ddTextTableItemFigure::ddTextTableItemFigure(wxString& columnName, ddDataType dataType, ddColumnFigure *owner):
 ddSimpleTextFigure(columnName)
 {

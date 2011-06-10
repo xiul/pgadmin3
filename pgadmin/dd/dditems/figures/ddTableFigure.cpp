@@ -857,7 +857,7 @@ ddCompositeFigure::basicMoveBy(x,y);
 
 }
 
-//DD-TODO: fix all model to allow all options from http://www.postgresql.org/docs/8.1/static/sql-createtable.html
+//Using some options from http://www.postgresql.org/docs/8.1/static/sql-createtable.html, but new options can be added in a future.
 wxString ddTableFigure::generateSQL()
 {
 	//Columns and table

@@ -32,7 +32,7 @@ ddLineConnection()
 	fkIdentifying = false;
 	ukIndex = -1;
 	disconnectedEndTable = NULL;
-	//DD-TODO: implement DEFERRABLE, NOT DEFERRABLE, INITIALLY IMMEDIATE, INITIALLY DEFERRED
+	//DEFERRABLE, NOT DEFERRABLE, INITIALLY IMMEDIATE, INITIALLY DEFERRED can be added in a future
 	onUpdateAction = FK_ACTION_NO;
 	onDeleteAction = FK_ACTION_NO;
 	enablePopUp();

@@ -26,12 +26,9 @@ public:
 	void add (ddRect& newRect);
 	void add (ddPoint *p);
 	ddPoint center();
-
 protected:
 
 private:
-	int min(int a, int b);
-	int max(int a, int b);  //DD-TODO: delete this functions use ddGeometry instead of after convert methods of this class to static
 	ddPoint point;
 };
 #endif
