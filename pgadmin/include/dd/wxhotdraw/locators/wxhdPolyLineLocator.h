@@ -5,22 +5,22 @@
 // Copyright (C) 2002 - 2011, The pgAdmin Development Team
 // This software is released under the PostgreSQL Licence
 //
-// ddPolyLineLocator.h - Return multiple location at same time for a PolyLine
+// wxhdPolyLineLocator.h - Return multiple location at same time for a PolyLine
 //
 //////////////////////////////////////////////////////////////////////////
 
-#ifndef DDPOLYLINELOCATOR_H
-#define DDPOLYLINELOCATOR_H
+#ifndef XWHDPOLYLINELOCATOR_H
+#define XWHDPOLYLINELOCATOR_H
 
 #include "dd/wxhotdraw/locators/wxhdILocator.h"
 
-class ddPolyLineLocator : public ddILocator
+class wxhdPolyLineLocator : public wxhdILocator
 {
 public:
-	ddPolyLineLocator(int index);
-    ~ddPolyLineLocator();
+	wxhdPolyLineLocator(int index);
+    ~wxhdPolyLineLocator();
 
-	virtual ddPoint& locate(ddIFigure *owner);
+	virtual wxhdPoint& locate(wxhdIFigure *owner);
 	virtual void setIndex(int index);
 
 protected:

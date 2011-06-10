@@ -5,19 +5,19 @@
 // Copyright (C) 2002 - 2011, The pgAdmin Development Team
 // This software is released under the PostgreSQL Licence
 //
-// ddPoint.h - wxPoint class to be used as wrapper and allow independence of point class
+// wxhdPoint.h - wxPoint class to be used as wrapper and allow independence of point class
 //
 //////////////////////////////////////////////////////////////////////////
 
-#ifndef DDPOINT_H
-#define DDPOINT_H
+#ifndef WXHDPOINT_H
+#define WXHDPOINT_H
 
-class ddPoint : public wxPoint{
+class wxhdPoint : public wxPoint{
 public:
-	ddPoint();
-	ddPoint(int x, int y);
-	ddPoint(const ddPoint& p);
-	ddPoint(const wxPoint& p);
+	wxhdPoint();
+	wxhdPoint(int x, int y);
+	wxhdPoint(const wxhdPoint& p);
+	wxhdPoint(const wxPoint& p);
 };
 
 #endif

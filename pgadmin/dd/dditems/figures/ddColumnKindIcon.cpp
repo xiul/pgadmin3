@@ -54,7 +54,7 @@ void ddColumnKindIcon::createMenu(wxMenu &mnu)
     item->Check(colType==uk);
 }
 
-void ddColumnKindIcon::OnGenericPopupClick(wxCommandEvent& event, ddDrawingView *view)
+void ddColumnKindIcon::OnGenericPopupClick(wxCommandEvent& event, wxhdDrawingView *view)
 {
 	changeIcon((ddColumnType)event.GetId(),view);
 }
@@ -64,7 +64,7 @@ ddColumnFigure* ddColumnKindIcon::getOwnerColumn()
 	return ownerColumn;
 }
 
-void ddColumnKindIcon::changeIcon(ddColumnType type, ddDrawingView *view, bool interaction) 
+void ddColumnKindIcon::changeIcon(ddColumnType type, wxhdDrawingView *view, bool interaction) 
 {
 	bool ukCol = colType==uk;
 	
@@ -133,11 +133,11 @@ void ddColumnKindIcon::changeIcon(ddColumnType type, ddDrawingView *view, bool i
 	getBasicDisplayBox().SetSize(wxSize(getWidth(),getHeight()));
 }
 
-void ddColumnKindIcon::basicDraw(wxBufferedDC& context, ddDrawingView *view)
+void ddColumnKindIcon::basicDraw(wxBufferedDC& context, wxhdDrawingView *view)
 {
 	if(iconToDraw)
 	{
-		ddRect copy = displayBox();
+		wxhdRect copy = displayBox();
 		view->CalcScrolledPosition(copy.x,copy.y,&copy.x,&copy.y);
 		//Adding a yellow circle to increase visibility of uk index
 		if(colType==uk)
@@ -160,7 +160,7 @@ void ddColumnKindIcon::basicDraw(wxBufferedDC& context, ddDrawingView *view)
 	}
 }
 
-void ddColumnKindIcon::basicDrawSelected(wxBufferedDC& context, ddDrawingView *view)
+void ddColumnKindIcon::basicDrawSelected(wxBufferedDC& context, wxhdDrawingView *view)
 {
 	basicDraw(context,view);
 }
@@ -196,7 +196,7 @@ void ddColumnKindIcon::setUniqueConstraintIndex(int i)
 	ukIndex=i;
 }
 
-void ddColumnKindIcon::uniqueConstraintManager(bool ukCol, ddDrawingView *view, bool interaction)
+void ddColumnKindIcon::uniqueConstraintManager(bool ukCol, wxhdDrawingView *view, bool interaction)
 {
     wxString tmpString;
     colType=uk;
@@ -283,7 +283,7 @@ void ddColumnKindIcon::syncUkIndexes()
 {
 	ddColumnFigure *col;
 	bool lastUk=true;
-	ddIteratorBase *iterator = getOwnerColumn()->getOwnerTable()->figuresEnumerator();
+	wxhdIteratorBase *iterator = getOwnerColumn()->getOwnerTable()->figuresEnumerator();
     iterator->Next(); //First Figure is Main Rect
     iterator->Next(); //Second Figure is Table Title
     while(iterator->HasNext())

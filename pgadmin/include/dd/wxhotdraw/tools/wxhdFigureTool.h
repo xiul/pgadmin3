@@ -5,34 +5,34 @@
 // Copyright (C) 2002 - 2011, The pgAdmin Development Team
 // This software is released under the PostgreSQL Licence
 //
-// ddFigureTool.h - Base class for all figure tools
+// wxhdFigureTool.h - Base class for all figure tools
 //
 //////////////////////////////////////////////////////////////////////////
 
-#ifndef DDFIGURETOOL_H
-#define DDFIGURETOOL_H
+#ifndef WXHDFIGURETOOL_H
+#define WXHDFIGURETOOL_H
 
 #include "dd/wxhotdraw/tools/wxhdAbstractTool.h"
 
 
-class ddFigureTool : public ddAbstractTool
+class wxhdFigureTool : public wxhdAbstractTool
 {
 public:
-	ddFigureTool(ddDrawingEditor *editor, ddIFigure *fig, ddITool *dt);
-    ~ddFigureTool();
-	void setDefaultTool(ddITool *dt);
-	ddITool* getDefaultTool();
-	void setFigure(ddIFigure *fig);
-	ddIFigure* getFigure();
-	virtual void mouseDown(ddMouseEvent& event);  //Mouse Right Click
-	virtual void mouseUp(ddMouseEvent& event);
-	virtual void mouseMove(ddMouseEvent& event);
-	virtual void mouseDrag(ddMouseEvent& event);
+	wxhdFigureTool(wxhdDrawingEditor *editor, wxhdIFigure *fig, wxhdITool *dt);
+    ~wxhdFigureTool();
+	void setDefaultTool(wxhdITool *dt);
+	wxhdITool* getDefaultTool();
+	void setFigure(wxhdIFigure *fig);
+	wxhdIFigure* getFigure();
+	virtual void mouseDown(wxhdMouseEvent& event);  //Mouse Right Click
+	virtual void mouseUp(wxhdMouseEvent& event);
+	virtual void mouseMove(wxhdMouseEvent& event);
+	virtual void mouseDrag(wxhdMouseEvent& event);
 	virtual void keyDown(wxKeyEvent& event);
 	virtual void keyUp(wxKeyEvent& event);
 protected:
-	ddITool *defaultTool;
-	ddIFigure *figure;
+	wxhdITool *defaultTool;
+	wxhdIFigure *figure;
 private:
 };
 #endif

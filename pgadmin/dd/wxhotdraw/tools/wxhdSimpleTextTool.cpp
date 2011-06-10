@@ -5,7 +5,7 @@
 // Copyright (C) 2002 - 2011, The pgAdmin Development Team
 // This software is released under the PostgreSQL Licence
 //
-// ddSimpleTextTool.cpp - Tool to allow edition of textTool with a double click or show a menu with a right click.
+// wxhdSimpleTextTool.cpp - Tool to allow edition of textTool with a double click or show a menu with a right click.
 //
 //////////////////////////////////////////////////////////////////////////
 
@@ -20,16 +20,16 @@
 #include "dd/wxhotdraw/tools/wxhdSimpleTextTool.h"
 #include "dd/wxhotdraw/figures/wxhdSimpleTextFigure.h"
 
-class ddDrawingEditor;
+class wxhdDrawingEditor;
 
-ddSimpleTextTool::ddSimpleTextTool(ddDrawingEditor *editor, ddIFigure *fig, ddITool *dt, bool fastEdit , wxString dialogCaption, wxString dialogMessage):
-ddFigureTool(editor,fig,dt)
+wxhdSimpleTextTool::wxhdSimpleTextTool(wxhdDrawingEditor *editor, wxhdIFigure *fig, wxhdITool *dt, bool fastEdit , wxString dialogCaption, wxString dialogMessage):
+wxhdFigureTool(editor,fig,dt)
 {
 	dlgMessage = dialogMessage;
 	dlgCaption = dialogCaption;
 	withoutDialog = fastEdit;
 	showEdit = false;
-	txtFigure = ((ddSimpleTextFigure *)this->getFigure());
+	txtFigure = ((wxhdSimpleTextFigure *)this->getFigure());
 	editor->view()->setSimpleTextToolFigure(NULL);
 	edit = getDrawingEditor()->view()->getSimpleTextToolEdit();
 	okButton = getDrawingEditor()->view()->getOkTxt();
@@ -37,15 +37,15 @@ ddFigureTool(editor,fig,dt)
 	calculateSizeEntry(editor->view());
 }
 
-ddSimpleTextTool::~ddSimpleTextTool()
+wxhdSimpleTextTool::~wxhdSimpleTextTool()
 {
 }
 
-void ddSimpleTextTool::calculateSizeEntry(ddDrawingView *view)
+void wxhdSimpleTextTool::calculateSizeEntry(wxhdDrawingView *view)
 {
 	if(edit)
 	{
-		ddPoint p=txtFigure->displayBox().GetPosition();
+		wxhdPoint p=txtFigure->displayBox().GetPosition();
 		view->CalcScrolledPosition(p.x,p.y,&p.x,&p.y);
 		edit->SetPosition(p);
 		edit->SetSize(txtFigure->displayBox().GetSize());
@@ -55,7 +55,7 @@ void ddSimpleTextTool::calculateSizeEntry(ddDrawingView *view)
 	}
 }
 
-void ddSimpleTextTool::mouseDown(ddMouseEvent& event)
+void wxhdSimpleTextTool::mouseDown(wxhdMouseEvent& event)
 {	
 	setAnchorCoords(event.GetPosition().x,event.GetPosition().y);
 
@@ -66,7 +66,7 @@ void ddSimpleTextTool::mouseDown(ddMouseEvent& event)
         getDrawingEditor()->view()->setSimpleTextToolFigure(txtFigure,true);
         txtFigure->createMenu(menu);
         getDrawingEditor()->view()->connectPopUpMenu(menu);
-        ddPoint p=event.GetPosition();
+        wxhdPoint p=event.GetPosition();
         event.getView()->CalcScrolledPosition(p.x,p.y,&p.x,&p.y);
         getDrawingEditor()->view()->PopupMenu(&menu, p);
 		return;
@@ -95,13 +95,13 @@ void ddSimpleTextTool::mouseDown(ddMouseEvent& event)
 	getDefaultTool()->mouseDown(event);
 }
 
-void ddSimpleTextTool::activate()
+void wxhdSimpleTextTool::activate()
 {
 	showEdit = false;
-	ddFigureTool::activate();
+	wxhdFigureTool::activate();
 }
 
-void ddSimpleTextTool::deactivate()
+void wxhdSimpleTextTool::deactivate()
 {
 	if(edit)
 	{
@@ -111,10 +111,10 @@ void ddSimpleTextTool::deactivate()
 		cancelButton->Hide();
 		getDrawingEditor()->view()->setSimpleTextToolFigure(NULL);
 	}
-	ddFigureTool::deactivate();
+	wxhdFigureTool::deactivate();
 }
 
-void ddSimpleTextTool::mouseDrag(ddMouseEvent& event)
+void wxhdSimpleTextTool::mouseDrag(wxhdMouseEvent& event)
 {
 	if(!showEdit)
 	{
@@ -122,12 +122,12 @@ void ddSimpleTextTool::mouseDrag(ddMouseEvent& event)
 	}
 }
 
-void ddSimpleTextTool::OnGenericPopupClick(wxCommandEvent& event, ddDrawingView *view)
+void wxhdSimpleTextTool::OnGenericPopupClick(wxCommandEvent& event, wxhdDrawingView *view)
 {
 	txtFigure->OnGenericPopupClick(event,view);
 }
 
-bool ddSimpleTextTool::callDialog()
+bool wxhdSimpleTextTool::callDialog()
 {
 			wxString sNewValue = wxGetTextFromUser(dlgMessage, dlgCaption, txtFigure->getText(),getDrawingEditor()->view());
 			if (!sNewValue.IsEmpty())

@@ -5,7 +5,7 @@
 // Copyright (C) 2002 - 2011, The pgAdmin Development Team
 // This software is released under the PostgreSQL Licence
 //
-// ddPoint.cpp - wxPoint class to be used as wrapper and allow independence of point class
+// wxhdPoint.cpp - wxPoint class to be used as wrapper and allow independence of point class
 //
 //////////////////////////////////////////////////////////////////////////
 
@@ -17,22 +17,22 @@
 // App headers
 #include "dd/wxhotdraw/utilities/wxhdPoint.h"
 
-ddPoint::ddPoint():
+wxhdPoint::wxhdPoint():
 wxPoint()
 {
 }
 
-ddPoint::ddPoint(int x, int y):
+wxhdPoint::wxhdPoint(int x, int y):
 wxPoint(x,y)
 {
 }
 
-ddPoint::ddPoint(const ddPoint& p):
+wxhdPoint::wxhdPoint(const wxhdPoint& p):
 wxPoint(p.x,p.y)
 {
 }
 
-ddPoint::ddPoint(const wxPoint& p):
+wxhdPoint::wxhdPoint(const wxPoint& p):
 wxPoint(p.x,p.y)
 {
 }

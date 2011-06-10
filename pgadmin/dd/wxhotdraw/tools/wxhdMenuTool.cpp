@@ -5,7 +5,7 @@
 // Copyright (C) 2002 - 2011, The pgAdmin Development Team
 // This software is released under the PostgreSQL Licence
 //
-// ddMenuTool.cpp - Allow Edition of textTool (double click) or show a menu to modifiy in someway text (right click).
+// wxhdMenuTool.cpp - Allow Edition of textTool (double click) or show a menu to modifiy in someway text (right click).
 //
 //////////////////////////////////////////////////////////////////////////
 
@@ -20,20 +20,20 @@
 #include "dd/wxhotdraw/tools/wxhdMenuTool.h"
 #include "dd/wxhotdraw/figures/wxhdIFigure.h"
 
-class ddDrawingEditor;
+class wxhdDrawingEditor;
 
-ddMenuTool::ddMenuTool(ddDrawingEditor *editor, ddIFigure *fig, ddITool *dt):
-ddFigureTool(editor,fig,dt)
+wxhdMenuTool::wxhdMenuTool(wxhdDrawingEditor *editor, wxhdIFigure *fig, wxhdITool *dt):
+wxhdFigureTool(editor,fig,dt)
 {
-	menuFigure = (ddAbstractMenuFigure*) this->getFigure();
+	menuFigure = (wxhdAbstractMenuFigure*) this->getFigure();
 	editor->view()->setMenuToolFigure(NULL);
 }
 
-ddMenuTool::~ddMenuTool()
+wxhdMenuTool::~wxhdMenuTool()
 {
 }
 
-void ddMenuTool::mouseDown(ddMouseEvent& event)
+void wxhdMenuTool::mouseDown(wxhdMouseEvent& event)
 {	
 	//Linux hack for bug
 	int x=event.GetPosition().x, y=event.GetPosition().y;
@@ -45,7 +45,7 @@ void ddMenuTool::mouseDown(ddMouseEvent& event)
         getDrawingEditor()->view()->setMenuToolFigure(menuFigure);
         menuFigure->createMenu(menu);
         getDrawingEditor()->view()->connectPopUpMenu(menu);
-        ddPoint p=event.GetPosition();
+        wxhdPoint p=event.GetPosition();
         event.getView()->CalcScrolledPosition(p.x,p.y,&p.x,&p.y);
         getDrawingEditor()->view()->PopupMenu(&menu, p);
 		return;
@@ -54,22 +54,22 @@ void ddMenuTool::mouseDown(ddMouseEvent& event)
 	getDefaultTool()->mouseDown(event);
 }
 
-void ddMenuTool::activate()
+void wxhdMenuTool::activate()
 {
-	ddFigureTool::activate();
+	wxhdFigureTool::activate();
 }
 
-void ddMenuTool::deactivate()
+void wxhdMenuTool::deactivate()
 {
-	ddFigureTool::deactivate();
+	wxhdFigureTool::deactivate();
 }
 
-void ddMenuTool::mouseDrag(ddMouseEvent& event)
+void wxhdMenuTool::mouseDrag(wxhdMouseEvent& event)
 {
 		getDefaultTool()->mouseDrag(event);
 }
 
-void ddMenuTool::OnGenericPopupClick(wxCommandEvent& event, ddDrawingView *view)
+void wxhdMenuTool::OnGenericPopupClick(wxCommandEvent& event, wxhdDrawingView *view)
 {
 	menuFigure->OnGenericPopupClick(event,view);
 }

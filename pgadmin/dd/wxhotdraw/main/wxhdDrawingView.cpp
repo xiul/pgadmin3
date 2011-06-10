@@ -5,7 +5,7 @@
 // Copyright (C) 2002 - 2011, The pgAdmin Development Team
 // This software is released under the PostgreSQL Licence
 //
-// ddDrawingView.cpp - Main canvas where all figures are drawn
+// wxhdDrawingView.cpp - Main canvas where all figures are drawn
 //
 //////////////////////////////////////////////////////////////////////////
 
@@ -28,22 +28,22 @@
 
 
 
-BEGIN_EVENT_TABLE(ddDrawingView, wxScrolledWindow)
-EVT_PAINT(                     ddDrawingView::onPaint)
-EVT_MOTION(                    ddDrawingView::onMotion)
-EVT_RIGHT_DOWN(                ddDrawingView::onMouseDown)
-EVT_RIGHT_UP(                  ddDrawingView::onMouseUp)
-EVT_LEFT_DOWN(                 ddDrawingView::onMouseDown)
-EVT_LEFT_DCLICK(               ddDrawingView::onMouseDown)
-EVT_LEFT_UP(                   ddDrawingView::onMouseUp)
-EVT_ERASE_BACKGROUND(          ddDrawingView::onEraseBackGround)  //This erase flicker
-EVT_TEXT(CTL_TEXTTOOLID,       ddDrawingView::simpleTextToolChangeHandler)
-EVT_BUTTON(CTL_OKBUTTONID,     ddDrawingView::OnOkTxtButton)
-EVT_BUTTON(CTL_CANCELBUTTONID, ddDrawingView::OnCancelTxtButton)
+BEGIN_EVENT_TABLE(wxhdDrawingView, wxScrolledWindow)
+EVT_PAINT(                     wxhdDrawingView::onPaint)
+EVT_MOTION(                    wxhdDrawingView::onMotion)
+EVT_RIGHT_DOWN(                wxhdDrawingView::onMouseDown)
+EVT_RIGHT_UP(                  wxhdDrawingView::onMouseUp)
+EVT_LEFT_DOWN(                 wxhdDrawingView::onMouseDown)
+EVT_LEFT_DCLICK(               wxhdDrawingView::onMouseDown)
+EVT_LEFT_UP(                   wxhdDrawingView::onMouseUp)
+EVT_ERASE_BACKGROUND(          wxhdDrawingView::onEraseBackGround)  //This erase flicker
+EVT_TEXT(CTL_TEXTTOOLID,       wxhdDrawingView::simpleTextToolChangeHandler)
+EVT_BUTTON(CTL_OKBUTTONID,     wxhdDrawingView::OnOkTxtButton)
+EVT_BUTTON(CTL_CANCELBUTTONID, wxhdDrawingView::OnCancelTxtButton)
 END_EVENT_TABLE()
 
 
-ddDrawingView::ddDrawingView(wxWindow *ddParent, ddDrawingEditor *editor, wxSize size, ddDrawing *initialDrawing)// gqbController *controller, gqbModel *model)
+wxhdDrawingView::wxhdDrawingView(wxWindow *ddParent, wxhdDrawingEditor *editor, wxSize size, wxhdDrawing *initialDrawing)// gqbController *controller, gqbModel *model)
 : wxScrolledWindow(ddParent, wxID_ANY, wxPoint(0,0), size,
 wxHSCROLL | wxVSCROLL | wxBORDER | wxRETAINED)
 {
@@ -51,7 +51,7 @@ wxHSCROLL | wxVSCROLL | wxBORDER | wxRETAINED)
 	drawingEditor=editor;
 	canvasSize=size;
 	SetVirtualSizeHints(canvasSize);
-	selection =  new ddCollection(new ddArrayCollection());
+	selection =  new wxhdCollection(new wxhdArrayCollection());
 	// Hack to avoid selection rectangle drawing bug
 	drawSelRect = false;
 	// Hack to avoid event problem with simpleTextTool wxTextCrtl at EVT_TEXT event
@@ -65,7 +65,7 @@ wxHSCROLL | wxVSCROLL | wxBORDER | wxRETAINED)
 	cancelTxtButton->Hide();
 }
 
-ddDrawingView::~ddDrawingView()
+wxhdDrawingView::~wxhdDrawingView()
 {
 	if(selection)
 	{
@@ -80,17 +80,17 @@ ddDrawingView::~ddDrawingView()
 		delete cancelTxtButton;
 }
 
-void ddDrawingView::onPaint(wxPaintEvent& event)
+void wxhdDrawingView::onPaint(wxPaintEvent& event)
 {
     // Prepare Context for Buffered Draw
 	wxPaintDC dcc(this);
     wxBufferedDC dc(&dcc, canvasSize);
 	dc.Clear();
-	ddIFigure *toDraw=NULL;
-	ddIteratorBase *iterator=drawing->figuresEnumerator();
+	wxhdIFigure *toDraw=NULL;
+	wxhdIteratorBase *iterator=drawing->figuresEnumerator();
 	while(iterator->HasNext())
     {
-		 toDraw =(ddIFigure *)iterator->Next();
+		 toDraw =(wxhdIFigure *)iterator->Next();
 		 if(toDraw->isSelected())
 			toDraw->drawSelected(dc,this);	
 		 else
@@ -99,15 +99,15 @@ void ddDrawingView::onPaint(wxPaintEvent& event)
 
 	delete iterator;
 
-	ddIHandle *tmpHandle=NULL;
-	ddIteratorBase *selectionIterator=selection->createIterator();
+	wxhdIHandle *tmpHandle=NULL;
+	wxhdIteratorBase *selectionIterator=selection->createIterator();
 	while(selectionIterator->HasNext())
     {
-		 toDraw=(ddIFigure *)selectionIterator->Next();
-		 ddIteratorBase *handlesIterator = toDraw->handlesEnumerator()->createIterator();
+		 toDraw=(wxhdIFigure *)selectionIterator->Next();
+		 wxhdIteratorBase *handlesIterator = toDraw->handlesEnumerator()->createIterator();
 		 while(handlesIterator->HasNext())
          {
-			 tmpHandle = (ddIHandle *)handlesIterator->Next();
+			 tmpHandle = (wxhdIHandle *)handlesIterator->Next();
 			 tmpHandle->draw(dc,this);
 		 }
 		 delete handlesIterator;
@@ -137,13 +137,13 @@ void ddDrawingView::onPaint(wxPaintEvent& event)
 }
 
 //Hack to avoid selection rectangle drawing bug
-void ddDrawingView::disableSelRectDraw()
+void wxhdDrawingView::disableSelRectDraw()
 {
 	drawSelRect = false;
 }
 
 //Hack to avoid selection rectangle drawing bug
-void ddDrawingView::setSelRect(ddRect& selectionRect)
+void wxhdDrawingView::setSelRect(wxhdRect& selectionRect)
 {
 	//Create rectangle lines to avoid non transparent brush for filling bug in wxwidgets
 	selPoints[0].x=selectionRect.x;
@@ -160,32 +160,32 @@ void ddDrawingView::setSelRect(ddRect& selectionRect)
 }
 
 // Overwrite and disable onEraseBackground Event to avoid Flicker
-void ddDrawingView::onEraseBackGround(wxEraseEvent& event)
+void wxhdDrawingView::onEraseBackGround(wxEraseEvent& event)
 {
 }
 
-void ddDrawingView::add(ddIFigure *figure)
+void wxhdDrawingView::add(wxhdIFigure *figure)
 {
 	drawing->add(figure);
 }
 
 
-void ddDrawingView::remove(ddIFigure *figure)
+void wxhdDrawingView::remove(wxhdIFigure *figure)
 {
 	drawing->remove(figure);
 }
 
-void ddDrawingView::removeAll()
+void wxhdDrawingView::removeAll()
 {
 	selection->removeAll();
 	drawing->deleteFigures();
 }
 
-void ddDrawingView::addToSelection(ddIFigure *figure)
+void wxhdDrawingView::addToSelection(wxhdIFigure *figure)
 {
 	if(!selection)
     {
-		selection = new ddCollection(new ddArrayCollection());
+		selection = new wxhdCollection(new wxhdArrayCollection());
 	}
 	if(figure)
     {
@@ -194,11 +194,11 @@ void ddDrawingView::addToSelection(ddIFigure *figure)
 	}
 }
 
-void ddDrawingView::addToSelection(ddCollection *figures)
+void wxhdDrawingView::addToSelection(wxhdCollection *figures)
 {
 }
 
-void ddDrawingView::removeFromSelection(ddIFigure *figure)
+void wxhdDrawingView::removeFromSelection(wxhdIFigure *figure)
 {
 	figure->setSelected(false);
 	if(selection)
@@ -206,7 +206,7 @@ void ddDrawingView::removeFromSelection(ddIFigure *figure)
 }
 
 
-void ddDrawingView::toggleSelection(ddIFigure *figure)
+void wxhdDrawingView::toggleSelection(wxhdIFigure *figure)
 {
 	if(figure->isSelected() &&	selection->existsObject(figure))
 		selection->removeItem(figure);
@@ -216,59 +216,59 @@ void ddDrawingView::toggleSelection(ddIFigure *figure)
 	figure->setSelected(!figure->isSelected());
 }
 
-void ddDrawingView::clearSelection()
+void wxhdDrawingView::clearSelection()
 {
-	ddIFigure *tmp=NULL;
-	ddIteratorBase *iterator=selection->createIterator();
+	wxhdIFigure *tmp=NULL;
+	wxhdIteratorBase *iterator=selection->createIterator();
 	while(iterator->HasNext())
     {
-		 tmp=(ddIFigure *)iterator->Next();
+		 tmp=(wxhdIFigure *)iterator->Next();
 		 tmp->setSelected(false);
     }
 	selection->removeAll(); 
 	delete iterator;
 }
 
-ddRect ddDrawingView::getVisibleArea()
+wxhdRect wxhdDrawingView::getVisibleArea()
 {
 	int x,y,w,h;
 	GetViewStart(&x,&y);
 	GetClientSize(&w,&h);
-	ddRect visibleArea(x,y,w,h);
+	wxhdRect visibleArea(x,y,w,h);
 	return visibleArea;
 }
 
-ddRect ddDrawingView::getVirtualSize()
+wxhdRect wxhdDrawingView::getVirtualSize()
 {	int w,h;
 	GetVirtualSize(&w,&h);
-	ddRect virtualSize(0,0,w,h);
+	wxhdRect virtualSize(0,0,w,h);
 	return virtualSize;
 }
 
-void ddDrawingView::ScrollToMakeVisible(ddPoint p)
+void wxhdDrawingView::ScrollToMakeVisible(wxhdPoint p)
 {
 	//implement this function
 }
 
-void ddDrawingView::ScrollToMakeVisible (ddRect r)
+void wxhdDrawingView::ScrollToMakeVisible (wxhdRect r)
 {
 	//implement this function
 }
 
-ddIHandle* ddDrawingView::findHandle(double x, double y)
+wxhdIHandle* wxhdDrawingView::findHandle(double x, double y)
 {
-	ddIFigure *tmpFigure=NULL;
-	ddIHandle *tmpHandle=NULL, *out=NULL;
+	wxhdIFigure *tmpFigure=NULL;
+	wxhdIHandle *tmpHandle=NULL, *out=NULL;
 
 	
 	//Look for handles at each figure in SelectionEnumerator
-	ddIteratorBase *selectionIterator=selection->createIterator();
+	wxhdIteratorBase *selectionIterator=selection->createIterator();
 	while(selectionIterator->HasNext()){
-		 tmpFigure=(ddIFigure *)selectionIterator->Next();
-		 ddIteratorBase *handlesIterator = tmpFigure->handlesEnumerator()->createIterator();
+		 tmpFigure=(wxhdIFigure *)selectionIterator->Next();
+		 wxhdIteratorBase *handlesIterator = tmpFigure->handlesEnumerator()->createIterator();
 		 while(handlesIterator->HasNext())
 		 {
-			 tmpHandle = (ddIHandle *)handlesIterator->Next();
+			 tmpHandle = (wxhdIHandle *)handlesIterator->Next();
 			 if(tmpHandle->containsPoint(x,y))
 			 {
 				 out=tmpHandle;
@@ -281,24 +281,24 @@ ddIHandle* ddDrawingView::findHandle(double x, double y)
 	return out;
 }
 
-bool ddDrawingView::isFigureSelected(ddIFigure *figure)
+bool wxhdDrawingView::isFigureSelected(wxhdIFigure *figure)
 {
 	return selection->existsObject(figure);
 }
 
-ddIteratorBase* ddDrawingView::selectionFigures()
+wxhdIteratorBase* wxhdDrawingView::selectionFigures()
 {
 	return selection->createIterator();
 }
 
-ddDrawing* ddDrawingView::getDrawing()
+wxhdDrawing* wxhdDrawingView::getDrawing()
 {
 	return drawing;
 }
 
-void ddDrawingView::onMotion(wxMouseEvent& event)
+void wxhdDrawingView::onMotion(wxMouseEvent& event)
 {
-	ddMouseEvent ddEvent = ddMouseEvent(event,this);	
+	wxhdMouseEvent ddEvent = wxhdMouseEvent(event,this);	
 	if(event.Dragging())
 	{
 		drawingEditor->tool()->mouseDrag(ddEvent);
@@ -310,23 +310,23 @@ void ddDrawingView::onMotion(wxMouseEvent& event)
 	this->Refresh();
 }
 
-void ddDrawingView::onMouseDown(wxMouseEvent& event)
+void wxhdDrawingView::onMouseDown(wxMouseEvent& event)
 {
 	startDrag = event.GetPosition();
-	ddMouseEvent ddEvent = ddMouseEvent(event,this);
+	wxhdMouseEvent ddEvent = wxhdMouseEvent(event,this);
 	drawingEditor->tool()->mouseDown(ddEvent);
 	this->Refresh();
 }
 
-void ddDrawingView::onMouseUp(wxMouseEvent& event)
+void wxhdDrawingView::onMouseUp(wxMouseEvent& event)
 {
-	ddMouseEvent ddEvent = ddMouseEvent(event,this);
+	wxhdMouseEvent ddEvent = wxhdMouseEvent(event,this);
 	drawingEditor->tool()->mouseUp(ddEvent);
 	this->Refresh();
 }
 
 //Hack to avoid event problem with simpleTextTool wxTextCrtl at EVT_TEXT event
-void ddDrawingView::setSimpleTextToolFigure(ddSimpleTextFigure *figure, bool onlySetFigure)
+void wxhdDrawingView::setSimpleTextToolFigure(wxhdSimpleTextFigure *figure, bool onlySetFigure)
 {
 	simpleTextFigure=figure;
 	menuFigure=NULL;
@@ -339,14 +339,14 @@ void ddDrawingView::setSimpleTextToolFigure(ddSimpleTextFigure *figure, bool onl
 }
 
 //Hack to allow use (events) of wxmenu inside a tool Generic Way
-void ddDrawingView::setMenuToolFigure(ddAbstractMenuFigure *figure)
+void wxhdDrawingView::setMenuToolFigure(wxhdAbstractMenuFigure *figure)
 {
 	menuFigure=figure;
 	simpleTextFigure=NULL;
 }
 
 //Hack to avoid event problem with simpleTextTool wxTextCrtl at EVT_TEXT event
-void ddDrawingView::OnOkTxtButton(wxCommandEvent& event)
+void wxhdDrawingView::OnOkTxtButton(wxCommandEvent& event)
 {
 	drawingEditor->tool()->deactivate();
 	simpleTextToolEdit->Hide();  
@@ -356,7 +356,7 @@ void ddDrawingView::OnOkTxtButton(wxCommandEvent& event)
 }
 
 //Hack to avoid event problem with simpleTextTool wxTextCrtl at EVT_TEXT event
-void ddDrawingView::OnCancelTxtButton(wxCommandEvent& event)
+void wxhdDrawingView::OnCancelTxtButton(wxCommandEvent& event)
 {
 	simpleTextToolEdit->SetValue(oldText);
 	drawingEditor->tool()->deactivate();
@@ -367,7 +367,7 @@ void ddDrawingView::OnCancelTxtButton(wxCommandEvent& event)
 }
 
 //Hack to avoid event problem with simpleTextTool wxTextCrtl at EVT_TEXT event (when text is set at edit it generate this event not sure ????)
-void ddDrawingView::simpleTextToolChangeHandler(wxCommandEvent& event)
+void wxhdDrawingView::simpleTextToolChangeHandler(wxCommandEvent& event)
 {
 	if(!simpleTextToolEdit->IsModified() && simpleTextFigure)
 	{
@@ -381,11 +381,11 @@ void ddDrawingView::simpleTextToolChangeHandler(wxCommandEvent& event)
 		else
 			dc.GetTextExtent(wxT("EMPTY"),&width,&height);
 		//recalculateDisplayBox
-		ddGeometry g;
+		wxhdGeometry g;
 		simpleTextFigure->displayBox().width = g.max(width,10)+simpleTextFigure->getPadding();
 		simpleTextFigure->displayBox().height= g.max(height,10)+simpleTextFigure->getPadding();
 		//calculateSizeEntry
-		ddPoint p=simpleTextFigure->displayBox().GetPosition();
+		wxhdPoint p=simpleTextFigure->displayBox().GetPosition();
 		CalcScrolledPosition(p.x,p.y,&p.x,&p.y);
 		simpleTextToolEdit->SetPosition(p);
 		simpleTextToolEdit->SetSize(simpleTextFigure->displayBox().GetSize());
@@ -394,7 +394,7 @@ void ddDrawingView::simpleTextToolChangeHandler(wxCommandEvent& event)
 	}
 	else if(!simpleTextFigure)
 	{
-		wxMessageDialog *error = new wxMessageDialog(NULL, wxT("Error locating ddSimpleTextTool figure"), wxT("Error!"), wxOK | wxICON_ERROR);
+		wxMessageDialog *error = new wxMessageDialog(NULL, wxT("Error locating wxhdSimpleTextTool figure"), wxT("Error!"), wxOK | wxICON_ERROR);
 		error->ShowModal();
 		delete error;
 	}
@@ -402,25 +402,25 @@ void ddDrawingView::simpleTextToolChangeHandler(wxCommandEvent& event)
 }
 
 //Hack to avoid event problem with simpleTextTool wxTextCrtl at EVT_TEXT event
-wxTextCtrl* ddDrawingView::getSimpleTextToolEdit()
+wxTextCtrl* wxhdDrawingView::getSimpleTextToolEdit()
 {
 	return simpleTextToolEdit;
 }
 
 //Hack to avoid event problem with simpleTextTool wxTextCrtl at EVT_TEXT event
-wxBitmapButton* ddDrawingView::getOkTxt()
+wxBitmapButton* wxhdDrawingView::getOkTxt()
 {
 	return okTxtButton;
 }
 
 //Hack to avoid event problem with simpleTextTool wxTextCrtl at EVT_TEXT event
-wxBitmapButton* ddDrawingView::getCancelTxt()
+wxBitmapButton* wxhdDrawingView::getCancelTxt()
 {
 	return cancelTxtButton;
 }
 
 //Hack to allow use (events) of wxmenu inside a tool like simpletexttool
-void ddDrawingView::OnGenericPopupClick(wxCommandEvent& event)
+void wxhdDrawingView::OnGenericPopupClick(wxCommandEvent& event)
 {
 	if(simpleTextFigure)
 		simpleTextFigure->OnGenericPopupClick(event,this);
@@ -430,11 +430,11 @@ void ddDrawingView::OnGenericPopupClick(wxCommandEvent& event)
 }
 
 //Hack to allow use (events) of wxmenu inside a tool like simpletexttool
-void ddDrawingView::connectPopUpMenu(wxMenu &mnu)
+void wxhdDrawingView::connectPopUpMenu(wxMenu &mnu)
 {
 	// Connect the main menu
 	mnu.Connect(wxEVT_COMMAND_MENU_SELECTED,
-      (wxObjectEventFunction) (wxEventFunction) (wxCommandEventFunction) &ddDrawingView::OnGenericPopupClick,
+      (wxObjectEventFunction) (wxEventFunction) (wxCommandEventFunction) &wxhdDrawingView::OnGenericPopupClick,
       NULL,
       this);
     
@@ -449,14 +449,14 @@ void ddDrawingView::connectPopUpMenu(wxMenu &mnu)
         {
             wxMenu* submenu = item->GetSubMenu();
             submenu->Connect(wxEVT_COMMAND_MENU_SELECTED,
-              (wxObjectEventFunction) (wxEventFunction) (wxCommandEventFunction) &ddDrawingView::OnGenericPopupClick,
+              (wxObjectEventFunction) (wxEventFunction) (wxCommandEventFunction) &wxhdDrawingView::OnGenericPopupClick,
               NULL,
               this);
         }
     }
 }
 
-ddDrawingEditor* ddDrawingView::editor()
+wxhdDrawingEditor* wxhdDrawingView::editor()
 {
 	return drawingEditor;
 }

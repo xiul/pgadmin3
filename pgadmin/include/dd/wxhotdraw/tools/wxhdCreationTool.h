@@ -5,31 +5,31 @@
 // Copyright (C) 2002 - 2011, The pgAdmin Development Team
 // This software is released under the PostgreSQL Licence
 //
-// ddCreationTool.h - A Tool that create a figure by just click on view
+// wxhdCreationTool.h - A Tool that create a figure by just click on view
 //
 //////////////////////////////////////////////////////////////////////////
 
-#ifndef DDCREATIONTOOL_H
-#define DDCREATIONTOOL_H
+#ifndef WXHDCREATIONTOOL_H
+#define WXHDCREATIONTOOL_H
 
 #include "dd/wxhotdraw/tools/wxhdAbstractTool.h"
 #include "dd/wxhotdraw/figures/wxhdIFigure.h"
 
 
-class ddCreationTool : public ddAbstractTool
+class wxhdCreationTool : public wxhdAbstractTool
 {
 public:
-	ddCreationTool(ddDrawingEditor *editor, ddIFigure *prototype);
-    ~ddCreationTool();
-	virtual void mouseDown(ddMouseEvent& event);  //Mouse Right Click
-	virtual void mouseUp(ddMouseEvent& event);
+	wxhdCreationTool(wxhdDrawingEditor *editor, wxhdIFigure *prototype);
+    ~wxhdCreationTool();
+	virtual void mouseDown(wxhdMouseEvent& event);  //Mouse Right Click
+	virtual void mouseUp(wxhdMouseEvent& event);
 	virtual void activate();
 	virtual void deactivate();
-	virtual void setPrototype(ddIFigure *prototype);
-	virtual ddIFigure* getPrototype();
+	virtual void setPrototype(wxhdIFigure *prototype);
+	virtual wxhdIFigure* getPrototype();
 
 protected:
-	ddIFigure *figurePrototype;
+	wxhdIFigure *figurePrototype;
 
 
 };

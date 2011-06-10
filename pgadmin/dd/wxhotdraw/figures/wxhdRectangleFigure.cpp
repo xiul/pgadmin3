@@ -5,7 +5,7 @@
 // Copyright (C) 2002 - 2011, The pgAdmin Development Team
 // This software is released under the PostgreSQL Licence
 //
-// ddRectangleFigure.cpp - A simple rectangle  figure
+// wxhdRectangleFigure.cpp - A simple rectangle  figure
 //
 //////////////////////////////////////////////////////////////////////////
 
@@ -19,34 +19,34 @@
 #include "dd/wxhotdraw/figures/wxhdRectangleFigure.h"
 #include "dd/wxhotdraw/main/wxhdDrawingView.h"
 
-ddRectangleFigure::ddRectangleFigure()
+wxhdRectangleFigure::wxhdRectangleFigure()
 {
 }
 
-ddRectangleFigure::~ddRectangleFigure()
+wxhdRectangleFigure::~wxhdRectangleFigure()
 {
 }
 
-void ddRectangleFigure::basicDraw(wxBufferedDC& context, ddDrawingView *view)
+void wxhdRectangleFigure::basicDraw(wxBufferedDC& context, wxhdDrawingView *view)
 {
-	ddRect copy = displayBox();
+	wxhdRect copy = displayBox();
 	view->CalcScrolledPosition(copy.x,copy.y,&copy.x,&copy.y);
 	context.DrawRectangle(copy);
 }
 
-void ddRectangleFigure::basicDrawSelected(wxBufferedDC& context, ddDrawingView *view)
+void wxhdRectangleFigure::basicDrawSelected(wxBufferedDC& context, wxhdDrawingView *view)
 {
-	ddRect copy = displayBox();
+	wxhdRect copy = displayBox();
 	view->CalcScrolledPosition(copy.x,copy.y,&copy.x,&copy.y);
 	context.DrawRectangle(copy);
 }
 
-void ddRectangleFigure::setRectangle(ddRect& rect)
+void wxhdRectangleFigure::setRectangle(wxhdRect& rect)
 {
 	basicDisplayBox=rect;
 }
 
-void ddRectangleFigure::setSize(wxSize& size)
+void wxhdRectangleFigure::setSize(wxSize& size)
 {
 	basicDisplayBox.SetSize(size);
 }

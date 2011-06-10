@@ -5,22 +5,22 @@
 // Copyright (C) 2002 - 2011, The pgAdmin Development Team
 // This software is released under the PostgreSQL Licence
 //
-// ddPolyLineFigureTool.h - Tool to allow creation of flexibility points at polylines figures
+// wxhdPolyLineFigureTool.h - Tool to allow creation of flexibility points at polylines figures
 //
 //////////////////////////////////////////////////////////////////////////
 
-#ifndef DDPOLYLINEFIGURETOOL_H
-#define DDPOLYLINEFIGURETOOL_H
+#ifndef WXHDPOLYLINEFIGURETOOL_H
+#define WXHDPOLYLINEFIGURETOOL_H
 
 #include "dd/wxhotdraw/tools/wxhdFigureTool.h"
 
 
-class ddPolyLineFigureTool : public ddFigureTool
+class wxhdPolyLineFigureTool : public wxhdFigureTool
 {
 public:
-	ddPolyLineFigureTool(ddDrawingEditor *editor, ddIFigure *fig, ddITool *dt);
-    ~ddPolyLineFigureTool();
-	virtual void mouseDown(ddMouseEvent& event);  //Mouse Right Click
+	wxhdPolyLineFigureTool(wxhdDrawingEditor *editor, wxhdIFigure *fig, wxhdITool *dt);
+    ~wxhdPolyLineFigureTool();
+	virtual void mouseDown(wxhdMouseEvent& event);  //Mouse Right Click
 protected:
 private:
 };

@@ -5,23 +5,23 @@
 // Copyright (C) 2002 - 2011, The pgAdmin Development Team
 // This software is released under the PostgreSQL Licence
 //
-// ddMouseEvent.h - Wrapper Class to integrate conversion CalcUnscrolledPosition in a mouse event.
+// wxhdMouseEvent.h - Wrapper Class to integrate conversion CalcUnscrolledPosition in a mouse event.
 //
 //////////////////////////////////////////////////////////////////////////
 
-#ifndef DDMOUSEEVENT_H
-#define DDMOUSEEVENT_H
+#ifndef WXHDMOUSEEVENT_H
+#define WXHDMOUSEEVENT_H
 #include "dd/wxhotdraw/utilities/wxhdPoint.h"
 #include "dd/wxhotdraw/main/wxhdObject.h"
 
-class ddDrawingView;
+class wxhdDrawingView;
 
-class ddMouseEvent : public ddObject
+class wxhdMouseEvent : public wxhdObject
 {
 	public:
-		ddMouseEvent(wxMouseEvent& event, ddDrawingView *owner);
-		ddPoint& getUnScrolledPosition();
-		ddPoint& GetPosition();
+		wxhdMouseEvent(wxMouseEvent& event, wxhdDrawingView *owner);
+		wxhdPoint& getUnScrolledPosition();
+		wxhdPoint& GetPosition();
 		int getUnScrolledPosX();
 		int getUnScrolledPosY();
 		bool LeftDClick();
@@ -31,10 +31,10 @@ class ddMouseEvent : public ddObject
 		bool ShiftDown();
 		bool RightDown();
 		bool m_shiftDown;
-		ddDrawingView* getView();
+		wxhdDrawingView* getView();
 private:
-		ddDrawingView *view;
+		wxhdDrawingView *view;
 		wxMouseEvent& mouseEvent;
-		ddPoint unScrolled;
+		wxhdPoint unScrolled;
 };
 #endif

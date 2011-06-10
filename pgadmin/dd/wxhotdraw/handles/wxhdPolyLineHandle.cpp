@@ -5,7 +5,7 @@
 // Copyright (C) 2002 - 2011, The pgAdmin Development Team
 // This software is released under the PostgreSQL Licence
 //
-// ddPolyLineHandle.cpp - Handle for manipulation of multiple flexibility points lines.
+// wxhdPolyLineHandle.cpp - Handle for manipulation of multiple flexibility points lines.
 //
 //////////////////////////////////////////////////////////////////////////
 
@@ -22,19 +22,19 @@
 #include "dd/wxhotdraw/main/wxhdDrawingView.h"
 
 
-ddPolyLineHandle::ddPolyLineHandle(ddPolyLineFigure *figure, ddILocator *loc, int index):
-ddLocatorHandle((ddIFigure *)figure,loc)
+wxhdPolyLineHandle::wxhdPolyLineHandle(wxhdPolyLineFigure *figure, wxhdILocator *loc, int index):
+wxhdLocatorHandle((wxhdIFigure *)figure,loc)
 {
 	indx=index;
 }
 
-ddPolyLineHandle::~ddPolyLineHandle()
+wxhdPolyLineHandle::~wxhdPolyLineHandle()
 {
 }
 
-void ddPolyLineHandle::draw(wxBufferedDC& context, ddDrawingView *view)
+void wxhdPolyLineHandle::draw(wxBufferedDC& context, wxhdDrawingView *view)
 {
-	ddRect copy = getDisplayBox();
+	wxhdRect copy = getDisplayBox();
 	view->CalcScrolledPosition(copy.x,copy.y,&copy.x,&copy.y);
 
 	double middle=copy.width/2;
@@ -44,34 +44,34 @@ void ddPolyLineHandle::draw(wxBufferedDC& context, ddDrawingView *view)
         );
 }
 
-void ddPolyLineHandle::invokeStep(ddMouseEvent& event, ddDrawingView *view)
+void wxhdPolyLineHandle::invokeStep(wxhdMouseEvent& event, wxhdDrawingView *view)
 {
 	int x=event.GetPosition().x, y=event.GetPosition().y;
-	((ddPolyLineFigure*) getOwner())->setPointAt(indx,x,y);
+	((wxhdPolyLineFigure*) getOwner())->setPointAt(indx,x,y);
 	
 }
 
-void ddPolyLineHandle::invokeStart(ddMouseEvent& event, ddDrawingView *view)
+void wxhdPolyLineHandle::invokeStart(wxhdMouseEvent& event, wxhdDrawingView *view)
 {
 	if(event.RightDown())
 	{
-		((ddPolyLineFigure*) getOwner())->removePointAt(indx);
+		((wxhdPolyLineFigure*) getOwner())->removePointAt(indx);
 	}
 }
-wxCursor ddPolyLineHandle::createCursor()
+wxCursor wxhdPolyLineHandle::createCursor()
 {
 	return wxCursor(wxCURSOR_CROSS);
 
 }
 
-int ddPolyLineHandle::getIndex()
+int wxhdPolyLineHandle::getIndex()
 {
 	return indx;
 }
 
-void ddPolyLineHandle::setIndex(int index)
+void wxhdPolyLineHandle::setIndex(int index)
 {
 	indx=index;
-	ddPolyLineLocator *l = (ddPolyLineLocator*) locator();
+	wxhdPolyLineLocator *l = (wxhdPolyLineLocator*) locator();
 	l->setIndex(index);
 }

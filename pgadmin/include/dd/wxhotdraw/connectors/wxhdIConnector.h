@@ -5,37 +5,37 @@
 // Copyright (C) 2002 - 2011, The pgAdmin Development Team
 // This software is released under the PostgreSQL Licence
 //
-// ddIConnector.cpp - Base class for all connectors
+// wxhdIConnector.cpp - Base class for all connectors
 //
 //////////////////////////////////////////////////////////////////////////
 
-#ifndef DDICONNECTOR_H
-#define DDICONNECTOR_H
+#ifndef WXHDICONNECTOR_H
+#define WXHDICONNECTOR_H
 
 #include "dd/wxhotdraw/main/wxhdObject.h"
 #include "dd/wxhotdraw/figures/wxhdLineConnection.h"
 #include "dd/wxhotdraw/utilities/wxhdPoint.h"
 #include "dd/wxhotdraw/utilities/wxhdRect.h"
 
-class ddLineConnection;
-class ddIFigure;
+class wxhdLineConnection;
+class wxhdIFigure;
 
-class ddIConnector : public ddObject
+class wxhdIConnector : public wxhdObject
 {
 public:
-	ddIConnector(ddIFigure *owner);
- 	~ddIConnector();
-	virtual ddPoint findStart(ddLineConnection *connection);
-	virtual ddPoint findEnd(ddLineConnection *connection);
+	wxhdIConnector(wxhdIFigure *owner);
+ 	~wxhdIConnector();
+	virtual wxhdPoint findStart(wxhdLineConnection *connection);
+	virtual wxhdPoint findEnd(wxhdLineConnection *connection);
 	virtual bool containsPoint(int x, int y);
 	virtual void draw(wxBufferedDC& context);
-	virtual ddIFigure* getOwner();
-	virtual ddRect& getDisplayBox();
+	virtual wxhdIFigure* getOwner();
+	virtual wxhdRect& getDisplayBox();
 protected:
-	virtual void setOwner(ddIFigure *owner);
-	ddRect displayBox;
+	virtual void setOwner(wxhdIFigure *owner);
+	wxhdRect displayBox;
 private:
-	ddIFigure *figureOwner; 
+	wxhdIFigure *figureOwner; 
 
 };
 #endif

@@ -5,7 +5,7 @@
 // Copyright (C) 2002 - 2011, The pgAdmin Development Team
 // This software is released under the PostgreSQL Licence
 //
-// ddLocatorHandle.cpp - Base class for Handles that are located at locator position
+// wxhdLocatorHandle.cpp - Base class for Handles that are located at locator position
 //
 //////////////////////////////////////////////////////////////////////////
 
@@ -17,37 +17,37 @@
 // App headers
 #include "dd/wxhotdraw/handles/wxhdLocatorHandle.h"
 
-ddLocatorHandle::ddLocatorHandle(ddIFigure *owner, ddILocator *locator):
-ddIHandle(owner)
+wxhdLocatorHandle::wxhdLocatorHandle(wxhdIFigure *owner, wxhdILocator *locator):
+wxhdIHandle(owner)
 {
 	loc=locator;
 }
 
-ddLocatorHandle::~ddLocatorHandle()
+wxhdLocatorHandle::~wxhdLocatorHandle()
 {
 	if(loc)
 		delete loc;
 }
 
-ddPoint& ddLocatorHandle::locate()
+wxhdPoint& wxhdLocatorHandle::locate()
 {
-	p=ddPoint(0,0);
+	p=wxhdPoint(0,0);
 	return loc==NULL ? p : loc->locate(getOwner());
 }
 
-ddILocator* ddLocatorHandle::locator()
+wxhdILocator* wxhdLocatorHandle::locator()
 {
 	return loc;
 }
 
-void ddLocatorHandle::invokeStart(ddMouseEvent& event, ddDrawingView *view)
+void wxhdLocatorHandle::invokeStart(wxhdMouseEvent& event, wxhdDrawingView *view)
 {
 }
 
-void ddLocatorHandle::invokeStep(ddMouseEvent& event, ddDrawingView *view)
+void wxhdLocatorHandle::invokeStep(wxhdMouseEvent& event, wxhdDrawingView *view)
 {
 }
 
-void ddLocatorHandle::invokeEnd(ddMouseEvent& event, ddDrawingView *view)
+void wxhdLocatorHandle::invokeEnd(wxhdMouseEvent& event, wxhdDrawingView *view)
 {
 }

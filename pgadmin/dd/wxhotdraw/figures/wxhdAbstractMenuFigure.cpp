@@ -5,7 +5,7 @@
 // Copyright (C) 2002 - 2011, The pgAdmin Development Team
 // This software is released under the PostgreSQL Licence
 //
-// ddAbstractMenuFigure.cpp - Base class for figures that show a menu with right click
+// wxhdAbstractMenuFigure.cpp - Base class for figures that show a menu with right click
 //
 //////////////////////////////////////////////////////////////////////////
 
@@ -23,36 +23,36 @@
 #include "dd/wxhotdraw/main/wxhdDrawingView.h"
 #include "dd/wxhotdraw/tools/wxhdMenuTool.h"
 
-ddAbstractMenuFigure::ddAbstractMenuFigure()
+wxhdAbstractMenuFigure::wxhdAbstractMenuFigure()
 {
 }
 
-ddAbstractMenuFigure::~ddAbstractMenuFigure()
+wxhdAbstractMenuFigure::~wxhdAbstractMenuFigure()
 {
 }
 
 
-ddITool* ddAbstractMenuFigure::CreateFigureTool(ddDrawingEditor *editor, ddITool *defaultTool)
+wxhdITool* wxhdAbstractMenuFigure::CreateFigureTool(wxhdDrawingEditor *editor, wxhdITool *defaultTool)
 {
-	return new ddMenuTool(editor,this,defaultTool);
+	return new wxhdMenuTool(editor,this,defaultTool);
 }
 
-void ddAbstractMenuFigure::enablePopUp()
+void wxhdAbstractMenuFigure::enablePopUp()
 {
 	showMenu = true;
 }
 
-void ddAbstractMenuFigure::disablePopUp()
+void wxhdAbstractMenuFigure::disablePopUp()
 {
 	showMenu = false;
 }
 
-bool ddAbstractMenuFigure::menuEnabled()
+bool wxhdAbstractMenuFigure::menuEnabled()
 {
 	return 	showMenu;
 }
 
-void ddAbstractMenuFigure::OnGenericPopupClick(wxCommandEvent& event, ddDrawingView *view)
+void wxhdAbstractMenuFigure::OnGenericPopupClick(wxCommandEvent& event, wxhdDrawingView *view)
 {
 	//Action on popup goes here
 	//strings[event.GetId()]

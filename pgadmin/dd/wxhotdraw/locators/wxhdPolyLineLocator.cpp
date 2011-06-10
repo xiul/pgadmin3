@@ -5,7 +5,7 @@
 // Copyright (C) 2002 - 2011, The pgAdmin Development Team
 // This software is released under the PostgreSQL Licence
 //
-// ddPolyLineLocator.cpp - Return multiple location at same time for a PolyLine
+// wxhdPolyLineLocator.cpp - Return multiple location at same time for a PolyLine
 //
 //////////////////////////////////////////////////////////////////////////
 
@@ -20,20 +20,20 @@
 #include "dd/wxhotdraw/utilities/wxhdRect.h"
 #include "dd/wxhotdraw/figures/wxhdPolyLineFigure.h"
 
-ddPolyLineLocator::~ddPolyLineLocator()
+wxhdPolyLineLocator::~wxhdPolyLineLocator()
 {
 }
 
-ddPolyLineLocator::ddPolyLineLocator(int index)
+wxhdPolyLineLocator::wxhdPolyLineLocator(int index)
 {
 	indx=index;
 }
 
-ddPoint& ddPolyLineLocator::locate(ddIFigure *owner)
+wxhdPoint& wxhdPolyLineLocator::locate(wxhdIFigure *owner)
 {
 	if(owner)
 	{
-		ddPolyLineFigure *figure = (ddPolyLineFigure *) owner;
+		wxhdPolyLineFigure *figure = (wxhdPolyLineFigure *) owner;
 		locatePoint = figure->pointAt(indx);
 		return locatePoint;
 	}
@@ -43,7 +43,7 @@ ddPoint& ddPolyLineLocator::locate(ddIFigure *owner)
 	}
 }
 
-void ddPolyLineLocator::setIndex(int index)
+void wxhdPolyLineLocator::setIndex(int index)
 {
 	indx=index;
 }

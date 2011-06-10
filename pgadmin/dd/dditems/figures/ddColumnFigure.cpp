@@ -63,7 +63,7 @@ ddColumnFigure::~ddColumnFigure()
 
 void ddColumnFigure::basicMoveBy(int x, int y)
 {
-	ddAbstractFigure::basicMoveBy(x,y);
+	wxhdAbstractFigure::basicMoveBy(x,y);
 	if(leftImage)
         leftImage->moveBy(x,y);
 	if(centerImage)
@@ -73,7 +73,7 @@ void ddColumnFigure::basicMoveBy(int x, int y)
 
 void ddColumnFigure::moveTo(int x, int y)
 {
-	ddAbstractFigure::moveTo(x,y);
+	wxhdAbstractFigure::moveTo(x,y);
 	int distance=0;
     
 	if(leftImage)
@@ -114,12 +114,12 @@ bool ddColumnFigure::containsPoint(int x, int y)
 	return out;
 }
 
-ddRect& ddColumnFigure::getBasicDisplayBox()
+wxhdRect& ddColumnFigure::getBasicDisplayBox()
 {
 	return basicDisplayBox;
 }
 
-void ddColumnFigure::draw(wxBufferedDC& context, ddDrawingView *view)
+void ddColumnFigure::draw(wxBufferedDC& context, wxhdDrawingView *view)
 {
 	columnText->draw(context,view);
     if(leftImage)
@@ -128,7 +128,7 @@ void ddColumnFigure::draw(wxBufferedDC& context, ddDrawingView *view)
         centerImage->draw(context,view);
 }
 
-void ddColumnFigure::drawSelected(wxBufferedDC& context, ddDrawingView *view)
+void ddColumnFigure::drawSelected(wxBufferedDC& context, wxhdDrawingView *view)
 {
 	columnText->drawSelected(context,view);
     if(leftImage)
@@ -137,9 +137,9 @@ void ddColumnFigure::drawSelected(wxBufferedDC& context, ddDrawingView *view)
         centerImage->drawSelected(context,view);
 }
 
-ddIFigure* ddColumnFigure::findFigure(int x, int y)
+wxhdIFigure* ddColumnFigure::findFigure(int x, int y)
 {
-	ddIFigure *out=NULL;
+	wxhdIFigure *out=NULL;
 
 	if(columnText->containsPoint(x,y))
         out=columnText;
@@ -153,21 +153,21 @@ ddIFigure* ddColumnFigure::findFigure(int x, int y)
 	return out;
 }
 
-ddITool* ddColumnFigure::CreateFigureTool(ddDrawingEditor *editor, ddITool *defaultTool)
+wxhdITool* ddColumnFigure::CreateFigureTool(wxhdDrawingEditor *editor, wxhdITool *defaultTool)
 {
 	return new ddColumnFigureTool(editor, this, defaultTool);
 }
 
-ddIFigure* ddColumnFigure::getFigureAt(int pos)
+wxhdIFigure* ddColumnFigure::getFigureAt(int pos)
 {
 	if(pos==0)
-		return (ddIFigure*) leftImage;
+		return (wxhdIFigure*) leftImage;
 
 	if(pos==1)
-		return (ddIFigure*) centerImage;
+		return (wxhdIFigure*) centerImage;
 
 	if(pos==2)
-		return (ddIFigure*) columnText;
+		return (wxhdIFigure*) columnText;
 	
 	return NULL;
 }
@@ -231,7 +231,7 @@ bool ddColumnFigure::isPlain()
 	return leftImage->getKind()==none;
 }
 
-void ddColumnFigure::setColumnKind(ddColumnType type, ddDrawingView *view)
+void ddColumnFigure::setColumnKind(ddColumnType type, wxhdDrawingView *view)
 {
 	leftImage->changeIcon(type,view);
 }

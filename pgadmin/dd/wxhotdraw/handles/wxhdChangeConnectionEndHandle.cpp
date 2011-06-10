@@ -5,7 +5,7 @@
 // Copyright (C) 2002 - 2011, The pgAdmin Development Team
 // This software is released under the PostgreSQL Licence
 //
-// ddChangeConnectionEndHandle.cpp - Handle to allow change connected figure at end of connection figure
+// wxhdChangeConnectionEndHandle.cpp - Handle to allow change connected figure at end of connection figure
 //
 //////////////////////////////////////////////////////////////////////////
 
@@ -18,36 +18,36 @@
 #include "dd/wxhotdraw/handles/wxhdChangeConnectionEndHandle.h"
 #include "dd/wxhotdraw/utilities/wxhdPoint.h"
 
-ddChangeConnectionEndHandle::ddChangeConnectionEndHandle(ddLineConnection *owner):
-ddChangeConnectionHandle(owner)
+wxhdChangeConnectionEndHandle::wxhdChangeConnectionEndHandle(wxhdLineConnection *owner):
+wxhdChangeConnectionHandle(owner)
 {
 }
 
-ddChangeConnectionEndHandle::~ddChangeConnectionEndHandle()
+wxhdChangeConnectionEndHandle::~wxhdChangeConnectionEndHandle()
 {
 }
 
-ddPoint& ddChangeConnectionEndHandle::locate()
+wxhdPoint& wxhdChangeConnectionEndHandle::locate()
 {
 	return connection->getEndPoint();
 }
 
-ddIConnector* ddChangeConnectionEndHandle::target()
+wxhdIConnector* wxhdChangeConnectionEndHandle::target()
 {
 	return connection->getEndConnector();
 }
 
-void ddChangeConnectionEndHandle::connect(ddIConnector *connector)
+void wxhdChangeConnectionEndHandle::connect(wxhdIConnector *connector)
 {
 	connection->connectEnd(connector);
 }
 
-void ddChangeConnectionEndHandle::disconnect()
+void wxhdChangeConnectionEndHandle::disconnect()
 {
 	connection->disconnectEnd();
 }
 
-bool ddChangeConnectionEndHandle::isConnectionPossible(ddIFigure *figure)
+bool wxhdChangeConnectionEndHandle::isConnectionPossible(wxhdIFigure *figure)
 {
 	if(!figure->includes(connection) && figure->canConnect() && connection->canConnectEnd(figure))
 	{
@@ -59,7 +59,7 @@ bool ddChangeConnectionEndHandle::isConnectionPossible(ddIFigure *figure)
 	}
 }
 
-void ddChangeConnectionEndHandle::setPoint(ddPoint p)
+void wxhdChangeConnectionEndHandle::setPoint(wxhdPoint p)
 {
 	connection->setEndPoint(p);
 }

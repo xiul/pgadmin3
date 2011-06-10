@@ -5,21 +5,21 @@
 // Copyright (C) 2002 - 2011, The pgAdmin Development Team
 // This software is released under the PostgreSQL Licence
 //
-// ddSimpleTextFigure.h - A simple rectangle  figure with text inside it
+// wxhdSimpleTextFigure.h - A simple rectangle  figure with text inside it
 //
 //////////////////////////////////////////////////////////////////////////
 
-#ifndef DDSIMPLETEXTFIGURE_H
-#define DDSIMPLETEXTFIGURE_H
+#ifndef WXHDSIMPLETEXTFIGURE_H
+#define WXHDSIMPLETEXTFIGURE_H
 #include "dd/wxhotdraw/figures/wxhdAbstractFigure.h"
 
-class ddDrawingView;
+class wxhdDrawingView;
 
-class ddSimpleTextFigure : public ddAbstractFigure
+class wxhdSimpleTextFigure : public wxhdAbstractFigure
 {
 public:
-	ddSimpleTextFigure(wxString textString);
-    ~ddSimpleTextFigure();
+	wxhdSimpleTextFigure(wxString textString);
+    ~wxhdSimpleTextFigure();
 	virtual void setText(wxString textString);
 	virtual wxString& getText(bool extended = false);
 	virtual void setEditable(bool value);
@@ -29,14 +29,14 @@ public:
 	virtual void setBackground(wxBrush background);
 	virtual int getPadding();
 	void basicMoveBy(int x, int y);
-	virtual void basicDraw(wxBufferedDC& context, ddDrawingView *view);
-	virtual void basicDrawSelected(wxBufferedDC& context, ddDrawingView *view);
-	virtual ddITool* CreateFigureTool(ddDrawingEditor *editor, ddITool *defaultTool);
+	virtual void basicDraw(wxBufferedDC& context, wxhdDrawingView *view);
+	virtual void basicDrawSelected(wxBufferedDC& context, wxhdDrawingView *view);
+	virtual wxhdITool* CreateFigureTool(wxhdDrawingEditor *editor, wxhdITool *defaultTool);
 	virtual void createMenu(wxMenu &mnu) {}
 	virtual void enablePopUp();
 	virtual void disablePopUp();
 	virtual bool menuEnabled();
-	virtual void OnGenericPopupClick(wxCommandEvent& event, ddDrawingView *view);
+	virtual void OnGenericPopupClick(wxCommandEvent& event, wxhdDrawingView *view);
 protected:
 	virtual void getFontMetrics(int &width, int &height);
 	virtual void recalculateDisplayBox();

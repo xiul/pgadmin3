@@ -5,7 +5,7 @@
 // Copyright (C) 2002 - 2011, The pgAdmin Development Team
 // This software is released under the PostgreSQL Licence
 //
-// ddCompositeFigure.cpp - Base class for all figures composite with figures
+// wxhdCompositeFigure.cpp - Base class for all figures composite with figures
 //
 //////////////////////////////////////////////////////////////////////////
 
@@ -22,29 +22,29 @@
 #include "dd/wxhotdraw/utilities/wxhdArrayCollection.h"
 #include "dd/wxhotdraw/tools/wxhdCompositeFigureTool.h"
 
-ddCompositeFigure::ddCompositeFigure()
+wxhdCompositeFigure::wxhdCompositeFigure()
 {
-	figureFigures = new ddCollection(new ddArrayCollection());
-	figureHandles = new ddCollection(new ddArrayCollection());
+	figureFigures = new wxhdCollection(new wxhdArrayCollection());
+	figureHandles = new wxhdCollection(new wxhdArrayCollection());
 }
 
-ddCompositeFigure::~ddCompositeFigure()
+wxhdCompositeFigure::~wxhdCompositeFigure()
 {
-	ddIHandle *tmpH;
+	wxhdIHandle *tmpH;
 	//Handles should be delete by their owner (figure)
 	while(figureHandles->count()>0)
 	{
-		tmpH = (ddIHandle*) figureHandles->getItemAt(0);
+		tmpH = (wxhdIHandle*) figureHandles->getItemAt(0);
 		figureHandles->removeItemAt(0);
 		delete tmpH;
 	}
 	if(figureHandles)
 		delete figureHandles;  
 
-	ddIFigure *tmp;
+	wxhdIFigure *tmp;
 	while(figureFigures->count()>0)
 	{
-		tmp = (ddIFigure*) figureFigures->getItemAt(0);
+		tmp = (wxhdIFigure*) figureFigures->getItemAt(0);
 		figureFigures->removeItemAt(0);
 		delete tmp;
 	}
@@ -52,24 +52,24 @@ ddCompositeFigure::~ddCompositeFigure()
 		delete figureFigures;
 }
 
-void ddCompositeFigure::basicMoveBy(int x, int y)
+void wxhdCompositeFigure::basicMoveBy(int x, int y)
 {
-	ddIteratorBase *iterator=figuresEnumerator();
+	wxhdIteratorBase *iterator=figuresEnumerator();
 	while(iterator->HasNext())
     {
-		ddIFigure *f = (ddIFigure *) iterator->Next();
+		wxhdIFigure *f = (wxhdIFigure *) iterator->Next();
 		f->moveBy(x,y);
 	}
 	delete iterator;
 }
 
-bool ddCompositeFigure::containsPoint(int x, int y)
+bool wxhdCompositeFigure::containsPoint(int x, int y)
 {
 	bool out = false;
-	ddIteratorBase *iterator=figuresEnumerator();
+	wxhdIteratorBase *iterator=figuresEnumerator();
 	while(iterator->HasNext())
     {
-		ddIFigure *f = (ddIFigure *) iterator->Next();
+		wxhdIFigure *f = (wxhdIFigure *) iterator->Next();
 		if(f->containsPoint(x,y))
 		{
 			out=true;  //avoid memory leak
@@ -79,27 +79,27 @@ bool ddCompositeFigure::containsPoint(int x, int y)
 	return out;
 }
 
-ddIteratorBase* ddCompositeFigure::figuresEnumerator()
+wxhdIteratorBase* wxhdCompositeFigure::figuresEnumerator()
 {
 	return figureFigures->createIterator();
 }
 
-ddIteratorBase* ddCompositeFigure::figuresInverseEnumerator()
+wxhdIteratorBase* wxhdCompositeFigure::figuresInverseEnumerator()
 {
 	return figureFigures->createDownIterator();
 }
 
 //Ignore figures at negative positions
-ddRect& ddCompositeFigure::getBasicDisplayBox()
+wxhdRect& wxhdCompositeFigure::getBasicDisplayBox()
 {
 	basicDisplayBox.SetPosition(wxPoint(0,0));
 	basicDisplayBox.SetSize(wxSize(0,0));
 	bool firstFigure = true;
 
-	ddIteratorBase *iterator=figuresEnumerator();
+	wxhdIteratorBase *iterator=figuresEnumerator();
 	while(iterator->HasNext())
     {
-		ddIFigure *f = (ddIFigure *) iterator->Next();
+		wxhdIFigure *f = (wxhdIFigure *) iterator->Next();
 		if(firstFigure)
 		{
 			basicDisplayBox.SetPosition( f->displayBox().GetPosition());
@@ -118,12 +118,12 @@ ddRect& ddCompositeFigure::getBasicDisplayBox()
 
 }
 
-ddCollection* ddCompositeFigure::handlesEnumerator()
+wxhdCollection* wxhdCompositeFigure::handlesEnumerator()
 {
 	return figureHandles;
 }
 
-void ddCompositeFigure::add(ddIFigure *figure)
+void wxhdCompositeFigure::add(wxhdIFigure *figure)
 {
 	if(includes(figure))
 		return;
@@ -131,25 +131,25 @@ void ddCompositeFigure::add(ddIFigure *figure)
 	//Add figure
 	figureFigures->addItem(figure);
 	//Add figure handles
-	ddIteratorBase *handlesIterator = figure->handlesEnumerator()->createIterator();
+	wxhdIteratorBase *handlesIterator = figure->handlesEnumerator()->createIterator();
 	while(handlesIterator->HasNext())
 	{
-		ddIHandle *h = (ddIHandle *) handlesIterator->Next();
+		wxhdIHandle *h = (wxhdIHandle *) handlesIterator->Next();
 		figureHandles->addItem(h);
 	}
 	delete handlesIterator;
 }
 
-void ddCompositeFigure::remove(ddIFigure *figure)
+void wxhdCompositeFigure::remove(wxhdIFigure *figure)
 {
 	if(!includes(figure))
 		return;
 	
 	//Remove figure handles
-	ddIteratorBase *handlesIterator = figure->handlesEnumerator()->createIterator();
+	wxhdIteratorBase *handlesIterator = figure->handlesEnumerator()->createIterator();
 	while(handlesIterator->HasNext())
 	{
-		ddIHandle *h = (ddIHandle *) handlesIterator->Next();
+		wxhdIHandle *h = (wxhdIHandle *) handlesIterator->Next();
 		figureHandles->removeItem(h);
 	}
 	delete handlesIterator;
@@ -157,17 +157,17 @@ void ddCompositeFigure::remove(ddIFigure *figure)
 	figureFigures->removeItem(figure);
 }
 
-bool ddCompositeFigure::includes(ddIFigure *figure)
+bool wxhdCompositeFigure::includes(wxhdIFigure *figure)
 {
-	if(ddAbstractFigure::includes(figure))
+	if(wxhdAbstractFigure::includes(figure))
 		return true;
 	
 	bool out = false;
 
-	ddIteratorBase *iterator=figuresEnumerator();
+	wxhdIteratorBase *iterator=figuresEnumerator();
 	while(iterator->HasNext())
     {
-		ddIFigure *f = (ddIFigure *) iterator->Next();
+		wxhdIFigure *f = (wxhdIFigure *) iterator->Next();
 		if(f->includes(figure))
 			out = true;
 	}
@@ -175,37 +175,37 @@ bool ddCompositeFigure::includes(ddIFigure *figure)
 	return out;
 }
 
-void ddCompositeFigure::draw(wxBufferedDC& context, ddDrawingView *view)
+void wxhdCompositeFigure::draw(wxBufferedDC& context, wxhdDrawingView *view)
 {
-	ddIteratorBase *iterator = figuresEnumerator();
-	ddIFigure *f=NULL;
+	wxhdIteratorBase *iterator = figuresEnumerator();
+	wxhdIFigure *f=NULL;
 	while(iterator->HasNext())
     {
-		f = (ddIFigure *) iterator->Next();
+		f = (wxhdIFigure *) iterator->Next();
 		f->draw(context,view);
 	}
 	delete iterator;
 }
 
-void ddCompositeFigure::drawSelected(wxBufferedDC& context, ddDrawingView *view)
+void wxhdCompositeFigure::drawSelected(wxBufferedDC& context, wxhdDrawingView *view)
 {
-	ddIteratorBase *iterator = figuresEnumerator();
-	ddIFigure *f = NULL;
+	wxhdIteratorBase *iterator = figuresEnumerator();
+	wxhdIFigure *f = NULL;
 	while(iterator->HasNext())
     {
-        f = (ddIFigure *) iterator->Next();
+        f = (wxhdIFigure *) iterator->Next();
 		f->drawSelected(context,view);
 	}
 	delete iterator;
 }
 
-ddIFigure* ddCompositeFigure::findFigure(int x, int y)
+wxhdIFigure* wxhdCompositeFigure::findFigure(int x, int y)
 {
-	ddIFigure *tmp=NULL, *out=NULL;
-	ddIteratorBase *iterator=figuresInverseEnumerator();
+	wxhdIFigure *tmp=NULL, *out=NULL;
+	wxhdIteratorBase *iterator=figuresInverseEnumerator();
 	while(iterator->HasNext())
     {
-		 tmp=(ddIFigure *)iterator->Next();
+		 tmp=(wxhdIFigure *)iterator->Next();
 		 if(tmp->containsPoint(x,y))
          {
 			out=tmp;
@@ -218,12 +218,12 @@ ddIFigure* ddCompositeFigure::findFigure(int x, int y)
 	return out;
 }
 
-ddITool* ddCompositeFigure::CreateFigureTool(ddDrawingEditor *editor, ddITool *defaultTool)
+wxhdITool* wxhdCompositeFigure::CreateFigureTool(wxhdDrawingEditor *editor, wxhdITool *defaultTool)
 {
-	return new ddCompositeFigureTool(editor, this, defaultTool);
+	return new wxhdCompositeFigureTool(editor, this, defaultTool);
 }
 
-ddIFigure* ddCompositeFigure::getFigureAt(int pos)
+wxhdIFigure* wxhdCompositeFigure::getFigureAt(int pos)
 {
-	return (ddIFigure*) figureFigures->getItemAt(pos);
+	return (wxhdIFigure*) figureFigures->getItemAt(pos);
 }

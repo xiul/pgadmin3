@@ -24,8 +24,8 @@
 #include "images/ddUp.xpm"
 #include "images/ddDown.xpm"
 
-ddScrollBarHandle::ddScrollBarHandle(ddTableFigure *owner, ddILocator *scrollBarLocator , wxSize &size):
-ddLocatorHandle(owner,scrollBarLocator)
+ddScrollBarHandle::ddScrollBarHandle(ddTableFigure *owner, wxhdILocator *scrollBarLocator , wxSize &size):
+wxhdLocatorHandle(owner,scrollBarLocator)
 {
 	table=owner;
 	scrollLocator = scrollBarLocator;
@@ -45,16 +45,16 @@ wxCursor ddScrollBarHandle::createCursor()
 }
 
 //avoid to use inflate on this handle
-ddRect& ddScrollBarHandle::getDisplayBox()
+wxhdRect& ddScrollBarHandle::getDisplayBox()
 {
-	ddPoint p = locate();
+	wxhdPoint p = locate();
 	displayBox.width=11;  //as defined at locator
 	displayBox.height=table->getColsSpace().height;
 	displayBox.SetPosition(p);
 	return displayBox;
 }
 
-void ddScrollBarHandle::draw(wxBufferedDC& context, ddDrawingView *view)
+void ddScrollBarHandle::draw(wxBufferedDC& context, wxhdDrawingView *view)
 {
 	context.SetBrush(*wxWHITE_BRUSH);
 	wxPoint copy = getDisplayBox().GetPosition();
@@ -76,7 +76,7 @@ void ddScrollBarHandle::draw(wxBufferedDC& context, ddDrawingView *view)
 
 }
 
-void ddScrollBarHandle::invokeStart(ddMouseEvent &event, ddDrawingView *view)
+void ddScrollBarHandle::invokeStart(wxhdMouseEvent &event, wxhdDrawingView *view)
 {
 	int y=event.GetPosition().y;
 	anchorY=y;
@@ -87,7 +87,7 @@ void ddScrollBarHandle::invokeStart(ddMouseEvent &event, ddDrawingView *view)
 		table->columnsWindowDown();
 }
 
-void ddScrollBarHandle::invokeStep(ddMouseEvent &event, ddDrawingView *view)
+void ddScrollBarHandle::invokeStep(wxhdMouseEvent &event, wxhdDrawingView *view)
 {
 	int y=event.GetPosition().y;
 	int divBy = (table->getTotalColumns() - table->getColumnsWindow());
@@ -95,7 +95,7 @@ void ddScrollBarHandle::invokeStep(ddMouseEvent &event, ddDrawingView *view)
 		divBy = table->getColumnsWindow();
 	int colOffset = barSize.GetHeight() / divBy;
 
-	ddGeometry g;
+	wxhdGeometry g;
 	if ( g.ddabs(anchorY-y) > colOffset)
 	{
 		if((anchorY-y)>0)
@@ -110,11 +110,11 @@ void ddScrollBarHandle::invokeStep(ddMouseEvent &event, ddDrawingView *view)
 	}
 }
 
-void ddScrollBarHandle::invokeEnd(ddMouseEvent &event, ddDrawingView *view)
+void ddScrollBarHandle::invokeEnd(wxhdMouseEvent &event, wxhdDrawingView *view)
 {
 }
 
-ddPoint& ddScrollBarHandle::locate()
+wxhdPoint& ddScrollBarHandle::locate()
 {
 	if(scrollLocator)
 	{
@@ -122,6 +122,6 @@ ddPoint& ddScrollBarHandle::locate()
 		return pointLocate;
 	}
 	else
-		pointLocate=ddPoint(0,0);
+		pointLocate=wxhdPoint(0,0);
 		return pointLocate;
 }

@@ -22,8 +22,8 @@
 //Images
 #include "images/ddRemoveColumnCursor.xpm"
 
-ddRemoveColButtonHandle::ddRemoveColButtonHandle(ddIFigure *owner, ddILocator *buttonLocator ,wxBitmap &buttonImage, wxSize &size):
-ddButtonHandle(owner,buttonLocator,buttonImage,size)
+ddRemoveColButtonHandle::ddRemoveColButtonHandle(wxhdIFigure *owner, wxhdILocator *buttonLocator ,wxBitmap &buttonImage, wxSize &size):
+wxhdButtonHandle(owner,buttonLocator,buttonImage,size)
 {
 	handleCursorImage = wxBitmap(ddRemoveColumnCursor_xpm).ConvertToImage();
     handleCursor=wxCursor(handleCursorImage);
@@ -33,7 +33,7 @@ ddRemoveColButtonHandle::~ddRemoveColButtonHandle()
 {
 }
 
-void ddRemoveColButtonHandle::invokeStart(ddMouseEvent &event, ddDrawingView *view)
+void ddRemoveColButtonHandle::invokeStart(wxhdMouseEvent &event, wxhdDrawingView *view)
 {
 	ddTableFigure *table = (ddTableFigure*) getOwner();
 	ddTextTableItemFigure *column = (ddTextTableItemFigure*) table->findFigure(event.GetPosition().x,event.GetPosition().y);
@@ -41,11 +41,11 @@ void ddRemoveColButtonHandle::invokeStart(ddMouseEvent &event, ddDrawingView *vi
 			table->toggleColumnDeleteMode();
 }
 
-void ddRemoveColButtonHandle::invokeStep(ddMouseEvent &event, ddDrawingView *view)
+void ddRemoveColButtonHandle::invokeStep(wxhdMouseEvent &event, wxhdDrawingView *view)
 {
 }
 
-void ddRemoveColButtonHandle::invokeEnd(ddMouseEvent &event, ddDrawingView *view)
+void ddRemoveColButtonHandle::invokeEnd(wxhdMouseEvent &event, wxhdDrawingView *view)
 {
 }
 

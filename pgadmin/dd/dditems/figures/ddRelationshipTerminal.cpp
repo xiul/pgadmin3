@@ -32,14 +32,14 @@ ddRelationshipTerminal::~ddRelationshipTerminal()
 {
 }
 
-ddPoint& ddRelationshipTerminal::draw (wxBufferedDC& context, ddPoint& a, ddPoint& b, ddDrawingView *view)
+wxhdPoint& ddRelationshipTerminal::draw (wxBufferedDC& context, wxhdPoint& a, wxhdPoint& b, wxhdDrawingView *view)
 {
-	ddGeometry g;
-	ddPoint points[3];
+	wxhdGeometry g;
+	wxhdPoint points[3];
 
 	context.SetPen(terminalLinePen);
 	
-	ddPoint aCopy=a,bCopy=b;
+	wxhdPoint aCopy=a,bCopy=b;
 	view->CalcScrolledPosition(aCopy.x,aCopy.y,&aCopy.x,&aCopy.y);
 	view->CalcScrolledPosition(bCopy.x,bCopy.y,&bCopy.x,&bCopy.y);
 
@@ -51,7 +51,7 @@ ddPoint& ddRelationshipTerminal::draw (wxBufferedDC& context, ddPoint& a, ddPoin
 		
 		if(ownerFigure->getEndFigure() && ownerFigure->getOneToMany())
 		{
-			ddRect r = ownerFigure->getEndFigure()->displayBox();
+			wxhdRect r = ownerFigure->getEndFigure()->displayBox();
 
 			view->CalcScrolledPosition(r.x,r.y,&r.x,&r.y);
 
@@ -143,12 +143,12 @@ ddPoint& ddRelationshipTerminal::draw (wxBufferedDC& context, ddPoint& a, ddPoin
 				 //CENTER of star figure or invalid place, do nothing
 			}
 			
-			value=ddPoint(XX,YY);			
+			value=wxhdPoint(XX,YY);			
 			return value; 
 		}
-		value=ddPoint(0,0);	
+		value=wxhdPoint(0,0);	
 		return value; 
 	}
-	value=ddPoint(0,0);
+	value=wxhdPoint(0,0);
 	return value;
 }

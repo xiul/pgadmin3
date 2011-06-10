@@ -5,12 +5,12 @@
 // Copyright (C) 2002 - 2011, The pgAdmin Development Team
 // This software is released under the PostgreSQL Licence
 //
-// ddHandleTrackerTool.h - A Tool that allow to use multiple handles
+// wxhdHandleTrackerTool.h - A Tool that allow to use multiple handles
 //
 //////////////////////////////////////////////////////////////////////////
 
-#ifndef DDHANDLETRACKERTOOL_H
-#define DDHANDLETRACKERTOOL_H
+#ifndef WXHDHANDLETRACKERTOOL_H
+#define WXHDHANDLETRACKERTOOL_H
 
 #include "dd/wxhotdraw/main/wxhdObject.h"
 #include "dd/wxhotdraw/tools/wxhdITool.h"
@@ -19,22 +19,22 @@
 #include "dd/wxhotdraw/tools/wxhdAbstractTool.h"
 
 
-class ddHandleTrackerTool : public ddAbstractTool
+class wxhdHandleTrackerTool : public wxhdAbstractTool
 {
 public:
-	ddHandleTrackerTool(ddDrawingEditor *editor, ddIHandle *anchor);
-    ~ddHandleTrackerTool();
+	wxhdHandleTrackerTool(wxhdDrawingEditor *editor, wxhdIHandle *anchor);
+    ~wxhdHandleTrackerTool();
 
-	virtual void mouseDown(ddMouseEvent& event);  //Mouse Right Click
-	virtual void mouseUp(ddMouseEvent& event);
-	virtual void mouseDrag(ddMouseEvent& event);
+	virtual void mouseDown(wxhdMouseEvent& event);  //Mouse Right Click
+	virtual void mouseUp(wxhdMouseEvent& event);
+	virtual void mouseDrag(wxhdMouseEvent& event);
 
 protected:
-	ddIHandle *anchorHandle;
+	wxhdIHandle *anchorHandle;
 
 private:
 
-	ddDrawingView *view;
+	wxhdDrawingView *view;
 
 };
 #endif

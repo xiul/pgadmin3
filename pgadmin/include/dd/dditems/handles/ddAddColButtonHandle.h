@@ -14,15 +14,15 @@
 
 #include "dd/wxhotdraw/handles/wxhdButtonHandle.h"
 
-class ddAddColButtonHandle : public ddButtonHandle
+class ddAddColButtonHandle : public wxhdButtonHandle
 {
 public:
-	ddAddColButtonHandle(ddIFigure *owner, ddILocator *buttonLocator ,wxBitmap &buttonImage, wxSize &size);
+	ddAddColButtonHandle(wxhdIFigure *owner, wxhdILocator *buttonLocator ,wxBitmap &buttonImage, wxSize &size);
     ~ddAddColButtonHandle();
 
-	virtual void invokeStart(ddMouseEvent &event, ddDrawingView *view);
-	virtual void invokeStep(ddMouseEvent &event, ddDrawingView *view);
-	virtual void invokeEnd(ddMouseEvent &event, ddDrawingView *view);
+	virtual void invokeStart(wxhdMouseEvent &event, wxhdDrawingView *view);
+	virtual void invokeStep(wxhdMouseEvent &event, wxhdDrawingView *view);
+	virtual void invokeEnd(wxhdMouseEvent &event, wxhdDrawingView *view);
 	wxCursor createCursor();
 protected:
 

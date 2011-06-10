@@ -5,26 +5,26 @@
 // Copyright (C) 2002 - 2011, The pgAdmin Development Team
 // This software is released under the PostgreSQL Licence
 //
-// ddArrayCollection.h - Implementation of Collection Using Arrays
+// wxhdArrayCollection.h - Implementation of Collection Using Arrays
 //
 //////////////////////////////////////////////////////////////////////////
 
-#ifndef DDARRAYCOLLECTION_H
-#define DDARRAYCOLLECTION_H
+#ifndef WXHDARRAYCOLLECTION_H
+#define WXHDARRAYCOLLECTION_H
 
 // App headers
 #include "dd/wxhotdraw/utilities/wxhdCollectionBase.h"
 #include "dd/wxhotdraw/main/wxhdObject.h"
 
 
-WX_DEFINE_ARRAY_PTR(ddObject *, ddObjsArray);
+WX_DEFINE_ARRAY_PTR(wxhdObject *, ddObjsArray);
 
-class ddArrayIterator : public ddIteratorBase
+class wxhdArrayIterator : public wxhdIteratorBase
 {
 public:
-    ddArrayIterator(ddObjsArray *ddPtrsArray);
-    ddObject* Next();
-    ddObject* Current();
+    wxhdArrayIterator(ddObjsArray *ddPtrsArray);
+    wxhdObject* Next();
+    wxhdObject* Current();
     bool HasNext();
     void ResetIterator();
 
@@ -33,12 +33,12 @@ private:
     ddObjsArray *internalArray;
 };
 
-class ddArrayDownIterator : public ddIteratorBase
+class wxhdArrayDownIterator : public wxhdIteratorBase
 {
 public:
-    ddArrayDownIterator(ddObjsArray *ddPtrsArray);
-    ddObject* Next();
-    ddObject* Current();
+    wxhdArrayDownIterator(ddObjsArray *ddPtrsArray);
+    wxhdObject* Next();
+    wxhdObject* Current();
     bool HasNext();
     void ResetIterator();
 
@@ -47,27 +47,27 @@ private:
     ddObjsArray *internalArray;
 };
 
-//Create Array Objects used as base for ddCollections
-class ddArrayCollection : public ddCollectionBase
+//Create Array Objects used as base for wxhdCollections
+class wxhdArrayCollection : public wxhdCollectionBase
 {
 public:
-    ~ddArrayCollection();
-    void addItem(ddObject *item);
-    void removeItem(ddObject *item);
+    ~wxhdArrayCollection();
+    void addItem(wxhdObject *item);
+    void removeItem(wxhdObject *item);
 	virtual void removeItemAt(int index);
-    ddIteratorBase* createIterator();
-	ddIteratorBase* createDownIterator();
-    ddObject* getItemAt(int index);
-	void bringToFront(ddObject *item);
-	void sendToBack(ddObject *item);
+    wxhdIteratorBase* createIterator();
+	wxhdIteratorBase* createDownIterator();
+    wxhdObject* getItemAt(int index);
+	void bringToFront(wxhdObject *item);
+	void sendToBack(wxhdObject *item);
     int count();
-    bool existsObject(ddObject *item);
-    int getIndex(ddObject *item);
-    void insertAtIndex(ddObject *item, int index);
-	void replaceAtIndex(ddObject *item, int index);
+    bool existsObject(wxhdObject *item);
+    int getIndex(wxhdObject *item);
+    void insertAtIndex(wxhdObject *item, int index);
+	void replaceAtIndex(wxhdObject *item, int index);
     void deleteAll();
     void removeAll();
-    ddObject *& operator[](size_t index) { return ddArray[index]; }
+    wxhdObject *& operator[](size_t index) { return ddArray[index]; }
 private:
 	ddObjsArray ddArray;
 };

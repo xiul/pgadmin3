@@ -5,7 +5,7 @@
 // Copyright (C) 2002 - 2011, The pgAdmin Development Team
 // This software is released under the PostgreSQL Licence
 //
-// ddIHandle.cpp - Base class for all Handles
+// wxhdIHandle.cpp - Base class for all Handles
 //
 //////////////////////////////////////////////////////////////////////////
 
@@ -18,22 +18,22 @@
 #include "dd/wxhotdraw/handles/wxhdIHandle.h"
 #include "dd/wxhotdraw/utilities/wxhdPoint.h"
 
-ddIHandle::ddIHandle(ddIFigure *owner)
+wxhdIHandle::wxhdIHandle(wxhdIFigure *owner)
 {
 	figureOwner=owner;
 }
-ddIHandle::~ddIHandle()
+wxhdIHandle::~wxhdIHandle()
 {
 }
 
-ddIFigure* ddIHandle::getOwner()
+wxhdIFigure* wxhdIHandle::getOwner()
 {
 	return figureOwner;
 }
 
-ddRect& ddIHandle::getDisplayBox()
+wxhdRect& wxhdIHandle::getDisplayBox()
 {
-	ddPoint p = locate();
+	wxhdPoint p = locate();
 	displayBox.width=0;
 	displayBox.height=0;
 	displayBox.SetPosition(p);
@@ -41,7 +41,7 @@ ddRect& ddIHandle::getDisplayBox()
 	return displayBox;
 }
 
-bool ddIHandle::containsPoint(int x, int y)
+bool wxhdIHandle::containsPoint(int x, int y)
 {
 	return getDisplayBox().Contains(x,y);
 }

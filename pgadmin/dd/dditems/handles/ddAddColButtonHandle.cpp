@@ -23,8 +23,8 @@
 //Images
 #include "images/ddAddColumnCursor.xpm"
 
-ddAddColButtonHandle::ddAddColButtonHandle(ddIFigure *owner, ddILocator *buttonLocator ,wxBitmap &buttonImage, wxSize &size):
-ddButtonHandle(owner,buttonLocator,buttonImage,size)
+ddAddColButtonHandle::ddAddColButtonHandle(wxhdIFigure *owner, wxhdILocator *buttonLocator ,wxBitmap &buttonImage, wxSize &size):
+wxhdButtonHandle(owner,buttonLocator,buttonImage,size)
 {
 	handleCursorImage = wxBitmap(ddAddColumnCursor_xpm).ConvertToImage();
     handleCursor=wxCursor(handleCursorImage);
@@ -34,7 +34,7 @@ ddAddColButtonHandle::~ddAddColButtonHandle()
 {
 }
 
-void ddAddColButtonHandle::invokeStart(ddMouseEvent &event, ddDrawingView *view)
+void ddAddColButtonHandle::invokeStart(wxhdMouseEvent &event, wxhdDrawingView *view)
 {
 	ddTableFigure *table = (ddTableFigure*) getOwner();
 	wxTextEntryDialog nameDialog(view, wxT("New column name"), wxT("Add a column"), wxT("NewColumn"));
@@ -64,11 +64,11 @@ void ddAddColButtonHandle::invokeStart(ddMouseEvent &event, ddDrawingView *view)
 	}while(again);
 }
 
-void ddAddColButtonHandle::invokeStep(ddMouseEvent &event, ddDrawingView *view)
+void ddAddColButtonHandle::invokeStep(wxhdMouseEvent &event, wxhdDrawingView *view)
 {
 }
 
-void ddAddColButtonHandle::invokeEnd(ddMouseEvent &event, ddDrawingView *view)
+void ddAddColButtonHandle::invokeEnd(wxhdMouseEvent &event, wxhdDrawingView *view)
 {
 }
 

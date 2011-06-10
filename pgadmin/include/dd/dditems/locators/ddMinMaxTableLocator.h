@@ -15,13 +15,13 @@
 #include "dd/wxhotdraw/locators/wxhdILocator.h"
 #include "dd/wxhotdraw/figures/wxhdIFigure.h"
 
-class ddMinMaxTableLocator : public ddILocator
+class ddMinMaxTableLocator : public wxhdILocator
 {
 public:
 	ddMinMaxTableLocator();
     ~ddMinMaxTableLocator();
 
-	virtual ddPoint& locate(ddIFigure *owner);
+	virtual wxhdPoint& locate(wxhdIFigure *owner);
 
 protected:
 

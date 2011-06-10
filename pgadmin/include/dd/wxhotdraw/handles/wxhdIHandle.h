@@ -5,43 +5,43 @@
 // Copyright (C) 2002 - 2011, The pgAdmin Development Team
 // This software is released under the PostgreSQL Licence
 //
-// ddIHandle.cpp - Base class for all Handles
+// wxhdIHandle.cpp - Base class for all Handles
 //
 //////////////////////////////////////////////////////////////////////////
 
-#ifndef DDIHANDLE_H
-#define DDIHANDLE_H
+#ifndef WXHDIHANDLE_H
+#define WXHDIHANDLE_H
 
 #include "wx/dcbuffer.h"
 #include "dd/wxhotdraw/main/wxhdObject.h"
 #include "dd/wxhotdraw/utilities/wxhdRect.h"
 #include "dd/wxhotdraw/utilities/wxhdPoint.h"
 
-class ddDrawingView;
-class ddIFigure;
-class ddMouseEvent;
+class wxhdDrawingView;
+class wxhdIFigure;
+class wxhdMouseEvent;
 
-class ddIHandle : public ddObject
+class wxhdIHandle : public wxhdObject
 {
 public:
-	ddIHandle(ddIFigure *owner);
-    ~ddIHandle();
+	wxhdIHandle(wxhdIFigure *owner);
+    ~wxhdIHandle();
 	
 	static const int size = 4;
 
 	virtual bool containsPoint(int x, int y);
-	virtual void draw(wxBufferedDC& context, ddDrawingView *view)=0;
-	virtual ddPoint& locate()=0;
-	virtual void invokeStart(ddMouseEvent& event, ddDrawingView *view)=0;
-	virtual void invokeStep(ddMouseEvent& event, ddDrawingView *view)=0;
-	virtual void invokeEnd(ddMouseEvent& event, ddDrawingView *view)=0;
+	virtual void draw(wxBufferedDC& context, wxhdDrawingView *view)=0;
+	virtual wxhdPoint& locate()=0;
+	virtual void invokeStart(wxhdMouseEvent& event, wxhdDrawingView *view)=0;
+	virtual void invokeStep(wxhdMouseEvent& event, wxhdDrawingView *view)=0;
+	virtual void invokeEnd(wxhdMouseEvent& event, wxhdDrawingView *view)=0;
 	virtual wxCursor createCursor()=0;
-	virtual ddRect& getDisplayBox();
+	virtual wxhdRect& getDisplayBox();
 protected:
-	virtual ddIFigure* getOwner();
-	ddRect displayBox;
+	virtual wxhdIFigure* getOwner();
+	wxhdRect displayBox;
 private:
-	ddIFigure *figureOwner;
+	wxhdIFigure *figureOwner;
 	double lineWidth;
 
 };

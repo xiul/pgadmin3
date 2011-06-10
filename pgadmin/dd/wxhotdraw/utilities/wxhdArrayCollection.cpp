@@ -5,7 +5,7 @@
 // Copyright (C) 2002 - 2011, The pgAdmin Development Team
 // This software is released under the PostgreSQL Licence
 //
-// ddArrayCollection.cpp - Implementation of Collection Using Arrays
+// wxhdArrayCollection.cpp - Implementation of Collection Using Arrays
 //
 //////////////////////////////////////////////////////////////////////////
 
@@ -19,50 +19,50 @@
 #include "dd/wxhotdraw/main/wxhdObject.h"
 
 // Destructor
-ddArrayCollection::~ddArrayCollection()
+wxhdArrayCollection::~wxhdArrayCollection()
 {
 	WX_CLEAR_ARRAY(ddArray);
 }
 
 // Add item to array
-void ddArrayCollection::addItem(ddObject *item)
+void wxhdArrayCollection::addItem(wxhdObject *item)
 {
     ddArray.Add(item);
 }
 
 // Remove item from array but don't delete it.
-void ddArrayCollection::removeItem(ddObject *item)
+void wxhdArrayCollection::removeItem(wxhdObject *item)
 {
     ddArray.Remove(item);
 }
 
-void ddArrayCollection::removeItemAt(int index)
+void wxhdArrayCollection::removeItemAt(int index)
 {
 	ddArray.RemoveAt(index);
 }
 
 // Create an iterator for the objects inside the array
-ddIteratorBase* ddArrayCollection::createIterator()
+wxhdIteratorBase* wxhdArrayCollection::createIterator()
 {
-    return (new ddArrayIterator(&ddArray));
+    return (new wxhdArrayIterator(&ddArray));
 }
 
 // Create a Down to iterator for the objects inside the array
-ddIteratorBase* ddArrayCollection::createDownIterator()
+wxhdIteratorBase* wxhdArrayCollection::createDownIterator()
 {
-    return (new ddArrayDownIterator(&ddArray));
+    return (new wxhdArrayDownIterator(&ddArray));
 }
 
 // Return the number of elements inside the array
-int ddArrayCollection::count()
+int wxhdArrayCollection::count()
 {
     return ddArray.Count();
 }
 
 // Return true if an element pointer is found inside array
-bool ddArrayCollection::existsObject(ddObject *item)
+bool wxhdArrayCollection::existsObject(wxhdObject *item)
 {
-    ddObject *found=NULL;
+    wxhdObject *found=NULL;
     int size=ddArray.GetCount();
     for(int i=0;i<size;i++)
     {
@@ -76,19 +76,19 @@ bool ddArrayCollection::existsObject(ddObject *item)
 }
 
 // Delete all elements inside array
-void ddArrayCollection::deleteAll()
+void wxhdArrayCollection::deleteAll()
 {
     WX_CLEAR_ARRAY(ddArray);
 }
 
 // Removes all elements inside array without deleting
-void ddArrayCollection::removeAll()
+void wxhdArrayCollection::removeAll()
 {
     ddArray.Empty();
 }
 
 // Get Item at certain position at Collection 
-ddObject* ddArrayCollection::getItemAt(int index)
+wxhdObject* wxhdArrayCollection::getItemAt(int index)
 {
     if(!ddArray.IsEmpty())
 		return ddArray[index];
@@ -97,38 +97,38 @@ ddObject* ddArrayCollection::getItemAt(int index)
 }
 
 //Bring item to start of array
-void ddArrayCollection::bringToFront(ddObject *item)
+void wxhdArrayCollection::bringToFront(wxhdObject *item)
 {
-	ddObject *tmp = ddArray[0];
+	wxhdObject *tmp = ddArray[0];
 	int index = getIndex(item);
 	ddArray[0]=ddArray[index];
 	ddArray[index]=tmp;
 }
 
 //Bring item to end of array
-void ddArrayCollection::sendToBack(ddObject *item)
+void wxhdArrayCollection::sendToBack(wxhdObject *item)
 {
 	int end = count() - 1;
-	ddObject *tmp = ddArray[end];
+	wxhdObject *tmp = ddArray[end];
 	int index = getIndex(item);
 	ddArray[end]=ddArray[index];
 	ddArray[index]=tmp;
 }
 
 
-int ddArrayCollection::getIndex(ddObject *item)
+int wxhdArrayCollection::getIndex(wxhdObject *item)
 {
     return ddArray.Index(item);
 }
 
 // Insert item into the array before the index
-void ddArrayCollection::insertAtIndex(ddObject *item, int index)
+void wxhdArrayCollection::insertAtIndex(wxhdObject *item, int index)
 {
     ddArray.Insert(item,index);
 }
 
 // Replace item into the array at index (if overwrite user should delete manually previous object at index)
-void ddArrayCollection::replaceAtIndex(ddObject *item, int index)
+void wxhdArrayCollection::replaceAtIndex(wxhdObject *item, int index)
 {
 	ddArray.RemoveAt(index);
 	ddArray.Insert(item,index);
@@ -136,34 +136,34 @@ void ddArrayCollection::replaceAtIndex(ddObject *item, int index)
 
 
 //
-// ddArrayIterator - Manages iterator for the array collection concrete class, from first to last element
+// wxhdArrayIterator - Manages iterator for the array collection concrete class, from first to last element
 //
 
 
 // Constructor
-ddArrayIterator::ddArrayIterator(ddObjsArray *ddPtrsArray)
+wxhdArrayIterator::wxhdArrayIterator(ddObjsArray *ddPtrsArray)
 {
     position=0;
     internalArray=ddPtrsArray;
 }
 
 // Get current item in the array for the iterator
-ddObject* ddArrayIterator::Current()
+wxhdObject* wxhdArrayIterator::Current()
 {
-    ddObject *obj = internalArray->Item(position);
+    wxhdObject *obj = internalArray->Item(position);
     return obj;
 }
 
 // Get next item in the array for the iterator
-ddObject* ddArrayIterator::Next()
+wxhdObject* wxhdArrayIterator::Next()
 {
-    ddObject *obj = internalArray->Item(position);
+    wxhdObject *obj = internalArray->Item(position);
     position++;
     return obj;
 }
 
 // Return true if the array has more elements to return
-bool ddArrayIterator::HasNext()
+bool wxhdArrayIterator::HasNext()
 {
     int size=internalArray->GetCount();
     if( (size>0) && (position<=(size-1)) )
@@ -172,41 +172,41 @@ bool ddArrayIterator::HasNext()
         return false;
 }
 
-void ddArrayIterator::ResetIterator()
+void wxhdArrayIterator::ResetIterator()
 {
     position=0;
 }
 
 
 //
-// ddArrayDownIterator - Manages iterator for the array collection concrete class from last to first element
+// wxhdArrayDownIterator - Manages iterator for the array collection concrete class from last to first element
 //
 
 
 // Constructor
-ddArrayDownIterator::ddArrayDownIterator(ddObjsArray *ddPtrsArray)
+wxhdArrayDownIterator::wxhdArrayDownIterator(ddObjsArray *ddPtrsArray)
 {
     internalArray=ddPtrsArray;
 	position=internalArray->GetCount()-1;
 }
 
 // Get current item in the array for the iterator
-ddObject* ddArrayDownIterator::Current()
+wxhdObject* wxhdArrayDownIterator::Current()
 {
-    ddObject *obj = internalArray->Item(position);
+    wxhdObject *obj = internalArray->Item(position);
     return obj;
 }
 
 // Get next item in the array for the iterator
-ddObject* ddArrayDownIterator::Next()
+wxhdObject* wxhdArrayDownIterator::Next()
 {
-    ddObject *obj = internalArray->Item(position);
+    wxhdObject *obj = internalArray->Item(position);
     position--;
     return obj;
 }
 
 // Return true if the array has more elements to return
-bool ddArrayDownIterator::HasNext()
+bool wxhdArrayDownIterator::HasNext()
 {
     int size=internalArray->GetCount();
     if( (size>0) && (position<=(size-1) && position>=0) )
@@ -215,7 +215,7 @@ bool ddArrayDownIterator::HasNext()
         return false;
 }
 
-void ddArrayDownIterator::ResetIterator()
+void wxhdArrayDownIterator::ResetIterator()
 {
     position=internalArray->GetCount()-1;
 }

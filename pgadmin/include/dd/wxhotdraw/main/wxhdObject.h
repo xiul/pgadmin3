@@ -9,12 +9,12 @@
 //
 //////////////////////////////////////////////////////////////////////////
 
-#ifndef DDOBJECT_H
-#define DDOBJECT_H
+#ifndef WXHDOBJECT_H
+#define WXHDOBJECT_H
 
-class ddObject : public wxObject
+class wxhdObject : public wxObject
 {
 public:
-	ddObject() {};
+	wxhdObject() {};
 };
 #endif

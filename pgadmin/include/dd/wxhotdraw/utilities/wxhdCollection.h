@@ -5,39 +5,39 @@
 // Copyright (C) 2002 - 2011, The pgAdmin Development Team
 // This software is released under the PostgreSQL Licence
 //
-// ddCollection.h - Generic implementation of a Collection used by dd
+// wxhdCollection.h - Generic implementation of a Collection used by dd
 //
 //////////////////////////////////////////////////////////////////////////
 
-#ifndef DDCOLLECTION_H
-#define DDCOLLECTION_H
+#ifndef WXHDCOLLECTION_H
+#define WXHDCOLLECTION_H
 
 // App headers
 #include "dd/wxhotdraw/main/wxhdObject.h"
 #include "dd/wxhotdraw/utilities/wxhdCollectionBase.h"
 
-class ddCollection : public wxObject
+class wxhdCollection : public wxObject
 {
 public:
-    ddCollection(ddCollectionBase *collectionBase);
-    virtual ~ddCollection();
-    void addItem(ddObject *item);
-    void removeItem(ddObject *item);
+    wxhdCollection(wxhdCollectionBase *collectionBase);
+    virtual ~wxhdCollection();
+    void addItem(wxhdObject *item);
+    void removeItem(wxhdObject *item);
 	void removeItemAt(int index);
     void deleteAll();
     void removeAll();
     int count();
-    bool existsObject(ddObject *item);
-    int getIndex(ddObject *item);
-    ddObject* getItemAt(int index);
-    void insertAtIndex(ddObject *item, int index);
-	void replaceAtIndex(ddObject *item, int index);
-	void bringToFront(ddObject *item);
-	void sendToBack(ddObject *item);
-    ddIteratorBase* createIterator();
-	ddIteratorBase* createDownIterator();
+    bool existsObject(wxhdObject *item);
+    int getIndex(wxhdObject *item);
+    wxhdObject* getItemAt(int index);
+    void insertAtIndex(wxhdObject *item, int index);
+	void replaceAtIndex(wxhdObject *item, int index);
+	void bringToFront(wxhdObject *item);
+	void sendToBack(wxhdObject *item);
+    wxhdIteratorBase* createIterator();
+	wxhdIteratorBase* createDownIterator();
 
 private:
-    ddCollectionBase *collection;
+    wxhdCollectionBase *collection;
 };
 #endif

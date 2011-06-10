@@ -5,7 +5,7 @@
 // Copyright (C) 2002 - 2011, The pgAdmin Development Team
 // This software is released under the PostgreSQL Licence
 //
-// ddMouseEvent.cpp - Wrapper Class to integrate conversion CalcUnscrolledPosition in a mouse event.
+// wxhdMouseEvent.cpp - Wrapper Class to integrate conversion CalcUnscrolledPosition in a mouse event.
 //
 //////////////////////////////////////////////////////////////////////////
 
@@ -18,66 +18,66 @@
 #include "dd/wxhotdraw/utilities/wxhdMouseEvent.h"
 #include "dd/wxhotdraw/main/wxhdDrawingView.h"
 
-ddMouseEvent::ddMouseEvent(wxMouseEvent& event, ddDrawingView *owner):
+wxhdMouseEvent::wxhdMouseEvent(wxMouseEvent& event, wxhdDrawingView *owner):
 mouseEvent(event)
 {
 	view=owner;
 	m_shiftDown = event.m_shiftDown;
 }
 
-ddPoint& ddMouseEvent::GetPosition()
+wxhdPoint& wxhdMouseEvent::GetPosition()
 {
 	return getUnScrolledPosition();
 }
 
-ddPoint& ddMouseEvent::getUnScrolledPosition()
+wxhdPoint& wxhdMouseEvent::getUnScrolledPosition()
 {
 	unScrolled = mouseEvent.GetPosition();
 	view->CalcUnscrolledPosition(unScrolled.x,unScrolled.y,&unScrolled.x,&unScrolled.y);
 	return unScrolled;
 }
 
-int ddMouseEvent::getUnScrolledPosX()
+int wxhdMouseEvent::getUnScrolledPosX()
 {
 	return getUnScrolledPosition().x;
 }
 
-int ddMouseEvent::getUnScrolledPosY()
+int wxhdMouseEvent::getUnScrolledPosY()
 {
 	return getUnScrolledPosition().y;
 }
 
-bool ddMouseEvent::LeftDClick()
+bool wxhdMouseEvent::LeftDClick()
 {
 	return mouseEvent.LeftDClick();
 }
 
-bool ddMouseEvent::ShiftDown()
+bool wxhdMouseEvent::ShiftDown()
 {
 	return mouseEvent.ShiftDown();
 }
 
-bool ddMouseEvent::RightDown()
+bool wxhdMouseEvent::RightDown()
 {
 	return mouseEvent.RightDown();
 }
 
-bool ddMouseEvent::LeftDown()
+bool wxhdMouseEvent::LeftDown()
 {
 	return mouseEvent.LeftDown();
 }
 
-bool ddMouseEvent::LeftUp()
+bool wxhdMouseEvent::LeftUp()
 {
 	return mouseEvent.LeftUp();
 }
 
-bool ddMouseEvent::LeftIsDown()
+bool wxhdMouseEvent::LeftIsDown()
 {
 	return mouseEvent.LeftIsDown();
 }
 
-ddDrawingView* ddMouseEvent::getView()
+wxhdDrawingView* wxhdMouseEvent::getView()
 {
 	return view;
 }

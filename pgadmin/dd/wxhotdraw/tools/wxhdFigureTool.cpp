@@ -5,7 +5,7 @@
 // Copyright (C) 2002 - 2011, The pgAdmin Development Team
 // This software is released under the PostgreSQL Licence
 //
-// ddFigureTool.cpp - Base class for all figure tools
+// wxhdFigureTool.cpp - Base class for all figure tools
 //
 //////////////////////////////////////////////////////////////////////////
 
@@ -17,14 +17,14 @@
 // App headers
 #include "dd/wxhotdraw/tools/wxhdFigureTool.h"
 
-ddFigureTool::ddFigureTool(ddDrawingEditor *editor, ddIFigure *fig, ddITool *dt):
-ddAbstractTool(editor)
+wxhdFigureTool::wxhdFigureTool(wxhdDrawingEditor *editor, wxhdIFigure *fig, wxhdITool *dt):
+wxhdAbstractTool(editor)
 {
 	defaultTool=dt;
 	figure=fig;
 }
 
-ddFigureTool::~ddFigureTool()
+wxhdFigureTool::~wxhdFigureTool()
 {
 	if(defaultTool)
 	{
@@ -32,27 +32,27 @@ ddFigureTool::~ddFigureTool()
 	}
 }
 
-void ddFigureTool::setDefaultTool(ddITool *dt)
+void wxhdFigureTool::setDefaultTool(wxhdITool *dt)
 {
 	defaultTool=dt;
 }
 
-ddITool* ddFigureTool::getDefaultTool()
+wxhdITool* wxhdFigureTool::getDefaultTool()
 {
 	return defaultTool;
 }
 
-void ddFigureTool::setFigure(ddIFigure *fig)
+void wxhdFigureTool::setFigure(wxhdIFigure *fig)
 {
 	figure=fig;
 }
 
-ddIFigure* ddFigureTool::getFigure()
+wxhdIFigure* wxhdFigureTool::getFigure()
 {
 	return figure;
 }
 
-void ddFigureTool::mouseDown(ddMouseEvent& event)
+void wxhdFigureTool::mouseDown(wxhdMouseEvent& event)
 {
 	if(defaultTool)
 	{
@@ -60,7 +60,7 @@ void ddFigureTool::mouseDown(ddMouseEvent& event)
 	}
 }
 
-void ddFigureTool::mouseUp(ddMouseEvent& event)
+void wxhdFigureTool::mouseUp(wxhdMouseEvent& event)
 {
 	if(defaultTool)
 	{
@@ -68,7 +68,7 @@ void ddFigureTool::mouseUp(ddMouseEvent& event)
 	}
 }
 
-void ddFigureTool::mouseMove(ddMouseEvent& event)
+void wxhdFigureTool::mouseMove(wxhdMouseEvent& event)
 {
 	if(defaultTool)
 	{
@@ -76,7 +76,7 @@ void ddFigureTool::mouseMove(ddMouseEvent& event)
 	}
 }
 
-void ddFigureTool::mouseDrag(ddMouseEvent& event)
+void wxhdFigureTool::mouseDrag(wxhdMouseEvent& event)
 {
 	if(defaultTool)
 	{
@@ -84,7 +84,7 @@ void ddFigureTool::mouseDrag(ddMouseEvent& event)
 	}
 }
 
-void ddFigureTool::keyDown(wxKeyEvent& event)
+void wxhdFigureTool::keyDown(wxKeyEvent& event)
 {
 	if(defaultTool)
 	{
@@ -92,7 +92,7 @@ void ddFigureTool::keyDown(wxKeyEvent& event)
 	}
 }
 
-void ddFigureTool::keyUp(wxKeyEvent& event)
+void wxhdFigureTool::keyUp(wxKeyEvent& event)
 {
 		if(defaultTool)
 	{

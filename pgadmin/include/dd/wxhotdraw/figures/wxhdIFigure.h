@@ -5,62 +5,62 @@
 // Copyright (C) 2002 - 2011, The pgAdmin Development Team
 // This software is released under the PostgreSQL Licence
 //
-// ddIFigure.h - Base class for all figures
+// wxhdIFigure.h - Base class for all figures
 //
 //////////////////////////////////////////////////////////////////////////
 
-#ifndef DDIFIGURE_H
-#define DDIFIGURE_H
+#ifndef WXHDIFIGURE_H
+#define WXHDIFIGURE_H
 #include "dd/wxhotdraw/utilities/wxhdRect.h"
 #include "dd/wxhotdraw/main/wxhdObject.h"
 #include "dd/wxhotdraw/utilities/wxhdCollection.h"
 #include "dd/wxhotdraw/handles/wxhdIHandle.h"
 
-class ddITool;
-class ddDrawingEditor;
-class ddIConnector;
-class ddITool;
+class wxhdITool;
+class wxhdDrawingEditor;
+class wxhdIConnector;
+class wxhdITool;
 
-class ddIFigure : public ddObject
+class wxhdIFigure : public wxhdObject
 {
 public:
-	ddIFigure();
-    ~ddIFigure();
+	wxhdIFigure();
+    ~wxhdIFigure();
 
-	virtual ddRect& displayBox();
-	virtual ddRect& getBasicDisplayBox();
-	virtual void draw (wxBufferedDC& context, ddDrawingView *view);
-	virtual void drawSelected (wxBufferedDC& context, ddDrawingView *view);
-	virtual ddCollection* handlesEnumerator();
-	virtual void addHandle (ddIHandle *handle);
-	virtual void removeHandle (ddIHandle *handle);
-	virtual ddIConnector* connectorAt (int x, int y);
+	virtual wxhdRect& displayBox();
+	virtual wxhdRect& getBasicDisplayBox();
+	virtual void draw (wxBufferedDC& context, wxhdDrawingView *view);
+	virtual void drawSelected (wxBufferedDC& context, wxhdDrawingView *view);
+	virtual wxhdCollection* handlesEnumerator();
+	virtual void addHandle (wxhdIHandle *handle);
+	virtual void removeHandle (wxhdIHandle *handle);
+	virtual wxhdIConnector* connectorAt (int x, int y);
 	virtual void moveBy(int x, int y);
 	virtual void moveTo(int x, int y);
 	virtual bool containsPoint(int x, int y);
 	virtual bool isSelected();
 	virtual void setSelected(bool value);
-	virtual bool includes(ddIFigure *figure);
+	virtual bool includes(wxhdIFigure *figure);
 	virtual bool canConnect()=0;
-	virtual void onFigureChanged(ddIFigure *figure)=0;
-	virtual void addObserver (ddIFigure *observer);
-	virtual void removeObserver (ddIFigure *observer);	
-	virtual ddIteratorBase* observersEnumerator();
+	virtual void onFigureChanged(wxhdIFigure *figure)=0;
+	virtual void addObserver (wxhdIFigure *observer);
+	virtual void removeObserver (wxhdIFigure *observer);	
+	virtual wxhdIteratorBase* observersEnumerator();
 	virtual void setKindId(int objectId=-1);
 	virtual int getKindId();
-	virtual ddITool* CreateFigureTool(ddDrawingEditor *editor, ddITool *defaultTool);
+	virtual wxhdITool* CreateFigureTool(wxhdDrawingEditor *editor, wxhdITool *defaultTool);
 
 protected:
-	ddRect basicDisplayBox;
-	ddCollection *handles;
-	ddCollection *observers;
+	wxhdRect basicDisplayBox;
+	wxhdCollection *handles;
+	wxhdCollection *observers;
 	void setDefaultPen(wxPen& pen);
 	void setDefaultSelectedPen(wxPen& pen);
 	void setDefaultBrush(wxBrush& brush);
 	void setDefaultSelectedBrush(wxBrush& brush);
 	wxPen defaultPen, defaultSelectedPen;
 	wxBrush defaultBrush, defaultSelectedBrush;
-	ddIConnector *connector;
+	wxhdIConnector *connector;
 private:
 	bool selected;
 	int kindHiddenId;

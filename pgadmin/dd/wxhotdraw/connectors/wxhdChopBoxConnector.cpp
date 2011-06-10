@@ -5,7 +5,7 @@
 // Copyright (C) 2002 - 2011, The pgAdmin Development Team
 // This software is released under the PostgreSQL Licence
 //
-// ddChopBoxConnector.cpp - Connector for center of figure to line crossing one limit line of rect
+// wxhdChopBoxConnector.cpp - Connector for center of figure to line crossing one limit line of rect
 //
 //////////////////////////////////////////////////////////////////////////
 
@@ -18,17 +18,17 @@
 #include "dd/wxhotdraw/connectors/wxhdChopBoxConnector.h"
 #include "dd/wxhotdraw/utilities/wxhdGeometry.h"
 
-ddChopBoxConnector::ddChopBoxConnector(ddIFigure *owner):
-ddIConnector(owner)
+wxhdChopBoxConnector::wxhdChopBoxConnector(wxhdIFigure *owner):
+wxhdIConnector(owner)
 {
 }
 
-ddChopBoxConnector::~ddChopBoxConnector()
+wxhdChopBoxConnector::~wxhdChopBoxConnector()
 {
 }
 
 
-ddPoint ddChopBoxConnector::chop(ddIFigure *target, ddPoint point){
+wxhdPoint wxhdChopBoxConnector::chop(wxhdIFigure *target, wxhdPoint point){
 	if(target && target->containsPoint(point.x, point.y))
 	{
 		point=target->displayBox().center();
@@ -36,11 +36,11 @@ ddPoint ddChopBoxConnector::chop(ddIFigure *target, ddPoint point){
 	}
 	else if(!target)
 	{
-		point = ddPoint(0,0);		
+		point = wxhdPoint(0,0);		
 		return point;
 	}
 	
-	ddGeometry g;
+	wxhdGeometry g;
 	
 	rect = getDisplayBox();  //hack to avoid linux bug
 	double angle = g.angleFromPoint(rect, point);
@@ -48,7 +48,7 @@ ddPoint ddChopBoxConnector::chop(ddIFigure *target, ddPoint point){
 	return point; 
 }
 
-ddPoint ddChopBoxConnector::findStart(ddLineConnection *connFigure)
+wxhdPoint wxhdChopBoxConnector::findStart(wxhdLineConnection *connFigure)
 {
 	if(!connFigure)
 	{
@@ -62,19 +62,19 @@ ddPoint ddChopBoxConnector::findStart(ddLineConnection *connFigure)
 		return point;
 	}
 
-	ddIFigure *start = connFigure->getStartConnector()->getOwner();
+	wxhdIFigure *start = connFigure->getStartConnector()->getOwner();
 	point = connFigure->pointAt(1);
 	point = chop(start,point);
 	return point;
 }
 
-ddPoint ddChopBoxConnector::findEnd(ddLineConnection *connFigure)
+wxhdPoint wxhdChopBoxConnector::findEnd(wxhdLineConnection *connFigure)
 {
 	if(!connFigure)
 	{
 		return getDisplayBox().center();
 	}
-	ddIFigure *end = connFigure->getEndConnector()->getOwner();
+	wxhdIFigure *end = connFigure->getEndConnector()->getOwner();
 	point = connFigure->pointAt(connFigure->pointCount()-2);
 	point = chop(end,point);
 	return point;

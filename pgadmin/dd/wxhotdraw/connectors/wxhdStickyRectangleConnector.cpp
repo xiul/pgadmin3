@@ -5,7 +5,7 @@
 // Copyright (C) 2002 - 2011, The pgAdmin Development Team
 // This software is released under the PostgreSQL Licence
 //
-// ddAbstractFigure.cpp - A StickyRectangleConnector locates connection points by choping
+// wxhdAbstractFigure.cpp - A StickyRectangleConnector locates connection points by choping
 // the connection between the centers of the two figures at the display box. The location 
 // of the connection point is computed once, when the user connects the figure. 
 // Moving the figure around will not change the location.
@@ -23,50 +23,50 @@
 #include "dd/wxhotdraw/connectors/wxhdChopBoxConnector.h"
 #include "dd/wxhotdraw/utilities/wxhdGeometry.h"
 
-class ddLineConnection;
-class ddIFigure;
+class wxhdLineConnection;
+class wxhdIFigure;
 
-ddStickyRectangleConnector::ddStickyRectangleConnector(ddIFigure *owner, ddPoint p):
-ddChopBoxConnector(owner)
+wxhdStickyRectangleConnector::wxhdStickyRectangleConnector(wxhdIFigure *owner, wxhdPoint p):
+wxhdChopBoxConnector(owner)
 {
-	ddGeometry g;
+	wxhdGeometry g;
 	updateAnchor(p);
 }
 
-ddStickyRectangleConnector::~ddStickyRectangleConnector()
+wxhdStickyRectangleConnector::~wxhdStickyRectangleConnector()
 {
 }
 
-void ddStickyRectangleConnector::setAngle(float newAngle)
+void wxhdStickyRectangleConnector::setAngle(float newAngle)
 {
 	angle=newAngle;
 }
 
-void ddStickyRectangleConnector::updateAnchor(ddPoint p)
+void wxhdStickyRectangleConnector::updateAnchor(wxhdPoint p)
 {
-	ddGeometry g;
+	wxhdGeometry g;
 
-	ddRect rect = getDisplayBox();  //hack to avoid linux bug
+	wxhdRect rect = getDisplayBox();  //hack to avoid linux bug
 	angle = g.angleFromPoint(rect, p);
 }
 
-ddPoint ddStickyRectangleConnector::getAnchor()
+wxhdPoint wxhdStickyRectangleConnector::getAnchor()
 {
-	ddGeometry g;
+	wxhdGeometry g;
 
-	ddRect rect = getDisplayBox();  //hack to avoid linux bug	
+	wxhdRect rect = getDisplayBox();  //hack to avoid linux bug	
 	return g.edgePointFromAngle(rect, angle);
 }
 
-ddPoint ddStickyRectangleConnector::chop(ddIFigure *target, ddPoint point){
+wxhdPoint wxhdStickyRectangleConnector::chop(wxhdIFigure *target, wxhdPoint point){
 	
-	ddGeometry g;
+	wxhdGeometry g;
 	
-	ddRect rect = target->displayBox();  //hack to avoid linux bug
+	wxhdRect rect = target->displayBox();  //hack to avoid linux bug
 	point=g.edgePointFromAngle(rect, angle);
 	return point; 
 }
 
-void ddStickyRectangleConnector::draw(wxBufferedDC& context)
+void wxhdStickyRectangleConnector::draw(wxBufferedDC& context)
 {
 }

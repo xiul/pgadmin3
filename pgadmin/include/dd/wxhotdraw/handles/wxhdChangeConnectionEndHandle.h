@@ -5,26 +5,26 @@
 // Copyright (C) 2002 - 2011, The pgAdmin Development Team
 // This software is released under the PostgreSQL Licence
 //
-// ddChangeConnectionEndHandle.h - Handle to allow change connected figure at end of connection figure
+// wxhdChangeConnectionEndHandle.h - Handle to allow change connected figure at end of connection figure
 //
 //////////////////////////////////////////////////////////////////////////
 
-#ifndef DDCHANGECONNECTIONENDHANDLE_H
-#define DDCHANGECONNECTIONENDHANDLE_H
+#ifndef WXHDCHANGECONNECTIONENDHANDLE_H
+#define WXHDCHANGECONNECTIONENDHANDLE_H
 
 #include "dd/wxhotdraw/handles/wxhdChangeConnectionHandle.h"
 #include "dd/wxhotdraw/figures/wxhdLineConnection.h"
 
-class ddChangeConnectionEndHandle : public ddChangeConnectionHandle
+class wxhdChangeConnectionEndHandle : public wxhdChangeConnectionHandle
 {
 public:
-	ddChangeConnectionEndHandle(ddLineConnection *owner);
-    ~ddChangeConnectionEndHandle();
-	virtual ddPoint& locate();
-	virtual ddIConnector* target();
+	wxhdChangeConnectionEndHandle(wxhdLineConnection *owner);
+    ~wxhdChangeConnectionEndHandle();
+	virtual wxhdPoint& locate();
+	virtual wxhdIConnector* target();
 	virtual void disconnect();
-	virtual void connect(ddIConnector *connector);
-	virtual bool isConnectionPossible(ddIFigure *figure);
-	virtual void setPoint(ddPoint p);
+	virtual void connect(wxhdIConnector *connector);
+	virtual bool isConnectionPossible(wxhdIFigure *figure);
+	virtual void setPoint(wxhdPoint p);
 };
 #endif

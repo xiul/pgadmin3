@@ -5,26 +5,26 @@
 // Copyright (C) 2002 - 2011, The pgAdmin Development Team
 // This software is released under the PostgreSQL Licence
 //
-// ddITool.h - Base class for all tools
+// wxhdITool.h - Base class for all tools
 //
 //////////////////////////////////////////////////////////////////////////
 
-#ifndef DDITOOL_H
-#define DDITOOL_H
+#ifndef WXHDITOOL_H
+#define WXHDITOOL_H
 
 #include "dd/wxhotdraw/main/wxhdObject.h"
 #include "dd/wxhotdraw/utilities/wxhdMouseEvent.h"
 
 
-class ddITool : public ddObject
+class wxhdITool : public wxhdObject
 {
 public:
-	ddITool();
-    ~ddITool();
-	virtual void mouseDown(ddMouseEvent& event);  //Mouse Right Click
-	virtual void mouseUp(ddMouseEvent& event);
-	virtual void mouseMove(ddMouseEvent& event);
-	virtual void mouseDrag(ddMouseEvent& event);
+	wxhdITool();
+    ~wxhdITool();
+	virtual void mouseDown(wxhdMouseEvent& event);  //Mouse Right Click
+	virtual void mouseUp(wxhdMouseEvent& event);
+	virtual void mouseMove(wxhdMouseEvent& event);
+	virtual void mouseDrag(wxhdMouseEvent& event);
 	virtual void keyDown(wxKeyEvent& event);
 	virtual void keyUp(wxKeyEvent& event);
 	virtual void activate();

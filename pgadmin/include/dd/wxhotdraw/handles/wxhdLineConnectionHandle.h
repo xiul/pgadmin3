@@ -5,20 +5,20 @@
 // Copyright (C) 2002 - 2011, The pgAdmin Development Team
 // This software is released under the PostgreSQL Licence
 //
-// ddLineConnectionHandle.h - Base class for Handles that are located at locator position
+// wxhdLineConnectionHandle.h - Base class for Handles that are located at locator position
 //
 //////////////////////////////////////////////////////////////////////////
 
-#ifndef DDLINECONNECTIONHANDLE
-#define DDLINECONNECTIONHANDLE
+#ifndef WXHDLINECONNECTIONHANDLE
+#define WXHDLINECONNECTIONHANDLE
 
 #include "dd/wxhotdraw/handles/wxhdPolyLineHandle.h"
 
-class ddLineConnectionHandle : public ddPolyLineHandle
+class wxhdLineConnectionHandle : public wxhdPolyLineHandle
 {
 public:
-	ddLineConnectionHandle(ddPolyLineFigure *figure, ddILocator *loc, int index);
-	virtual void invokeEnd(ddMouseEvent& event, ddDrawingView *view);
+	wxhdLineConnectionHandle(wxhdPolyLineFigure *figure, wxhdILocator *loc, int index);
+	virtual void invokeEnd(wxhdMouseEvent& event, wxhdDrawingView *view);
 private:
 
 };

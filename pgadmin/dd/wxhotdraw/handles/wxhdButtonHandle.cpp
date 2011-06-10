@@ -5,7 +5,7 @@
 // Copyright (C) 2002 - 2011, The pgAdmin Development Team
 // This software is released under the PostgreSQL Licence
 //
-// ddButtonHandle.cpp - Handle to allow creation of buttons at figures
+// wxhdButtonHandle.cpp - Handle to allow creation of buttons at figures
 //
 //////////////////////////////////////////////////////////////////////////
 
@@ -21,8 +21,8 @@
 
 
 
-ddButtonHandle::ddButtonHandle(ddIFigure *owner, ddILocator *buttonLocator ,wxBitmap &buttonImage, wxSize &size):
-ddIHandle(owner)
+wxhdButtonHandle::wxhdButtonHandle(wxhdIFigure *owner, wxhdILocator *buttonLocator ,wxBitmap &buttonImage, wxSize &size):
+wxhdIHandle(owner)
 {
 	buttonIcon = buttonImage;
 	clicked=false;
@@ -30,25 +30,25 @@ ddIHandle(owner)
 	displayBox.SetSize(size);
 }
 
-ddButtonHandle::~ddButtonHandle()
+wxhdButtonHandle::~wxhdButtonHandle()
 {
 	if(bLocator)
 		delete bLocator;
 }
 
-wxCursor ddButtonHandle::createCursor()
+wxCursor wxhdButtonHandle::createCursor()
 {
 	return wxCursor(wxCURSOR_PENCIL);
 }
 
-ddRect& ddButtonHandle::getDisplayBox()
+wxhdRect& wxhdButtonHandle::getDisplayBox()
 {
-	ddPoint p = locate();		
+	wxhdPoint p = locate();		
 	displayBox.SetPosition(p);
 	return displayBox;
 }
 
-void ddButtonHandle::draw(wxBufferedDC& context, ddDrawingView *view)
+void wxhdButtonHandle::draw(wxBufferedDC& context, wxhdDrawingView *view)
 {
 	wxPoint copy = getDisplayBox().GetPosition();
 	view->CalcScrolledPosition(copy.x,copy.y,&copy.x,&copy.y);
@@ -57,7 +57,7 @@ void ddButtonHandle::draw(wxBufferedDC& context, ddDrawingView *view)
 }
 
 
-ddPoint& ddButtonHandle::locate()
+wxhdPoint& wxhdButtonHandle::locate()
 {
 	if(bLocator)
 	{
@@ -66,7 +66,7 @@ ddPoint& ddButtonHandle::locate()
 	}
 	else
 	{
-		pointLocate=ddPoint(0,0);	
+		pointLocate=wxhdPoint(0,0);	
 		return pointLocate;		
 	}
 }

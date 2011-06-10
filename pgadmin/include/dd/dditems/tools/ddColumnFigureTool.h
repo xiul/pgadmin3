@@ -5,7 +5,7 @@
 // Copyright (C) 2002 - 2011, The pgAdmin Development Team
 // This software is released under the PostgreSQL Licence
 //
-// ddColumnFigureTool.h - Improvement to ddFigureTool to work with composite table figures
+// ddColumnFigureTool.h - Improvement to wxhdFigureTool to work with composite table figures
 //
 //////////////////////////////////////////////////////////////////////////
 
@@ -15,20 +15,20 @@
 #include "dd/wxhotdraw/tools/wxhdFigureTool.h"
 
 
-class ddColumnFigureTool : public ddFigureTool
+class ddColumnFigureTool : public wxhdFigureTool
 {
 public:
-	ddColumnFigureTool(ddDrawingEditor *editor, ddIFigure *fig, ddITool *dt);
+	ddColumnFigureTool(wxhdDrawingEditor *editor, wxhdIFigure *fig, wxhdITool *dt);
     ~ddColumnFigureTool();
-	virtual void setDefaultTool(ddITool *dt);
-	virtual ddITool* getDefaultTool();
-	virtual void mouseDown(ddMouseEvent& event);  //Mouse Right Click
+	virtual void setDefaultTool(wxhdITool *dt);
+	virtual wxhdITool* getDefaultTool();
+	virtual void mouseDown(wxhdMouseEvent& event);  //Mouse Right Click
 	virtual void activate();
 	virtual void deactivate();
-	virtual void setDelegateTool(ddITool *tool);
-	virtual ddITool* getDelegateTool();
+	virtual void setDelegateTool(wxhdITool *tool);
+	virtual wxhdITool* getDelegateTool();
 protected:
-	ddITool *delegateTool;
+	wxhdITool *delegateTool;
 private:
 };
 #endif

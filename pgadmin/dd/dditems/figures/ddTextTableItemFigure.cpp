@@ -26,7 +26,7 @@
 #include "dd/dditems/figures/ddTableFigure.h"
 
 ddTextTableItemFigure::ddTextTableItemFigure(wxString& columnName, ddDataType dataType, ddColumnFigure *owner):
-ddSimpleTextFigure(columnName)
+wxhdSimpleTextFigure(columnName)
 {
 	ownerTable = NULL;
 	oneTimeNoAlias = false;
@@ -64,23 +64,23 @@ wxString& ddTextTableItemFigure::getText(bool extended)
 			ddType.Truncate(ddType.Find(wxT("(")));
 			ddType+=wxString::Format(wxT("(%d)"),getPrecision());
 		}
-		out = wxString( ddSimpleTextFigure::getText() + wxString(wxT(" : ")) + ddType );
+		out = wxString( wxhdSimpleTextFigure::getText() + wxString(wxT(" : ")) + ddType );
 		return  out;
 	}
 	else if( showAlias && getOwnerColumn()==NULL )
 	{
 		if(!oneTimeNoAlias)
-			out = wxString( ddSimpleTextFigure::getText() + wxString(wxT(" ( ")) + colAlias + wxString(wxT(" ) ")) );
+			out = wxString( wxhdSimpleTextFigure::getText() + wxString(wxT(" ( ")) + colAlias + wxString(wxT(" ) ")) );
 		else
 		{
-			out = wxString( ddSimpleTextFigure::getText() );
+			out = wxString( wxhdSimpleTextFigure::getText() );
 			oneTimeNoAlias = false;
 		}
 		return out;
 	}
 	else 
 	{
-		return ddSimpleTextFigure::getText();
+		return wxhdSimpleTextFigure::getText();
 	}
 }
 
@@ -96,7 +96,7 @@ wxString ddTextTableItemFigure::getType()
 }
 
 //WARNING: event ID must match enum ddDataType!!! this event was created on view
-void ddTextTableItemFigure::OnGenericPopupClick(wxCommandEvent& event, ddDrawingView *view)
+void ddTextTableItemFigure::OnGenericPopupClick(wxCommandEvent& event, wxhdDrawingView *view)
 {
 	wxTextEntryDialog *nameDialog=NULL;
 	wxString tmpString;
@@ -323,7 +323,7 @@ const wxArrayString ddTextTableItemFigure::dataTypes()
 
 void ddTextTableItemFigure::setText(wxString textString)
 {
-	ddSimpleTextFigure::setText(textString);
+	wxhdSimpleTextFigure::setText(textString);
 	
 	//Hack to allow column text to submit new size of text signal to tablefigure 
 	//and then recalculate displaybox. Helps with fk autorenaming too.
@@ -378,7 +378,7 @@ void ddTextTableItemFigure::setShowDataType(bool value)
 	showDataType = value;
 }
 
-ddITool* ddTextTableItemFigure::CreateFigureTool(ddDrawingEditor *editor, ddITool *defaultTool)
+wxhdITool* ddTextTableItemFigure::CreateFigureTool(wxhdDrawingEditor *editor, wxhdITool *defaultTool)
 {
 	if(getOwnerColumn())
 	{

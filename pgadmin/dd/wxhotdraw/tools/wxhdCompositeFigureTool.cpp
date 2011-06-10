@@ -5,7 +5,7 @@
 // Copyright (C) 2002 - 2011, The pgAdmin Development Team
 // This software is released under the PostgreSQL Licence
 //
-// ddCompositeFigureTool.cpp - A Tool that allow to change between all tools in a composite figure
+// wxhdCompositeFigureTool.cpp - A Tool that allow to change between all tools in a composite figure
 //
 //////////////////////////////////////////////////////////////////////////
 
@@ -19,19 +19,19 @@
 #include "dd/wxhotdraw/figures/wxhdCompositeFigure.h"
 
 
-ddCompositeFigureTool::ddCompositeFigureTool(ddDrawingEditor *editor, ddIFigure *fig, ddITool *dt):
-ddFigureTool(editor,fig,dt)
+wxhdCompositeFigureTool::wxhdCompositeFigureTool(wxhdDrawingEditor *editor, wxhdIFigure *fig, wxhdITool *dt):
+wxhdFigureTool(editor,fig,dt)
 {
 	delegateTool = NULL;
 }
 
-ddCompositeFigureTool::~ddCompositeFigureTool()
+wxhdCompositeFigureTool::~wxhdCompositeFigureTool()
 {
-	ddITool *tmpDefault=ddFigureTool::getDefaultTool();
-	ddFigureTool *tmpDelegateDefault;
+	wxhdITool *tmpDefault=wxhdFigureTool::getDefaultTool();
+	wxhdFigureTool *tmpDelegateDefault;
 
-	if(delegateTool->ms_classInfo.IsKindOf(&ddFigureTool::ms_classInfo))
-		tmpDelegateDefault = (ddFigureTool*)delegateTool;
+	if(delegateTool->ms_classInfo.IsKindOf(&wxhdFigureTool::ms_classInfo))
+		tmpDelegateDefault = (wxhdFigureTool*)delegateTool;
 	else 
 		tmpDelegateDefault = NULL;
 
@@ -45,12 +45,12 @@ ddCompositeFigureTool::~ddCompositeFigureTool()
 	}
 }
 
-void ddCompositeFigureTool::setDefaultTool(ddITool *dt)
+void wxhdCompositeFigureTool::setDefaultTool(wxhdITool *dt)
 {
-	ddFigureTool::setDefaultTool(dt);
+	wxhdFigureTool::setDefaultTool(dt);
 }
 
-ddITool* ddCompositeFigureTool::getDefaultTool()
+wxhdITool* wxhdCompositeFigureTool::getDefaultTool()
 {
 	if(delegateTool)
 	{
@@ -58,15 +58,15 @@ ddITool* ddCompositeFigureTool::getDefaultTool()
 	}
 	else
 	{
-		return ddFigureTool::getDefaultTool();
+		return wxhdFigureTool::getDefaultTool();
 	}
 }
 
-void ddCompositeFigureTool::mouseDown(ddMouseEvent& event)
+void wxhdCompositeFigureTool::mouseDown(wxhdMouseEvent& event)
 {
 	int x=event.GetPosition().x, y=event.GetPosition().y;
-	ddCompositeFigure *cfigure = (ddCompositeFigure*) getFigure();
-	ddIFigure *figure = cfigure->findFigure(x,y);
+	wxhdCompositeFigure *cfigure = (wxhdCompositeFigure*) getFigure();
+	wxhdIFigure *figure = cfigure->findFigure(x,y);
 	
 	if(figure)
 	{
@@ -83,7 +83,7 @@ void ddCompositeFigureTool::mouseDown(ddMouseEvent& event)
 	}
 }
 
-void ddCompositeFigureTool::activate()
+void wxhdCompositeFigureTool::activate()
 {
 	if(delegateTool)
 	{
@@ -91,7 +91,7 @@ void ddCompositeFigureTool::activate()
 	}
 }
 
-void ddCompositeFigureTool::deactivate()
+void wxhdCompositeFigureTool::deactivate()
 {
 	if(delegateTool)
 	{
@@ -99,7 +99,7 @@ void ddCompositeFigureTool::deactivate()
 	}
 }
 
-void ddCompositeFigureTool::setDelegateTool(ddITool *tool)
+void wxhdCompositeFigureTool::setDelegateTool(wxhdITool *tool)
 {
 	if(delegateTool)
 	{
@@ -115,7 +115,7 @@ void ddCompositeFigureTool::setDelegateTool(ddITool *tool)
 	}
 }
 
-ddITool* ddCompositeFigureTool::getDelegateTool()
+wxhdITool* wxhdCompositeFigureTool::getDelegateTool()
 {
 	return delegateTool;
 }

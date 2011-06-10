@@ -5,7 +5,7 @@
 // Copyright (C) 2002 - 2011, The pgAdmin Development Team
 // This software is released under the PostgreSQL Licence
 //
-// ddAbstractTool.cpp - An abstract tool to allow creation of all tools
+// wxhdAbstractTool.cpp - An abstract tool to allow creation of all tools
 //
 //////////////////////////////////////////////////////////////////////////
 
@@ -17,50 +17,50 @@
 // App headers
 #include "dd/wxhotdraw/tools/wxhdAbstractTool.h"
 
-ddAbstractTool::ddAbstractTool(ddDrawingEditor *editor)
+wxhdAbstractTool::wxhdAbstractTool(wxhdDrawingEditor *editor)
 {
 	anchorX=0;
 	anchorY=0;
 	ownerEditor=editor;
 }
 
-ddAbstractTool::~ddAbstractTool()
+wxhdAbstractTool::~wxhdAbstractTool()
 {
 }
 
-void ddAbstractTool::mouseDown(ddMouseEvent& event)
-{
-	setAnchorCoords(event.GetPosition().x,event.GetPosition().y);
-}
-
-void ddAbstractTool::mouseUp(ddMouseEvent& event)
-{
-}
-
-void ddAbstractTool::mouseMove(ddMouseEvent& event)
-{
-}
-
-void ddAbstractTool::mouseDrag(ddMouseEvent& event)
-{
-}
-
-void ddAbstractTool::keyDown(wxKeyEvent& event)
+void wxhdAbstractTool::mouseDown(wxhdMouseEvent& event)
 {
 	setAnchorCoords(event.GetPosition().x,event.GetPosition().y);
 }
 
-void ddAbstractTool::keyUp(wxKeyEvent& event)
+void wxhdAbstractTool::mouseUp(wxhdMouseEvent& event)
 {
 }
 
-void ddAbstractTool::setAnchorCoords(int x, int y)
+void wxhdAbstractTool::mouseMove(wxhdMouseEvent& event)
+{
+}
+
+void wxhdAbstractTool::mouseDrag(wxhdMouseEvent& event)
+{
+}
+
+void wxhdAbstractTool::keyDown(wxKeyEvent& event)
+{
+	setAnchorCoords(event.GetPosition().x,event.GetPosition().y);
+}
+
+void wxhdAbstractTool::keyUp(wxKeyEvent& event)
+{
+}
+
+void wxhdAbstractTool::setAnchorCoords(int x, int y)
 {
 	anchorX=x;
 	anchorY=y;
 }
 
-ddDrawingEditor* ddAbstractTool::getDrawingEditor(){
+wxhdDrawingEditor* wxhdAbstractTool::getDrawingEditor(){
 	return ownerEditor;
 }
 

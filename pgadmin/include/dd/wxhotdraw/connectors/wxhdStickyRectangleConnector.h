@@ -5,15 +5,15 @@
 // Copyright (C) 2002 - 2011, The pgAdmin Development Team
 // This software is released under the PostgreSQL Licence
 //
-// ddAbstractFigure.h - A StickyRectangleConnector locates connection points by choping
+// wxhdAbstractFigure.h - A StickyRectangleConnector locates connection points by choping
 // the connection between the centers of the two figures at the display box. The location 
 // of the connection point is computed once, when the user connects the figure. 
 // Moving the figure around will not change the location.
 //
 //////////////////////////////////////////////////////////////////////////
 
-#ifndef DDSTICKYRECTANGLECONNECTOR_H
-#define DDSTICKYRECTANGLECONNECTOR_H
+#ifndef WXHDSTICKYRECTANGLECONNECTOR_H
+#define WXHDSTICKYRECTANGLECONNECTOR_H
 
 #include "dd/wxhotdraw/main/wxhdObject.h"
 #include "dd/wxhotdraw/figures/wxhdLineConnection.h"
@@ -21,18 +21,18 @@
 #include "dd/wxhotdraw/utilities/wxhdRect.h"
 #include "dd/wxhotdraw/connectors/wxhdChopBoxConnector.h"
 
-class ddLineConnection;
-class ddIFigure;
+class wxhdLineConnection;
+class wxhdIFigure;
 
-class ddStickyRectangleConnector : public ddChopBoxConnector
+class wxhdStickyRectangleConnector : public wxhdChopBoxConnector
 {
 public:
-	ddStickyRectangleConnector(ddIFigure *owner, ddPoint p);
- 	~ddStickyRectangleConnector();
+	wxhdStickyRectangleConnector(wxhdIFigure *owner, wxhdPoint p);
+ 	~wxhdStickyRectangleConnector();
 	virtual void setAngle(float newAngle);
-	virtual void updateAnchor(ddPoint p);
-	virtual ddPoint getAnchor();
-	virtual ddPoint chop(ddIFigure *target, ddPoint point);
+	virtual void updateAnchor(wxhdPoint p);
+	virtual wxhdPoint getAnchor();
+	virtual wxhdPoint chop(wxhdIFigure *target, wxhdPoint point);
 	virtual void draw(wxBufferedDC& context);
 protected:
 	float angle;

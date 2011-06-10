@@ -16,17 +16,17 @@
 
 class ddTableFigure;
 
-class ddSouthTableSizeHandle : public ddLocatorHandle
+class ddSouthTableSizeHandle : public wxhdLocatorHandle
 {
 public:
-	ddSouthTableSizeHandle(ddTableFigure *owner, ddILocator *locator);
+	ddSouthTableSizeHandle(ddTableFigure *owner, wxhdILocator *locator);
     ~ddSouthTableSizeHandle();
 	virtual wxCursor createCursor();
-	virtual void draw(wxBufferedDC& context, ddDrawingView *view);
-	virtual ddRect& getDisplayBox();
-	virtual void invokeStart(ddMouseEvent &event, ddDrawingView *view);
-	virtual void invokeStep(ddMouseEvent &event, ddDrawingView *view);
-	virtual void invokeEnd(ddMouseEvent &event, ddDrawingView *view);
+	virtual void draw(wxBufferedDC& context, wxhdDrawingView *view);
+	virtual wxhdRect& getDisplayBox();
+	virtual void invokeStart(wxhdMouseEvent &event, wxhdDrawingView *view);
+	virtual void invokeStep(wxhdMouseEvent &event, wxhdDrawingView *view);
+	virtual void invokeEnd(wxhdMouseEvent &event, wxhdDrawingView *view);
 protected:
 
 private:

@@ -5,7 +5,7 @@
 // Copyright (C) 2002 - 2011, The pgAdmin Development Team
 // This software is released under the PostgreSQL Licence
 //
-// ddChangeConnectionStartHandle.cpp - Handle to allow change connected figure at start of connection figure
+// wxhdChangeConnectionStartHandle.cpp - Handle to allow change connected figure at start of connection figure
 //
 //////////////////////////////////////////////////////////////////////////
 
@@ -18,36 +18,36 @@
 #include "dd/wxhotdraw/handles/wxhdChangeConnectionStartHandle.h"
 #include "dd/wxhotdraw/utilities/wxhdPoint.h"
 
-ddChangeConnectionStartHandle::ddChangeConnectionStartHandle(ddLineConnection *owner):
-ddChangeConnectionHandle(owner)
+wxhdChangeConnectionStartHandle::wxhdChangeConnectionStartHandle(wxhdLineConnection *owner):
+wxhdChangeConnectionHandle(owner)
 {
 }
 
-ddChangeConnectionStartHandle::~ddChangeConnectionStartHandle()
+wxhdChangeConnectionStartHandle::~wxhdChangeConnectionStartHandle()
 {
 }
 
-ddPoint& ddChangeConnectionStartHandle::locate()
+wxhdPoint& wxhdChangeConnectionStartHandle::locate()
 {
 	return connection->getStartPoint();
 }
 
-ddIConnector* ddChangeConnectionStartHandle::target()
+wxhdIConnector* wxhdChangeConnectionStartHandle::target()
 {
 	return connection->getStartConnector();
 }
 
-void ddChangeConnectionStartHandle::connect(ddIConnector *connector)
+void wxhdChangeConnectionStartHandle::connect(wxhdIConnector *connector)
 {
 	connection->connectStart(connector);
 }
 
-void ddChangeConnectionStartHandle::disconnect()
+void wxhdChangeConnectionStartHandle::disconnect()
 {
 	connection->disconnectStart();
 }
 
-bool ddChangeConnectionStartHandle::isConnectionPossible(ddIFigure *figure)
+bool wxhdChangeConnectionStartHandle::isConnectionPossible(wxhdIFigure *figure)
 {
 	if(!figure->includes(connection) && figure->canConnect() && connection->canConnectStart(figure))
 	{
@@ -59,7 +59,7 @@ bool ddChangeConnectionStartHandle::isConnectionPossible(ddIFigure *figure)
 	}
 }
 
-void ddChangeConnectionStartHandle::setPoint(ddPoint p)
+void wxhdChangeConnectionStartHandle::setPoint(wxhdPoint p)
 {
 	connection->setStartPoint(p);
 }

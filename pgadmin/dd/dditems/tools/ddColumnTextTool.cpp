@@ -22,11 +22,11 @@
 #include "dd/dditems/figures/ddTableFigure.h"
 #include "dd/dditems/utilities/ddTableNameDialog.h"
 
-class ddDrawingEditor;
+class wxhdDrawingEditor;
 
 
-ddColumnTextTool::ddColumnTextTool(ddDrawingEditor *editor, ddIFigure *fig, ddITool *dt, bool fastEdit , wxString dialogCaption, wxString dialogMessage):
-ddSimpleTextTool(editor,fig,dt, fastEdit, dialogCaption, dialogMessage)
+ddColumnTextTool::ddColumnTextTool(wxhdDrawingEditor *editor, wxhdIFigure *fig, wxhdITool *dt, bool fastEdit , wxString dialogCaption, wxString dialogMessage):
+wxhdSimpleTextTool(editor,fig,dt, fastEdit, dialogCaption, dialogMessage)
 {
 	if(colTextFigure->ms_classInfo.IsKindOf(&ddTextTableItemFigure::ms_classInfo))
 		colTextFigure = (ddTextTableItemFigure *) fig;
@@ -38,7 +38,7 @@ ddColumnTextTool::~ddColumnTextTool()
 {
 }
 
-void ddColumnTextTool::mouseDown(ddMouseEvent& event)
+void ddColumnTextTool::mouseDown(wxhdMouseEvent& event)
 {	
 	//Hack to graphically delete columns
 	if(event.LeftDown())
@@ -70,7 +70,7 @@ void ddColumnTextTool::mouseDown(ddMouseEvent& event)
 	if(colTextFigure && colTextFigure->getOwnerColumn() &&  colTextFigure->getOwnerColumn()->getOwnerTable()) //if click on any other place disable column delete
 		colTextFigure->getOwnerColumn()->getOwnerTable()->toggleColumnDeleteMode(true);
 
-	ddSimpleTextTool::mouseDown(event);
+	wxhdSimpleTextTool::mouseDown(event);
 }
 
 bool ddColumnTextTool::callDialog()
@@ -106,7 +106,7 @@ bool ddColumnTextTool::callDialog()
 	}
 	else
 	{
-		bool change = ddSimpleTextTool::callDialog();
+		bool change = wxhdSimpleTextTool::callDialog();
 		if(  change && colTextFigure->getOwnerColumn()->isForeignKey()) //after a manual user column rename, deactivated automatic generation of fk name.
 			colTextFigure->getOwnerColumn()->deactivateGenFkName();
 		return change;

@@ -22,8 +22,8 @@
 //Images
 #include "images/ddMinMaxCursor.xpm"
 
-ddMinMaxTableButtonHandle::ddMinMaxTableButtonHandle(ddIFigure *owner, ddILocator *buttonLocator ,wxBitmap &buttonImage, wxBitmap &buttonSecondImage, wxSize &size):
-ddButtonHandle(owner,buttonLocator,buttonImage,size)
+ddMinMaxTableButtonHandle::ddMinMaxTableButtonHandle(wxhdIFigure *owner, wxhdILocator *buttonLocator ,wxBitmap &buttonImage, wxBitmap &buttonSecondImage, wxSize &size):
+wxhdButtonHandle(owner,buttonLocator,buttonImage,size)
 {
 	handleCursorImage = wxBitmap(ddMinMaxCursor_xpm).ConvertToImage();
     handleCursor=wxCursor(handleCursorImage);
@@ -36,15 +36,15 @@ ddMinMaxTableButtonHandle::~ddMinMaxTableButtonHandle()
 {
 }
 
-void ddMinMaxTableButtonHandle::invokeStart(ddMouseEvent &event, ddDrawingView *view)
+void ddMinMaxTableButtonHandle::invokeStart(wxhdMouseEvent &event, wxhdDrawingView *view)
 {
 }
 
-void ddMinMaxTableButtonHandle::invokeStep(ddMouseEvent &event, ddDrawingView *view)
+void ddMinMaxTableButtonHandle::invokeStep(wxhdMouseEvent &event, wxhdDrawingView *view)
 {
 }
 
-void ddMinMaxTableButtonHandle::invokeEnd(ddMouseEvent &event, ddDrawingView *view)
+void ddMinMaxTableButtonHandle::invokeEnd(wxhdMouseEvent &event, wxhdDrawingView *view)
 {
 	ddTableFigure *table = (ddTableFigure*) getOwner();
 

@@ -5,7 +5,7 @@
 // Copyright (C) 2002 - 2011, The pgAdmin Development Team
 // This software is released under the PostgreSQL Licence
 //
-// ddAbstractFigure.cpp - Base class for all figures with attributes (line size, fonts and others)
+// wxhdAbstractFigure.cpp - Base class for all figures with attributes (line size, fonts and others)
 //
 //////////////////////////////////////////////////////////////////////////
 
@@ -19,11 +19,11 @@
 // App headers
 #include "dd/wxhotdraw/figures/wxhdAttribute.h"
 
-ddAttribute::ddAttribute():
-ddObject()
+wxhdAttribute::wxhdAttribute():
+wxhdObject()
 {
 }
 
-void ddAttribute::apply(wxBufferedDC& context)
+void wxhdAttribute::apply(wxBufferedDC& context)
 {
 }

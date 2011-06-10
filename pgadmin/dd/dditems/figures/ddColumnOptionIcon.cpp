@@ -50,7 +50,7 @@ void ddColumnOptionIcon::createMenu(wxMenu &mnu)
 	item->Enable(!getOwnerColumn()->isForeignKey());
 }
 
-void ddColumnOptionIcon::OnGenericPopupClick(wxCommandEvent& event, ddDrawingView *view)
+void ddColumnOptionIcon::OnGenericPopupClick(wxCommandEvent& event, wxhdDrawingView *view)
 {
 	changeIcon((ddColumnOptionType)event.GetId());
 }
@@ -77,17 +77,17 @@ void ddColumnOptionIcon::changeIcon(ddColumnOptionType type)
 	getBasicDisplayBox().SetSize(wxSize(getWidth(),getHeight()));
 }
 
-void ddColumnOptionIcon::basicDraw(wxBufferedDC& context, ddDrawingView *view)
+void ddColumnOptionIcon::basicDraw(wxBufferedDC& context, wxhdDrawingView *view)
 {
 	if(iconToDraw)
 	{
-		ddRect copy = displayBox();
+		wxhdRect copy = displayBox();
 		view->CalcScrolledPosition(copy.x,copy.y,&copy.x,&copy.y);
 		context.DrawBitmap(*iconToDraw,copy.GetPosition(),true);
 	}
 }
 
-void ddColumnOptionIcon::basicDrawSelected(wxBufferedDC& context, ddDrawingView *view)
+void ddColumnOptionIcon::basicDrawSelected(wxBufferedDC& context, wxhdDrawingView *view)
 {
 	basicDraw(context,view);
 }

@@ -52,11 +52,11 @@ class ddRelationshipItem;
 WX_DECLARE_STRING_HASH_MAP( ddRelationshipItem*, columnsHashMap );
 
 
-class ddRelationshipFigure : public ddLineConnection
+class ddRelationshipFigure : public wxhdLineConnection
 {
 public:
 	ddRelationshipFigure();
-	ddRelationshipFigure(ddIFigure *figure1, ddIFigure *figure2);
+	ddRelationshipFigure(wxhdIFigure *figure1, wxhdIFigure *figure2);
 	~ddRelationshipFigure();
     virtual void createMenu(wxMenu &mnu);
 	
@@ -68,15 +68,15 @@ public:
 	bool getMandatory();
 	void setOptionAtForeignKeys(ddColumnOptionType type);
 	void setKindAtForeignKeys(ddColumnType type);
-	virtual void connectEnd(ddIConnector *end);
-	virtual void connectStart(ddIConnector *start);
+	virtual void connectEnd(wxhdIConnector *end);
+	virtual void connectStart(wxhdIConnector *start);
 	void disconnectStart();
 	void disconnectEnd();
 	wxString generateSQL();
 protected:
 
 private:
-	virtual void OnGenericPopupClick(wxCommandEvent& event, ddDrawingView *view);
+	virtual void OnGenericPopupClick(wxCommandEvent& event, wxhdDrawingView *view);
 	wxArrayString strings;
 	bool fkFromPk;
 	bool fkMandatory;

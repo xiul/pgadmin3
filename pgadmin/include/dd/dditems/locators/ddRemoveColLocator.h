@@ -15,13 +15,13 @@
 #include "dd/wxhotdraw/locators/wxhdILocator.h"
 #include "dd/wxhotdraw/figures/wxhdIFigure.h"
 
-class ddRemoveColLocator : public ddILocator
+class ddRemoveColLocator : public wxhdILocator
 {
 public:
 	ddRemoveColLocator();
     ~ddRemoveColLocator();
 
-	virtual ddPoint& locate(ddIFigure *owner);
+	virtual wxhdPoint& locate(wxhdIFigure *owner);
 
 protected:
 

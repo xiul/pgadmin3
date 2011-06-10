@@ -24,8 +24,8 @@
 //Images
 #include "images/ddDeleteTableCursor.xpm"
 
-ddRemoveTableButtonHandle::ddRemoveTableButtonHandle(ddIFigure *owner, ddILocator *buttonLocator ,wxBitmap &buttonImage, wxSize &size):
-ddButtonHandle(owner,buttonLocator,buttonImage,size)
+ddRemoveTableButtonHandle::ddRemoveTableButtonHandle(wxhdIFigure *owner, wxhdILocator *buttonLocator ,wxBitmap &buttonImage, wxSize &size):
+wxhdButtonHandle(owner,buttonLocator,buttonImage,size)
 {
 	handleCursorImage = wxBitmap(ddDeleteTableCursor_xpm).ConvertToImage();
     handleCursor=wxCursor(handleCursorImage);
@@ -35,15 +35,15 @@ ddRemoveTableButtonHandle::~ddRemoveTableButtonHandle()
 {
 }
 
-void ddRemoveTableButtonHandle::invokeStart(ddMouseEvent &event, ddDrawingView *view)
+void ddRemoveTableButtonHandle::invokeStart(wxhdMouseEvent &event, wxhdDrawingView *view)
 {
 }
 
-void ddRemoveTableButtonHandle::invokeStep(ddMouseEvent &event, ddDrawingView *view)
+void ddRemoveTableButtonHandle::invokeStep(wxhdMouseEvent &event, wxhdDrawingView *view)
 {
 }
 
-void ddRemoveTableButtonHandle::invokeEnd(ddMouseEvent &event, ddDrawingView *view)
+void ddRemoveTableButtonHandle::invokeEnd(wxhdMouseEvent &event, wxhdDrawingView *view)
 {
 
 	if(view && getOwner())

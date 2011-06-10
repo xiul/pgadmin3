@@ -26,7 +26,7 @@ ddMinMaxTableLocator::~ddMinMaxTableLocator()
 {
 }
 
-ddPoint& ddMinMaxTableLocator::locate(ddIFigure *owner)
+wxhdPoint& ddMinMaxTableLocator::locate(wxhdIFigure *owner)
 {
 	if(owner)
 	{

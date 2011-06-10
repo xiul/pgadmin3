@@ -5,7 +5,7 @@
 // Copyright (C) 2002 - 2011, The pgAdmin Development Team
 // This software is released under the PostgreSQL Licence
 //
-// ddDrawingEditor.cpp - Main class that manages all other classes
+// wxhdDrawingEditor.cpp - Main class that manages all other classes
 //
 //////////////////////////////////////////////////////////////////////////
 
@@ -20,10 +20,10 @@
 #include "dd/wxhotdraw/main/wxhdDrawingView.h"
 #include "dd/wxhotdraw/tools/wxhdITool.h"
 
-ddDrawingEditor::ddDrawingEditor(wxWindow *owner)
+wxhdDrawingEditor::wxhdDrawingEditor(wxWindow *owner)
 {
-	_model=new ddDrawing();
-	_view = new ddDrawingView(owner,this,wxSize(1200, 1200),_model);
+	_model=new wxhdDrawing();
+	_view = new wxhdDrawingView(owner,this,wxSize(1200, 1200),_model);
     // Set Scroll Bar & split
     _view->SetScrollbars( 10, 10, 127, 80 );
 	_view->EnableScrolling(true,true);
@@ -31,7 +31,7 @@ ddDrawingEditor::ddDrawingEditor(wxWindow *owner)
 	_tool=NULL;
 }
 
-ddDrawingEditor::~ddDrawingEditor()
+wxhdDrawingEditor::~wxhdDrawingEditor()
 {
 	if(_view)
 		delete _view;
@@ -41,22 +41,22 @@ ddDrawingEditor::~ddDrawingEditor()
 		delete _tool;
 }
 
-ddDrawingView* ddDrawingEditor::view()
+wxhdDrawingView* wxhdDrawingEditor::view()
 {
 	return _view;
 }
 
-ddDrawing* ddDrawingEditor::model()
+wxhdDrawing* wxhdDrawingEditor::model()
 {
 	return _model;
 }
 
-ddITool* ddDrawingEditor::tool()
+wxhdITool* wxhdDrawingEditor::tool()
 {
 	return _tool;
 }
 
-void ddDrawingEditor::setTool(ddITool* tool)
+void wxhdDrawingEditor::setTool(wxhdITool* tool)
 {
 	if(_tool)
 		delete _tool;

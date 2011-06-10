@@ -5,7 +5,7 @@
 // Copyright (C) 2002 - 2011, The pgAdmin Development Team
 // This software is released under the PostgreSQL Licence
 //
-// ddCollection.cpp - Generic implementation of a Collection used by dd
+// wxhdCollection.cpp - Generic implementation of a Collection used by dd
 //
 //////////////////////////////////////////////////////////////////////////
 
@@ -19,93 +19,93 @@
 #include "dd/wxhotdraw/utilities/wxhdCollection.h"
 #include "dd/wxhotdraw/main/wxhdObject.h"
 
-ddCollection::ddCollection(ddCollectionBase *collectionBase)
+wxhdCollection::wxhdCollection(wxhdCollectionBase *collectionBase)
 {
     collection=collectionBase;
 }
 
-ddCollection::~ddCollection()
+wxhdCollection::~wxhdCollection()
 {
     if(collection)
         delete collection;
 }
 
-void ddCollection::addItem(ddObject *item)
+void wxhdCollection::addItem(wxhdObject *item)
 {
     collection->addItem(item);
 }
 
-void ddCollection::removeItem(ddObject *item)
+void wxhdCollection::removeItem(wxhdObject *item)
 {
     collection->removeItem(item);
 }
 
 
-ddIteratorBase* ddCollection::createIterator()
+wxhdIteratorBase* wxhdCollection::createIterator()
 {
     if(collection)
 		return collection->createIterator();
 	return NULL;
 }
 
-ddIteratorBase* ddCollection::createDownIterator()
+wxhdIteratorBase* wxhdCollection::createDownIterator()
 {
     if(collection)
 		return collection->createDownIterator();
 	return NULL;
 }
 
-int ddCollection::count()
+int wxhdCollection::count()
 {
     return collection->count();
 }
 
-bool ddCollection::existsObject(ddObject *item)
+bool wxhdCollection::existsObject(wxhdObject *item)
 {
     return collection->existsObject(item);
 }
 
-ddObject* ddCollection::getItemAt(int index)
+wxhdObject* wxhdCollection::getItemAt(int index)
 {
     return collection->getItemAt(index);
 }
 
-void ddCollection::removeItemAt(int index)
+void wxhdCollection::removeItemAt(int index)
 {
 	collection->removeItemAt(index);
 }
 
 // Remove all items from collection without deleting each one.
-void ddCollection::removeAll()
+void wxhdCollection::removeAll()
 {
     collection->removeAll();
 }
 
-void ddCollection::deleteAll()
+void wxhdCollection::deleteAll()
 {
     collection->deleteAll();
 }
 
-int ddCollection::getIndex(ddObject *item)
+int wxhdCollection::getIndex(wxhdObject *item)
 {
     return collection->getIndex(item);
 }
 
-void ddCollection::insertAtIndex(ddObject *item, int index)
+void wxhdCollection::insertAtIndex(wxhdObject *item, int index)
 {
     collection->insertAtIndex(item,index);
 }
 
-void ddCollection::replaceAtIndex(ddObject *item, int index){
+void wxhdCollection::replaceAtIndex(wxhdObject *item, int index){
 	collection->replaceAtIndex(item,index);
 }
 
-void ddCollection::bringToFront(ddObject *item)
+void wxhdCollection::bringToFront(wxhdObject *item)
 {
 	collection->bringToFront(item);
 }
 
-void ddCollection::sendToBack(ddObject *item)
+void wxhdCollection::sendToBack(wxhdObject *item)
 {
 	collection->sendToBack(item);
 }

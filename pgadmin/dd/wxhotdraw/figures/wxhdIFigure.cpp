@@ -5,7 +5,7 @@
 // Copyright (C) 2002 - 2011, The pgAdmin Development Team
 // This software is released under the PostgreSQL Licence
 //
-// ddIFigure.cpp - Base class for all figures
+// wxhdIFigure.cpp - Base class for all figures
 //
 //////////////////////////////////////////////////////////////////////////
 
@@ -23,10 +23,10 @@
 #include "dd/wxhotdraw/connectors/wxhdIConnector.h"
 #include "dd/wxhotdraw/connectors/wxhdChopBoxConnector.h"
 
-ddIFigure::ddIFigure()
+wxhdIFigure::wxhdIFigure()
 {
-	handles=new ddCollection(new ddArrayCollection());
-	observers=new ddCollection(new ddArrayCollection());
+	handles=new wxhdCollection(new wxhdArrayCollection());
+	observers=new wxhdCollection(new wxhdArrayCollection());
 	selected=false;
 	connector=NULL;
 	basicDisplayBox.SetSize(wxSize(0,0));
@@ -38,7 +38,7 @@ ddIFigure::ddIFigure()
 	defaultSelectedBrush = wxBrush (wxColour(225, 225, 225),wxSOLID);
 }
 
-ddIFigure::~ddIFigure()
+wxhdIFigure::~wxhdIFigure()
 {
 	if(connector)
 		delete connector;
@@ -50,48 +50,48 @@ ddIFigure::~ddIFigure()
 	}
 }
 
-ddRect& ddIFigure::displayBox()
+wxhdRect& wxhdIFigure::displayBox()
 {
 	return getBasicDisplayBox();
 }
 
-ddRect& ddIFigure::getBasicDisplayBox()
+wxhdRect& wxhdIFigure::getBasicDisplayBox()
 {
 	return basicDisplayBox;
 }
 
-bool ddIFigure::containsPoint (int x, int y)
+bool wxhdIFigure::containsPoint (int x, int y)
 {
 	return false;
 }
 
-void ddIFigure::draw (wxBufferedDC& context, ddDrawingView *view)
+void wxhdIFigure::draw (wxBufferedDC& context, wxhdDrawingView *view)
 {
 	context.SetPen(defaultPen);
 	context.SetBrush(defaultBrush);
 }
 
-void ddIFigure::drawSelected (wxBufferedDC& context, ddDrawingView *view)
+void wxhdIFigure::drawSelected (wxBufferedDC& context, wxhdDrawingView *view)
 {
 	context.SetPen(defaultSelectedPen);
 	context.SetBrush(defaultSelectedBrush);
 }
 
-ddCollection* ddIFigure::handlesEnumerator()
+wxhdCollection* wxhdIFigure::handlesEnumerator()
 {
 	return handles;
 }
 
-void ddIFigure::addHandle (ddIHandle *handle)
+void wxhdIFigure::addHandle (wxhdIHandle *handle)
 {
 	if(!handles)
     {
-		handles  = new ddCollection(new ddArrayCollection());
+		handles  = new wxhdCollection(new wxhdArrayCollection());
 	}
 	handles->addItem(handle);	
 }
 
-void ddIFigure::removeHandle (ddIHandle *handle)
+void wxhdIFigure::removeHandle (wxhdIHandle *handle)
 {
 	if(handles)
     {
@@ -99,101 +99,101 @@ void ddIFigure::removeHandle (ddIHandle *handle)
 	}
 }
 
-void ddIFigure::moveBy (int x, int y)
+void wxhdIFigure::moveBy (int x, int y)
 {
 }
 
-void ddIFigure::moveTo(int x, int y)
+void wxhdIFigure::moveTo(int x, int y)
 {
 }
 
-ddITool* ddIFigure::CreateFigureTool(ddDrawingEditor *editor, ddITool *defaultTool)
+wxhdITool* wxhdIFigure::CreateFigureTool(wxhdDrawingEditor *editor, wxhdITool *defaultTool)
 {
 	return defaultTool;
 }
 
-bool ddIFigure::isSelected()
+bool wxhdIFigure::isSelected()
 {
 	return selected;
 }
 
-void ddIFigure::setSelected(bool value)
+void wxhdIFigure::setSelected(bool value)
 {
 	selected=value;
 }
 
-ddIConnector* ddIFigure::connectorAt (int x, int y)
+wxhdIConnector* wxhdIFigure::connectorAt (int x, int y)
 {
 	if(!connector)
-		connector = new ddChopBoxConnector(this);
+		connector = new wxhdChopBoxConnector(this);
 	return connector;
 }
 
-bool ddIFigure::includes(ddIFigure *figure)
+bool wxhdIFigure::includes(wxhdIFigure *figure)
 {
 	return (this == figure);
 }
 
-void ddIFigure::onFigureChanged(ddIFigure *figure)
+void wxhdIFigure::onFigureChanged(wxhdIFigure *figure)
 {
 
-	ddIteratorBase *iterator=observers->createIterator();
+	wxhdIteratorBase *iterator=observers->createIterator();
 	while(iterator->HasNext())
     {
-		ddIFigure *o = (ddIFigure*) iterator->Next();
+		wxhdIFigure *o = (wxhdIFigure*) iterator->Next();
 		o->onFigureChanged(this);
 	}
 	delete iterator;
 }
 
-void ddIFigure::addObserver(ddIFigure *observer)
+void wxhdIFigure::addObserver(wxhdIFigure *observer)
 {
 	if(!observers)
     {
-		observers  = new ddCollection(new ddArrayCollection());
+		observers  = new wxhdCollection(new wxhdArrayCollection());
 	}
 	observers->addItem(observer);	
 }
 
-void ddIFigure::removeObserver(ddIFigure *observer)
+void wxhdIFigure::removeObserver(wxhdIFigure *observer)
 {
 	if(observers){
 		observers->removeItem(observer);
 	}
 }
 
-void ddIFigure::setDefaultPen(wxPen& pen)
+void wxhdIFigure::setDefaultPen(wxPen& pen)
 {
 	defaultPen=pen;
 }
 
-void ddIFigure::setDefaultSelectedPen(wxPen& pen)
+void wxhdIFigure::setDefaultSelectedPen(wxPen& pen)
 {
 	defaultSelectedPen=pen;
 }
 
-void ddIFigure::setDefaultBrush(wxBrush& brush)
+void wxhdIFigure::setDefaultBrush(wxBrush& brush)
 {
 	defaultBrush=brush;
 }
 
-void ddIFigure::setDefaultSelectedBrush(wxBrush& brush)
+void wxhdIFigure::setDefaultSelectedBrush(wxBrush& brush)
 {
 	defaultSelectedBrush=brush;
 }
 
-ddIteratorBase* ddIFigure::observersEnumerator()
+wxhdIteratorBase* wxhdIFigure::observersEnumerator()
 {
 	return observers->createIterator();
 }
 
-void ddIFigure::setKindId(int hiddenId)
+void wxhdIFigure::setKindId(int hiddenId)
 {
 	kindHiddenId=hiddenId;
 }
 
 //Hack because is kindof in not powerful as it should be
-int ddIFigure::getKindId()  
+int wxhdIFigure::getKindId()  
 {
 	return kindHiddenId;
 }

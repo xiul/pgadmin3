@@ -26,7 +26,7 @@ ddRemoveColLocator::~ddRemoveColLocator()
 {
 }
 
-ddPoint& ddRemoveColLocator::locate(ddIFigure *owner)
+wxhdPoint& ddRemoveColLocator::locate(wxhdIFigure *owner)
 {
 	if(owner)
 	{

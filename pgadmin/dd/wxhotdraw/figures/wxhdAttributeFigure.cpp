@@ -5,7 +5,7 @@
 // Copyright (C) 2002 - 2011, The pgAdmin Development Team
 // This software is released under the PostgreSQL Licence
 //
-// ddAbstractFigure.cpp - Base class for all figures with attributes (line size, fonts and others)
+// wxhdAbstractFigure.cpp - Base class for all figures with attributes (line size, fonts and others)
 //
 //////////////////////////////////////////////////////////////////////////
 
@@ -19,26 +19,26 @@
 // App headers
 #include "dd/wxhotdraw/figures/wxhdAttributeFigure.h"
 
-ddAttributeFigure::ddAttributeFigure()
+wxhdAttributeFigure::wxhdAttributeFigure()
 {
 	initializeDefaultAttributes();
 }
 
-ddAttributeFigure::~ddAttributeFigure()
+wxhdAttributeFigure::~wxhdAttributeFigure()
 {
 	attributes.clear();	
 }
-ddAttribute& ddAttributeFigure::getAttribute(wxString name)
+wxhdAttribute& wxhdAttributeFigure::getAttribute(wxString name)
 {
 	return attributes[name];
 }
 
-void ddAttributeFigure::addAttribute(wxString name, ddAttribute attribute)
+void wxhdAttributeFigure::addAttribute(wxString name, wxhdAttribute attribute)
 {
 	attributes[name]=attribute;
 }
 
-bool ddAttributeFigure::removeAttribute(wxString name)
+bool wxhdAttributeFigure::removeAttribute(wxString name)
 {
 	if(defaultAttributes.Index(name)==wxNOT_FOUND)
 		return attributes.erase(name) ? true:false;
@@ -46,13 +46,13 @@ bool ddAttributeFigure::removeAttribute(wxString name)
 		return false;
 }
 
-void ddAttributeFigure::modifyValueAttribute(wxString name, ddAttribute attribute)
+void wxhdAttributeFigure::modifyValueAttribute(wxString name, wxhdAttribute attribute)
 {
 	attributes[name]=attribute;
 
 }
 
-void ddAttributeFigure::initializeDefaultAttributes()
+void wxhdAttributeFigure::initializeDefaultAttributes()
 {
 	defaultAttributes.Clear();
 	defaultAttributes.Add(wxT("FontAlignment"));

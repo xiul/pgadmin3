@@ -5,31 +5,31 @@
 // Copyright (C) 2002 - 2011, The pgAdmin Development Team
 // This software is released under the PostgreSQL Licence
 //
-// ddDrawingEditor.h - Main class that manages all other classes
+// wxhdDrawingEditor.h - Main class that manages all other classes
 //
 //////////////////////////////////////////////////////////////////////////
 
-#ifndef DDDRAWINGEDITOR_H
-#define DDDRAWINGEDITOR_H
+#ifndef WXHDDRAWINGEDITOR_H
+#define WXHDDRAWINGEDITOR_H
 
 #include "dd/wxhotdraw/main/wxhdDrawingView.h"
 #include "dd/wxhotdraw/tools/wxhdITool.h"
 
-class ddDrawingEditor : public ddObject
+class wxhdDrawingEditor : public wxhdObject
 {
 public:
-	ddDrawingEditor(wxWindow *owner);
-    ~ddDrawingEditor();
-	ddDrawingView* view();
-	ddDrawing* model();
-	ddITool* tool();
-	void setTool(ddITool* tool);
+	wxhdDrawingEditor(wxWindow *owner);
+    ~wxhdDrawingEditor();
+	wxhdDrawingView* view();
+	wxhdDrawing* model();
+	wxhdITool* tool();
+	void setTool(wxhdITool* tool);
 
 protected:
 
 private:
-	ddDrawing *_model;
-	ddDrawingView *_view;
-	ddITool *_tool;
+	wxhdDrawing *_model;
+	wxhdDrawingView *_view;
+	wxhdITool *_tool;
 };
 #endif

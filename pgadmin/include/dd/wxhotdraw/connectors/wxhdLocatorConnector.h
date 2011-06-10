@@ -5,12 +5,12 @@
 // Copyright (C) 2002 - 2011, The pgAdmin Development Team
 // This software is released under the PostgreSQL Licence
 //
-// ddLocatorConnector.h - class that puts connects at locator position
+// wxhdLocatorConnector.h - class that puts connects at locator position
 //
 //////////////////////////////////////////////////////////////////////////
 
-#ifndef DDLOCATORCONNECTOR_H
-#define DDLOCATORCONNECTOR_H
+#ifndef WXHDLOCATORCONNECTOR_H
+#define WXHDLOCATORCONNECTOR_H
 
 #include "dd/wxhotdraw/main/wxhdObject.h"
 #include "dd/wxhotdraw/figures/wxhdLineConnection.h"
@@ -18,23 +18,23 @@
 #include "dd/wxhotdraw/utilities/wxhdRect.h"
 #include "dd/wxhotdraw/locators/wxhdILocator.h"
 
-class ddLocatorConnector : public ddIConnector
+class wxhdLocatorConnector : public wxhdIConnector
 {
 public:
-	ddLocatorConnector(ddIFigure *owner, ddILocator *locator);
- 	~ddLocatorConnector();
-	virtual ddPoint findStart(ddLineConnection *connection);
-	virtual ddPoint findEnd(ddLineConnection *connection);
+	wxhdLocatorConnector(wxhdIFigure *owner, wxhdILocator *locator);
+ 	~wxhdLocatorConnector();
+	virtual wxhdPoint findStart(wxhdLineConnection *connection);
+	virtual wxhdPoint findEnd(wxhdLineConnection *connection);
 	virtual bool containsPoint(int x, int y);
 	virtual void draw(wxBufferedDC& context);
-	virtual ddPoint locate();
-	virtual ddRect& getDisplayBox();
+	virtual wxhdPoint locate();
+	virtual wxhdRect& getDisplayBox();
 protected:
 	int size; //standard size connector
-	ddRect displayBox;
+	wxhdRect displayBox;
 private:
-	ddILocator *figureLocator; 
-	ddIFigure *figureOwner; 
+	wxhdILocator *figureLocator; 
+	wxhdIFigure *figureOwner; 
 
 };
 #endif

@@ -19,14 +19,14 @@
 #include "dd/dditems/figures/ddTableFigure.h"
 #include "dd/wxhotdraw/utilities/wxhdGeometry.h"
 
-ddSouthTableSizeHandle::ddSouthTableSizeHandle(ddTableFigure *owner, ddILocator *locator):
-ddLocatorHandle(owner,locator)
+ddSouthTableSizeHandle::ddSouthTableSizeHandle(ddTableFigure *owner, wxhdILocator *locator):
+wxhdLocatorHandle(owner,locator)
 {
 }
 
-ddRect& ddSouthTableSizeHandle::getDisplayBox()
+wxhdRect& ddSouthTableSizeHandle::getDisplayBox()
 {
-	ddPoint p = locate();
+	wxhdPoint p = locate();
 	ddTableFigure *table = (ddTableFigure*) getOwner();
 	displayBox.width=table->getFullSpace().width * 0.5;  //as defined at locator
 	displayBox.height=3;
@@ -40,7 +40,7 @@ wxCursor ddSouthTableSizeHandle::createCursor()
 	return wxCursor(wxCURSOR_SIZENS);
 }
 
-void ddSouthTableSizeHandle::draw(wxBufferedDC& context, ddDrawingView *view)
+void ddSouthTableSizeHandle::draw(wxBufferedDC& context, wxhdDrawingView *view)
 {
 }
 
@@ -48,12 +48,12 @@ ddSouthTableSizeHandle::~ddSouthTableSizeHandle()
 {
 }
 
-void ddSouthTableSizeHandle::invokeStart(ddMouseEvent& event, ddDrawingView *view)
+void ddSouthTableSizeHandle::invokeStart(wxhdMouseEvent& event, wxhdDrawingView *view)
 {
 	anchorY=event.GetPosition().y;
 }
 
-void ddSouthTableSizeHandle::invokeStep(ddMouseEvent& event, ddDrawingView *view)
+void ddSouthTableSizeHandle::invokeStep(wxhdMouseEvent& event, wxhdDrawingView *view)
 {
 	int y=event.GetPosition().y;
 	ddTableFigure *table = (ddTableFigure*) getOwner();
@@ -64,7 +64,7 @@ void ddSouthTableSizeHandle::invokeStep(ddMouseEvent& event, ddDrawingView *view
 	if(divBy<=0)
 		divBy = table->getColumnsWindow();
 	
-	ddGeometry g;
+	wxhdGeometry g;
 	if ( g.ddabs(anchorY-y) > colOffset)
 	{
 		if((anchorY-y)>0)
@@ -83,7 +83,7 @@ void ddSouthTableSizeHandle::invokeStep(ddMouseEvent& event, ddDrawingView *view
 	table->moveBy(1,0);
 }
 
-void ddSouthTableSizeHandle::invokeEnd(ddMouseEvent& event, ddDrawingView *view)
+void ddSouthTableSizeHandle::invokeEnd(wxhdMouseEvent& event, wxhdDrawingView *view)
 {
 	//hack to update relationship position when table size change
 	ddTableFigure *table = (ddTableFigure*) getOwner();

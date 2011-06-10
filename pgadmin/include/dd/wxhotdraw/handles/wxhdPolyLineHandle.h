@@ -5,28 +5,28 @@
 // Copyright (C) 2002 - 2011, The pgAdmin Development Team
 // This software is released under the PostgreSQL Licence
 //
-// ddPolyLineHandle.h - Handle for manipulation of multiple flexibility points lines.
+// wxhdPolyLineHandle.h - Handle for manipulation of multiple flexibility points lines.
 //
 //////////////////////////////////////////////////////////////////////////
 
-#ifndef DDPOLYLINEHANDLE
-#define DDPOLYLINEHANDLE
+#ifndef WXHDPOLYLINEHANDLE
+#define WXHDPOLYLINEHANDLE
 
 #include "dd/wxhotdraw/handles/wxhdLocatorHandle.h"
 #include "dd/wxhotdraw/utilities/wxhdRect.h"
 
-class ddDrawingView; 
-class ddPolyLineFigure;
+class wxhdDrawingView; 
+class wxhdPolyLineFigure;
 
-class ddPolyLineHandle : public ddLocatorHandle
+class wxhdPolyLineHandle : public wxhdLocatorHandle
 {
 public:
-	ddPolyLineHandle(ddPolyLineFigure *figure, ddILocator *loc, int index);
-    ~ddPolyLineHandle();
+	wxhdPolyLineHandle(wxhdPolyLineFigure *figure, wxhdILocator *loc, int index);
+    ~wxhdPolyLineHandle();
 
-	virtual void draw(wxBufferedDC& context, ddDrawingView *view);
-	virtual void invokeStart(ddMouseEvent& event, ddDrawingView *view);
-	virtual void invokeStep(ddMouseEvent& event, ddDrawingView *view);
+	virtual void draw(wxBufferedDC& context, wxhdDrawingView *view);
+	virtual void invokeStart(wxhdMouseEvent& event, wxhdDrawingView *view);
+	virtual void invokeStep(wxhdMouseEvent& event, wxhdDrawingView *view);
 	virtual wxCursor createCursor();
 	virtual int getIndex();
 	virtual void setIndex(int index);

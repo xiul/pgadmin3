@@ -19,24 +19,24 @@
 #include "dd/dditems/figures/ddTableFigure.h"
 
 
-class ddScrollBarHandle : public ddLocatorHandle
+class ddScrollBarHandle : public wxhdLocatorHandle
 {
 public:
-	ddScrollBarHandle(ddTableFigure *owner, ddILocator *scrollBarLocator , wxSize &size);
+	ddScrollBarHandle(ddTableFigure *owner, wxhdILocator *scrollBarLocator , wxSize &size);
     ~ddScrollBarHandle();
 
 
-	virtual void draw(wxBufferedDC& context, ddDrawingView *view);
-	virtual ddPoint& locate();
+	virtual void draw(wxBufferedDC& context, wxhdDrawingView *view);
+	virtual wxhdPoint& locate();
 	virtual wxCursor createCursor();
-	virtual void invokeStart(ddMouseEvent &event, ddDrawingView *view);
-	virtual void invokeStep(ddMouseEvent &event, ddDrawingView *view);
-	virtual void invokeEnd(ddMouseEvent &event, ddDrawingView *view);
-	virtual ddRect& getDisplayBox();
+	virtual void invokeStart(wxhdMouseEvent &event, wxhdDrawingView *view);
+	virtual void invokeStep(wxhdMouseEvent &event, wxhdDrawingView *view);
+	virtual void invokeEnd(wxhdMouseEvent &event, wxhdDrawingView *view);
+	virtual wxhdRect& getDisplayBox();
 protected:
 private:
-	ddPoint pointLocate;
-	ddILocator *scrollLocator;
+	wxhdPoint pointLocate;
+	wxhdILocator *scrollLocator;
 	ddTableFigure *table;
 	wxBitmap upBitmap, downBitmap;
 	wxSize barSize;

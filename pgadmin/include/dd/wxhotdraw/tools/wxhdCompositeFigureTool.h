@@ -5,30 +5,30 @@
 // Copyright (C) 2002 - 2011, The pgAdmin Development Team
 // This software is released under the PostgreSQL Licence
 //
-// ddCompositeFigureTool.h - A Tool that allow to change between all tools in a composite figure
+// wxhdCompositeFigureTool.h - A Tool that allow to change between all tools in a composite figure
 //
 //////////////////////////////////////////////////////////////////////////
 
-#ifndef DDCOMPOSITEFIGURETOOL_H
-#define DDCOMPOSITEFIGURETOOL_H
+#ifndef WXHDCOMPOSITEFIGURETOOL_H
+#define WXHDCOMPOSITEFIGURETOOL_H
 
 #include "dd/wxhotdraw/tools/wxhdFigureTool.h"
 
 
-class ddCompositeFigureTool : public ddFigureTool
+class wxhdCompositeFigureTool : public wxhdFigureTool
 {
 public:
-	ddCompositeFigureTool(ddDrawingEditor *editor, ddIFigure *fig, ddITool *dt);
-    ~ddCompositeFigureTool();
-	virtual void setDefaultTool(ddITool *dt);
-	virtual ddITool* getDefaultTool();
-	virtual void mouseDown(ddMouseEvent& event);  //Mouse Right Click
+	wxhdCompositeFigureTool(wxhdDrawingEditor *editor, wxhdIFigure *fig, wxhdITool *dt);
+    ~wxhdCompositeFigureTool();
+	virtual void setDefaultTool(wxhdITool *dt);
+	virtual wxhdITool* getDefaultTool();
+	virtual void mouseDown(wxhdMouseEvent& event);  //Mouse Right Click
 	virtual void activate();
 	virtual void deactivate();
-	virtual void setDelegateTool(ddITool *tool);
-	virtual ddITool* getDelegateTool();
+	virtual void setDelegateTool(wxhdITool *tool);
+	virtual wxhdITool* getDelegateTool();
 protected:
-	ddITool *delegateTool;
+	wxhdITool *delegateTool;
 private:
 };
 #endif

@@ -5,59 +5,59 @@
 // Copyright (C) 2002 - 2011, The pgAdmin Development Team
 // This software is released under the PostgreSQL Licence
 //
-// ddPolyLineFigure.h - A simple line figure that can be split on several lines joined by flexibility points
+// wxhdPolyLineFigure.h - A simple line figure that can be split on several lines joined by flexibility points
 //
 //////////////////////////////////////////////////////////////////////////
 
-#ifndef DDPOLYLINEFIGURE_H
-#define DDPOLYLINEFIGURE_H
+#ifndef WXHDPOLYLINEFIGURE_H
+#define WXHDPOLYLINEFIGURE_H
 
 #include "dd/wxhotdraw/figures/wxhdAbstractMenuFigure.h"
 #include "dd/wxhotdraw/figures/wxhdLineTerminal.h"
 #include "dd/wxhotdraw/utilities/wxhdArrayCollection.h"
 #include "dd/wxhotdraw/utilities/wxhdPoint.h"
 
-class ddPolyLineFigure : public ddAbstractMenuFigure
+class wxhdPolyLineFigure : public wxhdAbstractMenuFigure
 {
 public:
-	ddPolyLineFigure();
-    ~ddPolyLineFigure();
+	wxhdPolyLineFigure();
+    ~wxhdPolyLineFigure();
 
-	virtual ddRect& getBasicDisplayBox();
-	virtual void basicDraw (wxBufferedDC& context, ddDrawingView *view);
-	virtual void basicDrawSelected(wxBufferedDC& context, ddDrawingView *view);
+	virtual wxhdRect& getBasicDisplayBox();
+	virtual void basicDraw (wxBufferedDC& context, wxhdDrawingView *view);
+	virtual void basicDrawSelected(wxBufferedDC& context, wxhdDrawingView *view);
 	virtual int pointCount();
-	virtual ddPoint& getStartPoint();
-	virtual void setStartPoint(ddPoint point);
-	virtual ddPoint& getEndPoint();
-	virtual void setEndPoint(ddPoint point);
-	virtual void setStartTerminal(ddLineTerminal *terminal);
-	virtual ddLineTerminal* getStartTerminal();
-	virtual void setEndTerminal(ddLineTerminal *terminal);
-	virtual ddLineTerminal* getEndTerminal();
-	ddCollection* handlesEnumerator();
+	virtual wxhdPoint& getStartPoint();
+	virtual void setStartPoint(wxhdPoint point);
+	virtual wxhdPoint& getEndPoint();
+	virtual void setEndPoint(wxhdPoint point);
+	virtual void setStartTerminal(wxhdLineTerminal *terminal);
+	virtual wxhdLineTerminal* getStartTerminal();
+	virtual void setEndTerminal(wxhdLineTerminal *terminal);
+	virtual wxhdLineTerminal* getEndTerminal();
+	wxhdCollection* handlesEnumerator();
 	virtual int findSegment (int x, int y);
 	virtual void splitSegment(int x, int y);
 	virtual void changed();
 
-	virtual void addPoint (int x, int y);
+	virtual void awxhdPoint (int x, int y);
 	virtual void clearPoints ();
 	virtual void insertPointAt (int index, int x, int y);
 	virtual void setPointAt (int index, int x, int y);
 	virtual void removePointAt (int index);
 	virtual void basicMoveBy(int x, int y);
-	virtual ddITool* CreateFigureTool(ddDrawingEditor *editor, ddITool *defaultTool);
+	virtual wxhdITool* CreateFigureTool(wxhdDrawingEditor *editor, wxhdITool *defaultTool);
 
-	virtual ddPoint& pointAt(int index);
+	virtual wxhdPoint& pointAt(int index);
 	virtual bool containsPoint (int x, int y);
 	virtual void setLinePen(wxPen pen);
 
 protected:
 	virtual void updateHandlesIndexes();
-	ddArrayCollection *points;
-	ddPoint endPoint, startPoint, pointAtPos;
+	wxhdArrayCollection *points;
+	wxhdPoint endPoint, startPoint, pointAtPos;
 private:
-	ddLineTerminal *startTerminal, *endTerminal;
+	wxhdLineTerminal *startTerminal, *endTerminal;
 	bool handlesChanged;
 	wxPen linePen;
 

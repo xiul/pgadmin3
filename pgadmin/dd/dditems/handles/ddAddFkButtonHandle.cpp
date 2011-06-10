@@ -26,8 +26,8 @@
 //Images
 #include "images/ddRelationshipCursor.xpm"
 
-ddAddFkButtonHandle::ddAddFkButtonHandle(ddIFigure *owner, ddILocator *buttonLocator ,wxBitmap &buttonImage, wxSize &size):
-ddButtonHandle(owner,buttonLocator,buttonImage,size)
+ddAddFkButtonHandle::ddAddFkButtonHandle(wxhdIFigure *owner, wxhdILocator *buttonLocator ,wxBitmap &buttonImage, wxSize &size):
+wxhdButtonHandle(owner,buttonLocator,buttonImage,size)
 {
 	handleCursorImage = wxBitmap(ddRelationshipCursor_xpm).ConvertToImage();
     handleCursor=wxCursor(handleCursorImage);
@@ -37,31 +37,31 @@ ddAddFkButtonHandle::~ddAddFkButtonHandle()
 {
 }
 
-void ddAddFkButtonHandle::invokeStart(ddMouseEvent &event, ddDrawingView *view)
+void ddAddFkButtonHandle::invokeStart(wxhdMouseEvent &event, wxhdDrawingView *view)
 {
 	if(getOwner()->ms_classInfo.IsKindOf(&ddTableFigure::ms_classInfo)){
 		ddRelationshipFigure *fkConnection = new ddRelationshipFigure();
 		fkConnection->setStartTerminal(new ddRelationshipTerminal(fkConnection,false));
 		fkConnection->setEndTerminal(new ddRelationshipTerminal(fkConnection,true));
-		ddConnectionCreationTool *conn = new ddConnectionCreationTool(view->editor(),fkConnection);
+		wxhdConnectionCreationTool *conn = new wxhdConnectionCreationTool(view->editor(),fkConnection);
 		view->editor()->setTool(conn);
 		// Simulate button down to start connection of foreign key
 		wxMouseEvent e(wxEVT_LEFT_DOWN);
 		e.m_x=event.GetPosition().x;
 		e.m_y=event.GetPosition().y;
 		e.SetEventObject(view);
-		ddMouseEvent evento(e,view);
+		wxhdMouseEvent evento(e,view);
 		conn->mouseDown(evento);
 	}
 }
 
-void ddAddFkButtonHandle::invokeStep(ddMouseEvent &event, ddDrawingView *view)
+void ddAddFkButtonHandle::invokeStep(wxhdMouseEvent &event, wxhdDrawingView *view)
 {
 	ddTableFigure *table = (ddTableFigure*) getOwner();
 	table->canConnect();
 }
 
-void ddAddFkButtonHandle::invokeEnd(ddMouseEvent &event, ddDrawingView *view)
+void ddAddFkButtonHandle::invokeEnd(wxhdMouseEvent &event, wxhdDrawingView *view)
 {
 	ddTableFigure *table = (ddTableFigure*) getOwner();
 	table->canConnect();

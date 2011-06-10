@@ -5,7 +5,7 @@
 // Copyright (C) 2002 - 2011, The pgAdmin Development Team
 // This software is released under the PostgreSQL Licence
 //
-// ddDragCreationTool.cpp - A Tool that allow to move figure around view
+// wxhdDragCreationTool.cpp - A Tool that allow to move figure around view
 //
 //////////////////////////////////////////////////////////////////////////
 
@@ -17,16 +17,16 @@
 // App headers
 #include "dd/wxhotdraw/tools/wxhdDragCreationTool.h"
 
-ddDragCreationTool::ddDragCreationTool(ddDrawingEditor *editor, ddIFigure *prototype):
-ddCreationTool(editor, prototype)
+wxhdDragCreationTool::wxhdDragCreationTool(wxhdDrawingEditor *editor, wxhdIFigure *prototype):
+wxhdCreationTool(editor, prototype)
 {
 }
 
-ddDragCreationTool::~ddDragCreationTool(){
+wxhdDragCreationTool::~wxhdDragCreationTool(){
 }
 
 
-void ddDragCreationTool::mouseDrag(ddMouseEvent& event)
+void wxhdDragCreationTool::mouseDrag(wxhdMouseEvent& event)
 {
 	if(event.LeftIsDown())
 	{

@@ -5,27 +5,27 @@
 // Copyright (C) 2002 - 2011, The pgAdmin Development Team
 // This software is released under the PostgreSQL Licence
 //
-// ddILocator.h - Base class for creation of a location for a ddHandle
+// wxhdILocator.h - Base class for creation of a location for a ddHandle
 //
 //////////////////////////////////////////////////////////////////////////
 
-#ifndef DDILOCATOR_H
-#define DDILOCATOR_H
+#ifndef wxhdILocator_H
+#define wxhdILocator_H
 
 #include "dd/wxhotdraw/main/wxhdObject.h"
 #include "dd/wxhotdraw/utilities/wxhdRect.h"
 #include "dd/wxhotdraw/figures/wxhdIFigure.h"
 
-class ddILocator : public ddObject
+class wxhdILocator : public wxhdObject
 {
 public:
-	ddILocator();
-    ~ddILocator();
+	wxhdILocator();
+    ~wxhdILocator();
 
-	virtual ddPoint& locate(ddIFigure *owner)=0;
+	virtual wxhdPoint& locate(wxhdIFigure *owner)=0;
 
 protected:
-	ddPoint locatePoint;
+	wxhdPoint locatePoint;
 private:
 
 };

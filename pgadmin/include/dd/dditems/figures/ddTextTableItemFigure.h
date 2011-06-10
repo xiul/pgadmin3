@@ -41,7 +41,7 @@ enum
 class ddColumnFigure;
 class ddTableFigure;
 
-class ddTextTableItemFigure : public ddSimpleTextFigure
+class ddTextTableItemFigure : public wxhdSimpleTextFigure
 {
 public:
 	ddTextTableItemFigure(wxString& columnName, ddDataType dataType, ddColumnFigure *owner);
@@ -53,12 +53,12 @@ public:
 	virtual void setOneTimeNoAlias();
 	virtual void createMenu(wxMenu &mnu);
 	virtual const wxArrayString dataTypes();
-	virtual void OnGenericPopupClick(wxCommandEvent& event, ddDrawingView *view);
+	virtual void OnGenericPopupClick(wxCommandEvent& event, wxhdDrawingView *view);
 	virtual void setText(wxString textString);
 	virtual ddColumnFigure* getOwnerColumn();
 	virtual void setOwnerColumn(ddColumnFigure *column);
 	virtual void setShowDataType(bool value);
-	ddITool* CreateFigureTool(ddDrawingEditor *editor, ddITool *defaultTool);
+	wxhdITool* CreateFigureTool(wxhdDrawingEditor *editor, wxhdITool *defaultTool);
 	virtual void displayBoxUpdate();
 	int getTextWidth();
 	int getTextHeight();

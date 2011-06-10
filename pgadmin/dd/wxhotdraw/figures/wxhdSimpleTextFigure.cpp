@@ -5,7 +5,7 @@
 // Copyright (C) 2002 - 2011, The pgAdmin Development Team
 // This software is released under the PostgreSQL Licence
 //
-// ddSimpleTextFigure.cpp - A simple rectangle  figure with text inside it
+// wxhdSimpleTextFigure.cpp - A simple rectangle  figure with text inside it
 //
 //////////////////////////////////////////////////////////////////////////
 
@@ -23,7 +23,7 @@
 // dummy image
 #include "images/ddnull.xpm"
 
-ddSimpleTextFigure::ddSimpleTextFigure(wxString textString)
+wxhdSimpleTextFigure::wxhdSimpleTextFigure(wxString textString)
 {
 	textEditable = false;
 	font = settings->GetSystemFont();
@@ -34,39 +34,39 @@ ddSimpleTextFigure::ddSimpleTextFigure(wxString textString)
 	showMenu = false;
 }
 
-ddSimpleTextFigure::~ddSimpleTextFigure()
+wxhdSimpleTextFigure::~wxhdSimpleTextFigure()
 {
 }
 
-void ddSimpleTextFigure::setText(wxString textString)
+void wxhdSimpleTextFigure::setText(wxString textString)
 {
 	text = textString;
 	recalculateDisplayBox();
 }
 
 //extended is flag that inform about returning an extended version of text stored at figure
-wxString& ddSimpleTextFigure::getText(bool extended)
+wxString& wxhdSimpleTextFigure::getText(bool extended)
 {
 	return text;
 }
 
-void ddSimpleTextFigure::setFont(wxFont textFont)
+void wxhdSimpleTextFigure::setFont(wxFont textFont)
 {
 	font = textFont;
 	recalculateDisplayBox();
 }
 
-void ddSimpleTextFigure::setForeground(wxColour colour)
+void wxhdSimpleTextFigure::setForeground(wxColour colour)
 {
 	textForeground = colour;
 }
 
-void ddSimpleTextFigure::setBackground(wxBrush background)
+void wxhdSimpleTextFigure::setBackground(wxBrush background)
 {
 	textBackground = background;
 }
 
-void ddSimpleTextFigure::getFontMetrics(int &width, int &height)
+void wxhdSimpleTextFigure::getFontMetrics(int &width, int &height)
 {
 	wxBitmap emptyBitmap(ddnull_xpm);	
 	wxMemoryDC temp_dc;
@@ -80,79 +80,79 @@ void ddSimpleTextFigure::getFontMetrics(int &width, int &height)
 		temp_dc.GetTextExtent(wxT("EMPTY"),&width,&height);
 }
 
-void ddSimpleTextFigure::recalculateDisplayBox()
+void wxhdSimpleTextFigure::recalculateDisplayBox()
 {
 	int w,h;
 	
 	getFontMetrics(w,h);
 
-	ddGeometry g;
+	wxhdGeometry g;
 	displayBox().width = g.max(w,10)+padding;
 	displayBox().height = g.max(h,10)+padding;
 }
 
-void ddSimpleTextFigure::basicDraw(wxBufferedDC& context, ddDrawingView *view)
+void wxhdSimpleTextFigure::basicDraw(wxBufferedDC& context, wxhdDrawingView *view)
 {
-	ddRect copy = displayBox();
+	wxhdRect copy = displayBox();
 	view->CalcScrolledPosition(copy.x,copy.y,&copy.x,&copy.y);
 	setupLayout(context);
 	context.DrawText(getText(true),copy.GetPosition());
 }
 
-void ddSimpleTextFigure::basicDrawSelected(wxBufferedDC& context, ddDrawingView *view)
+void wxhdSimpleTextFigure::basicDrawSelected(wxBufferedDC& context, wxhdDrawingView *view)
 {
 	basicDraw(context,view);
 }
 
-void ddSimpleTextFigure::setupLayout(wxBufferedDC& context)
+void wxhdSimpleTextFigure::setupLayout(wxBufferedDC& context)
 {
 	context.SetFont(font);
 	context.SetTextForeground(textForeground);
 	context.SetBrush(textBackground);
 }
 
-void ddSimpleTextFigure::basicMoveBy(int x, int y)
+void wxhdSimpleTextFigure::basicMoveBy(int x, int y)
 {
 	displayBox().x += x;
 	displayBox().y += y;
 }
 
-ddITool* ddSimpleTextFigure::CreateFigureTool(ddDrawingEditor *editor, ddITool *defaultTool)
+wxhdITool* wxhdSimpleTextFigure::CreateFigureTool(wxhdDrawingEditor *editor, wxhdITool *defaultTool)
 {
-	return textEditable ? new ddSimpleTextTool(editor,this,defaultTool) : defaultTool;
+	return textEditable ? new wxhdSimpleTextTool(editor,this,defaultTool) : defaultTool;
 }
 
-void ddSimpleTextFigure::setEditable(bool value)
+void wxhdSimpleTextFigure::setEditable(bool value)
 {
 	textEditable = value;
 }
 
-bool ddSimpleTextFigure::getEditable()
+bool wxhdSimpleTextFigure::getEditable()
 {
 	return textEditable;
 }
 
-int ddSimpleTextFigure::getPadding()
+int wxhdSimpleTextFigure::getPadding()
 {
 	return padding;
 }
 
-void ddSimpleTextFigure::enablePopUp()
+void wxhdSimpleTextFigure::enablePopUp()
 {
 	showMenu = true;
 }
 
-void ddSimpleTextFigure::disablePopUp()
+void wxhdSimpleTextFigure::disablePopUp()
 {
 	showMenu = false;
 }
 
-bool ddSimpleTextFigure::menuEnabled()
+bool wxhdSimpleTextFigure::menuEnabled()
 {
 	return 	showMenu;
 }
 
-void ddSimpleTextFigure::OnGenericPopupClick(wxCommandEvent& event, ddDrawingView *view)
+void wxhdSimpleTextFigure::OnGenericPopupClick(wxCommandEvent& event, wxhdDrawingView *view)
 {
 	setText(strings[event.GetId()]);
 }

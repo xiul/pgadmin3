@@ -5,7 +5,7 @@
 // Copyright (C) 2002 - 2011, The pgAdmin Development Team
 // This software is released under the PostgreSQL Licence
 //
-// ddLocatorConnector.cpp - class that puts connects at locator position
+// wxhdLocatorConnector.cpp - class that puts connects at locator position
 //
 //////////////////////////////////////////////////////////////////////////
 
@@ -16,45 +16,45 @@
 
 // App headers
 #include "dd/wxhotdraw/connectors/wxhdLocatorConnector.h"
-ddLocatorConnector::ddLocatorConnector(ddIFigure *owner, ddILocator *locator):
-ddIConnector(owner)
+wxhdLocatorConnector::wxhdLocatorConnector(wxhdIFigure *owner, wxhdILocator *locator):
+wxhdIConnector(owner)
 {
 	figureOwner = owner;
 	figureLocator = locator;
 	size = 8;
 }
 
-ddLocatorConnector::~ddLocatorConnector()
+wxhdLocatorConnector::~wxhdLocatorConnector()
 {
 }
 
-ddPoint ddLocatorConnector::locate()
+wxhdPoint wxhdLocatorConnector::locate()
 {
 	return figureLocator->locate(getOwner());
 }
 
-void ddLocatorConnector::draw(wxBufferedDC& context)
+void wxhdLocatorConnector::draw(wxBufferedDC& context)
 {
 }
 
-ddRect& ddLocatorConnector::getDisplayBox()
+wxhdRect& wxhdLocatorConnector::getDisplayBox()
 {
-	ddPoint p = figureLocator->locate(getOwner());
-	displayBox = ddRect(p.x-(size/2), p.y-(size/2), size,size);
+	wxhdPoint p = figureLocator->locate(getOwner());
+	displayBox = wxhdRect(p.x-(size/2), p.y-(size/2), size,size);
 	return displayBox;
 }
 
-bool ddLocatorConnector::containsPoint(int x, int y)
+bool wxhdLocatorConnector::containsPoint(int x, int y)
 {
 	return getDisplayBox().Contains(x,y);
 }
 
-ddPoint ddLocatorConnector::findStart(ddLineConnection *connection)
+wxhdPoint wxhdLocatorConnector::findStart(wxhdLineConnection *connection)
 {
 	return getDisplayBox().center();
 }
 
-ddPoint ddLocatorConnector::findEnd(ddLineConnection *connection)
+wxhdPoint wxhdLocatorConnector::findEnd(wxhdLineConnection *connection)
 {
 	return getDisplayBox().center();
 }

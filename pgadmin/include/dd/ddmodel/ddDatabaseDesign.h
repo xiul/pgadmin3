@@ -21,12 +21,12 @@ class ddDatabaseDesign : public wxObject
 public:
 	ddDatabaseDesign(wxWindow *parent);
 	~ddDatabaseDesign();
-	ddDrawingView* getView();
-	ddDrawingEditor* getEditor();
-	void addTable(ddIFigure *figure);
-	void removeTable(ddIFigure *figure);
+	wxhdDrawingView* getView();
+	wxhdDrawingEditor* getEditor();
+	void addTable(wxhdIFigure *figure);
+	void removeTable(wxhdIFigure *figure);
     void removeSelectedObjects(int kind = 0);
-	void setTool(ddITool* tool);
+	void setTool(wxhdITool* tool);
 	void refreshDraw();
 	void eraseModel();
 	wxString generateModel();
@@ -38,7 +38,7 @@ public:
 protected:
 
 private:
-	ddDrawingEditor *draw;
-	ddITool *tool;
+	wxhdDrawingEditor *draw;
+	wxhdITool *tool;
 };
 #endif

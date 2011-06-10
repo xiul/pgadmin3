@@ -5,7 +5,7 @@
 // Copyright (C) 2002 - 2011, The pgAdmin Development Team
 // This software is released under the PostgreSQL Licence
 //
-// ddDragTrackerTool.cpp - A Tool that allow to drag and drop figures at the view
+// wxhdDragTrackerTool.cpp - A Tool that allow to drag and drop figures at the view
 //
 //////////////////////////////////////////////////////////////////////////
 
@@ -18,27 +18,27 @@
 #include "dd/wxhotdraw/tools/wxhdDragTrackerTool.h"
 #include "dd/wxhotdraw/tools/wxhdAbstractTool.h"
 
-ddDragTrackerTool::ddDragTrackerTool(ddDrawingEditor *editor, ddIFigure *anchor)
-:ddAbstractTool(editor)
+wxhdDragTrackerTool::wxhdDragTrackerTool(wxhdDrawingEditor *editor, wxhdIFigure *anchor)
+:wxhdAbstractTool(editor)
 {
 	hasMovedValue=false;
 	view = editor->view();
 	anchorFigure = anchor;
 }
 
-ddDragTrackerTool::~ddDragTrackerTool()
+wxhdDragTrackerTool::~wxhdDragTrackerTool()
 {
 }
 
-void ddDragTrackerTool::setLastCoords(int x, int y)
+void wxhdDragTrackerTool::setLastCoords(int x, int y)
 {
 	lastX=x;
 	lastY=y;
 }
 
-void ddDragTrackerTool::mouseDown(ddMouseEvent& event)
+void wxhdDragTrackerTool::mouseDown(wxhdMouseEvent& event)
 {
-	ddAbstractTool::mouseDown(event);
+	wxhdAbstractTool::mouseDown(event);
 
 	if(event.LeftDown())
 	{
@@ -58,14 +58,14 @@ void ddDragTrackerTool::mouseDown(ddMouseEvent& event)
 	}
 }
 
-void ddDragTrackerTool::mouseUp(ddMouseEvent& event)
+void wxhdDragTrackerTool::mouseUp(wxhdMouseEvent& event)
 {
-	ddAbstractTool::mouseUp(event);
+	wxhdAbstractTool::mouseUp(event);
 }
 
-void ddDragTrackerTool::mouseDrag(ddMouseEvent& event)
+void wxhdDragTrackerTool::mouseDrag(wxhdMouseEvent& event)
 {
-	ddAbstractTool::mouseDrag(event);
+	wxhdAbstractTool::mouseDrag(event);
 
 	if(event.LeftIsDown())
 	{
@@ -82,11 +82,11 @@ void ddDragTrackerTool::mouseDrag(ddMouseEvent& event)
 
         if (hasMoved())
         {
-            ddIFigure *tmp=NULL;
-            ddIteratorBase *iterator=view->selectionFigures();
+            wxhdIFigure *tmp=NULL;
+            wxhdIteratorBase *iterator=view->selectionFigures();
             while(iterator->HasNext())
             {
-                tmp=(ddIFigure *)iterator->Next();
+                tmp=(wxhdIFigure *)iterator->Next();
                 tmp->moveBy(x - lastX, y - lastY);
             }
             delete iterator;
@@ -95,7 +95,7 @@ void ddDragTrackerTool::mouseDrag(ddMouseEvent& event)
 	}
 }
 
-bool ddDragTrackerTool::hasMoved()
+bool wxhdDragTrackerTool::hasMoved()
 {
 	return hasMovedValue;
 }

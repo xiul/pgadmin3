@@ -14,15 +14,15 @@
 
 #include "dd/wxhotdraw/handles/wxhdButtonHandle.h"
 
-class ddMinMaxTableButtonHandle : public ddButtonHandle
+class ddMinMaxTableButtonHandle : public wxhdButtonHandle
 {
 public:
-	ddMinMaxTableButtonHandle(ddIFigure *owner, ddILocator *buttonLocator ,wxBitmap &buttonImage, wxBitmap &buttonSecondImage, wxSize &size);
+	ddMinMaxTableButtonHandle(wxhdIFigure *owner, wxhdILocator *buttonLocator ,wxBitmap &buttonImage, wxBitmap &buttonSecondImage, wxSize &size);
     ~ddMinMaxTableButtonHandle();
 
-	virtual void invokeStart(ddMouseEvent &event, ddDrawingView *view);
-	virtual void invokeStep(ddMouseEvent &event, ddDrawingView *view);
-	virtual void invokeEnd(ddMouseEvent &event, ddDrawingView *view);
+	virtual void invokeStart(wxhdMouseEvent &event, wxhdDrawingView *view);
+	virtual void invokeStep(wxhdMouseEvent &event, wxhdDrawingView *view);
+	virtual void invokeEnd(wxhdMouseEvent &event, wxhdDrawingView *view);
 	wxCursor createCursor();
 protected:
 

@@ -24,8 +24,8 @@
 
 ddDatabaseDesign::ddDatabaseDesign(wxWindow *parent)
 {
-	draw = new ddDrawingEditor(parent);
-	tool = new ddSelectionTool(draw);
+	draw = new wxhdDrawingEditor(parent);
+	tool = new wxhdSelectionTool(draw);
 	draw->setTool(tool);
 }
 
@@ -35,22 +35,22 @@ ddDatabaseDesign::~ddDatabaseDesign()
 		delete draw;
 }
 
-ddDrawingEditor* ddDatabaseDesign::getEditor()
+wxhdDrawingEditor* ddDatabaseDesign::getEditor()
 {
 	return draw;
 }
 
-ddDrawingView* ddDatabaseDesign::getView()
+wxhdDrawingView* ddDatabaseDesign::getView()
 {
 	return draw->view();
 }
 
-void ddDatabaseDesign::addTable(ddIFigure *figure)
+void ddDatabaseDesign::addTable(wxhdIFigure *figure)
 {
 	draw->view()->add(figure);
 }
 
-void ddDatabaseDesign::removeTable(ddIFigure *figure)
+void ddDatabaseDesign::removeTable(wxhdIFigure *figure)
 {
 	draw->view()->remove(figure);
 }
@@ -58,13 +58,13 @@ void ddDatabaseDesign::removeTable(ddIFigure *figure)
 void ddDatabaseDesign::removeSelectedObjects(int kind)
 {
     int answer;
-	ddIteratorBase *iterator=draw->model()->figuresEnumerator();
-    ddArrayCollection itemsToBeDeleted;
-	ddIFigure *tmp;
+	wxhdIteratorBase *iterator=draw->model()->figuresEnumerator();
+    wxhdArrayCollection itemsToBeDeleted;
+	wxhdIFigure *tmp;
     ddTableFigure *table;
     while(iterator->HasNext())
     {
-        tmp=(ddIFigure *)iterator->Next();
+        tmp=(wxhdIFigure *)iterator->Next();
         if (tmp->isSelected())
         {
             if(kind == 0 || tmp->getKindId() == kind)
@@ -77,7 +77,7 @@ void ddDatabaseDesign::removeSelectedObjects(int kind)
     
     if (itemsToBeDeleted.count() == 1)
     {
-		tmp = (ddIFigure*) itemsToBeDeleted.getItemAt(0);
+		tmp = (wxhdIFigure*) itemsToBeDeleted.getItemAt(0);
         table = (ddTableFigure *)tmp;	
         answer = wxMessageBox(_("Are you sure you wish to delete table ") + table->getTableName() + wxT("?"), _("Delete table?"), wxYES_NO|wxNO_DEFAULT);
     }
@@ -92,7 +92,7 @@ void ddDatabaseDesign::removeSelectedObjects(int kind)
     {
         while(itemsToBeDeleted.count()>0)
         {
-            tmp = (ddIFigure*) itemsToBeDeleted.getItemAt(0);
+            tmp = (wxhdIFigure*) itemsToBeDeleted.getItemAt(0);
             table = (ddTableFigure *)tmp;	
             draw->view()->removeFromSelection(table);
             table->processDeleteAlert(draw->view());
@@ -109,7 +109,7 @@ void ddDatabaseDesign::removeSelectedObjects(int kind)
     }
 }
 
-void ddDatabaseDesign::setTool(ddITool* tool)
+void ddDatabaseDesign::setTool(wxhdITool* tool)
 {
 	draw->setTool(tool);
 }
@@ -127,12 +127,12 @@ void ddDatabaseDesign::eraseModel()
 wxString ddDatabaseDesign::generateModel()
 {
 	wxString out;
-	ddIteratorBase *iterator=draw->model()->figuresEnumerator();
-	ddIFigure *tmp;
+	wxhdIteratorBase *iterator=draw->model()->figuresEnumerator();
+	wxhdIFigure *tmp;
 	ddTableFigure *table;
 	while(iterator->HasNext())
     {
-		tmp=(ddIFigure *)iterator->Next();
+		tmp=(wxhdIFigure *)iterator->Next();
 		if(tmp->getKindId() == ddTableFig)
 		{
 			out+=wxT(" \n");
@@ -153,8 +153,8 @@ wxString ddDatabaseDesign::generateModel()
 wxString ddDatabaseDesign::getNewTableName()
 {
 	wxString out,tmpStr;
-	ddIteratorBase *iterator=draw->model()->figuresEnumerator();
-	ddIFigure *tmp;
+	wxhdIteratorBase *iterator=draw->model()->figuresEnumerator();
+	wxhdIFigure *tmp;
 	ddTableFigure *table;
 	int indx=0;
 	bool repeat;
@@ -164,7 +164,7 @@ wxString ddDatabaseDesign::getNewTableName()
 		iterator->ResetIterator();
 		while(iterator->HasNext())
         {
-			tmp=(ddIFigure *)iterator->Next();
+			tmp=(wxhdIFigure *)iterator->Next();
 			if(tmp->getKindId() == ddTableFig)
 			{
 				table=(ddTableFigure*)tmp;
@@ -189,12 +189,12 @@ wxString ddDatabaseDesign::getNewTableName()
 
 ddTableFigure* ddDatabaseDesign::getSelectedTable()
 {
-	ddIteratorBase *iterator=draw->model()->figuresEnumerator();
-	ddIFigure *tmp;
+	wxhdIteratorBase *iterator=draw->model()->figuresEnumerator();
+	wxhdIFigure *tmp;
     ddTableFigure *table = 0L;
     while(iterator->HasNext())
     {
-        tmp=(ddIFigure *)iterator->Next();
+        tmp=(wxhdIFigure *)iterator->Next();
         if (tmp->isSelected() && tmp->getKindId() == ddTableFig)
             table = (ddTableFigure *)tmp;
 	 }
@@ -205,12 +205,12 @@ ddTableFigure* ddDatabaseDesign::getSelectedTable()
 bool ddDatabaseDesign::containsTable(wxString tableName)
 {
 	bool out=false;
-	ddIteratorBase *iterator=draw->model()->figuresEnumerator();
-	ddIFigure *tmp;
+	wxhdIteratorBase *iterator=draw->model()->figuresEnumerator();
+	wxhdIFigure *tmp;
 	ddTableFigure *table;
 	while(iterator->HasNext())
     {
-		tmp=(ddIFigure *)iterator->Next();
+		tmp=(wxhdIFigure *)iterator->Next();
 		if(tmp->getKindId() == ddTableFig)
 		{
 			table=(ddTableFigure*)tmp;

@@ -5,12 +5,12 @@
 // Copyright (C) 2002 - 2011, The pgAdmin Development Team
 // This software is released under the PostgreSQL Licence
 //
-// ddSelectAreaTool.h - Tool to allow selection of figures inside a rectangle
+// wxhdSelectAreaTool.h - Tool to allow selection of figures inside a rectangle
 //
 //////////////////////////////////////////////////////////////////////////
 
-#ifndef DDSELECTAREATOOL_H
-#define DDSELECTAREATOOL_H
+#ifndef WXHDSELECTAREATOOL_H
+#define WXHDSELECTAREATOOL_H
 
 #include "dd/wxhotdraw/main/wxhdObject.h"
 #include "dd/wxhotdraw/tools/wxhdITool.h"
@@ -19,20 +19,20 @@
 #include "dd/wxhotdraw/tools/wxhdAbstractTool.h"
 
 
-class ddSelectAreaTool : public ddAbstractTool
+class wxhdSelectAreaTool : public wxhdAbstractTool
 {
 public:
-	ddSelectAreaTool(ddDrawingEditor *editor);
-    ~ddSelectAreaTool();
+	wxhdSelectAreaTool(wxhdDrawingEditor *editor);
+    ~wxhdSelectAreaTool();
 
-	virtual void mouseDown(ddMouseEvent& event);  //Mouse Right Click
-	virtual void mouseUp(ddMouseEvent& event);
-	virtual void mouseDrag(ddMouseEvent& event);
+	virtual void mouseDown(wxhdMouseEvent& event);  //Mouse Right Click
+	virtual void mouseUp(wxhdMouseEvent& event);
+	virtual void mouseDrag(wxhdMouseEvent& event);
 	void selectFiguresOnRect(bool shiftPressed);
 protected:
 	void drawSelectionRect();
 private:
-	ddDrawingView *view;
-	ddRect selectionRect;
+	wxhdDrawingView *view;
+	wxhdRect selectionRect;
 };
 #endif

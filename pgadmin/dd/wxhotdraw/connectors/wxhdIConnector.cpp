@@ -5,7 +5,7 @@
 // Copyright (C) 2002 - 2011, The pgAdmin Development Team
 // This software is released under the PostgreSQL Licence
 //
-// ddIConnector.cpp - Base class for all connectors
+// wxhdIConnector.cpp - Base class for all connectors
 //
 //////////////////////////////////////////////////////////////////////////
 
@@ -17,50 +17,50 @@
 // App headers
 #include "dd/wxhotdraw/connectors/wxhdIConnector.h"
 
-class ddLineConnection;
-class ddIFigure;
+class wxhdLineConnection;
+class wxhdIFigure;
 
-ddIConnector::ddIConnector(ddIFigure *owner):
-ddObject()
+wxhdIConnector::wxhdIConnector(wxhdIFigure *owner):
+wxhdObject()
 {
 	figureOwner = owner;
 }
 
-ddIConnector::~ddIConnector()
+wxhdIConnector::~wxhdIConnector()
 {
 }
 
-ddIFigure* ddIConnector::getOwner()
+wxhdIFigure* wxhdIConnector::getOwner()
 {
 	return figureOwner;
 
 }
 
-void ddIConnector::setOwner(ddIFigure *owner)
+void wxhdIConnector::setOwner(wxhdIFigure *owner)
 {
 	figureOwner=owner;
 }
 
-void ddIConnector::draw(wxBufferedDC& context)
+void wxhdIConnector::draw(wxBufferedDC& context)
 {
 }
 
-ddRect& ddIConnector::getDisplayBox()
+wxhdRect& wxhdIConnector::getDisplayBox()
 {
 	return figureOwner->displayBox();
 }
 
-bool ddIConnector::containsPoint(int x, int y)
+bool wxhdIConnector::containsPoint(int x, int y)
 {
 	return figureOwner->containsPoint(x,y);
 }
 
-ddPoint ddIConnector::findStart(ddLineConnection *connection)
+wxhdPoint wxhdIConnector::findStart(wxhdLineConnection *connection)
 {
 	return getDisplayBox().center();
 }
 
-ddPoint ddIConnector::findEnd(ddLineConnection *connection)
+wxhdPoint wxhdIConnector::findEnd(wxhdLineConnection *connection)
 {
 	return getDisplayBox().center();
 }

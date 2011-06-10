@@ -5,7 +5,7 @@
 // Copyright (C) 2002 - 2011, The pgAdmin Development Team
 // This software is released under the PostgreSQL Licence
 //
-// ddHandleTrackerTool.cpp - A Tool that allow to use multiple handles
+// wxhdHandleTrackerTool.cpp - A Tool that allow to use multiple handles
 //
 //////////////////////////////////////////////////////////////////////////
 
@@ -18,29 +18,29 @@
 #include "dd/wxhotdraw/tools/wxhdHandleTrackerTool.h"
 #include "dd/wxhotdraw/tools/wxhdAbstractTool.h"
 
-ddHandleTrackerTool::ddHandleTrackerTool(ddDrawingEditor *editor, ddIHandle *anchor)
-:ddAbstractTool(editor)
+wxhdHandleTrackerTool::wxhdHandleTrackerTool(wxhdDrawingEditor *editor, wxhdIHandle *anchor)
+:wxhdAbstractTool(editor)
 {
 	view = editor->view();
 	anchorHandle = anchor;
 }
 
-ddHandleTrackerTool::~ddHandleTrackerTool()
+wxhdHandleTrackerTool::~wxhdHandleTrackerTool()
 {
 }
 
-void ddHandleTrackerTool::mouseDown(ddMouseEvent& event)
+void wxhdHandleTrackerTool::mouseDown(wxhdMouseEvent& event)
 {
-	ddAbstractTool::mouseDown(event);
+	wxhdAbstractTool::mouseDown(event);
 	anchorHandle->invokeStart(event,view);
 }
 
-void ddHandleTrackerTool::mouseUp(ddMouseEvent& event)
+void wxhdHandleTrackerTool::mouseUp(wxhdMouseEvent& event)
 {
 	anchorHandle->invokeEnd(event,view);
 }
 
-void ddHandleTrackerTool::mouseDrag(ddMouseEvent& event)
+void wxhdHandleTrackerTool::mouseDrag(wxhdMouseEvent& event)
 {
 	anchorHandle->invokeStep(event,view);
 }

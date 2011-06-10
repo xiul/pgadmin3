@@ -5,7 +5,7 @@
 // Copyright (C) 2002 - 2011, The pgAdmin Development Team
 // This software is released under the PostgreSQL Licence
 //
-// ddCompositeFigure.cpp - Figure that draw a bitmap
+// wxhdCompositeFigure.cpp - Figure that draw a bitmap
 //
 //////////////////////////////////////////////////////////////////////////
 
@@ -20,42 +20,42 @@
 #include "dd/wxhotdraw/main/wxhdDrawingView.h"
 
 
-ddBitmapFigure::ddBitmapFigure(wxBitmap image)
+wxhdBitmapFigure::wxhdBitmapFigure(wxBitmap image)
 {
 	imageToDraw=image;
 	this->getBasicDisplayBox().width=imageToDraw.GetWidth();
 	this->getBasicDisplayBox().height=imageToDraw.GetHeight();
 }
 
-ddBitmapFigure::~ddBitmapFigure()
+wxhdBitmapFigure::~wxhdBitmapFigure()
 {
 }
 
-void ddBitmapFigure::basicDraw(wxBufferedDC& context, ddDrawingView *view)
+void wxhdBitmapFigure::basicDraw(wxBufferedDC& context, wxhdDrawingView *view)
 {
-	ddRect copy = displayBox();
+	wxhdRect copy = displayBox();
 	view->CalcScrolledPosition(copy.x,copy.y,&copy.x,&copy.y);
 	context.DrawBitmap(imageToDraw,copy.GetPosition(),true);
 }
 
-void ddBitmapFigure::basicDrawSelected(wxBufferedDC& context, ddDrawingView *view)
+void wxhdBitmapFigure::basicDrawSelected(wxBufferedDC& context, wxhdDrawingView *view)
 {
 	basicDraw(context,view);
 }
 
-void ddBitmapFigure::changeBitmap(wxBitmap image)
+void wxhdBitmapFigure::changeBitmap(wxBitmap image)
 {
 	imageToDraw=image;
 	this->getBasicDisplayBox().width=imageToDraw.GetWidth();
 	this->getBasicDisplayBox().height=imageToDraw.GetHeight();
 }
 
-int ddBitmapFigure::getWidth()
+int wxhdBitmapFigure::getWidth()
 {
 	return imageToDraw.GetWidth();
 }
 
-int ddBitmapFigure::getHeight()
+int wxhdBitmapFigure::getHeight()
 {
 	return imageToDraw.GetHeight();
 }

@@ -16,13 +16,13 @@
 #include "dd/dditems/figures/ddTextTableItemFigure.h"
 
 
-class ddColumnTextTool : public ddSimpleTextTool
+class ddColumnTextTool : public wxhdSimpleTextTool
 {
 
 public:
-	ddColumnTextTool(ddDrawingEditor *editor, ddIFigure *fig, ddITool *dt,  bool fastEdit = true, wxString dialogCaption = wxEmptyString, wxString dialogMessage = wxEmptyString);
+	ddColumnTextTool(wxhdDrawingEditor *editor, wxhdIFigure *fig, wxhdITool *dt,  bool fastEdit = true, wxString dialogCaption = wxEmptyString, wxString dialogMessage = wxEmptyString);
     ~ddColumnTextTool();
-	virtual void mouseDown(ddMouseEvent& event);  //Mouse Right Click
+	virtual void mouseDown(wxhdMouseEvent& event);  //Mouse Right Click
 	virtual bool callDialog();
 	// some events functions are needed but because a bug it were move to main View class as a hack.
 protected:

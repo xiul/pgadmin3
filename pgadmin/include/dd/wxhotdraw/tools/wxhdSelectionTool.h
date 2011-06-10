@@ -5,33 +5,33 @@
 // Copyright (C) 2002 - 2011, The pgAdmin Development Team
 // This software is released under the PostgreSQL Licence
 //
-// ddSelectionTool.h - Tool to allow selection of figures
+// wxhdSelectionTool.h - Tool to allow selection of figures
 //
 //////////////////////////////////////////////////////////////////////////
 
-#ifndef DDSELECTIONTOOL_H
-#define DDSELECTIONTOOL_H
+#ifndef WXHDSELECTIONTOOL_H
+#define WXHDSELECTIONTOOL_H
 
 #include "dd/wxhotdraw/tools/wxhdITool.h"
 #include "dd/wxhotdraw/tools/wxhdAbstractTool.h"
 
-class ddSelectionTool : public ddAbstractTool
+class wxhdSelectionTool : public wxhdAbstractTool
 {
 public:
-	ddSelectionTool(ddDrawingEditor *owner);
-    ~ddSelectionTool();
-	virtual void mouseDown(ddMouseEvent& event);  //Mouse Right Click
-	virtual void mouseUp(ddMouseEvent& event);
-	virtual void mouseMove(ddMouseEvent& event);
-	virtual void mouseDrag(ddMouseEvent& event);
+	wxhdSelectionTool(wxhdDrawingEditor *owner);
+    ~wxhdSelectionTool();
+	virtual void mouseDown(wxhdMouseEvent& event);  //Mouse Right Click
+	virtual void mouseUp(wxhdMouseEvent& event);
+	virtual void mouseMove(wxhdMouseEvent& event);
+	virtual void mouseDrag(wxhdMouseEvent& event);
 	virtual void keyDown(wxKeyEvent& event);
 	virtual void keyUp(wxKeyEvent& event);
-	void setDelegateTool(ddITool *tool);
-	ddITool* getDelegateTool();
+	void setDelegateTool(wxhdITool *tool);
+	wxhdITool* getDelegateTool();
 
 protected:
-	ddITool *_delegateTool;
+	wxhdITool *_delegateTool;
 private:
-	void deleteFigures(ddDrawingView *view);
+	void deleteFigures(wxhdDrawingView *view);
 };
 #endif

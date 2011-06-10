@@ -5,7 +5,7 @@
 // Copyright (C) 2002 - 2011, The pgAdmin Development Team
 // This software is released under the PostgreSQL Licence
 //
-// ddSelectionTool.cpp - Tool to allow selection of figures
+// wxhdSelectionTool.cpp - Tool to allow selection of figures
 //
 //////////////////////////////////////////////////////////////////////////
 
@@ -24,66 +24,66 @@
 #include "dd/wxhotdraw/tools/wxhdSelectAreaTool.h"
 
 
-class ddDrawingView;
-class ddDrawingEditor;
+class wxhdDrawingView;
+class wxhdDrawingEditor;
 
-ddSelectionTool::ddSelectionTool(ddDrawingEditor *owner):
-ddAbstractTool(owner)
+wxhdSelectionTool::wxhdSelectionTool(wxhdDrawingEditor *owner):
+wxhdAbstractTool(owner)
 {
 	_delegateTool=NULL;
 }
 
-ddSelectionTool::~ddSelectionTool()
+wxhdSelectionTool::~wxhdSelectionTool()
 {
 	if(_delegateTool)
 		delete _delegateTool;
 }
 
-void ddSelectionTool::mouseDown(ddMouseEvent& event)
+void wxhdSelectionTool::mouseDown(wxhdMouseEvent& event)
 {
-	ddITool::mouseDown(event);
+	wxhdITool::mouseDown(event);
 
-	ddDrawingView *view=getDrawingEditor()->view();
+	wxhdDrawingView *view=getDrawingEditor()->view();
 	int x=event.GetPosition().x, y=event.GetPosition().y;
 
-	ddIHandle *handle = view->findHandle(x,y);
+	wxhdIHandle *handle = view->findHandle(x,y);
 	if(handle)
     {
-		setDelegateTool(new ddHandleTrackerTool(getDrawingEditor(),handle));
+		setDelegateTool(new wxhdHandleTrackerTool(getDrawingEditor(),handle));
 	}
 	else
 	{
-        ddIFigure *figure = view->getDrawing()->findFigure(x,y);
+        wxhdIFigure *figure = view->getDrawing()->findFigure(x,y);
         if(figure)
         {
 			view->getDrawing()->bringToFront(figure);
-			setDelegateTool(figure->CreateFigureTool(getDrawingEditor(),new ddDragTrackerTool(getDrawingEditor(),figure)));
+			setDelegateTool(figure->CreateFigureTool(getDrawingEditor(),new wxhdDragTrackerTool(getDrawingEditor(),figure)));
         }
         else
         {
-            setDelegateTool(new ddSelectAreaTool(getDrawingEditor()));
+            setDelegateTool(new wxhdSelectAreaTool(getDrawingEditor()));
         }
 	}
 
-	ddITool *delegateTool = getDelegateTool();
+	wxhdITool *delegateTool = getDelegateTool();
 	if (delegateTool)
         delegateTool->mouseDown(event);
 }
 
-void ddSelectionTool::mouseUp(ddMouseEvent& event)
+void wxhdSelectionTool::mouseUp(wxhdMouseEvent& event)
 {
-	ddAbstractTool::mouseUp(event);
-	ddITool *delegateTool = getDelegateTool();
+	wxhdAbstractTool::mouseUp(event);
+	wxhdITool *delegateTool = getDelegateTool();
 	if (delegateTool)
 			delegateTool->mouseUp(event);
 }
 
-void ddSelectionTool::mouseMove(ddMouseEvent& event)
+void wxhdSelectionTool::mouseMove(wxhdMouseEvent& event)
 {
-	ddAbstractTool::mouseMove(event);
-	ddDrawingView *view=getDrawingEditor()->view();
+	wxhdAbstractTool::mouseMove(event);
+	wxhdDrawingView *view=getDrawingEditor()->view();
 	int x=event.GetPosition().x, y=event.GetPosition().y;
-	ddIHandle *handle = view->findHandle(x,y);
+	wxhdIHandle *handle = view->findHandle(x,y);
 
 	if(handle)
     {
@@ -91,7 +91,7 @@ void ddSelectionTool::mouseMove(ddMouseEvent& event)
 	}
 	else
 	{
-		ddIFigure *figure = view->getDrawing()->findFigure(x,y);
+		wxhdIFigure *figure = view->getDrawing()->findFigure(x,y);
 		if(figure)
 		{
 			view->SetCursor(wxCursor(wxCURSOR_HAND));
@@ -103,15 +103,15 @@ void ddSelectionTool::mouseMove(ddMouseEvent& event)
 	}
 }
 
-void ddSelectionTool::mouseDrag(ddMouseEvent& event)
+void wxhdSelectionTool::mouseDrag(wxhdMouseEvent& event)
 {
-	ddAbstractTool::mouseDrag(event);
-	ddITool *delegateTool = getDelegateTool();
+	wxhdAbstractTool::mouseDrag(event);
+	wxhdITool *delegateTool = getDelegateTool();
 	if (delegateTool)
 			delegateTool->mouseDrag(event);
 }
 
-void ddSelectionTool::keyDown(wxKeyEvent& event)
+void wxhdSelectionTool::keyDown(wxKeyEvent& event)
 {
 	if(getDelegateTool())
     {
@@ -123,7 +123,7 @@ void ddSelectionTool::keyDown(wxKeyEvent& event)
 	}
 }
 
-void ddSelectionTool::keyUp(wxKeyEvent& event)
+void wxhdSelectionTool::keyUp(wxKeyEvent& event)
 {
 	if(getDelegateTool())
     {
@@ -131,7 +131,7 @@ void ddSelectionTool::keyUp(wxKeyEvent& event)
 	}
 }
 
-void ddSelectionTool::setDelegateTool(ddITool *tool)
+void wxhdSelectionTool::setDelegateTool(wxhdITool *tool)
 {
 	if(_delegateTool)
     {
@@ -147,12 +147,12 @@ void ddSelectionTool::setDelegateTool(ddITool *tool)
 	}
 }
 
-ddITool* ddSelectionTool::getDelegateTool()
+wxhdITool* wxhdSelectionTool::getDelegateTool()
 {
 	return _delegateTool;
 }
 
-void ddSelectionTool::deleteFigures(ddDrawingView *view)
+void wxhdSelectionTool::deleteFigures(wxhdDrawingView *view)
 {
 	view->clearSelection();
 	view->getDrawing()->deleteFigures();

@@ -5,12 +5,12 @@
 // Copyright (C) 2002 - 2011, The pgAdmin Development Team
 // This software is released under the PostgreSQL Licence
 //
-// ddDrawingView.h - Main canvas where all figures are drawn
+// wxhdDrawingView.h - Main canvas where all figures are drawn
 //
 //////////////////////////////////////////////////////////////////////////
 
-#ifndef DDIDRAWINGVIEW_H
-#define DDIDRAWINGVIEW_H
+#ifndef WXHDDRAWINGVIEW_H
+#define WXHDDRAWINGVIEW_H
 
 #include "dd/wxhotdraw/figures/wxhdIFigure.h"
 #include "dd/wxhotdraw/main/wxhdDrawing.h"
@@ -26,46 +26,46 @@ enum
     CTL_CANCELBUTTONID
 };
 
-class ddDrawingView : public wxScrolledWindow
+class wxhdDrawingView : public wxScrolledWindow
 {
 public:
-	ddDrawingView(wxWindow *ddParent, ddDrawingEditor *editor ,wxSize size, ddDrawing *drawing);
-	~ddDrawingView();
-	virtual void add(ddIFigure *figure);
-	virtual void remove(ddIFigure *figure);
+	wxhdDrawingView(wxWindow *ddParent, wxhdDrawingEditor *editor ,wxSize size, wxhdDrawing *drawing);
+	~wxhdDrawingView();
+	virtual void add(wxhdIFigure *figure);
+	virtual void remove(wxhdIFigure *figure);
 	virtual void removeAll();
-	virtual void addToSelection(ddIFigure *figure);
-	virtual void addToSelection(ddCollection *figures);
-	virtual void removeFromSelection(ddIFigure *figure);
-	virtual void toggleSelection(ddIFigure *figure);
+	virtual void addToSelection(wxhdIFigure *figure);
+	virtual void addToSelection(wxhdCollection *figures);
+	virtual void removeFromSelection(wxhdIFigure *figure);
+	virtual void toggleSelection(wxhdIFigure *figure);
 	virtual void clearSelection();
-	virtual void ScrollToMakeVisible(ddPoint p);
-	virtual void ScrollToMakeVisible (ddRect r);
-	virtual ddIHandle* findHandle(double x, double y);
-	virtual ddDrawing* getDrawing();
-	virtual bool isFigureSelected(ddIFigure *figure);
+	virtual void ScrollToMakeVisible(wxhdPoint p);
+	virtual void ScrollToMakeVisible (wxhdRect r);
+	virtual wxhdIHandle* findHandle(double x, double y);
+	virtual wxhdDrawing* getDrawing();
+	virtual bool isFigureSelected(wxhdIFigure *figure);
 	void onPaint(wxPaintEvent& event);
 	void onEraseBackGround(wxEraseEvent& event);
-	virtual ddIteratorBase* selectionFigures();
+	virtual wxhdIteratorBase* selectionFigures();
 	virtual void onMouseDown(wxMouseEvent& event);
 	virtual void onMouseUp(wxMouseEvent& event);
 	virtual void onMotion(wxMouseEvent& event);
-	virtual ddRect getVisibleArea();
-	virtual ddRect getVirtualSize();
-	ddDrawingEditor* editor();  
+	virtual wxhdRect getVisibleArea();
+	virtual wxhdRect getVirtualSize();
+	wxhdDrawingEditor* editor();  
 	wxSize canvasSize;
 	
 	//Hack to avoid selection rectangle drawing bug
-	void setSelRect(ddRect& selectionRect);
+	void setSelRect(wxhdRect& selectionRect);
 	void disableSelRectDraw();
 	//Hack to avoid event problem with simpleTextTool wxTextCrtl at EVT_TEXT event
 	void simpleTextToolChangeHandler(wxCommandEvent& event);
-	void setSimpleTextToolFigure(ddSimpleTextFigure *figure, bool onlySetFigure=false);
+	void setSimpleTextToolFigure(wxhdSimpleTextFigure *figure, bool onlySetFigure=false);
 	wxTextCtrl* getSimpleTextToolEdit();
 	wxBitmapButton* getOkTxt();
 	wxBitmapButton* getCancelTxt();
 	//Hack to allow use (events) of wxmenu inside a tool Generic Way
-	void setMenuToolFigure(ddAbstractMenuFigure *figure);
+	void setMenuToolFigure(wxhdAbstractMenuFigure *figure);
 	//Hack to allow use (events) of wxmenu inside a tool like simpletexttool
 	void OnGenericPopupClick(wxCommandEvent& event);
 	void OnOkTxtButton(wxCommandEvent& event);
@@ -75,27 +75,27 @@ protected:
 
 private:
 	DECLARE_EVENT_TABLE()
-	ddCollection *selection;
-	ddDrawing *drawing;
-	ddDrawingEditor *drawingEditor;
+	wxhdCollection *selection;
+	wxhdDrawing *drawing;
+	wxhdDrawingEditor *drawingEditor;
 	
 	//Hack to allow auto scrolling when dragging mouse.
-	ddPoint startDrag;
+	wxhdPoint startDrag;
 
 	//Hack to avoid selection rectangle drawing bug
-	ddRect selRect;  
+	wxhdRect selRect;  
 	wxPoint selPoints[5];
 	bool drawSelRect;
 	//End Hack to avoid selection rectangle drawing bug
 	
 	//Hack to allow use (events) of wxmenu inside a tool Generic Way
-	ddAbstractMenuFigure *menuFigure;
+	wxhdAbstractMenuFigure *menuFigure;
 	//End hack to allow use (events) of wxmenu inside a tool Generic Way
 
 	//Hack to avoid event problem with simpleTextTool wxTextCrtl at EVT_TEXT event && POPUP EVENT
 	wxTextCtrl *simpleTextToolEdit;
 	wxBitmapButton *okTxtButton, *cancelTxtButton;
-	ddSimpleTextFigure *simpleTextFigure;
+	wxhdSimpleTextFigure *simpleTextFigure;
 	wxString oldText;
 	//End Hack to avoid event problem with simpleTextTool wxTextCrtl at EVT_TEXT event && POPUP EVENT
 };

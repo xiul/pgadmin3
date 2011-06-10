@@ -5,7 +5,7 @@
 // Copyright (C) 2002 - 2011, The pgAdmin Development Team
 // This software is released under the PostgreSQL Licence
 //
-// ddChangeConnectionHandle.cpp - Base Handle to allow change connected figures at connection figures 
+// wxhdChangeConnectionHandle.cpp - Base Handle to allow change connected figures at connection figures 
 //
 //////////////////////////////////////////////////////////////////////////
 
@@ -22,22 +22,22 @@
 #include "dd/wxhotdraw/main/wxhdDrawingView.h"
 
 
-ddChangeConnectionHandle::ddChangeConnectionHandle(ddLineConnection *owner):
-ddIHandle(owner)
+wxhdChangeConnectionHandle::wxhdChangeConnectionHandle(wxhdLineConnection *owner):
+wxhdIHandle(owner)
 {
 	connection = owner;
 	targetFigure = NULL;
 	originalTarget = NULL;
 }
 
-ddChangeConnectionHandle::~ddChangeConnectionHandle(){
+wxhdChangeConnectionHandle::~wxhdChangeConnectionHandle(){
 	
 }
 
-void ddChangeConnectionHandle::draw(wxBufferedDC& context, ddDrawingView *view)
+void wxhdChangeConnectionHandle::draw(wxBufferedDC& context, wxhdDrawingView *view)
 {
 
-	ddRect copy = getDisplayBox();
+	wxhdRect copy = getDisplayBox();
 	view->CalcScrolledPosition(copy.x,copy.y,&copy.x,&copy.y);
 
 	copy.Deflate(2,2);
@@ -46,24 +46,24 @@ void ddChangeConnectionHandle::draw(wxBufferedDC& context, ddDrawingView *view)
 	context.DrawRectangle(copy);
 }
 
-wxCursor ddChangeConnectionHandle::createCursor()
+wxCursor wxhdChangeConnectionHandle::createCursor()
 {
 	return wxCursor(wxCURSOR_CROSS);
 }
 
-void ddChangeConnectionHandle::invokeStart(ddMouseEvent& event, ddDrawingView *view)
+void wxhdChangeConnectionHandle::invokeStart(wxhdMouseEvent& event, wxhdDrawingView *view)
 {
 	originalTarget = target();
 	disconnect();
 }
 
-void ddChangeConnectionHandle::invokeStep(ddMouseEvent& event, ddDrawingView *view)
+void wxhdChangeConnectionHandle::invokeStep(wxhdMouseEvent& event, wxhdDrawingView *view)
 {
 	int x=event.GetPosition().x, y=event.GetPosition().y;
-	ddPoint p = ddPoint(x,y);
-	ddIFigure *figure = findConnectableFigure(x,y,view->getDrawing());
+	wxhdPoint p = wxhdPoint(x,y);
+	wxhdIFigure *figure = findConnectableFigure(x,y,view->getDrawing());
 	targetFigure = figure;
-	ddIConnector *target = findConnectionTarget(x,y,view->getDrawing());
+	wxhdIConnector *target = findConnectionTarget(x,y,view->getDrawing());
 	if(target)
 	{
 		p = target->getDisplayBox().center();
@@ -72,27 +72,27 @@ void ddChangeConnectionHandle::invokeStep(ddMouseEvent& event, ddDrawingView *vi
 	connection->updateConnection();
 }
 
-void ddChangeConnectionHandle::invokeEnd(ddMouseEvent& event, ddDrawingView *view)
+void wxhdChangeConnectionHandle::invokeEnd(wxhdMouseEvent& event, wxhdDrawingView *view)
 {
 	int x=event.GetPosition().x, y=event.GetPosition().y;
-	ddIConnector *target = findConnectionTarget(x,y,view->getDrawing()); 
+	wxhdIConnector *target = findConnectionTarget(x,y,view->getDrawing()); 
 		if(!target)
 		{
 			target=originalTarget;
 		}
-	ddPoint p = ddPoint(x,y);
+	wxhdPoint p = wxhdPoint(x,y);
 	connect(target);
 	connection->updateConnection();
 }
 
 
-ddIFigure* ddChangeConnectionHandle::findConnectableFigure (int x, int y, ddDrawing *drawing)
+wxhdIFigure* wxhdChangeConnectionHandle::findConnectableFigure (int x, int y, wxhdDrawing *drawing)
 {
-	ddIFigure *out=NULL;
-	ddIteratorBase *iterator=drawing->figuresInverseEnumerator();
+	wxhdIFigure *out=NULL;
+	wxhdIteratorBase *iterator=drawing->figuresInverseEnumerator();
 	while(iterator->HasNext())
 	{
-		ddIFigure *figure = (ddIFigure*) iterator->Next();
+		wxhdIFigure *figure = (wxhdIFigure*) iterator->Next();
 		if(figure->containsPoint(x,y) && isConnectionPossible(figure))
 		{
 			out=figure;
@@ -102,9 +102,9 @@ ddIFigure* ddChangeConnectionHandle::findConnectableFigure (int x, int y, ddDraw
 	delete iterator;
 	return out;
 }
-ddIConnector* ddChangeConnectionHandle::findConnectionTarget(int x, int y, ddDrawing *drawing)
+wxhdIConnector* wxhdChangeConnectionHandle::findConnectionTarget(int x, int y, wxhdDrawing *drawing)
 {
-	ddIFigure *target = findConnectableFigure(x,y,drawing);
+	wxhdIFigure *target = findConnectableFigure(x,y,drawing);
 	if(target)
 		return target->connectorAt(x,y);
 	else

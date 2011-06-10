@@ -5,29 +5,29 @@
 // Copyright (C) 2002 - 2011, The pgAdmin Development Team
 // This software is released under the PostgreSQL Licence
 //
-// ddChopBoxConnector.h - Connector for center of figure to line crossing one limit line of rect
+// wxhdChopBoxConnector.h - Connector for center of figure to line crossing one limit line of rect
 //
 //////////////////////////////////////////////////////////////////////////
 
-#ifndef DDCHOPBOXCONNECTOR_H
-#define DDCHOPBOXCONNECTOR_H
+#ifndef WXHDCHOPBOXCONNECTOR_H
+#define WXHDCHOPBOXCONNECTOR_H
 
 
 #include "dd/wxhotdraw/connectors/wxhdIConnector.h"
 #include "dd/wxhotdraw/figures/wxhdIFigure.h"
 
-class ddChopBoxConnector : public ddIConnector
+class wxhdChopBoxConnector : public wxhdIConnector
 {
 public:
-	ddChopBoxConnector(ddIFigure *owner);
-    ~ddChopBoxConnector();
-	virtual ddPoint findStart(ddLineConnection *connFigure);
-	virtual ddPoint findEnd(ddLineConnection *connFigure);
+	wxhdChopBoxConnector(wxhdIFigure *owner);
+    ~wxhdChopBoxConnector();
+	virtual wxhdPoint findStart(wxhdLineConnection *connFigure);
+	virtual wxhdPoint findEnd(wxhdLineConnection *connFigure);
 protected:
-	virtual ddPoint chop(ddIFigure *target, ddPoint point);
+	virtual wxhdPoint chop(wxhdIFigure *target, wxhdPoint point);
 private:
-	ddPoint point;
-	ddRect rect;
+	wxhdPoint point;
+	wxhdRect rect;
 
 };
 #endif

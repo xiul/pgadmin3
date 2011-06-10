@@ -5,7 +5,7 @@
 // Copyright (C) 2002 - 2011, The pgAdmin Development Team
 // This software is released under the PostgreSQL Licence
 //
-// ddSelectAreaTool.cpp - Tool to allow selection of figures inside a rectangle
+// wxhdSelectAreaTool.cpp - Tool to allow selection of figures inside a rectangle
 //
 //////////////////////////////////////////////////////////////////////////
 
@@ -23,19 +23,19 @@
 #include "dd/wxhotdraw/utilities/wxhdGeometry.h"
 
 
-ddSelectAreaTool::ddSelectAreaTool(ddDrawingEditor *editor)
-:ddAbstractTool(editor)
+wxhdSelectAreaTool::wxhdSelectAreaTool(wxhdDrawingEditor *editor)
+:wxhdAbstractTool(editor)
 {
 	view = editor->view();
 }
 
-ddSelectAreaTool::~ddSelectAreaTool()
+wxhdSelectAreaTool::~wxhdSelectAreaTool()
 {
 }
 
-void ddSelectAreaTool::mouseDown(ddMouseEvent& event)
+void wxhdSelectAreaTool::mouseDown(wxhdMouseEvent& event)
 {
-	ddAbstractTool::mouseDown(event);
+	wxhdAbstractTool::mouseDown(event);
 	if(!event.ShiftDown())
     {
 		view->clearSelection();
@@ -51,10 +51,10 @@ void ddSelectAreaTool::mouseDown(ddMouseEvent& event)
 	}
 }
 
-void ddSelectAreaTool::mouseUp(ddMouseEvent& event)
+void wxhdSelectAreaTool::mouseUp(wxhdMouseEvent& event)
 {
-	ddAbstractTool::mouseUp(event);
-	ddGeometry g;
+	wxhdAbstractTool::mouseUp(event);
+	wxhdGeometry g;
 	//hack-fix for bug when selecting figures from right to left
 	if(event.LeftUp())
 	{
@@ -80,9 +80,9 @@ void ddSelectAreaTool::mouseUp(ddMouseEvent& event)
 	}
 }
 
-void ddSelectAreaTool::mouseDrag(ddMouseEvent& event)
+void wxhdSelectAreaTool::mouseDrag(wxhdMouseEvent& event)
 {
-	ddAbstractTool::mouseDrag(event);
+	wxhdAbstractTool::mouseDrag(event);
 	if(event.LeftIsDown())
 	{
 		drawSelectionRect();
@@ -95,13 +95,13 @@ void ddSelectAreaTool::mouseDrag(ddMouseEvent& event)
 	}
 }
 
-void ddSelectAreaTool::selectFiguresOnRect(bool shiftPressed)
+void wxhdSelectAreaTool::selectFiguresOnRect(bool shiftPressed)
 {
-	ddIFigure *figure;
-	ddIteratorBase *iterator = getDrawingEditor()->model()->figuresInverseEnumerator();
+	wxhdIFigure *figure;
+	wxhdIteratorBase *iterator = getDrawingEditor()->model()->figuresInverseEnumerator();
 	while(iterator->HasNext())
 	{
-		figure=(ddIFigure *)iterator->Next();
+		figure=(wxhdIFigure *)iterator->Next();
 		if(selectionRect.Contains(figure->displayBox()))
         {
 			if(shiftPressed)
@@ -117,7 +117,7 @@ void ddSelectAreaTool::selectFiguresOnRect(bool shiftPressed)
 	delete iterator;
 }
 
-void ddSelectAreaTool::drawSelectionRect()
+void wxhdSelectAreaTool::drawSelectionRect()
 {
 	view->setSelRect(selectionRect);
 }

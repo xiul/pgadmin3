@@ -5,7 +5,7 @@
 // Copyright (C) 2002 - 2011, The pgAdmin Development Team
 // This software is released under the PostgreSQL Licence
 //
-// ddAbstractFigure.cpp - Base class for all figures
+// wxhdAbstractFigure.cpp - Base class for all figures
 //
 //////////////////////////////////////////////////////////////////////////
 
@@ -22,33 +22,33 @@
 #include "dd/wxhotdraw/utilities/wxhdArrayCollection.h"
 #include "dd/wxhotdraw/main/wxhdDrawingView.h"
 
-ddAbstractFigure::ddAbstractFigure()
+wxhdAbstractFigure::wxhdAbstractFigure()
 {
 }
 
-ddAbstractFigure::~ddAbstractFigure()
+wxhdAbstractFigure::~wxhdAbstractFigure()
 {
 }
 
-bool ddAbstractFigure::canConnect ()
+bool wxhdAbstractFigure::canConnect ()
 {
     return true;
 }
 
-bool ddAbstractFigure::includes(ddIFigure *figure)
+bool wxhdAbstractFigure::includes(wxhdIFigure *figure)
 {
 	return (this==figure);	
 }
 
-void ddAbstractFigure::draw(wxBufferedDC& context, ddDrawingView *view)
+void wxhdAbstractFigure::draw(wxBufferedDC& context, wxhdDrawingView *view)
 {
-	ddIFigure::draw(context,view);
+	wxhdIFigure::draw(context,view);
 	basicDraw(context,view);
 }
 
-void ddAbstractFigure::basicDraw(wxBufferedDC& context, ddDrawingView *view)
+void wxhdAbstractFigure::basicDraw(wxBufferedDC& context, wxhdDrawingView *view)
 {
-	ddRect copy = displayBox();
+	wxhdRect copy = displayBox();
 	view->CalcScrolledPosition(copy.x,copy.y,&copy.x,&copy.y);
 
 	context.SetPen(*wxGREEN_PEN);
@@ -56,15 +56,15 @@ void ddAbstractFigure::basicDraw(wxBufferedDC& context, ddDrawingView *view)
 	context.DrawRectangle(copy);
 }
 
-void ddAbstractFigure::drawSelected(wxBufferedDC& context, ddDrawingView *view)
+void wxhdAbstractFigure::drawSelected(wxBufferedDC& context, wxhdDrawingView *view)
 {
-	ddIFigure::drawSelected(context,view);	
+	wxhdIFigure::drawSelected(context,view);	
 	basicDrawSelected(context,view);
 }
 
-void ddAbstractFigure::basicDrawSelected(wxBufferedDC& context, ddDrawingView *view)
+void wxhdAbstractFigure::basicDrawSelected(wxBufferedDC& context, wxhdDrawingView *view)
 {
-	ddRect copy = displayBox();
+	wxhdRect copy = displayBox();
 	view->CalcScrolledPosition(copy.x,copy.y,&copy.x,&copy.y);
 	
 	context.SetPen(*wxRED_PEN);
@@ -73,58 +73,58 @@ void ddAbstractFigure::basicDrawSelected(wxBufferedDC& context, ddDrawingView *v
 }
 
 
-ddITool* ddAbstractFigure::CreateFigureTool(ddDrawingEditor *editor, ddITool *defaultTool)
+wxhdITool* wxhdAbstractFigure::CreateFigureTool(wxhdDrawingEditor *editor, wxhdITool *defaultTool)
 {
 	return defaultTool;
 }
 
-void ddAbstractFigure::moveBy(int x, int y)
+void wxhdAbstractFigure::moveBy(int x, int y)
 {
 	willChange();
 	basicMoveBy(x,y);
 	changed();
 }
 
-void ddAbstractFigure::basicMoveBy(int x, int y)
+void wxhdAbstractFigure::basicMoveBy(int x, int y)
 {
-		ddRect r = basicDisplayBox;
+		wxhdRect r = basicDisplayBox;
 		r.x += x;
 		r.y += y;
 		basicDisplayBox = r;
 }
 
 
-void ddAbstractFigure::moveTo(int x, int y)
+void wxhdAbstractFigure::moveTo(int x, int y)
 {
-		ddRect r = basicDisplayBox;
+		wxhdRect r = basicDisplayBox;
 		r.x = x;
 		r.y = y;
 		basicDisplayBox = r;
 }
 
-void ddAbstractFigure::willChange()
+void wxhdAbstractFigure::willChange()
 {
 	invalidate();
 }
 
-void ddAbstractFigure::changed()
+void wxhdAbstractFigure::changed()
 {
     invalidate();
     onFigureChanged(this);
 }
 
-void ddAbstractFigure::invalidate()
+void wxhdAbstractFigure::invalidate()
 {
 
 }
 
-bool ddAbstractFigure::containsPoint(int x, int y)
+bool wxhdAbstractFigure::containsPoint(int x, int y)
 {
 	return basicDisplayBox.Contains(x,y);
 }
 
-void ddAbstractFigure::onFigureChanged(ddIFigure *figure)
+void wxhdAbstractFigure::onFigureChanged(wxhdIFigure *figure)
 {
 	//go to figure procedure to alert observers of changes on this figure
-	ddIFigure::onFigureChanged(figure);
+	wxhdIFigure::onFigureChanged(figure);
 }

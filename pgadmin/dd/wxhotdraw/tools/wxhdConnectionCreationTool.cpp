@@ -5,7 +5,7 @@
 // Copyright (C) 2002 - 2011, The pgAdmin Development Team
 // This software is released under the PostgreSQL Licence
 //
-// ddConnectionCreationTool.cpp - A Tool that allow to create a connection figure between two figures
+// wxhdConnectionCreationTool.cpp - A Tool that allow to create a connection figure between two figures
 //
 //////////////////////////////////////////////////////////////////////////
 
@@ -19,8 +19,8 @@
 #include "dd/wxhotdraw/tools/wxhdSelectionTool.h"
 #include "dd/wxhotdraw/main/wxhdDrawingView.h"
 
-ddConnectionCreationTool::ddConnectionCreationTool(ddDrawingEditor *editor, ddLineConnection *figure):
-ddAbstractTool(editor)
+wxhdConnectionCreationTool::wxhdConnectionCreationTool(wxhdDrawingEditor *editor, wxhdLineConnection *figure):
+wxhdAbstractTool(editor)
 {
 	toolConnection=figure;
 	toolConnection->disconnectStart();
@@ -30,11 +30,11 @@ ddAbstractTool(editor)
 	dragged=false;
 }
 
-ddConnectionCreationTool::~ddConnectionCreationTool()
+wxhdConnectionCreationTool::~wxhdConnectionCreationTool()
 {
 }
 
-void ddConnectionCreationTool::mouseDrag(ddMouseEvent& event)
+void wxhdConnectionCreationTool::mouseDrag(wxhdMouseEvent& event)
 {
 	if(handle && event.LeftIsDown())
 	{
@@ -43,22 +43,22 @@ void ddConnectionCreationTool::mouseDrag(ddMouseEvent& event)
 	}
 }
 
-void ddConnectionCreationTool::mouseDown(ddMouseEvent& event)
+void wxhdConnectionCreationTool::mouseDown(wxhdMouseEvent& event)
 {
-	ddAbstractTool::mouseDown(event);
+	wxhdAbstractTool::mouseDown(event);
 	if(event.LeftDown())
 	{
 		numClicks++;
 		int x=event.GetPosition().x, y=event.GetPosition().y;
-		ddDrawingView *view = getDrawingEditor()->view();
-		ddIFigure *figure = view->getDrawing()->findFigure(x,y);
+		wxhdDrawingView *view = getDrawingEditor()->view();
+		wxhdIFigure *figure = view->getDrawing()->findFigure(x,y);
 
 		if(figure)
 		{
 			if(numClicks==1)  //first mouse click to select start/end figure
 			{
-				toolConnection->setEndPoint(ddPoint(x,y));
-				toolConnection->setStartPoint(ddPoint(x,y));
+				toolConnection->setEndPoint(wxhdPoint(x,y));
+				toolConnection->setStartPoint(wxhdPoint(x,y));
 				toolConnection->connectStart(figure->connectorAt(x,y));
 				toolConnection->updateConnection();
 				view->add(toolConnection);
@@ -68,18 +68,18 @@ void ddConnectionCreationTool::mouseDown(ddMouseEvent& event)
 			}
 			else if(numClicks>1) //second mouse click to select end figure only
 			{
-					toolConnection->setEndPoint(ddPoint(x,y));
+					toolConnection->setEndPoint(wxhdPoint(x,y));
 					toolConnection->updateConnection();
 			}
 		}
 		else
 		{
-			getDrawingEditor()->setTool(new ddSelectionTool(getDrawingEditor()));
+			getDrawingEditor()->setTool(new wxhdSelectionTool(getDrawingEditor()));
 		}
 	}
 }
 
-void ddConnectionCreationTool::mouseUp(ddMouseEvent& event)
+void wxhdConnectionCreationTool::mouseUp(wxhdMouseEvent& event)
 {
 	if(event.LeftUp())
 	{
@@ -98,7 +98,7 @@ void ddConnectionCreationTool::mouseUp(ddMouseEvent& event)
 	}
 	if(dragged || numClicks>1)   //if drag to select a figure or is second or higher click (to select end figure) then this tool ends.
 	{
-		getDrawingEditor()->setTool(new ddSelectionTool(getDrawingEditor()));
+		getDrawingEditor()->setTool(new wxhdSelectionTool(getDrawingEditor()));
 	}
 	else if(!dragged && numClicks==1)  //if not dragged before and is first click then allow to select end, disconnecting it
 	{
@@ -107,11 +107,11 @@ void ddConnectionCreationTool::mouseUp(ddMouseEvent& event)
 
 }
 
-void ddConnectionCreationTool::mouseMove(ddMouseEvent& event)
+void wxhdConnectionCreationTool::mouseMove(wxhdMouseEvent& event)
 {
 	int x=event.GetPosition().x, y=event.GetPosition().y;
-	ddDrawingView *view = getDrawingEditor()->view();
-	ddIFigure *figure = view->getDrawing()->findFigure(x,y);
+	wxhdDrawingView *view = getDrawingEditor()->view();
+	wxhdIFigure *figure = view->getDrawing()->findFigure(x,y);
 	if(figure)
 	{
 		getDrawingEditor()->view()->SetCursor(wxCursor(wxCURSOR_PENCIL));

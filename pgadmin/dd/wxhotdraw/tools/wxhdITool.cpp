@@ -5,7 +5,7 @@
 // Copyright (C) 2002 - 2011, The pgAdmin Development Team
 // This software is released under the PostgreSQL Licence
 //
-// ddITool.cpp - Base class for all tools
+// wxhdITool.cpp - Base class for all tools
 //
 //////////////////////////////////////////////////////////////////////////
 
@@ -18,17 +18,17 @@
 #include "dd/wxhotdraw/tools/wxhdITool.h"
 #include "dd/wxhotdraw/utilities/wxhdMouseEvent.h"
 
-ddITool::ddITool()
+wxhdITool::wxhdITool()
 {
 	activatedValue=false;
 	undoableValue=false;
 }
 
-ddITool::~ddITool()
+wxhdITool::~wxhdITool()
 {
 }
 
-void ddITool::mouseDown(ddMouseEvent& event)
+void wxhdITool::mouseDown(wxhdMouseEvent& event)
 {
 /*
 EVT_LEFT_DOWN(func)
@@ -38,7 +38,7 @@ EVT_LEFT_DCLICK(func)
 */
 }
 
-void ddITool::mouseUp(ddMouseEvent& event)
+void wxhdITool::mouseUp(wxhdMouseEvent& event)
 {
 /*
 EVT_LEFT_UP(func)
@@ -48,47 +48,47 @@ EVT_RIGHT_DCLICK(func)
 */
 }
 
-void ddITool::mouseMove(ddMouseEvent& event)
+void wxhdITool::mouseMove(wxhdMouseEvent& event)
 {
 /*
 EVT_MOTION(func)
 */
 }
 
-void ddITool::mouseDrag(ddMouseEvent& event)
+void wxhdITool::mouseDrag(wxhdMouseEvent& event)
 {
 /*
 When a mouse is dragged this returns true: event.Dragging()
 */
 }
 
-void ddITool::keyDown(wxKeyEvent& event)
+void wxhdITool::keyDown(wxKeyEvent& event)
 {
 /*
 setAnchorCoords(event.GetPosition().x,event.GetPosition().y);
 */
 }
 
-void ddITool::keyUp(wxKeyEvent& event)
+void wxhdITool::keyUp(wxKeyEvent& event)
 {
 }
 
-void ddITool::activate()
+void wxhdITool::activate()
 {
 	activatedValue=true;
 }
 
-void ddITool::deactivate()
+void wxhdITool::deactivate()
 {
 	activatedValue=false;
 }
 
-bool ddITool::activated()
+bool wxhdITool::activated()
 {
 	return activatedValue;
 }
 
-bool ddITool::undoable()
+bool wxhdITool::undoable()
 {
 	return undoableValue;
 }

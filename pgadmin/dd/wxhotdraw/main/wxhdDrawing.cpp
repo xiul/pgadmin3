@@ -5,7 +5,7 @@
 // Copyright (C) 2002 - 2011, The pgAdmin Development Team
 // This software is released under the PostgreSQL Licence
 //
-// ddDrawing.cpp - Main storage class for all objects of the model
+// wxhdDrawing.cpp - Main storage class for all objects of the model
 //
 //////////////////////////////////////////////////////////////////////////
 
@@ -21,17 +21,17 @@
 #include "dd/wxhotdraw/figures/wxhdIFigure.h"
 
 
-ddDrawing::ddDrawing()
+wxhdDrawing::wxhdDrawing()
 {
-	figures = new ddCollection(new ddArrayCollection());
+	figures = new wxhdCollection(new wxhdArrayCollection());
 }
 
-ddDrawing::~ddDrawing()
+wxhdDrawing::~wxhdDrawing()
 {
-	ddIFigure *tmp;
+	wxhdIFigure *tmp;
 	while(figures->count()>0)
 	{
-		tmp = (ddIFigure*) figures->getItemAt(0);
+		tmp = (wxhdIFigure*) figures->getItemAt(0);
 		figures->removeItemAt(0);
 		delete tmp;
 	}
@@ -39,32 +39,32 @@ ddDrawing::~ddDrawing()
 		delete figures;
 }
 
-void ddDrawing::add(ddIFigure *figure)
+void wxhdDrawing::add(wxhdIFigure *figure)
 {
 	if(figures)
 		figures->addItem(figure);	
 }
 
-void ddDrawing::remove(ddIFigure *figure)
+void wxhdDrawing::remove(wxhdIFigure *figure)
 {
     if(figures)
 		figures->removeItem(figure);
 }
 
-bool ddDrawing::includes(ddIFigure *figure)
+bool wxhdDrawing::includes(wxhdIFigure *figure)
 {
 	if(figures)
 		return figures->existsObject(figure);
 	return false;
 }
 
-ddIFigure* ddDrawing::findFigure(int x, int y)
+wxhdIFigure* wxhdDrawing::findFigure(int x, int y)
 {
-	ddIFigure *tmp=NULL, *out=NULL;
-	ddIteratorBase *iterator=figures->createIterator();
+	wxhdIFigure *tmp=NULL, *out=NULL;
+	wxhdIteratorBase *iterator=figures->createIterator();
 	while(iterator->HasNext())
     {
-		 tmp=(ddIFigure *)iterator->Next();
+		 tmp=(wxhdIFigure *)iterator->Next();
 		 if(tmp->containsPoint(x,y))
          {
 			out=tmp;
@@ -77,14 +77,14 @@ ddIFigure* ddDrawing::findFigure(int x, int y)
 	return out;
 }
 
-void ddDrawing::recalculateDisplayBox(){
+void wxhdDrawing::recalculateDisplayBox(){
 	bool first=true;
-	ddIFigure *figure=NULL;
+	wxhdIFigure *figure=NULL;
 
-	ddIteratorBase *iterator = figures->createIterator();
+	wxhdIteratorBase *iterator = figures->createIterator();
 	while(iterator->HasNext())
 	{
-		figure=(ddIFigure *)iterator->Next();
+		figure=(wxhdIFigure *)iterator->Next();
 		if(first)
 		{
 			displayBox=figure->displayBox();
@@ -99,41 +99,41 @@ void ddDrawing::recalculateDisplayBox(){
 	delete iterator;	
 }
 
-void ddDrawing::bringToFront(ddIFigure *figure)
+void wxhdDrawing::bringToFront(wxhdIFigure *figure)
 {
 	//To bring to front this figure need to be at last position when is draw
 	//because this reason sendToBack (last position) is used.
 	figures->sendToBack(figure);
 }
 
-void ddDrawing::sendToBack(ddIFigure *figure)
+void wxhdDrawing::sendToBack(wxhdIFigure *figure)
 {
 	//To send to back this figure need to be at first position when is draw
 	//because this reason bringToFront (1st position) is used.
 	figures->bringToFront(figure);
 }
 
-ddRect& ddDrawing::DisplayBox()
+wxhdRect& wxhdDrawing::DisplayBox()
 {
 	return displayBox;
 }
 
-ddIteratorBase* ddDrawing::figuresEnumerator()
+wxhdIteratorBase* wxhdDrawing::figuresEnumerator()
 {
 	return figures->createIterator();
 }
 
-ddIteratorBase* ddDrawing::figuresInverseEnumerator()
+wxhdIteratorBase* wxhdDrawing::figuresInverseEnumerator()
 {
 	return figures->createDownIterator();
 }
 
-void ddDrawing::deleteFigures()
+void wxhdDrawing::deleteFigures()
 {
-	ddIFigure *tmp;
+	wxhdIFigure *tmp;
 	while(figures->count()>0)
 	{
-		tmp = (ddIFigure*) figures->getItemAt(0);
+		tmp = (wxhdIFigure*) figures->getItemAt(0);
 		figures->removeItemAt(0);
 		delete tmp;
 	}

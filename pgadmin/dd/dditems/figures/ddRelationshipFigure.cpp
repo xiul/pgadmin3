@@ -22,7 +22,7 @@
 #include "dd/dditems/utilities/ddDataType.h"
 
 ddRelationshipFigure::ddRelationshipFigure():
-ddLineConnection()
+wxhdLineConnection()
 {
 	constraintName = wxEmptyString;
 	setKindId(ddRelFig);
@@ -38,8 +38,8 @@ ddLineConnection()
 	enablePopUp();
 }
 
-ddRelationshipFigure::ddRelationshipFigure(ddIFigure *figure1, ddIFigure *figure2):
-ddLineConnection(figure1,figure2)
+ddRelationshipFigure::ddRelationshipFigure(wxhdIFigure *figure1, wxhdIFigure *figure2):
+wxhdLineConnection(figure1,figure2)
 {
 	enablePopUp();
 }
@@ -121,7 +121,7 @@ void ddRelationshipFigure::updateForeignKey()
 		}
 
 		//STEP 1: Look at all source table columns add and delete fk
-		ddIteratorBase *iterator = startTable->figuresEnumerator();
+		wxhdIteratorBase *iterator = startTable->figuresEnumerator();
 		iterator->Next(); //first figure is main rect
 		iterator->Next(); //second figure is table title
 		while(iterator->HasNext())
@@ -305,7 +305,7 @@ void ddRelationshipFigure::createMenu(wxMenu &mnu)
 	mnu.Append(MNU_DELETERELATIONSHIP, _("Delete Relationship..."));
 };
 
-void ddRelationshipFigure::OnGenericPopupClick(wxCommandEvent& event, ddDrawingView *view)
+void ddRelationshipFigure::OnGenericPopupClick(wxCommandEvent& event, wxhdDrawingView *view)
 {
 	int answer;
 	ddTableFigure *startTable = NULL;
@@ -469,16 +469,16 @@ bool ddRelationshipFigure::getMandatory()
 //	relationship is observed by several tables at same time, one is the
 //	owner (start connector table) others are just observers of that 
 //	relationship (end connectors table)
-void ddRelationshipFigure::connectEnd(ddIConnector *end)
+void ddRelationshipFigure::connectEnd(wxhdIConnector *end)
 {
-	ddLineConnection::connectEnd(end);
+	wxhdLineConnection::connectEnd(end);
 	if(getEndFigure() && getStartFigure())
 		updateForeignKey();
 }
 
-void ddRelationshipFigure::connectStart(ddIConnector *start)
+void ddRelationshipFigure::connectStart(wxhdIConnector *start)
 {
-	ddLineConnection::connectStart(start);
+	wxhdLineConnection::connectStart(start);
 	if(getEndFigure() && getStartFigure())
 		updateForeignKey();
 }
@@ -487,13 +487,13 @@ void ddRelationshipFigure::disconnectStart()
 {
 	disconnectedEndTable = (ddTableFigure*) getEndFigure();
 	removeForeignKeys();
-	ddLineConnection::disconnectStart();
+	wxhdLineConnection::disconnectStart();
 }
 
 void ddRelationshipFigure::disconnectEnd()
 {
 	disconnectedEndTable = (ddTableFigure*) getEndFigure();
-	ddLineConnection::disconnectEnd();
+	wxhdLineConnection::disconnectEnd();
 	removeForeignKeys();
 
 }

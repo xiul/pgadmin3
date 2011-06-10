@@ -5,7 +5,7 @@
 // Copyright (C) 2002 - 2011, The pgAdmin Development Team
 // This software is released under the PostgreSQL Licence
 //
-// ddCreationTool.cpp - A Tool that create a figure by just click on view
+// wxhdCreationTool.cpp - A Tool that create a figure by just click on view
 //
 //////////////////////////////////////////////////////////////////////////
 
@@ -18,19 +18,19 @@
 #include "dd/wxhotdraw/tools/wxhdCreationTool.h"
 #include "dd/wxhotdraw/tools/wxhdSelectionTool.h"
 
-ddCreationTool::ddCreationTool(ddDrawingEditor *editor, ddIFigure *prototype):
-ddAbstractTool(editor)
+wxhdCreationTool::wxhdCreationTool(wxhdDrawingEditor *editor, wxhdIFigure *prototype):
+wxhdAbstractTool(editor)
 {
 	figurePrototype=prototype;
 }
 
-ddCreationTool::~ddCreationTool()
+wxhdCreationTool::~wxhdCreationTool()
 {
 }
 
-void ddCreationTool::mouseDown(ddMouseEvent& event)
+void wxhdCreationTool::mouseDown(wxhdMouseEvent& event)
 {
-	ddAbstractTool::mouseDown(event);
+	wxhdAbstractTool::mouseDown(event);
 	if(event.LeftDown())
 	{
 		getDrawingEditor()->view()->getDrawing()->add(figurePrototype);
@@ -41,30 +41,30 @@ void ddCreationTool::mouseDown(ddMouseEvent& event)
 	}
 }
 
-void ddCreationTool::mouseUp(ddMouseEvent& event)
+void wxhdCreationTool::mouseUp(wxhdMouseEvent& event)
 {
-	ddAbstractTool::mouseUp(event);
-	getDrawingEditor()->setTool(new ddSelectionTool(getDrawingEditor()));
+	wxhdAbstractTool::mouseUp(event);
+	getDrawingEditor()->setTool(new wxhdSelectionTool(getDrawingEditor()));
 }
 
-void ddCreationTool::activate()
+void wxhdCreationTool::activate()
 {
-	ddAbstractTool::activate();
+	wxhdAbstractTool::activate();
 	getDrawingEditor()->view()->SetCursor(wxCursor(wxCURSOR_CROSS));
 }
 
-void ddCreationTool::deactivate()
+void wxhdCreationTool::deactivate()
 {
-	ddAbstractTool::deactivate();
+	wxhdAbstractTool::deactivate();
 	getDrawingEditor()->view()->SetCursor(wxCursor(wxCURSOR_ARROW));
 }
 
-void ddCreationTool::setPrototype(ddIFigure *prototype)
+void wxhdCreationTool::setPrototype(wxhdIFigure *prototype)
 {
 	figurePrototype=prototype;
 }
 
-ddIFigure* ddCreationTool::getPrototype()
+wxhdIFigure* wxhdCreationTool::getPrototype()
 {
 	return figurePrototype;
 }

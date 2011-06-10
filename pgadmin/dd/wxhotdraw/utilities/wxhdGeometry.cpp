@@ -5,7 +5,7 @@
 // Copyright (C) 2002 - 2011, The pgAdmin Development Team
 // This software is released under the PostgreSQL Licence
 //
-// ddGeometry.cpp - Utility Geometric Functions Shared between classes
+// wxhdGeometry.cpp - Utility Geometric Functions Shared between classes
 //
 //////////////////////////////////////////////////////////////////////////
 
@@ -23,10 +23,10 @@
 // Warning when using it:  typecasting to avoid miscalculations functions need double values not int
 //
 
-bool ddGeometry::lineContainsPoint(double x1, double y1, double x2, double y2, double px, double py)
+bool wxhdGeometry::lineContainsPoint(double x1, double y1, double x2, double y2, double px, double py)
 {
-	ddPoint p = ddPoint(x1,y1);
-	ddRect r = ddRect(p);
+	wxhdPoint p = wxhdPoint(x1,y1);
+	wxhdRect r = wxhdRect(p);
 	r.add(x2,y2);
 	r.Inflate(2,2);
 	if(!r.Contains(px,py))
@@ -60,29 +60,29 @@ bool ddGeometry::lineContainsPoint(double x1, double y1, double x2, double y2, d
 	return out;
 }
 
-int ddGeometry::min(double a, double b)
+int wxhdGeometry::min(double a, double b)
 {
 	return(a<=b)?a:b;
 }
 
-int ddGeometry::max(double a, double b)
+int wxhdGeometry::max(double a, double b)
 {
 	return(a>=b)?a:b;
 }
 
 
-int ddGeometry::min(int a, int b)
+int wxhdGeometry::min(int a, int b)
 {
 	return(a<=b)?a:b;
 }
 
-int ddGeometry::max(int a, int b)
+int wxhdGeometry::max(int a, int b)
 {
 	return(a>=b)?a:b;
 }
 
 //Gets the angle of a point relative to a rectangle.
-double ddGeometry::angleFromPoint(ddRect r, ddPoint point)
+double wxhdGeometry::angleFromPoint(wxhdRect r, wxhdPoint point)
 {
 	double rx = point.x - r.center().x;
 	double ry = point.y - r.center().y;
@@ -90,9 +90,9 @@ double ddGeometry::angleFromPoint(ddRect r, ddPoint point)
 }
 
 //Gets the point on a rectangle that corresponds to the given angle.
-ddPoint ddGeometry::edgePointFromAngle(ddRect r, double angle)
+wxhdPoint wxhdGeometry::edgePointFromAngle(wxhdRect r, double angle)
 {
-	static ddPoint locationPoint; //Hack to allow bug in linux & ddabs
+	static wxhdPoint locationPoint; //Hack to allow bug in linux & ddabs
 	double sinv = sin(angle);
 	double cosv = cos(angle);
 	double e = 0.0001;
@@ -123,26 +123,26 @@ ddPoint ddGeometry::edgePointFromAngle(ddRect r, double angle)
 	}
 	int xx=r.x + x;
 	int yy=r.y + y;
-	locationPoint = ddPoint(xx,yy);
+	locationPoint = wxhdPoint(xx,yy);
 	return locationPoint;
 }
 
-double ddGeometry::range(double min, double max, double num)
+double wxhdGeometry::range(double min, double max, double num)
 {
 	return num < min ? min : (num > max ? max: num);
 }
 
-double ddGeometry::ddabs(double value)
+double wxhdGeometry::ddabs(double value)
 {
    return value < 0 ? (value*-1) : value;
 }
 
-int ddGeometry::ddabs(int value)
+int wxhdGeometry::ddabs(int value)
 {
    return value < 0 ? (value*-1) : value;
 }
 
-double ddGeometry::lineSize (ddPoint p1, ddPoint p2)
+double wxhdGeometry::lineSize (wxhdPoint p1, wxhdPoint p2)
 {
 	int w = p1.x - p2.x;
 	int h = p1.y - p2.y;
@@ -153,7 +153,7 @@ double ddGeometry::lineSize (ddPoint p1, ddPoint p2)
 
 // source: http://vision.dai.ed.ac.uk/andrewfg/c-g-a-faq.html
 // Standard line intersection algorithm, Return true intersection if it exists, else false.
-bool ddGeometry::intersection(ddPoint p1, ddPoint p2, ddPoint p3, ddPoint p4)
+bool wxhdGeometry::intersection(wxhdPoint p1, wxhdPoint p2, wxhdPoint p3, wxhdPoint p4)
 {
     // Store the values for fast access and easy
     // equations-to-code conversion

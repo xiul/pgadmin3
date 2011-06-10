@@ -15,7 +15,7 @@
 #include "dd/dditems/figures/ddTableFigure.h"
 #include "dd/dditems/figures/ddColumnFigure.h"
 
-class ddRelationshipItem : public ddObject
+class ddRelationshipItem : public wxhdObject
 {
 public:
 	ddRelationshipItem(ddRelationshipFigure *owner, ddColumnFigure *originalColumn, ddTableFigure *destination, ddColumnOptionType type, ddColumnType colType);

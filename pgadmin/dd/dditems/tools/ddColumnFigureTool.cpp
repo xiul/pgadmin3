@@ -5,7 +5,7 @@
 // Copyright (C) 2002 - 2011, The pgAdmin Development Team
 // This software is released under the PostgreSQL Licence
 //
-// ddColumnFigureTool.cpp - Improvement to ddFigureTool to work with composite table figures
+// ddColumnFigureTool.cpp - Improvement to wxhdFigureTool to work with composite table figures
 //
 //////////////////////////////////////////////////////////////////////////
 
@@ -20,8 +20,8 @@
 #include "dd/wxhotdraw/tools/wxhdDragTrackerTool.h"
 
 
-ddColumnFigureTool::ddColumnFigureTool(ddDrawingEditor *editor, ddIFigure *fig, ddITool *dt):
-ddFigureTool(editor,fig,dt)
+ddColumnFigureTool::ddColumnFigureTool(wxhdDrawingEditor *editor, wxhdIFigure *fig, wxhdITool *dt):
+wxhdFigureTool(editor,fig,dt)
 {
 	delegateTool = NULL;
 }
@@ -29,11 +29,11 @@ ddFigureTool(editor,fig,dt)
 ddColumnFigureTool::~ddColumnFigureTool()
 {
 	//This tool destructor is at compositeTool, because this is only a selection tool and neither tool belongs to it.
-	ddITool *tmpDefault=ddFigureTool::getDefaultTool();
-	ddFigureTool *tmpDelegateDefault;
+	wxhdITool *tmpDefault=wxhdFigureTool::getDefaultTool();
+	wxhdFigureTool *tmpDelegateDefault;
 
-	if(delegateTool->ms_classInfo.IsKindOf(&ddFigureTool::ms_classInfo))
-		tmpDelegateDefault = (ddFigureTool*)delegateTool;
+	if(delegateTool->ms_classInfo.IsKindOf(&wxhdFigureTool::ms_classInfo))
+		tmpDelegateDefault = (wxhdFigureTool*)delegateTool;
 	else 
 		tmpDelegateDefault = NULL;
 
@@ -44,22 +44,22 @@ ddColumnFigureTool::~ddColumnFigureTool()
 		if(tmpDelegateDefault && tmpDelegateDefault->getDefaultTool()==tmpDefault)  
 			tmpDelegateDefault->setDefaultTool(NULL);   
 		
-		//Hack to avoid delete ddDragTrackerTool Default twice because this figure is only used inside 
-		//a table, and then create a compositeTool and default in both tools is ddDragTrackerTool
+		//Hack to avoid delete wxhdDragTrackerTool Default twice because this figure is only used inside 
+		//a table, and then create a compositeTool and default in both tools is wxhdDragTrackerTool
 		//but I can't hard code this is Composite because that class should remain generic
-		if(tmpDelegateDefault->getDefaultTool()->ms_classInfo.IsKindOf(&ddDragTrackerTool::ms_classInfo))
+		if(tmpDelegateDefault->getDefaultTool()->ms_classInfo.IsKindOf(&wxhdDragTrackerTool::ms_classInfo))
 			tmpDelegateDefault->setDefaultTool(NULL);
 		delete delegateTool;
 	}
 	
 }
 
-void ddColumnFigureTool::setDefaultTool(ddITool *dt)
+void ddColumnFigureTool::setDefaultTool(wxhdITool *dt)
 {
-	ddFigureTool::setDefaultTool(dt);
+	wxhdFigureTool::setDefaultTool(dt);
 }
 
-ddITool* ddColumnFigureTool::getDefaultTool()
+wxhdITool* ddColumnFigureTool::getDefaultTool()
 {
 	if(delegateTool)
 	{
@@ -67,15 +67,15 @@ ddITool* ddColumnFigureTool::getDefaultTool()
 	}
 	else
 	{
-		return ddFigureTool::getDefaultTool();
+		return wxhdFigureTool::getDefaultTool();
 	}
 }
 
-void ddColumnFigureTool::mouseDown(ddMouseEvent& event)
+void ddColumnFigureTool::mouseDown(wxhdMouseEvent& event)
 {
 	int x=event.GetPosition().x, y=event.GetPosition().y;
 	ddColumnFigure *cfigure = (ddColumnFigure*) getFigure();
-	ddIFigure *figure = cfigure->findFigure(x,y);
+	wxhdIFigure *figure = cfigure->findFigure(x,y);
 	
 	if(figure)
 	{
@@ -108,7 +108,7 @@ void ddColumnFigureTool::deactivate()
 	}
 }
 
-void ddColumnFigureTool::setDelegateTool(ddITool *tool)
+void ddColumnFigureTool::setDelegateTool(wxhdITool *tool)
 {
 	if(delegateTool)
 	{
@@ -124,7 +124,7 @@ void ddColumnFigureTool::setDelegateTool(ddITool *tool)
 	}
 }
 
-ddITool* ddColumnFigureTool::getDelegateTool()
+wxhdITool* ddColumnFigureTool::getDelegateTool()
 {
 	return delegateTool;
 }

@@ -30,16 +30,16 @@ enum
     MNU_DDCTUKEY
 };
 
-class ddColumnKindIcon : public ddAbstractMenuFigure
+class ddColumnKindIcon : public wxhdAbstractMenuFigure
 {
 public:
 	ddColumnKindIcon(ddColumnFigure *owner);
     ~ddColumnKindIcon();
-	virtual void OnGenericPopupClick(wxCommandEvent& event, ddDrawingView *view=NULL);
+	virtual void OnGenericPopupClick(wxCommandEvent& event, wxhdDrawingView *view=NULL);
     virtual void createMenu(wxMenu &mnu);
-	virtual void basicDraw(wxBufferedDC& context, ddDrawingView *view);
-	virtual void basicDrawSelected(wxBufferedDC& context, ddDrawingView *view);		
-	virtual void changeIcon(ddColumnType type, ddDrawingView *view=NULL, bool interaction=true);
+	virtual void basicDraw(wxBufferedDC& context, wxhdDrawingView *view);
+	virtual void basicDrawSelected(wxBufferedDC& context, wxhdDrawingView *view);		
+	virtual void changeIcon(ddColumnType type, wxhdDrawingView *view=NULL, bool interaction=true);
 	virtual int getWidth();
 	virtual int getHeight();
 	ddColumnType getKind();
@@ -59,6 +59,6 @@ private:
 
 	//multiple Uk management at table
 	void syncUkIndexes();
-	void uniqueConstraintManager(bool ukCol, ddDrawingView *view=NULL, bool interaction=true);
+	void uniqueConstraintManager(bool ukCol, wxhdDrawingView *view=NULL, bool interaction=true);
 };
 #endif

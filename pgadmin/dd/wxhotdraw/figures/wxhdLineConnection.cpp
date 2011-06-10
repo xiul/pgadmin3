@@ -5,7 +5,7 @@
 // Copyright (C) 2002 - 2011, The pgAdmin Development Team
 // This software is released under the PostgreSQL Licence
 //
-// ddLineConnection.cpp - Base class for line connection figure
+// wxhdLineConnection.cpp - Base class for line connection figure
 //
 //////////////////////////////////////////////////////////////////////////
 
@@ -23,8 +23,8 @@
 #include "dd/wxhotdraw/locators/wxhdPolyLineLocator.h"
 #include "dd/wxhotdraw/utilities/wxhdArrayCollection.h"
 
-ddLineConnection::ddLineConnection():
-ddPolyLineFigure()
+wxhdLineConnection::wxhdLineConnection():
+wxhdPolyLineFigure()
 {
 	startConnector = NULL;
 	endConnector = NULL;
@@ -32,8 +32,8 @@ ddPolyLineFigure()
 	changeConnEndHandle = NULL; 
 }
 
-ddLineConnection::ddLineConnection(ddIFigure *figure1, ddIFigure *figure2):
-ddPolyLineFigure()
+wxhdLineConnection::wxhdLineConnection(wxhdIFigure *figure1, wxhdIFigure *figure2):
+wxhdPolyLineFigure()
 {
 	startConnector = NULL;
 	endConnector = NULL;
@@ -49,31 +49,31 @@ ddPolyLineFigure()
 	}
 }
 
-ddLineConnection::~ddLineConnection()
+wxhdLineConnection::~wxhdLineConnection()
 {
 }
 
-ddIConnector* ddLineConnection::getStartConnector()
+wxhdIConnector* wxhdLineConnection::getStartConnector()
 {
 	return startConnector;
 }
 
-ddIConnector* ddLineConnection::getEndConnector()
+wxhdIConnector* wxhdLineConnection::getEndConnector()
 {
 	return endConnector;
 }
 
-void ddLineConnection::setStartConnector(ddIConnector* connector)
+void wxhdLineConnection::setStartConnector(wxhdIConnector* connector)
 {
 	startConnector = connector;
 }
 
-void ddLineConnection::setEndConnector(ddIConnector* connector)
+void wxhdLineConnection::setEndConnector(wxhdIConnector* connector)
 {
 	endConnector = connector;
 }
 
-void ddLineConnection::connectStart(ddIConnector *start)
+void wxhdLineConnection::connectStart(wxhdIConnector *start)
 {
 	if(startConnector == start)
 	{
@@ -85,7 +85,7 @@ void ddLineConnection::connectStart(ddIConnector *start)
 	connectFigure(startConnector);
 }
 
-void ddLineConnection::connectEnd(ddIConnector *end)
+void wxhdLineConnection::connectEnd(wxhdIConnector *end)
 {
 	if(endConnector == end)
 	{
@@ -97,29 +97,29 @@ void ddLineConnection::connectEnd(ddIConnector *end)
 	connectFigure(endConnector);
 }
 
-void ddLineConnection::disconnectStart()
+void wxhdLineConnection::disconnectStart()
 {
 	disconnectFigure (startConnector);
 	startConnector = NULL;
 }
 
-void ddLineConnection::disconnectEnd()
+void wxhdLineConnection::disconnectEnd()
 {
 	disconnectFigure (endConnector);
 	endConnector = NULL;
 }
 
-bool ddLineConnection::canConnectStart(ddIFigure *figure)
+bool wxhdLineConnection::canConnectStart(wxhdIFigure *figure)
 {
 	return true;
 }
 
-bool ddLineConnection::canConnectEnd(ddIFigure *figure)
+bool wxhdLineConnection::canConnectEnd(wxhdIFigure *figure)
 {
 	return true;
 }
 
-ddIFigure* ddLineConnection::getStartFigure()
+wxhdIFigure* wxhdLineConnection::getStartFigure()
 {
 	if(startConnector)
 	{
@@ -129,7 +129,7 @@ ddIFigure* ddLineConnection::getStartFigure()
 	return NULL;
 }
 
-ddIFigure* ddLineConnection::getEndFigure()
+wxhdIFigure* wxhdLineConnection::getEndFigure()
 {
 	if(endConnector)
 	{
@@ -139,7 +139,7 @@ ddIFigure* ddLineConnection::getEndFigure()
 	return NULL;
 }
 
-void ddLineConnection::updateConnection(){
+void wxhdLineConnection::updateConnection(){
 	if(startConnector)
 	{
 		setStartPoint(startConnector->findStart(this));  
@@ -150,48 +150,48 @@ void ddLineConnection::updateConnection(){
 	}
 }
 
-ddIHandle* ddLineConnection::getStartHandle()
+wxhdIHandle* wxhdLineConnection::getStartHandle()
 {
 	if(!changeConnStartHandle)
 	{
-		changeConnStartHandle =  new ddChangeConnectionStartHandle(this);
+		changeConnStartHandle =  new wxhdChangeConnectionStartHandle(this);
 	}
 	return changeConnStartHandle;
 }
 
-ddIHandle* ddLineConnection::getEndHandle()
+wxhdIHandle* wxhdLineConnection::getEndHandle()
 {
 	if(!changeConnEndHandle)
 	{
-		changeConnEndHandle =  new ddChangeConnectionEndHandle(this);
+		changeConnEndHandle =  new wxhdChangeConnectionEndHandle(this);
 	}
 	return changeConnEndHandle;
 }
 
-void ddLineConnection::basicMoveBy(int x, int y)
+void wxhdLineConnection::basicMoveBy(int x, int y)
 {
-	ddPolyLineFigure::basicMoveBy(x,y);
+	wxhdPolyLineFigure::basicMoveBy(x,y);
 	updateConnection();
 }
 
-bool ddLineConnection::canConnect()
+bool wxhdLineConnection::canConnect()
 {
 	return false;
 }
 
-void ddLineConnection::setPointAt (int index, int x, int y)
+void wxhdLineConnection::setPointAt (int index, int x, int y)
 {
-	ddPolyLineFigure::setPointAt(index,x,y);
+	wxhdPolyLineFigure::setPointAt(index,x,y);
 	updateConnection();
 }
 
-ddCollection* ddLineConnection::handlesEnumerator()
+wxhdCollection* wxhdLineConnection::handlesEnumerator()
 {
 	return handles;
 }
 
 
-void ddLineConnection::connectFigure (ddIConnector *connector)
+void wxhdLineConnection::connectFigure (wxhdIConnector *connector)
 {
 	if(connector)
 	{
@@ -199,7 +199,7 @@ void ddLineConnection::connectFigure (ddIConnector *connector)
 	}
 }
 
-void ddLineConnection::disconnectFigure (ddIConnector *connector)
+void wxhdLineConnection::disconnectFigure (wxhdIConnector *connector)
 {
 	if(connector)
 	{
@@ -207,14 +207,14 @@ void ddLineConnection::disconnectFigure (ddIConnector *connector)
 	}
 }
 
-void ddLineConnection::onFigureChanged(ddIFigure *figure)
+void wxhdLineConnection::onFigureChanged(wxhdIFigure *figure)
 {
 	updateConnection();
 }
 
-void ddLineConnection::addPoint (int x, int y){
+void wxhdLineConnection::awxhdPoint (int x, int y){
 	willChange();
-	points->addItem((ddObject *) new ddPoint(x,y) );
+	points->addItem((wxhdObject *) new wxhdPoint(x,y) );
 	//Update handles
 	if(points->count()==1)
 	{
@@ -229,42 +229,42 @@ void ddLineConnection::addPoint (int x, int y){
 	else if(points->count()>2)
 	{
 		//third and above point, add a polylinehandle before end handle
-		handles->insertAtIndex(new ddPolyLineHandle(this, new ddPolyLineLocator(0), 0),handles->count()-1);
+		handles->insertAtIndex(new wxhdPolyLineHandle(this, new wxhdPolyLineLocator(0), 0),handles->count()-1);
 	}
 	updateHandlesIndexes();	
 	changed();
 }
 
-void ddLineConnection::insertPointAt (int index, int x, int y)
+void wxhdLineConnection::insertPointAt (int index, int x, int y)
 {
 	willChange();
-	points->insertAtIndex((ddObject*) new ddPoint(x,y), index);
+	points->insertAtIndex((wxhdObject*) new wxhdPoint(x,y), index);
 	//Update handles
 	if(index==0)
 	{
 		//add a new handle "normal" for a point in next position 0,1 in 1... in 0 startHandle is not moved
-		handles->insertAtIndex(new ddPolyLineHandle(this, new ddPolyLineLocator(index), index),1);
+		handles->insertAtIndex(new wxhdPolyLineHandle(this, new wxhdPolyLineLocator(index), index),1);
 	}
 	else if(index==(points->count()-1)) //last point
 	{
 		//add a new handle "normal" for a point in before last item position
-		handles->insertAtIndex(new ddPolyLineHandle(this, new ddPolyLineLocator(index), index),(points->count()-1));
+		handles->insertAtIndex(new wxhdPolyLineHandle(this, new wxhdPolyLineLocator(index), index),(points->count()-1));
 	}
 	else
 	{
 		//add handle at index
-		handles->insertAtIndex(new ddPolyLineHandle(this, new ddPolyLineLocator(index), index),index);
+		handles->insertAtIndex(new wxhdPolyLineHandle(this, new wxhdPolyLineLocator(index), index),index);
 	}
 	updateHandlesIndexes();
 	changed();
 }
 
-void ddLineConnection::updateHandlesIndexes()
+void wxhdLineConnection::updateHandlesIndexes()
 {
-	ddPolyLineHandle *h = NULL;
+	wxhdPolyLineHandle *h = NULL;
 	for(int i=1;i<handles->count()-1;i++)
 	{
-		h = (ddPolyLineHandle*) handles->getItemAt(i);
+		h = (wxhdPolyLineHandle*) handles->getItemAt(i);
 		h->setIndex(i);
 	}
 }

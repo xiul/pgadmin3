@@ -5,27 +5,27 @@
 // Copyright (C) 2002 - 2011, The pgAdmin Development Team
 // This software is released under the PostgreSQL Licence
 //
-// ddLineTerminal.h - Base class for line terminal figure
+// wxhdLineTerminal.h - Base class for line terminal figure
 //
 //////////////////////////////////////////////////////////////////////////
 
-#ifndef DDLINETERMINAL_H
-#define DDLINETERMINAL_H
+#ifndef WXHDLINETERMINAL_H
+#define WXHDLINETERMINAL_H
 #include "dd/wxhotdraw/figures/wxhdIFigure.h"
 #include "dd/wxhotdraw/utilities/wxhdPoint.h"
 
-class ddLineTerminal : public ddObject
+class wxhdLineTerminal : public wxhdObject
 {
 public:
-	ddLineTerminal();
-    ~ddLineTerminal();
+	wxhdLineTerminal();
+    ~wxhdLineTerminal();
 
-	virtual ddPoint& draw (wxBufferedDC& context, ddPoint& a, ddPoint& b, ddDrawingView *view);
+	virtual wxhdPoint& draw (wxBufferedDC& context, wxhdPoint& a, wxhdPoint& b, wxhdDrawingView *view);
 	virtual void setLinePen(wxPen pen);
 protected:
 	wxPen terminalLinePen;	
 private:
-	ddPoint middle;
+	wxhdPoint middle;
 
 };
 #endif

@@ -20,7 +20,7 @@
 class ddScrollBarHandle;
 class ddRelationshipFigure;
 
-class ddTableFigure : public ddCompositeFigure
+class ddTableFigure : public wxhdCompositeFigure
 {
 public:
 	ddTableFigure(wxString tableName, int x, int y, wxString shortName=wxEmptyString);
@@ -32,8 +32,8 @@ public:
 	void removeColumn(ddColumnFigure *column);
 	
 	//drawing
-	virtual void draw(wxBufferedDC& context, ddDrawingView *view);
-	virtual void drawSelected(wxBufferedDC& context, ddDrawingView *view);
+	virtual void draw(wxBufferedDC& context, wxhdDrawingView *view);
+	virtual void drawSelected(wxBufferedDC& context, wxhdDrawingView *view);
 	virtual void basicMoveBy(int x, int y);
 	
 	//delete hack columns
@@ -41,15 +41,15 @@ public:
 	void toggleColumnDeleteMode(bool disable=false);
 
 	//delete hack tables
-	void processDeleteAlert(ddDrawingView *view);
+	void processDeleteAlert(wxhdDrawingView *view);
 	
 	//columns scrolls
 	void updateTableSize();
 	void recalculateColsPos();
 	void setColsRowsWindow(int num);
-	ddRect& getColsSpace();
-	ddRect& getFullSpace();
-	ddRect& getTitleRect();
+	wxhdRect& getColsSpace();
+	wxhdRect& getFullSpace();
+	wxhdRect& getTitleRect();
 	int getTotalColumns();
 	int getColumnsWindow();
 	int getTopColWindowIndex();
@@ -79,8 +79,8 @@ protected:
 
 private:
 	//Main Rectangle Sizes
-	ddRect fullSizeRect, titleRect, titleColsRect, colsRect, titleIndxsRect, indxsRect;
-	ddRect unScrolledColsRect, unScrolledFullSizeRect, unScrolledTitleRect;
+	wxhdRect fullSizeRect, titleRect, titleColsRect, colsRect, titleIndxsRect, indxsRect;
+	wxhdRect unScrolledColsRect, unScrolledFullSizeRect, unScrolledTitleRect;
 	
 	//Rectangle item counters
 	int colsRowsSize, colsWindow, idxsRowsSize, idxsWindow;
@@ -92,7 +92,7 @@ private:
 	int beginDrawCols, beginDrawIdxs;
 	
 	//Default Figures
-	ddRectangleFigure *rectangleFigure;
+	wxhdRectangleFigure *rectangleFigure;
 	ddTextTableItemFigure *tableTitle;
 
 	//helper variables

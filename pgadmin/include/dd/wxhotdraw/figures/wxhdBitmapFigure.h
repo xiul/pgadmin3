@@ -5,23 +5,23 @@
 // Copyright (C) 2002 - 2011, The pgAdmin Development Team
 // This software is released under the PostgreSQL Licence
 //
-// ddCompositeFigure.h - Figure that draw a bitmap
+// wxhdCompositeFigure.h - Figure that draw a bitmap
 //
 //////////////////////////////////////////////////////////////////////////
 
-#ifndef DDBITMAPFIGURE_H
-#define DDBITMAPFIGURE_H
+#ifndef WXHDBITMAPFIGURE_H
+#define WXHDBITMAPFIGURE_H
 
 #include "dd/wxhotdraw/figures/wxhdAbstractFigure.h"
 
-class ddBitmapFigure : public ddAbstractFigure
+class wxhdBitmapFigure : public wxhdAbstractFigure
 {
 public:
-	ddBitmapFigure(wxBitmap image);
-    ~ddBitmapFigure();
+	wxhdBitmapFigure(wxBitmap image);
+    ~wxhdBitmapFigure();
 
-	virtual void basicDraw(wxBufferedDC& context, ddDrawingView *view);
-	virtual void basicDrawSelected(wxBufferedDC& context, ddDrawingView *view);		
+	virtual void basicDraw(wxBufferedDC& context, wxhdDrawingView *view);
+	virtual void basicDrawSelected(wxBufferedDC& context, wxhdDrawingView *view);		
 	virtual void changeBitmap(wxBitmap image);
 	virtual int getWidth();
 	virtual int getHeight();

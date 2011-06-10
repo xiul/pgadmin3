@@ -20,7 +20,7 @@ class ddTableFigure;
 class ddRelationshipItem;
 
 //Minimal overhead composite figure
-class ddColumnFigure : public ddAbstractFigure
+class ddColumnFigure : public wxhdAbstractFigure
 {
 public:
 	ddColumnFigure(wxString& columnName, ddTableFigure *owner, ddRelationshipItem *sourceFk=NULL);
@@ -29,12 +29,12 @@ public:
 	virtual void moveTo(int x, int y);
 	virtual void setOwnerTable(ddTableFigure *table);
 	virtual bool containsPoint(int x, int y);
-	virtual ddRect& getBasicDisplayBox();
-	virtual void draw(wxBufferedDC& context, ddDrawingView *view);
-	virtual void drawSelected(wxBufferedDC& context, ddDrawingView *view);
-	virtual ddIFigure* findFigure(int x, int y);
-	virtual ddIFigure* getFigureAt(int pos);
-	virtual ddITool* CreateFigureTool(ddDrawingEditor *editor, ddITool *defaultTool);
+	virtual wxhdRect& getBasicDisplayBox();
+	virtual void draw(wxBufferedDC& context, wxhdDrawingView *view);
+	virtual void drawSelected(wxBufferedDC& context, wxhdDrawingView *view);
+	virtual wxhdIFigure* findFigure(int x, int y);
+	virtual wxhdIFigure* getFigureAt(int pos);
+	virtual wxhdITool* CreateFigureTool(wxhdDrawingEditor *editor, wxhdITool *defaultTool);
 	virtual ddTableFigure* getOwnerTable();
 	void displayBoxUpdate();
 	bool isNull();
@@ -45,7 +45,7 @@ public:
 	int getUniqueConstraintIndex();
 	void setUniqueConstraintIndex(int i);
 	bool isPlain();
-	void setColumnKind(ddColumnType type, ddDrawingView *view=NULL);
+	void setColumnKind(ddColumnType type, wxhdDrawingView *view=NULL);
 	void setColumnOption(ddColumnOptionType type);
 	ddColumnType getColumnKind();
 	ddColumnOptionType getColumnOption();

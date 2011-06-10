@@ -15,13 +15,13 @@
 #include "dd/wxhotdraw/locators/wxhdILocator.h"
 #include "dd/wxhotdraw/figures/wxhdIFigure.h"
 
-class ddScrollBarTableLocator : public ddILocator
+class ddScrollBarTableLocator : public wxhdILocator
 {
 public:
 	ddScrollBarTableLocator();
     ~ddScrollBarTableLocator();
 
-	virtual ddPoint& locate(ddIFigure *owner);
+	virtual wxhdPoint& locate(wxhdIFigure *owner);
 
 protected:
 

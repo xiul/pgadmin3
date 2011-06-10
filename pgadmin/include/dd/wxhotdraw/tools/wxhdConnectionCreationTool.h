@@ -5,32 +5,32 @@
 // Copyright (C) 2002 - 2011, The pgAdmin Development Team
 // This software is released under the PostgreSQL Licence
 //
-// ddConnectionCreationTool.h - A Tool that allow to create a connection figure between two figures
+// wxhdConnectionCreationTool.h - A Tool that allow to create a connection figure between two figures
 //
 //////////////////////////////////////////////////////////////////////////
 
-#ifndef DDCONNECTIONCREATIONTOOL_H
-#define DDCONNECTIONCREATIONTOOL_H
+#ifndef WXHDCONNECTIONCREATIONTOOL_H
+#define WXHDCONNECTIONCREATIONTOOL_H
 
 #include "dd/wxhotdraw/tools/wxhdAbstractTool.h"
 #include "dd/wxhotdraw/main/wxhdDrawingEditor.h"
 #include "dd/wxhotdraw/figures/wxhdLineConnection.h"
 
-class ddConnectionCreationTool : public ddAbstractTool
+class wxhdConnectionCreationTool : public wxhdAbstractTool
 {
 public:
-	ddConnectionCreationTool(ddDrawingEditor *editor, ddLineConnection *figure);
-    ~ddConnectionCreationTool();
+	wxhdConnectionCreationTool(wxhdDrawingEditor *editor, wxhdLineConnection *figure);
+    ~wxhdConnectionCreationTool();
 
-	virtual void mouseDrag(ddMouseEvent& event);
-	virtual void mouseDown(ddMouseEvent& event);  //Mouse Right Click
-	virtual void mouseUp(ddMouseEvent& event);
-	virtual void mouseMove(ddMouseEvent& event);
+	virtual void mouseDrag(wxhdMouseEvent& event);
+	virtual void mouseDown(wxhdMouseEvent& event);  //Mouse Right Click
+	virtual void mouseUp(wxhdMouseEvent& event);
+	virtual void mouseMove(wxhdMouseEvent& event);
 protected:
 
 private:
-	ddLineConnection *toolConnection;
-	ddIHandle *handle;
+	wxhdLineConnection *toolConnection;
+	wxhdIHandle *handle;
 	int numClicks;
 	bool dragged;
 
