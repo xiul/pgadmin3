@@ -5,17 +5,17 @@
 # Copyright (C) 2002 - 2010, The pgAdmin Development Team
 # This software is released under the PostgreSQL Licence
 #
-# module.mk - pgadmin/dd/draw/ Makefile fragment
+# module.mk - pgadmin/dd/wxhotdraw/ Makefile fragment
 #
 #######################################################################
 
-include $(srcdir)/dd/draw/connectors/module.mk
-include $(srcdir)/dd/draw/figures/module.mk
-include $(srcdir)/dd/draw/handles/module.mk
-include $(srcdir)/dd/draw/locator/module.mk
-include $(srcdir)/dd/draw/main/module.mk
-include $(srcdir)/dd/draw/tools/module.mk
-include $(srcdir)/dd/draw/utilities/module.mk
+include $(srcdir)/dd/wxhotdraw/connectors/module.mk
+include $(srcdir)/dd/wxhotdraw/figures/module.mk
+include $(srcdir)/dd/wxhotdraw/handles/module.mk
+include $(srcdir)/dd/wxhotdraw/locator/module.mk
+include $(srcdir)/dd/wxhotdraw/main/module.mk
+include $(srcdir)/dd/wxhotdraw/tools/module.mk
+include $(srcdir)/dd/wxhotdraw/utilities/module.mk
 
 EXTRA_DIST += \
-	$(srcdir)/dd/draw/module.mk
+	$(srcdir)/dd/wxhotdraw/module.mk

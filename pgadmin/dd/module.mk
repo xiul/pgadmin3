@@ -11,7 +11,7 @@
 
 include $(srcdir)/dd/dditems/module.mk
 include $(srcdir)/dd/ddmodel/module.mk
-include $(srcdir)/dd/draw/module.mk
+include $(srcdir)/dd/wxhotdraw/module.mk
 
 
 EXTRA_DIST += \

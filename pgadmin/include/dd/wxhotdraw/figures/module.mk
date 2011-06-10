@@ -5,24 +5,24 @@
 # Copyright (C) 2002 - 2010, The pgAdmin Development Team
 # This software is released under the PostgreSQL Licence
 #
-# module.mk - pgadmin/include/dd/draw/figures/ Makefile fragment
+# module.mk - pgadmin/include/dd/wxhotdraw/figures/ Makefile fragment
 #
 #######################################################################
 
 pgadmin3_SOURCES += \
-	$(srcdir)/include/dd/draw/figures/ddAbstractFigure.h \
-	$(srcdir)/include/dd/draw/figures/ddAbstractMenuFigure.h \
-	$(srcdir)/include/dd/draw/figures/ddAttribute.h \
-	$(srcdir)/include/dd/draw/figures/ddAttributeFigure.h \
-	$(srcdir)/include/dd/draw/figures/ddBitmapFigure.h \
-	$(srcdir)/include/dd/draw/figures/ddCompositeFigure.h \
-	$(srcdir)/include/dd/draw/figures/ddIConnectionFigure.h \
-	$(srcdir)/include/dd/draw/figures/ddIFigure.h \
-	$(srcdir)/include/dd/draw/figures/ddLineConnection.h \
-	$(srcdir)/include/dd/draw/figures/ddLineTerminal.h \
-	$(srcdir)/include/dd/draw/figures/ddPolyLineFigure.h \
-	$(srcdir)/include/dd/draw/figures/ddRectangleFigure.h \
-	$(srcdir)/include/dd/draw/figures/ddSimpleTextFigure.h
+	$(srcdir)/include/dd/wxhotdraw/figures/ddAbstractFigure.h \
+	$(srcdir)/include/dd/wxhotdraw/figures/ddAbstractMenuFigure.h \
+	$(srcdir)/include/dd/wxhotdraw/figures/ddAttribute.h \
+	$(srcdir)/include/dd/wxhotdraw/figures/ddAttributeFigure.h \
+	$(srcdir)/include/dd/wxhotdraw/figures/ddBitmapFigure.h \
+	$(srcdir)/include/dd/wxhotdraw/figures/ddCompositeFigure.h \
+	$(srcdir)/include/dd/wxhotdraw/figures/ddIConnectionFigure.h \
+	$(srcdir)/include/dd/wxhotdraw/figures/ddIFigure.h \
+	$(srcdir)/include/dd/wxhotdraw/figures/ddLineConnection.h \
+	$(srcdir)/include/dd/wxhotdraw/figures/ddLineTerminal.h \
+	$(srcdir)/include/dd/wxhotdraw/figures/ddPolyLineFigure.h \
+	$(srcdir)/include/dd/wxhotdraw/figures/ddRectangleFigure.h \
+	$(srcdir)/include/dd/wxhotdraw/figures/ddSimpleTextFigure.h
 
 EXTRA_DIST += \
-	$(srcdir)/include/dd/draw/figures/module.mk
+	$(srcdir)/include/dd/wxhotdraw/figures/module.mk
