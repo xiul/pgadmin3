@@ -10,8 +10,8 @@
 #######################################################################
 
 pgadmin3_SOURCES += \
-	$(srcdir)/dd/wxhotdraw/locator/wxhdILocator.cpp \
-	$(srcdir)/dd/wxhotdraw/locator/wxhdPolyLineLocator.cpp
+	$(srcdir)/dd/wxhotdraw/locators/wxhdILocator.cpp \
+	$(srcdir)/dd/wxhotdraw/locators/wxhdPolyLineLocator.cpp
 
 EXTRA_DIST += \
-	$(srcdir)/dd/wxhotdraw/locator/module.mk
+	$(srcdir)/dd/wxhotdraw/locators/module.mk
