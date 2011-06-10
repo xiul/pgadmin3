@@ -246,6 +246,11 @@ wxString& ddColumnFigure::getColumnName(bool datatype)
 	return columnText->getText(datatype);
 }
 
+int ddColumnFigure::getPrecision()
+{
+	return columnText->getPrecision();
+}
+
 int ddColumnFigure::getUniqueConstraintIndex()
 {
 	return leftImage->getUniqueConstraintIndex();

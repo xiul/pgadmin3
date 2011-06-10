@@ -65,7 +65,9 @@ public:
 	ddDataType getDataType();
 	void setDataType(ddDataType type);
 	void setOwnerTable(ddTableFigure *table);  //only used by columns working as table title figure for setAlias method
+	int getPrecision();
 protected:
+	void setPrecision(int value);
 	ddColumnFigure *ownerColumn;
 	ddTableFigure *ownerTable;  
 	wxString colAlias;

@@ -60,11 +60,11 @@ wxString& ddTextTableItemFigure::getText(bool extended)
 {
 	if(showDataType && extended && getOwnerColumn())
 	{
-		wxString ddType = dataTypes()[getDataType()];   //Should use getDataType(), becuase when column is fk, type is not taken from this column, instead from original column (source of fk)
-		if(columnType==dt_varchar && precision>0)
+		wxString ddType = dataTypes()[getDataType()];   //Should use getDataType() & getPrecision(), because when column is fk, type is not taken from this column, instead from original column (source of fk)
+		if(columnType==dt_varchar && getPrecision()>0)
 		{
 			ddType.Truncate(ddType.Find(wxT("(")));
-			ddType+=wxString::Format(wxT("(%d)"),precision);
+			ddType+=wxString::Format(wxT("(%d)"),getPrecision());
 		}
 		out = wxString( ddSimpleTextFigure::getText() + wxString(wxT(" : ")) + ddType );
 		return  out;
@@ -89,10 +89,10 @@ wxString& ddTextTableItemFigure::getText(bool extended)
 wxString ddTextTableItemFigure::getType()
 {
     wxString ddType = dataTypes()[columnType];
-    if(columnType==dt_varchar && precision>0)
+    if(columnType==dt_varchar && getPrecision()>0)
     {
         ddType.Truncate(ddType.Find(wxT("(")));
-        ddType+=wxString::Format(wxT("(%d)"),precision);
+        ddType+=wxString::Format(wxT("(%d)"),getPrecision());
     }
     return ddType;
 }
@@ -183,9 +183,9 @@ void ddTextTableItemFigure::OnGenericPopupClick(wxCommandEvent& event, ddDrawing
             tmpprecision = wxGetNumberFromUser(_("Varchar size"),
                 _("Size for varchar datatype"),
                 _("Varchar size"),
-                precision, 0, 255, view);
+                getPrecision(), 0, 255, view);
             if (tmpprecision > 0)
-                precision = tmpprecision;
+                setPrecision(tmpprecision);
             recalculateDisplayBox();
             getOwnerColumn()->displayBoxUpdate();
             getOwnerColumn()->getOwnerTable()->updateTableSize();
@@ -412,11 +412,36 @@ ddDataType ddTextTableItemFigure::getDataType()
 	if(!getOwnerColumn()->isForeignKey())
 		return columnType;
 	else
-		return getOwnerColumn()->getFkSource()->original->getDataType();
+	{
+		columnType = getOwnerColumn()->getFkSource()->original->getDataType();
+		return columnType;
+	}
 }
 
 void ddTextTableItemFigure::setDataType(ddDataType type)
 {
 	columnType=type;
 	ownerColumn->getOwnerTable()->updateSizeOfObservers();
+}
+
+int ddTextTableItemFigure::getPrecision()
+{
+	if(getOwnerColumn()->isForeignKey())
+	{
+		precision = getOwnerColumn()->getFkSource()->original->getPrecision();
+		return precision;
+	}
+	else
+	{
+		return precision;
+	}
+}
+
+void ddTextTableItemFigure::setPrecision(int value)
+{
+	if(!getOwnerColumn()->isForeignKey())
+	{
+		precision = value;
+		ownerColumn->getOwnerTable()->updateSizeOfObservers();
+	}
 }

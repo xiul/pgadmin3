@@ -59,6 +59,7 @@ public:
 	void activateGenFkName();
 	void deactivateGenFkName();
 	ddRelationshipItem* getFkSource();
+	int getPrecision();
 
 protected:
 	ddColumnKindIcon *leftImage;
