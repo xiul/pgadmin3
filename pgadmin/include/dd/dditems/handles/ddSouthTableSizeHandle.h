@@ -12,7 +12,7 @@
 #ifndef DDSOUTHTABLESIZEHANDLE_H
 #define DDSOUTHTABLESIZEHANDLE_H
 
-#include "dd/draw/handles/ddLocatorHandle.h"
+#include "dd/wxhotdraw/handles/ddLocatorHandle.h"
 
 class ddTableFigure;
 

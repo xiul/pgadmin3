@@ -21,7 +21,7 @@
 #include "dd/dditems/figures/ddTableFigure.h"
 #include "dd/dditems/figures/ddTextTableItemFigure.h"
 #include "dd/dditems/figures/ddColumnFigure.h"
-#include "dd/draw/main/ddDrawingView.h"
+#include "dd/wxhotdraw/main/ddDrawingView.h"
 #include "dd/dditems/utilities/ddDataType.h"
 #include "dd/dditems/handles/ddAddColButtonHandle.h"
 #include "dd/dditems/locators/ddAddColLocator.h"
@@ -37,9 +37,9 @@
 #include "dd/dditems/locators/ddScrollBarTableLocator.h"
 #include "dd/dditems/handles/ddSouthTableSizeHandle.h"
 #include "dd/dditems/locators/ddTableBottomLocator.h"
-#include "dd/draw/utilities/ddGeometry.h"
+#include "dd/wxhotdraw/utilities/ddGeometry.h"
 #include "dd/dditems/figures/ddRelationshipFigure.h"
-#include "dd/draw/connectors/ddLocatorConnector.h"
+#include "dd/wxhotdraw/connectors/ddLocatorConnector.h"
 
 //Images
 #include "images/ddAddColumn.xpm"

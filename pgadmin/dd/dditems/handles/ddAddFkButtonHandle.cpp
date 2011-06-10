@@ -18,8 +18,8 @@
 #include "dd/dditems/handles/ddAddFkButtonHandle.h"
 #include "dd/dditems/figures/ddTableFigure.h"
 #include "dd/dditems/utilities/ddDataType.h"
-#include "dd/draw/tools/ddConnectionCreationTool.h"
-#include "dd/draw/utilities/ddMouseEvent.h"
+#include "dd/wxhotdraw/tools/ddConnectionCreationTool.h"
+#include "dd/wxhotdraw/utilities/ddMouseEvent.h"
 #include "dd/dditems/figures/ddRelationshipFigure.h"
 #include "dd/dditems/figures/ddRelationshipTerminal.h"
 

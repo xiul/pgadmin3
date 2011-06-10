@@ -12,8 +12,8 @@
 #ifndef DDREMOVETABLELOCATOR_H
 #define DDREMOVETABLELOCATOR_H
 
-#include "dd/draw/locators/ddILocator.h"
-#include "dd/draw/figures/ddIFigure.h"
+#include "dd/wxhotdraw/locators/ddILocator.h"
+#include "dd/wxhotdraw/figures/ddIFigure.h"
 
 class ddRemoveTableLocator : public ddILocator
 {

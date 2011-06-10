@@ -12,7 +12,7 @@
 #ifndef DDMINMAXTABLEBUTTONHANDLE_H
 #define DDMINMAXTABLEBUTTONHANDLE_H
 
-#include "dd/draw/handles/ddButtonHandle.h"
+#include "dd/wxhotdraw/handles/ddButtonHandle.h"
 
 class ddMinMaxTableButtonHandle : public ddButtonHandle
 {

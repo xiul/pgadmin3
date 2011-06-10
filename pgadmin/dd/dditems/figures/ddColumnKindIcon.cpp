@@ -18,7 +18,7 @@
 
 // App headers
 #include "dd/dditems/figures/ddColumnKindIcon.h"
-#include "dd/draw/main/ddDrawingView.h"
+#include "dd/wxhotdraw/main/ddDrawingView.h"
 #include "dd/dditems/figures/ddColumnFigure.h"
 #include "dd/dditems/figures/ddTableFigure.h"
 

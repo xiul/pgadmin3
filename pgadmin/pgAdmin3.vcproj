@@ -4003,55 +4003,55 @@
 						Name="figures"
 						>
 						<File
-							RelativePath=".\include\dd\draw\figures\ddAbstractFigure.h"
+							RelativePath=".\include\dd\wxhotdraw\figures\ddAbstractFigure.h"
 							>
 						</File>
 						<File
-							RelativePath=".\include\dd\draw\figures\ddAbstractMenuFigure.h"
+							RelativePath=".\include\dd\wxhotdraw\figures\ddAbstractMenuFigure.h"
 							>
 						</File>
 						<File
-							RelativePath=".\include\dd\draw\figures\ddAttribute.h"
+							RelativePath=".\include\dd\wxhotdraw\figures\ddAttribute.h"
 							>
 						</File>
 						<File
-							RelativePath=".\include\dd\draw\figures\ddAttributeFigure.h"
+							RelativePath=".\include\dd\wxhotdraw\figures\ddAttributeFigure.h"
 							>
 						</File>
 						<File
-							RelativePath=".\include\dd\draw\figures\ddBitmapFigure.h"
+							RelativePath=".\include\dd\wxhotdraw\figures\ddBitmapFigure.h"
 							>
 						</File>
 						<File
-							RelativePath=".\include\dd\draw\figures\ddCompositeFigure.h"
+							RelativePath=".\include\dd\wxhotdraw\figures\ddCompositeFigure.h"
 							>
 						</File>
 						<File
-							RelativePath=".\include\dd\draw\figures\ddIConnectionFigure.h"
+							RelativePath=".\include\dd\wxhotdraw\figures\ddIConnectionFigure.h"
 							>
 						</File>
 						<File
-							RelativePath=".\include\dd\draw\figures\ddIFigure.h"
+							RelativePath=".\include\dd\wxhotdraw\figures\ddIFigure.h"
 							>
 						</File>
 						<File
-							RelativePath=".\include\dd\draw\figures\ddLineConnection.h"
+							RelativePath=".\include\dd\wxhotdraw\figures\ddLineConnection.h"
 							>
 						</File>
 						<File
-							RelativePath=".\include\dd\draw\figures\ddLineTerminal.h"
+							RelativePath=".\include\dd\wxhotdraw\figures\ddLineTerminal.h"
 							>
 						</File>
 						<File
-							RelativePath=".\include\dd\draw\figures\ddPolyLineFigure.h"
+							RelativePath=".\include\dd\wxhotdraw\figures\ddPolyLineFigure.h"
 							>
 						</File>
 						<File
-							RelativePath=".\include\dd\draw\figures\ddRectangleFigure.h"
+							RelativePath=".\include\dd\wxhotdraw\figures\ddRectangleFigure.h"
 							>
 						</File>
 						<File
-							RelativePath=".\include\dd\draw\figures\ddSimpleTextFigure.h"
+							RelativePath=".\include\dd\wxhotdraw\figures\ddSimpleTextFigure.h"
 							>
 						</File>
 					</Filter>
@@ -4059,35 +4059,35 @@
 						Name="handles"
 						>
 						<File
-							RelativePath=".\include\dd\draw\handles\ddButtonHandle.h"
+							RelativePath=".\include\dd\wxhotdraw\handles\ddButtonHandle.h"
 							>
 						</File>
 						<File
-							RelativePath=".\include\dd\draw\handles\ddChangeConnectionEndHandle.h"
+							RelativePath=".\include\dd\wxhotdraw\handles\ddChangeConnectionEndHandle.h"
 							>
 						</File>
 						<File
-							RelativePath=".\include\dd\draw\handles\ddChangeConnectionHandle.h"
+							RelativePath=".\include\dd\wxhotdraw\handles\ddChangeConnectionHandle.h"
 							>
 						</File>
 						<File
-							RelativePath=".\include\dd\draw\handles\ddChangeConnectionStartHandle.h"
+							RelativePath=".\include\dd\wxhotdraw\handles\ddChangeConnectionStartHandle.h"
 							>
 						</File>
 						<File
-							RelativePath=".\include\dd\draw\handles\ddIHandle.h"
+							RelativePath=".\include\dd\wxhotdraw\handles\ddIHandle.h"
 							>
 						</File>
 						<File
-							RelativePath=".\include\dd\draw\handles\ddLineConnectionHandle.h"
+							RelativePath=".\include\dd\wxhotdraw\handles\ddLineConnectionHandle.h"
 							>
 						</File>
 						<File
-							RelativePath=".\include\dd\draw\handles\ddLocatorHandle.h"
+							RelativePath=".\include\dd\wxhotdraw\handles\ddLocatorHandle.h"
 							>
 						</File>
 						<File
-							RelativePath=".\include\dd\draw\handles\ddPolyLineHandle.h"
+							RelativePath=".\include\dd\wxhotdraw\handles\ddPolyLineHandle.h"
 							>
 						</File>
 					</Filter>
@@ -4095,59 +4095,59 @@
 						Name="tools"
 						>
 						<File
-							RelativePath=".\include\dd\draw\tools\ddAbstractTool.h"
+							RelativePath=".\include\dd\wxhotdraw\tools\ddAbstractTool.h"
 							>
 						</File>
 						<File
-							RelativePath=".\include\dd\draw\tools\ddCompositeFigureTool.h"
+							RelativePath=".\include\dd\wxhotdraw\tools\ddCompositeFigureTool.h"
 							>
 						</File>
 						<File
-							RelativePath=".\include\dd\draw\tools\ddConnectionCreationTool.h"
+							RelativePath=".\include\dd\wxhotdraw\tools\ddConnectionCreationTool.h"
 							>
 						</File>
 						<File
-							RelativePath=".\include\dd\draw\tools\ddCreationTool.h"
+							RelativePath=".\include\dd\wxhotdraw\tools\ddCreationTool.h"
 							>
 						</File>
 						<File
-							RelativePath=".\include\dd\draw\tools\ddDragCreationTool.h"
+							RelativePath=".\include\dd\wxhotdraw\tools\ddDragCreationTool.h"
 							>
 						</File>
 						<File
-							RelativePath=".\include\dd\draw\tools\ddDragTrackerTool.h"
+							RelativePath=".\include\dd\wxhotdraw\tools\ddDragTrackerTool.h"
 							>
 						</File>
 						<File
-							RelativePath=".\include\dd\draw\tools\ddFigureTool.h"
+							RelativePath=".\include\dd\wxhotdraw\tools\ddFigureTool.h"
 							>
 						</File>
 						<File
-							RelativePath=".\include\dd\draw\tools\ddHandleTrackerTool.h"
+							RelativePath=".\include\dd\wxhotdraw\tools\ddHandleTrackerTool.h"
 							>
 						</File>
 						<File
-							RelativePath=".\include\dd\draw\tools\ddITool.h"
+							RelativePath=".\include\dd\wxhotdraw\tools\ddITool.h"
 							>
 						</File>
 						<File
-							RelativePath=".\include\dd\draw\tools\ddMenuTool.h"
+							RelativePath=".\include\dd\wxhotdraw\tools\ddMenuTool.h"
 							>
 						</File>
 						<File
-							RelativePath=".\include\dd\draw\tools\ddPolyLineFigureTool.h"
+							RelativePath=".\include\dd\wxhotdraw\tools\ddPolyLineFigureTool.h"
 							>
 						</File>
 						<File
-							RelativePath=".\include\dd\draw\tools\ddSelectAreaTool.h"
+							RelativePath=".\include\dd\wxhotdraw\tools\ddSelectAreaTool.h"
 							>
 						</File>
 						<File
-							RelativePath=".\include\dd\draw\tools\ddSelectionTool.h"
+							RelativePath=".\include\dd\wxhotdraw\tools\ddSelectionTool.h"
 							>
 						</File>
 						<File
-							RelativePath=".\include\dd\draw\tools\ddSimpleTextTool.h"
+							RelativePath=".\include\dd\wxhotdraw\tools\ddSimpleTextTool.h"
 							>
 						</File>
 					</Filter>
@@ -4155,11 +4155,11 @@
 						Name="locators"
 						>
 						<File
-							RelativePath=".\include\dd\draw\locators\ddILocator.h"
+							RelativePath=".\include\dd\wxhotdraw\locators\ddILocator.h"
 							>
 						</File>
 						<File
-							RelativePath=".\include\dd\draw\locators\ddPolyLineLocator.h"
+							RelativePath=".\include\dd\wxhotdraw\locators\ddPolyLineLocator.h"
 							>
 						</File>
 					</Filter>
@@ -4167,31 +4167,31 @@
 						Name="utilities"
 						>
 						<File
-							RelativePath=".\include\dd\draw\utilities\ddArrayCollection.h"
+							RelativePath=".\include\dd\wxhotdraw\utilities\ddArrayCollection.h"
 							>
 						</File>
 						<File
-							RelativePath=".\include\dd\draw\utilities\ddCollection.h"
+							RelativePath=".\include\dd\wxhotdraw\utilities\ddCollection.h"
 							>
 						</File>
 						<File
-							RelativePath=".\include\dd\draw\utilities\ddCollectionBase.h"
+							RelativePath=".\include\dd\wxhotdraw\utilities\ddCollectionBase.h"
 							>
 						</File>
 						<File
-							RelativePath=".\include\dd\draw\utilities\ddGeometry.h"
+							RelativePath=".\include\dd\wxhotdraw\utilities\ddGeometry.h"
 							>
 						</File>
 						<File
-							RelativePath=".\include\dd\draw\utilities\ddMouseEvent.h"
+							RelativePath=".\include\dd\wxhotdraw\utilities\ddMouseEvent.h"
 							>
 						</File>
 						<File
-							RelativePath=".\include\dd\draw\utilities\ddPoint.h"
+							RelativePath=".\include\dd\wxhotdraw\utilities\ddPoint.h"
 							>
 						</File>
 						<File
-							RelativePath=".\include\dd\draw\utilities\ddRect.h"
+							RelativePath=".\include\dd\wxhotdraw\utilities\ddRect.h"
 							>
 						</File>
 					</Filter>
@@ -4199,19 +4199,19 @@
 						Name="main"
 						>
 						<File
-							RelativePath=".\include\dd\draw\main\ddDrawing.h"
+							RelativePath=".\include\dd\wxhotdraw\main\ddDrawing.h"
 							>
 						</File>
 						<File
-							RelativePath=".\include\dd\draw\main\ddDrawingEditor.h"
+							RelativePath=".\include\dd\wxhotdraw\main\ddDrawingEditor.h"
 							>
 						</File>
 						<File
-							RelativePath=".\include\dd\draw\main\ddDrawingView.h"
+							RelativePath=".\include\dd\wxhotdraw\main\ddDrawingView.h"
 							>
 						</File>
 						<File
-							RelativePath=".\include\dd\draw\main\ddObject.h"
+							RelativePath=".\include\dd\wxhotdraw\main\ddObject.h"
 							>
 						</File>
 					</Filter>
@@ -4219,19 +4219,19 @@
 						Name="connectors"
 						>
 						<File
-							RelativePath=".\include\dd\draw\connectors\ddChopBoxConnector.h"
+							RelativePath=".\include\dd\wxhotdraw\connectors\ddChopBoxConnector.h"
 							>
 						</File>
 						<File
-							RelativePath=".\include\dd\draw\connectors\ddIConnector.h"
+							RelativePath=".\include\dd\wxhotdraw\connectors\ddIConnector.h"
 							>
 						</File>
 						<File
-							RelativePath=".\include\dd\draw\connectors\ddLocatorConnector.h"
+							RelativePath=".\include\dd\wxhotdraw\connectors\ddLocatorConnector.h"
 							>
 						</File>
 						<File
-							RelativePath=".\include\dd\draw\connectors\ddStickyRectangleConnector.h"
+							RelativePath=".\include\dd\wxhotdraw\connectors\ddStickyRectangleConnector.h"
 							>
 						</File>
 					</Filter>
@@ -5812,55 +5812,55 @@
 					Name="figures"
 					>
 					<File
-						RelativePath=".\dd\draw\figures\ddAbstractFigure.cpp"
+						RelativePath=".\dd\wxhotdraw\figures\ddAbstractFigure.cpp"
 						>
 					</File>
 					<File
-						RelativePath=".\dd\draw\figures\ddAbstractMenuFigure.cpp"
+						RelativePath=".\dd\wxhotdraw\figures\ddAbstractMenuFigure.cpp"
 						>
 					</File>
 					<File
-						RelativePath=".\dd\draw\figures\ddAttribute.cpp"
+						RelativePath=".\dd\wxhotdraw\figures\ddAttribute.cpp"
 						>
 					</File>
 					<File
-						RelativePath=".\dd\draw\figures\ddAttributeFigure.cpp"
+						RelativePath=".\dd\wxhotdraw\figures\ddAttributeFigure.cpp"
 						>
 					</File>
 					<File
-						RelativePath=".\dd\draw\figures\ddBitmapFigure.cpp"
+						RelativePath=".\dd\wxhotdraw\figures\ddBitmapFigure.cpp"
 						>
 					</File>
 					<File
-						RelativePath=".\dd\draw\figures\ddCompositeFigure.cpp"
+						RelativePath=".\dd\wxhotdraw\figures\ddCompositeFigure.cpp"
 						>
 					</File>
 					<File
-						RelativePath=".\dd\draw\figures\ddIConnectionFigure.cpp"
+						RelativePath=".\dd\wxhotdraw\figures\ddIConnectionFigure.cpp"
 						>
 					</File>
 					<File
-						RelativePath=".\dd\draw\figures\ddIFigure.cpp"
+						RelativePath=".\dd\wxhotdraw\figures\ddIFigure.cpp"
 						>
 					</File>
 					<File
-						RelativePath=".\dd\draw\figures\ddLineConnection.cpp"
+						RelativePath=".\dd\wxhotdraw\figures\ddLineConnection.cpp"
 						>
 					</File>
 					<File
-						RelativePath=".\dd\draw\figures\ddLineTerminal.cpp"
+						RelativePath=".\dd\wxhotdraw\figures\ddLineTerminal.cpp"
 						>
 					</File>
 					<File
-						RelativePath=".\dd\draw\figures\ddPolyLineFigure.cpp"
+						RelativePath=".\dd\wxhotdraw\figures\ddPolyLineFigure.cpp"
 						>
 					</File>
 					<File
-						RelativePath=".\dd\draw\figures\ddRectangleFigure.cpp"
+						RelativePath=".\dd\wxhotdraw\figures\ddRectangleFigure.cpp"
 						>
 					</File>
 					<File
-						RelativePath=".\dd\draw\figures\ddSimpleTextFigure.cpp"
+						RelativePath=".\dd\wxhotdraw\figures\ddSimpleTextFigure.cpp"
 						>
 					</File>
 				</Filter>
@@ -5868,35 +5868,35 @@
 					Name="handles"
 					>
 					<File
-						RelativePath=".\dd\draw\handles\ddButtonHandle.cpp"
+						RelativePath=".\dd\wxhotdraw\handles\ddButtonHandle.cpp"
 						>
 					</File>
 					<File
-						RelativePath=".\dd\draw\handles\ddChangeConnectionEndHandle.cpp"
+						RelativePath=".\dd\wxhotdraw\handles\ddChangeConnectionEndHandle.cpp"
 						>
 					</File>
 					<File
-						RelativePath=".\dd\draw\handles\ddChangeConnectionHandle.cpp"
+						RelativePath=".\dd\wxhotdraw\handles\ddChangeConnectionHandle.cpp"
 						>
 					</File>
 					<File
-						RelativePath=".\dd\draw\handles\ddChangeConnectionStartHandle.cpp"
+						RelativePath=".\dd\wxhotdraw\handles\ddChangeConnectionStartHandle.cpp"
 						>
 					</File>
 					<File
-						RelativePath=".\dd\draw\handles\ddIHandle.cpp"
+						RelativePath=".\dd\wxhotdraw\handles\ddIHandle.cpp"
 						>
 					</File>
 					<File
-						RelativePath=".\dd\draw\handles\ddLineConnectionHandle.cpp"
+						RelativePath=".\dd\wxhotdraw\handles\ddLineConnectionHandle.cpp"
 						>
 					</File>
 					<File
-						RelativePath=".\dd\draw\handles\ddLocatorHandle.cpp"
+						RelativePath=".\dd\wxhotdraw\handles\ddLocatorHandle.cpp"
 						>
 					</File>
 					<File
-						RelativePath=".\dd\draw\handles\ddPolyLineHandle.cpp"
+						RelativePath=".\dd\wxhotdraw\handles\ddPolyLineHandle.cpp"
 						>
 					</File>
 				</Filter>
@@ -5904,59 +5904,59 @@
 					Name="tools"
 					>
 					<File
-						RelativePath=".\dd\draw\tools\ddAbstractTool.cpp"
+						RelativePath=".\dd\wxhotdraw\tools\ddAbstractTool.cpp"
 						>
 					</File>
 					<File
-						RelativePath=".\dd\draw\tools\ddCompositeFigureTool.cpp"
+						RelativePath=".\dd\wxhotdraw\tools\ddCompositeFigureTool.cpp"
 						>
 					</File>
 					<File
-						RelativePath=".\dd\draw\tools\ddConnectionCreationTool.cpp"
+						RelativePath=".\dd\wxhotdraw\tools\ddConnectionCreationTool.cpp"
 						>
 					</File>
 					<File
-						RelativePath=".\dd\draw\tools\ddCreationTool.cpp"
+						RelativePath=".\dd\wxhotdraw\tools\ddCreationTool.cpp"
 						>
 					</File>
 					<File
-						RelativePath=".\dd\draw\tools\ddDragCreationTool.cpp"
+						RelativePath=".\dd\wxhotdraw\tools\ddDragCreationTool.cpp"
 						>
 					</File>
 					<File
-						RelativePath=".\dd\draw\tools\ddDragTrackerTool.cpp"
+						RelativePath=".\dd\wxhotdraw\tools\ddDragTrackerTool.cpp"
 						>
 					</File>
 					<File
-						RelativePath=".\dd\draw\tools\ddFigureTool.cpp"
+						RelativePath=".\dd\wxhotdraw\tools\ddFigureTool.cpp"
 						>
 					</File>
 					<File
-						RelativePath=".\dd\draw\tools\ddHandleTrackerTool.cpp"
+						RelativePath=".\dd\wxhotdraw\tools\ddHandleTrackerTool.cpp"
 						>
 					</File>
 					<File
-						RelativePath=".\dd\draw\tools\ddITool.cpp"
+						RelativePath=".\dd\wxhotdraw\tools\ddITool.cpp"
 						>
 					</File>
 					<File
-						RelativePath=".\dd\draw\tools\ddMenuTool.cpp"
+						RelativePath=".\dd\wxhotdraw\tools\ddMenuTool.cpp"
 						>
 					</File>
 					<File
-						RelativePath=".\dd\draw\tools\ddPolyLineFigureTool.cpp"
+						RelativePath=".\dd\wxhotdraw\tools\ddPolyLineFigureTool.cpp"
 						>
 					</File>
 					<File
-						RelativePath=".\dd\draw\tools\ddSelectAreaTool.cpp"
+						RelativePath=".\dd\wxhotdraw\tools\ddSelectAreaTool.cpp"
 						>
 					</File>
 					<File
-						RelativePath=".\dd\draw\tools\ddSelectionTool.cpp"
+						RelativePath=".\dd\wxhotdraw\tools\ddSelectionTool.cpp"
 						>
 					</File>
 					<File
-						RelativePath=".\dd\draw\tools\ddSimpleTextTool.cpp"
+						RelativePath=".\dd\wxhotdraw\tools\ddSimpleTextTool.cpp"
 						>
 					</File>
 				</Filter>
@@ -5964,11 +5964,11 @@
 					Name="locators"
 					>
 					<File
-						RelativePath=".\dd\draw\locator\ddILocator.cpp"
+						RelativePath=".\dd\wxhotdraw\locator\ddILocator.cpp"
 						>
 					</File>
 					<File
-						RelativePath=".\dd\draw\locator\ddPolyLineLocator.cpp"
+						RelativePath=".\dd\wxhotdraw\locator\ddPolyLineLocator.cpp"
 						>
 					</File>
 				</Filter>
@@ -5976,19 +5976,19 @@
 					Name="connectors"
 					>
 					<File
-						RelativePath=".\dd\draw\connectors\ddChopBoxConnector.cpp"
+						RelativePath=".\dd\wxhotdraw\connectors\ddChopBoxConnector.cpp"
 						>
 					</File>
 					<File
-						RelativePath=".\dd\draw\connectors\ddIConnector.cpp"
+						RelativePath=".\dd\wxhotdraw\connectors\ddIConnector.cpp"
 						>
 					</File>
 					<File
-						RelativePath=".\dd\draw\connectors\ddLocatorConnector.cpp"
+						RelativePath=".\dd\wxhotdraw\connectors\ddLocatorConnector.cpp"
 						>
 					</File>
 					<File
-						RelativePath=".\dd\draw\connectors\ddStickyRectangleConnector.cpp"
+						RelativePath=".\dd\wxhotdraw\connectors\ddStickyRectangleConnector.cpp"
 						>
 					</File>
 				</Filter>
@@ -5996,27 +5996,27 @@
 					Name="utilities"
 					>
 					<File
-						RelativePath=".\dd\draw\utilities\ddArrayCollection.cpp"
+						RelativePath=".\dd\wxhotdraw\utilities\ddArrayCollection.cpp"
 						>
 					</File>
 					<File
-						RelativePath=".\dd\draw\utilities\ddCollection.cpp"
+						RelativePath=".\dd\wxhotdraw\utilities\ddCollection.cpp"
 						>
 					</File>
 					<File
-						RelativePath=".\dd\draw\utilities\ddGeometry.cpp"
+						RelativePath=".\dd\wxhotdraw\utilities\ddGeometry.cpp"
 						>
 					</File>
 					<File
-						RelativePath=".\dd\draw\utilities\ddMouseEvent.cpp"
+						RelativePath=".\dd\wxhotdraw\utilities\ddMouseEvent.cpp"
 						>
 					</File>
 					<File
-						RelativePath=".\dd\draw\utilities\ddPoint.cpp"
+						RelativePath=".\dd\wxhotdraw\utilities\ddPoint.cpp"
 						>
 					</File>
 					<File
-						RelativePath=".\dd\draw\utilities\ddRect.cpp"
+						RelativePath=".\dd\wxhotdraw\utilities\ddRect.cpp"
 						>
 					</File>
 				</Filter>
@@ -6024,15 +6024,15 @@
 					Name="main"
 					>
 					<File
-						RelativePath=".\dd\draw\main\ddDrawing.cpp"
+						RelativePath=".\dd\wxhotdraw\main\ddDrawing.cpp"
 						>
 					</File>
 					<File
-						RelativePath=".\dd\draw\main\ddDrawingEditor.cpp"
+						RelativePath=".\dd\wxhotdraw\main\ddDrawingEditor.cpp"
 						>
 					</File>
 					<File
-						RelativePath=".\dd\draw\main\ddDrawingView.cpp"
+						RelativePath=".\dd\wxhotdraw\main\ddDrawingView.cpp"
 						>
 					</File>
 				</Filter>

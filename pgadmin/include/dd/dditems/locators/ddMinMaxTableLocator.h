@@ -12,8 +12,8 @@
 #ifndef DDMINMAXTABLELOCATOR_H
 #define DDMINMAXTABLELOCATOR_H
 
-#include "dd/draw/locators/ddILocator.h"
-#include "dd/draw/figures/ddIFigure.h"
+#include "dd/wxhotdraw/locators/ddILocator.h"
+#include "dd/wxhotdraw/figures/ddIFigure.h"
 
 class ddMinMaxTableLocator : public ddILocator
 {

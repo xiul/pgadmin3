@@ -12,8 +12,8 @@
 #ifndef DDDATABASEDESIGN_H
 #define DDDATABASEDESIGN_H
 
-#include "dd/draw/main/ddDrawingEditor.h"
-#include "dd/draw/tools/ddITool.h"
+#include "dd/wxhotdraw/main/ddDrawingEditor.h"
+#include "dd/wxhotdraw/tools/ddITool.h"
 #include "dd/dditems/figures/ddTableFigure.h"
 
 class ddDatabaseDesign : public wxObject
