@@ -4099,6 +4099,10 @@
 							>
 						</File>
 						<File
+							RelativePath=".\include\dd\wxhotdraw\tools\wxhdCanvasMenuTool.h"
+							>
+						</File>
+						<File
 							RelativePath=".\include\dd\wxhotdraw\tools\wxhdCompositeFigureTool.h"
 							>
 						</File>
@@ -4241,6 +4245,14 @@
 					>
 					<File
 						RelativePath=".\include\dd\ddmodel\ddDatabaseDesign.h"
+						>
+					</File>
+					<File
+						RelativePath=".\include\dd\ddmodel\ddDrawingEditor.h"
+						>
+					</File>
+					<File
+						RelativePath=".\include\dd\ddmodel\ddTextEditor.h"
 						>
 					</File>
 				</Filter>
@@ -5908,6 +5920,10 @@
 						>
 					</File>
 					<File
+						RelativePath=".\dd\wxhotdraw\tools\wxhdCanvasMenuTool.cpp"
+						>
+					</File>
+					<File
 						RelativePath=".\dd\wxhotdraw\tools\wxhdCompositeFigureTool.cpp"
 						>
 					</File>
@@ -6042,6 +6058,10 @@
 				>
 				<File
 					RelativePath=".\dd\ddmodel\ddDatabaseDesign.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\dd\ddmodel\ddDrawingEditor.cpp"
 					>
 				</File>
 				<File

@@ -22,6 +22,7 @@
 #include "dd/wxhotdraw/tools/wxhdHandleTrackerTool.h"
 #include "dd/wxhotdraw/tools/wxhdDragTrackerTool.h"
 #include "dd/wxhotdraw/tools/wxhdSelectAreaTool.h"
+#include "dd/wxhotdraw/tools/wxhdCanvasMenuTool.h"
 
 
 class wxhdDrawingView;
@@ -61,7 +62,7 @@ void wxhdSelectionTool::mouseDown(wxhdMouseEvent& event)
         }
         else
         {
-            setDelegateTool(new wxhdSelectAreaTool(getDrawingEditor()));
+			setDelegateTool( new wxhdCanvasMenuTool(getDrawingEditor(),new wxhdSelectAreaTool(getDrawingEditor())) );
         }
 	}
 

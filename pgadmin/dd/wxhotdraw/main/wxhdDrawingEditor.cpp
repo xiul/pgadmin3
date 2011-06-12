@@ -62,3 +62,19 @@ void wxhdDrawingEditor::setTool(wxhdITool* tool)
 		delete _tool;
 	_tool=tool;
 }
+
+void wxhdDrawingEditor::createMenu(wxMenu &mnu)
+{
+    wxMenuItem *item;
+	item = mnu.AppendCheckItem(1000, _("Sample Item"));
+	item->Check(true);
+}
+
+void wxhdDrawingEditor::OnGenericPopupClick(wxCommandEvent& event, wxhdDrawingView *view)
+{
+	switch(event.GetId())
+	{
+	case 1000:
+		wxMessageBox(_("Sample menu item"), _("Sample"), wxOK, view);
+	}
+}

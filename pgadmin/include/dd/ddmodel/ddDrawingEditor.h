@@ -9,30 +9,27 @@
 //
 //////////////////////////////////////////////////////////////////////////
 
-#ifndef WXHDDRAWINGEDITOR_H
-#define WXHDDRAWINGEDITOR_H
+#ifndef DDDRAWINGEDITOR_H
+#define DDDRAWINGEDITOR_H
 
-#include "dd/wxhotdraw/main/wxhdDrawingView.h"
-#include "dd/wxhotdraw/tools/wxhdITool.h"
+#include "dd/wxhotdraw/main/wxhdDrawingEditor.h"
 
-class wxhdDrawingEditor : public wxhdObject
+enum
+{
+	MNU_NEWTABLE = 0
+};
+
+class ddDatabaseDesign;
+
+class ddDrawingEditor : public wxhdDrawingEditor
 {
 public:
-	wxhdDrawingEditor(wxWindow *owner);
-    ~wxhdDrawingEditor();
-	wxhdDrawingView* view();
-	wxhdDrawing* model();
-	wxhdITool* tool();
-	void setTool(wxhdITool* tool);
+	ddDrawingEditor(wxWindow *owner, ddDatabaseDesign *design);
 	//Hack To allow right click menu at canvas without a figure
 	virtual void createMenu(wxMenu &mnu);
 	virtual void OnGenericPopupClick(wxCommandEvent& event, wxhdDrawingView *view);
-
 protected:
-
 private:
-	wxhdDrawing *_model;
-	wxhdDrawingView *_view;
-	wxhdITool *_tool;
+	ddDatabaseDesign *databaseDesign;
 };
 #endif

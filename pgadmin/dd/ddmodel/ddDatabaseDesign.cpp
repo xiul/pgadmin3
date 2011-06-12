@@ -20,11 +20,12 @@
 #include "dd/dditems/figures/ddTableFigure.h"
 #include "dd/dditems/figures/ddRelationshipFigure.h"
 #include "dd/dditems/utilities/ddDataType.h"
+#include "dd/ddmodel/ddDrawingEditor.h"
 
 
 ddDatabaseDesign::ddDatabaseDesign(wxWindow *parent)
 {
-	draw = new wxhdDrawingEditor(parent);
+	draw = new ddDrawingEditor(parent, this);
 	tool = new wxhdSelectionTool(draw);
 	draw->setTool(tool);
 }

@@ -5,7 +5,7 @@
 // Copyright (C) 2002 - 2011, The pgAdmin Development Team
 // This software is released under the PostgreSQL Licence
 //
-// wxhdMenuTool.cpp - Allow Edition of textTool (double click) or show a menu to modifiy in someway text (right click).
+// wxhdMenuTool.cpp - Allow Edition of textTool (double click) or show a menu to modifiy in someway text (right click) a figure.
 //
 //////////////////////////////////////////////////////////////////////////
 

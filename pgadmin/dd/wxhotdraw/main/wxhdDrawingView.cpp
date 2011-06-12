@@ -21,12 +21,11 @@
 #include "dd/wxhotdraw/main/wxhdDrawingEditor.h"
 #include "dd/wxhotdraw/utilities/wxhdGeometry.h"
 #include "dd/wxhotdraw/utilities/wxhdMouseEvent.h"
+#include "dd/wxhotdraw/tools/wxhdCanvasMenuTool.h"
 
 // Images
 #include "images/check.pngc"
 #include "images/ddcancel.xpm"
-
-
 
 BEGIN_EVENT_TABLE(wxhdDrawingView, wxScrolledWindow)
 EVT_PAINT(                     wxhdDrawingView::onPaint)
@@ -63,6 +62,7 @@ wxHSCROLL | wxVSCROLL | wxBORDER | wxRETAINED)
 	okTxtButton->Hide();
 	cancelTxtButton = new wxBitmapButton(this,1981,wxBitmap(ddcancel_xpm),wxDefaultPosition,wxDefaultSize,wxBORDER_NONE);
 	cancelTxtButton->Hide();
+	canvasMenu = NULL;
 }
 
 wxhdDrawingView::~wxhdDrawingView()
@@ -426,6 +426,8 @@ void wxhdDrawingView::OnGenericPopupClick(wxCommandEvent& event)
 		simpleTextFigure->OnGenericPopupClick(event,this);
 	else if(menuFigure)
 		menuFigure->OnGenericPopupClick(event,this);
+	else if(canvasMenu)
+		canvasMenu->OnGenericPopupClick(event,this);
 	event.Skip();
 }
 
@@ -454,6 +456,12 @@ void wxhdDrawingView::connectPopUpMenu(wxMenu &mnu)
               this);
         }
     }
+}
+
+//Hack to allow use (events) of wxmenu inside a tool without a figure, Generic Way
+void wxhdDrawingView::setCanvasMenuTool(wxhdCanvasMenuTool *menuTool)
+{
+	canvasMenu = menuTool;
 }
 
 wxhdDrawingEditor* wxhdDrawingView::editor()

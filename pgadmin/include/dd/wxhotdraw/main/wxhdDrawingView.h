@@ -17,8 +17,10 @@
 #include "dd/wxhotdraw/handles/wxhdIHandle.h"
 #include "dd/wxhotdraw/figures/wxhdSimpleTextFigure.h"
 #include "dd/wxhotdraw/figures/wxhdAbstractMenuFigure.h"
-// Create View Class for MVC pattern of graphic library of pgAdmin
 
+class wxhdCanvasMenuTool;
+
+// Create View Class for MVC pattern of graphic library of pgAdmin
 enum
 {
     CTL_TEXTTOOLID=1979,
@@ -71,6 +73,8 @@ public:
 	void OnOkTxtButton(wxCommandEvent& event);
 	void OnCancelTxtButton(wxCommandEvent& event);
 	void connectPopUpMenu(wxMenu &mnu);
+	//Hack to allow use (events) of wxmenu inside a tool without a figure, Generic Way
+	void setCanvasMenuTool(wxhdCanvasMenuTool *menuTool);
 protected:
 
 private:
@@ -88,9 +92,9 @@ private:
 	bool drawSelRect;
 	//End Hack to avoid selection rectangle drawing bug
 	
-	//Hack to allow use (events) of wxmenu inside a tool Generic Way
+	//Hack to allow use (events) of wxmenu inside a tool with a figure, Generic Way
 	wxhdAbstractMenuFigure *menuFigure;
-	//End hack to allow use (events) of wxmenu inside a tool Generic Way
+	//End hack to allow use (events) of wxmenu inside a tool with a figure, Generic Way
 
 	//Hack to avoid event problem with simpleTextTool wxTextCrtl at EVT_TEXT event && POPUP EVENT
 	wxTextCtrl *simpleTextToolEdit;
@@ -98,5 +102,9 @@ private:
 	wxhdSimpleTextFigure *simpleTextFigure;
 	wxString oldText;
 	//End Hack to avoid event problem with simpleTextTool wxTextCrtl at EVT_TEXT event && POPUP EVENT
+
+	//Hack to allow use (events) of wxmenu inside a tool without a figure, Generic Way
+	wxhdCanvasMenuTool *canvasMenu;
+	//Hack to allow use (events) of wxmenu inside a tool without a figure, Generic Way
 };
 #endif
