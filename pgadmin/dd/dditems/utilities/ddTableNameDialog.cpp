@@ -22,6 +22,7 @@ IMPLEMENT_CLASS( ddTableNameDialog, wxDialog )
 
 BEGIN_EVENT_TABLE( ddTableNameDialog, wxDialog )
 EVT_BUTTON(DDGENBUTTON,ddTableNameDialog::OnGenButtonClicked )
+EVT_TEXT_ENTER(DDVALUE1, ddTableNameDialog::OnEnterPressed )
 END_EVENT_TABLE()
 
 ddTableNameDialog::ddTableNameDialog(	wxWindow* parent,
@@ -124,7 +125,7 @@ void ddTableNameDialog::CreateControls()
 
     // A text control for Value 1
    value1Ctrl = new wxTextCtrl ( this, DDVALUE1, m_value1 , wxDefaultPosition,
- wxDefaultSize, 0 );
+ wxDefaultSize, wxTE_PROCESS_ENTER );
     boxSizer->Add(value1Ctrl, 0, wxGROW|wxALL, 5);
 
     // Label for the Value 2
@@ -208,3 +209,21 @@ void ddTableNameDialog::OnGenButtonClicked( wxCommandEvent& event )
 	val2Ctrl->SetValue(shortName);
 }
 
+
+void ddTableNameDialog::OnEnterPressed( wxCommandEvent& event )
+{
+  if (event.GetEventType() == wxEVT_COMMAND_TEXT_ENTER)
+  {
+ if ( Validate() && TransferDataFromWindow() )
+    {
+        if ( IsModal() )
+            EndModal(wxID_OK); // If modal
+        else
+        {
+            SetReturnCode(wxID_OK);
+            this->Show(false); // If modeless
+        }
+    }
+
+  }
+}

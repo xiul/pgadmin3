@@ -76,8 +76,10 @@ public:
     void SetValueGenerate(bool value) { checkGenerate = value; }
     bool GetValueGenerate() { return checkGenerate; }
 
-	//wxEVT_COMMAND_BUTTON_CLICKED event_hander for DDGENBUTTON
+	//wxEVT_COMMAND_BUTTON_CLICKED event_handler for DDGENBUTTON
 	void OnGenButtonClicked( wxCommandEvent& event );
+	//wxEVT_COMMAND_TEXT_ENTER event_handle for DDVALUE1
+	void OnEnterPressed( wxCommandEvent& event );
 
 
 protected:
