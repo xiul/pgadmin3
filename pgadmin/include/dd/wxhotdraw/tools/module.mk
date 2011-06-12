@@ -11,6 +11,7 @@
 
 pgadmin3_SOURCES += \
 	$(srcdir)/include/dd/wxhotdraw/tools/wxhdAbstractTool.h \
+	$(srcdir)/include/dd/wxhotdraw/tools/wxhdCanvasMenuTool.h \	
 	$(srcdir)/include/dd/wxhotdraw/tools/wxhdCompositeFigureTool.h \
 	$(srcdir)/include/dd/wxhotdraw/tools/wxhdConnectionCreationTool.h \
 	$(srcdir)/include/dd/wxhotdraw/tools/wxhdCreationTool.h \

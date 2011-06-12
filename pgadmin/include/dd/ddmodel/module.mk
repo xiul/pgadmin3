@@ -11,6 +11,7 @@
 
 pgadmin3_SOURCES += \
 	$(srcdir)/include/dd/ddmodel/ddDatabaseDesign.h \
+	$(srcdir)/include/dd/ddmodel/ddDrawingEditor.h \
 	$(srcdir)/include/dd/ddmodel/ddTextEditor.h
 	
 EXTRA_DIST += \

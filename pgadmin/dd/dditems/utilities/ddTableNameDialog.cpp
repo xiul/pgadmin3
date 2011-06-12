@@ -95,7 +95,9 @@ bool ddTableNameDialog::Create(	wxWindow* parent,
 
     // Centre the dialog on the parent or (if none) screen
 
-    Centre();
+	value1Ctrl->SetFocus();
+
+	Centre();
 
     return true;
 }
@@ -138,9 +140,9 @@ void ddTableNameDialog::CreateControls()
     
 	//A check box to allow select automatic short name generation
 
-    generateButton = new wxButton ( this, DDGENBUTTON, wxT("&Generate Short Name"),
+    generateButton = new wxButton ( this, DDGENBUTTON, wxT("&Generate"),
        wxDefaultPosition, wxDefaultSize, 0 );
-	nameGenBox->Add(generateButton, 0, wxALIGN_CENTER_HORIZONTAL|wxALL, 5);
+	boxSizer->Add(generateButton, 0, wxALIGN_CENTER_HORIZONTAL|wxALL, 5);
 	
     // A dividing line before the OK and Cancel buttons
 
@@ -164,8 +166,6 @@ void ddTableNameDialog::CreateControls()
     cancel = new wxButton ( this, wxID_CANCEL,
         wxT("&Cancel"), wxDefaultPosition, wxDefaultSize, 0 );
     okCancelBox->Add(cancel, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
-
-
 
 }
 
