@@ -189,10 +189,14 @@ void ddTextTableItemFigure::OnGenericPopupClick(wxCommandEvent& event, wxhdDrawi
             getOwnerColumn()->getOwnerTable()->updateTableSize();
             break;
 		case MNU_TYPEOTHER:
-            setDataType((ddDataType) wxGetSingleChoiceIndex(wxT("New column datatype"),wxT("Column Datatypes"),dataTypes(),view));
-            recalculateDisplayBox();
-            getOwnerColumn()->displayBoxUpdate();
-            getOwnerColumn()->getOwnerTable()->updateTableSize();
+            answer = wxGetSingleChoiceIndex(wxT("New column datatype"),wxT("Column Datatypes"),dataTypes(),view);
+			if(answer >= 0)
+			{
+				setDataType( (ddDataType) answer );
+				recalculateDisplayBox();
+				getOwnerColumn()->displayBoxUpdate();
+				getOwnerColumn()->getOwnerTable()->updateTableSize();
+			}
             break;
 		case MNU_TYPEPKEY_CONSTRAINTNAME:
             tmpString=wxGetTextFromUser(wxT("New name of primary key:"),getOwnerColumn()->getOwnerTable()->getPkConstraintName(),getOwnerColumn()->getOwnerTable()->getPkConstraintName(),view);
