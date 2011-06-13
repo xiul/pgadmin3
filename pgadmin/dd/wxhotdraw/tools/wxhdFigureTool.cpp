@@ -84,7 +84,7 @@ void wxhdFigureTool::mouseDrag(wxhdMouseEvent& event)
 	}
 }
 
-void wxhdFigureTool::keyDown(wxKeyEvent& event)
+void wxhdFigureTool::keyDown(wxhdKeyEvent& event)
 {
 	if(defaultTool)
 	{
@@ -92,7 +92,7 @@ void wxhdFigureTool::keyDown(wxKeyEvent& event)
 	}
 }
 
-void wxhdFigureTool::keyUp(wxKeyEvent& event)
+void wxhdFigureTool::keyUp(wxhdKeyEvent& event)
 {
 		if(defaultTool)
 	{

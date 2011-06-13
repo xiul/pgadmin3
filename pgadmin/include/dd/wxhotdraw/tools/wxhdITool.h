@@ -14,6 +14,7 @@
 
 #include "dd/wxhotdraw/main/wxhdObject.h"
 #include "dd/wxhotdraw/utilities/wxhdMouseEvent.h"
+#include "dd/wxhotdraw/utilities/wxhdKeyEvent.h"
 
 
 class wxhdITool : public wxhdObject
@@ -25,8 +26,8 @@ public:
 	virtual void mouseUp(wxhdMouseEvent& event);
 	virtual void mouseMove(wxhdMouseEvent& event);
 	virtual void mouseDrag(wxhdMouseEvent& event);
-	virtual void keyDown(wxKeyEvent& event);
-	virtual void keyUp(wxKeyEvent& event);
+	virtual void keyDown(wxhdKeyEvent& event);
+	virtual void keyUp(wxhdKeyEvent& event);
 	virtual void activate();
 	virtual void deactivate();
 	virtual bool activated();

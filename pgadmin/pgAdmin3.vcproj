@@ -4187,6 +4187,10 @@
 							>
 						</File>
 						<File
+							RelativePath=".\include\dd\wxhotdraw\utilities\wxhdKeyEvent.h"
+							>
+						</File>
+						<File
 							RelativePath=".\include\dd\wxhotdraw\utilities\wxhdMouseEvent.h"
 							>
 						</File>
@@ -4249,6 +4253,10 @@
 					</File>
 					<File
 						RelativePath=".\include\dd\ddmodel\ddDrawingEditor.h"
+						>
+					</File>
+					<File
+						RelativePath=".\include\dd\ddmodel\ddDrawingView.h"
 						>
 					</File>
 					<File
@@ -6024,6 +6032,10 @@
 						>
 					</File>
 					<File
+						RelativePath=".\dd\wxhotdraw\utilities\wxhdKeyEvent.cpp"
+						>
+					</File>
+					<File
 						RelativePath=".\dd\wxhotdraw\utilities\wxhdMouseEvent.cpp"
 						>
 					</File>
@@ -6062,6 +6074,10 @@
 				</File>
 				<File
 					RelativePath=".\dd\ddmodel\ddDrawingEditor.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\dd\ddmodel\ddDrawingView.cpp"
 					>
 				</File>
 				<File

@@ -25,7 +25,6 @@ public:
 	wxhdDrawingEditor* getEditor();
 	void addTable(wxhdIFigure *figure);
 	void removeTable(wxhdIFigure *figure);
-    void removeSelectedObjects(int kind = 0);
 	void setTool(wxhdITool* tool);
 	void refreshDraw();
 	void eraseModel();

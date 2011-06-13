@@ -39,6 +39,8 @@ EVT_ERASE_BACKGROUND(          wxhdDrawingView::onEraseBackGround)  //This erase
 EVT_TEXT(CTL_TEXTTOOLID,       wxhdDrawingView::simpleTextToolChangeHandler)
 EVT_BUTTON(CTL_OKBUTTONID,     wxhdDrawingView::OnOkTxtButton)
 EVT_BUTTON(CTL_CANCELBUTTONID, wxhdDrawingView::OnCancelTxtButton)
+EVT_KEY_DOWN(				   wxhdDrawingView::onKeyDown)
+EVT_KEY_UP(					   wxhdDrawingView::onKeyUp)
 END_EVENT_TABLE()
 
 
@@ -178,7 +180,37 @@ void wxhdDrawingView::remove(wxhdIFigure *figure)
 void wxhdDrawingView::removeAll()
 {
 	selection->removeAll();
-	drawing->deleteFigures();
+	drawing->deleteAllFigures();
+}
+
+void wxhdDrawingView::deleteSelectedFigures()
+{
+    int answer;
+	wxhdIFigure *tmp;
+
+    if (selection->count() == 1)
+    {
+		tmp = (wxhdIFigure*) selection->getItemAt(0);
+        answer = wxMessageBox(_("Are you sure you wish to delete figure ?"), _("Delete figures?"), wxYES_NO|wxNO_DEFAULT);
+    }
+    else if (selection->count() > 1)
+    {
+        answer = wxMessageBox(
+          wxString::Format(_("Are you sure you wish to delete %d figures?"), selection->count()),
+          _("Delete figures?"), wxYES_NO|wxNO_DEFAULT);
+    }
+
+    if (answer == wxYES)
+    {
+        while(selection->count()>0)
+        {
+            removeFromSelection(tmp);
+            this->remove(tmp);
+            if(tmp)
+                delete tmp;
+        }
+		clearSelection();  //reset selection to zero items
+	}
 }
 
 void wxhdDrawingView::addToSelection(wxhdIFigure *figure)
@@ -325,6 +357,20 @@ void wxhdDrawingView::onMouseUp(wxMouseEvent& event)
 	this->Refresh();
 }
 
+void wxhdDrawingView::onKeyDown(wxKeyEvent& event)
+{
+	wxhdKeyEvent ddEvent = wxhdKeyEvent(event,this);
+	drawingEditor->tool()->keyDown(ddEvent);
+	this->Refresh();
+}
+
+void wxhdDrawingView::onKeyUp(wxKeyEvent& event)
+{
+	wxhdKeyEvent ddEvent = wxhdKeyEvent(event,this);
+	drawingEditor->tool()->keyUp(ddEvent);
+	this->Refresh();
+}
+
 //Hack to avoid event problem with simpleTextTool wxTextCrtl at EVT_TEXT event
 void wxhdDrawingView::setSimpleTextToolFigure(wxhdSimpleTextFigure *figure, bool onlySetFigure)
 {
@@ -467,4 +513,9 @@ void wxhdDrawingView::setCanvasMenuTool(wxhdCanvasMenuTool *menuTool)
 wxhdDrawingEditor* wxhdDrawingView::editor()
 {
 	return drawingEditor;
+}
+
+bool wxhdDrawingView::AcceptsFocus() const
+{
+	return true;
 }

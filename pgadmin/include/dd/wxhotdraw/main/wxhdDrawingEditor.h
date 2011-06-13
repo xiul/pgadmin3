@@ -18,21 +18,21 @@
 class wxhdDrawingEditor : public wxhdObject
 {
 public:
-	wxhdDrawingEditor(wxWindow *owner);
+	wxhdDrawingEditor(wxWindow *owner, bool defaultView = true );
     ~wxhdDrawingEditor();
 	wxhdDrawingView* view();
 	wxhdDrawing* model();
 	wxhdITool* tool();
 	void setTool(wxhdITool* tool);
+	virtual void createView(wxWindow *owner);
 	//Hack To allow right click menu at canvas without a figure
 	virtual void createMenu(wxMenu &mnu);
 	virtual void OnGenericPopupClick(wxCommandEvent& event, wxhdDrawingView *view);
 
 protected:
-
-private:
-	wxhdDrawing *_model;
 	wxhdDrawingView *_view;
+	wxhdDrawing *_model;
 	wxhdITool *_tool;
+private:
 };
 #endif

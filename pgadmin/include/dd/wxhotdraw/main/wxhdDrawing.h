@@ -30,7 +30,7 @@ public:
 	virtual wxhdRect& DisplayBox();
 	virtual wxhdIteratorBase* figuresEnumerator();
 	virtual wxhdIteratorBase* figuresInverseEnumerator();
-	virtual void deleteFigures();
+	virtual void deleteAllFigures();
 
 protected:
 

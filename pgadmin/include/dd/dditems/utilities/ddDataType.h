@@ -20,8 +20,8 @@ enum ddMenuColumn {
 };
 
 enum ddHiddenTypes {
-	ddTableFig = 100,
-	ddRelFig = 200
+	DDTABLEFIGURE = 100,
+	DDRELATIONSHIPFIGURE = 200
 };
 
 enum ddDataType {

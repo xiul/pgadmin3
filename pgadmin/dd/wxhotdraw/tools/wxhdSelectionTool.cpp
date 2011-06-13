@@ -112,7 +112,7 @@ void wxhdSelectionTool::mouseDrag(wxhdMouseEvent& event)
 			delegateTool->mouseDrag(event);
 }
 
-void wxhdSelectionTool::keyDown(wxKeyEvent& event)
+void wxhdSelectionTool::keyDown(wxhdKeyEvent& event)
 {
 	if(getDelegateTool())
     {
@@ -120,11 +120,11 @@ void wxhdSelectionTool::keyDown(wxKeyEvent& event)
 	}
 	if(event.GetKeyCode() == WXK_DELETE)
     {
-		deleteFigures(getDrawingEditor()->view());
+		event.getView()->deleteSelectedFigures();
 	}
 }
 
-void wxhdSelectionTool::keyUp(wxKeyEvent& event)
+void wxhdSelectionTool::keyUp(wxhdKeyEvent& event)
 {
 	if(getDelegateTool())
     {
@@ -153,8 +153,8 @@ wxhdITool* wxhdSelectionTool::getDelegateTool()
 	return _delegateTool;
 }
 
-void wxhdSelectionTool::deleteFigures(wxhdDrawingView *view)
+void wxhdSelectionTool::deleteAllFigures(wxhdDrawingView *view)
 {
 	view->clearSelection();
-	view->getDrawing()->deleteFigures();
+	view->getDrawing()->deleteAllFigures();
 }

@@ -39,6 +39,7 @@ public:
 	virtual void addToSelection(wxhdIFigure *figure);
 	virtual void addToSelection(wxhdCollection *figures);
 	virtual void removeFromSelection(wxhdIFigure *figure);
+	virtual void deleteSelectedFigures();
 	virtual void toggleSelection(wxhdIFigure *figure);
 	virtual void clearSelection();
 	virtual void ScrollToMakeVisible(wxhdPoint p);
@@ -52,8 +53,11 @@ public:
 	virtual void onMouseDown(wxMouseEvent& event);
 	virtual void onMouseUp(wxMouseEvent& event);
 	virtual void onMotion(wxMouseEvent& event);
+	virtual void onKeyDown(wxKeyEvent& event);
+	virtual void onKeyUp(wxKeyEvent& event);
 	virtual wxhdRect getVisibleArea();
 	virtual wxhdRect getVirtualSize();
+	virtual bool AcceptsFocus () const;
 	wxhdDrawingEditor* editor();  
 	wxSize canvasSize;
 	

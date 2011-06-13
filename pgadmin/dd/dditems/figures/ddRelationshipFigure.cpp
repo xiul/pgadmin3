@@ -25,7 +25,7 @@ ddRelationshipFigure::ddRelationshipFigure():
 wxhdLineConnection()
 {
 	constraintName = wxEmptyString;
-	setKindId(ddRelFig);
+	setKindId(DDRELATIONSHIPFIGURE);
 	fkFromPk = true;
 	fkMandatory = true;
 	fkOneToMany = true;

@@ -20,14 +20,11 @@
 #include "dd/wxhotdraw/main/wxhdDrawingView.h"
 #include "dd/wxhotdraw/tools/wxhdITool.h"
 
-wxhdDrawingEditor::wxhdDrawingEditor(wxWindow *owner)
+wxhdDrawingEditor::wxhdDrawingEditor(wxWindow *owner, bool defaultView)
 {
 	_model=new wxhdDrawing();
-	_view = new wxhdDrawingView(owner,this,wxSize(1200, 1200),_model);
-    // Set Scroll Bar & split
-    _view->SetScrollbars( 10, 10, 127, 80 );
-	_view->EnableScrolling(true,true);
-	_view->AdjustScrollbars();
+	if(defaultView)
+		createView(owner);
 	_tool=NULL;
 }
 
@@ -39,6 +36,16 @@ wxhdDrawingEditor::~wxhdDrawingEditor()
 		delete _model;
 	if(_tool)
 		delete _tool;
+}
+
+//Hack to allow create different kind of custom views inside custom editor
+void wxhdDrawingEditor::createView(wxWindow *owner)
+{
+	_view = new wxhdDrawingView(owner,this,wxSize(1200, 1200),_model);
+    // Set Scroll Bar & split
+    _view->SetScrollbars( 10, 10, 127, 80 );
+	_view->EnableScrolling(true,true);
+	_view->AdjustScrollbars();
 }
 
 wxhdDrawingView* wxhdDrawingEditor::view()

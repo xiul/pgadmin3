@@ -19,12 +19,23 @@
 #include "dd/ddmodel/ddDrawingEditor.h"
 #include "dd/dditems/utilities/ddTableNameDialog.h"
 #include "dd/ddmodel/ddDatabaseDesign.h"
+#include "dd/ddmodel/ddDrawingView.h"
 
 
 ddDrawingEditor::ddDrawingEditor(wxWindow *owner, ddDatabaseDesign *design)
-:wxhdDrawingEditor(owner)
+:wxhdDrawingEditor(owner,false)
 {
 	databaseDesign = design;
+	createView(owner);
+}
+
+void ddDrawingEditor::createView(wxWindow *owner)
+{
+	_view = new ddDrawingView(owner,this,wxSize(1200, 1200),_model);
+    // Set Scroll Bar & split
+    _view->SetScrollbars( 10, 10, 127, 80 );
+	_view->EnableScrolling(true,true);
+	_view->AdjustScrollbars();
 }
 
 void ddDrawingEditor::createMenu(wxMenu &mnu)

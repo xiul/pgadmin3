@@ -128,7 +128,7 @@ wxhdIteratorBase* wxhdDrawing::figuresInverseEnumerator()
 	return figures->createDownIterator();
 }
 
-void wxhdDrawing::deleteFigures()
+void wxhdDrawing::deleteAllFigures()
 {
 	wxhdIFigure *tmp;
 	while(figures->count()>0)
@@ -139,3 +139,4 @@ void wxhdDrawing::deleteFigures()
 	}
 	//handles delete it together with figures
 }
+

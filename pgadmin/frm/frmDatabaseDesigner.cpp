@@ -34,6 +34,7 @@
 #include "dd/wxhotdraw/tools/wxhdConnectionCreationTool.h"
 
 #include "dd/ddmodel/ddDatabaseDesign.h"
+#include "dd/ddmodel/ddDrawingView.h"
 #include "dd/ddmodel/ddTextEditor.h"
 
 #include "dd/dditems/figures/ddTextTableItemFigure.h"
@@ -200,7 +201,8 @@ void frmDatabaseDesigner::OnAddTable(wxCommandEvent& event)
 
 void frmDatabaseDesigner::OnDeleteTable(wxCommandEvent& event)
 {
-    design->removeSelectedObjects(100);
+	ddDrawingView *v = (ddDrawingView*) design->getEditor()->view();
+	v->deleteSelectedFigures();
 }
 
 void frmDatabaseDesigner::OnAddColumn(wxCommandEvent& event)

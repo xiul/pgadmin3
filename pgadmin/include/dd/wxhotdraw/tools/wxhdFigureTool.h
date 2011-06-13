@@ -28,8 +28,8 @@ public:
 	virtual void mouseUp(wxhdMouseEvent& event);
 	virtual void mouseMove(wxhdMouseEvent& event);
 	virtual void mouseDrag(wxhdMouseEvent& event);
-	virtual void keyDown(wxKeyEvent& event);
-	virtual void keyUp(wxKeyEvent& event);
+	virtual void keyDown(wxhdKeyEvent& event);
+	virtual void keyUp(wxhdKeyEvent& event);
 protected:
 	wxhdITool *defaultTool;
 	wxhdIFigure *figure;

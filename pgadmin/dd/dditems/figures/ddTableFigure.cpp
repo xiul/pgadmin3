@@ -62,7 +62,7 @@ All figures title, colums, indexes are store at same array to improve performanc
 ddTableFigure::ddTableFigure(wxString tableName, int x, int y, wxString shortName):
 wxhdCompositeFigure()
 {
-	setKindId(ddTableFig);
+	setKindId(DDTABLEFIGURE);
 	internalPadding = 2;
 	externalPadding = 4;
 	deleteColumnMode=false;
@@ -838,6 +838,8 @@ void ddTableFigure::processDeleteAlert(wxhdDrawingView *view)
 			ddRelationshipFigure *rel = (ddRelationshipFigure*) iterator->Next();
 			rel->disconnectStart();
 			rel->disconnectEnd();
+			if(view->isFigureSelected(rel))
+				view->removeFromSelection(rel);
 			view->remove(rel);
 			repeatFlag=true;
 			delete rel;

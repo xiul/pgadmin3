@@ -56,60 +56,6 @@ void ddDatabaseDesign::removeTable(wxhdIFigure *figure)
 	draw->view()->remove(figure);
 }
 
-void ddDatabaseDesign::removeSelectedObjects(int kind)
-{
-    int answer;
-	wxhdIteratorBase *iterator=draw->model()->figuresEnumerator();
-    wxhdArrayCollection itemsToBeDeleted;
-	wxhdIFigure *tmp;
-    ddTableFigure *table;
-    while(iterator->HasNext())
-    {
-        tmp=(wxhdIFigure *)iterator->Next();
-        if (tmp->isSelected())
-        {
-            if(kind == 0 || tmp->getKindId() == kind)
-            {
-                itemsToBeDeleted.addItem(tmp);
-            }
-        }
-	 }
-	delete iterator;
-    
-    if (itemsToBeDeleted.count() == 1)
-    {
-		tmp = (wxhdIFigure*) itemsToBeDeleted.getItemAt(0);
-        table = (ddTableFigure *)tmp;	
-        answer = wxMessageBox(_("Are you sure you wish to delete table ") + table->getTableName() + wxT("?"), _("Delete table?"), wxYES_NO|wxNO_DEFAULT);
-    }
-    else if (itemsToBeDeleted.count() > 1)
-    {
-        answer = wxMessageBox(
-          wxString::Format(_("Are you sure you wish to delete %d tables?"), itemsToBeDeleted.count()),
-          _("Delete table?"), wxYES_NO|wxNO_DEFAULT);
-    }
-
-    if (answer == wxYES)
-    {
-        while(itemsToBeDeleted.count()>0)
-        {
-            tmp = (wxhdIFigure*) itemsToBeDeleted.getItemAt(0);
-            table = (ddTableFigure *)tmp;	
-            draw->view()->removeFromSelection(table);
-            table->processDeleteAlert(draw->view());
-            draw->view()->remove(table);
-            if(table)
-                delete table;
-            itemsToBeDeleted.removeItemAt(0);
-        }
-	}
-    else
-    {
-        while(itemsToBeDeleted.count()>0)
-            itemsToBeDeleted.removeItemAt(0);
-    }
-}
-
 void ddDatabaseDesign::setTool(wxhdITool* tool)
 {
 	draw->setTool(tool);
@@ -134,7 +80,7 @@ wxString ddDatabaseDesign::generateModel()
 	while(iterator->HasNext())
     {
 		tmp=(wxhdIFigure *)iterator->Next();
-		if(tmp->getKindId() == ddTableFig)
+		if(tmp->getKindId() == DDTABLEFIGURE)
 		{
 			out+=wxT(" \n");
 			table=(ddTableFigure*)tmp;
@@ -166,7 +112,7 @@ wxString ddDatabaseDesign::getNewTableName()
 		while(iterator->HasNext())
         {
 			tmp=(wxhdIFigure *)iterator->Next();
-			if(tmp->getKindId() == ddTableFig)
+			if(tmp->getKindId() == DDTABLEFIGURE)
 			{
 				table=(ddTableFigure*)tmp;
 				if(indx==0)
@@ -196,7 +142,7 @@ ddTableFigure* ddDatabaseDesign::getSelectedTable()
     while(iterator->HasNext())
     {
         tmp=(wxhdIFigure *)iterator->Next();
-        if (tmp->isSelected() && tmp->getKindId() == ddTableFig)
+        if (tmp->isSelected() && tmp->getKindId() == DDTABLEFIGURE)
             table = (ddTableFigure *)tmp;
 	 }
 	delete iterator;
@@ -212,7 +158,7 @@ bool ddDatabaseDesign::containsTable(wxString tableName)
 	while(iterator->HasNext())
     {
 		tmp=(wxhdIFigure *)iterator->Next();
-		if(tmp->getKindId() == ddTableFig)
+		if(tmp->getKindId() == DDTABLEFIGURE)
 		{
 			table=(ddTableFigure*)tmp;
 			if(table->getTableName().Contains(tableName))

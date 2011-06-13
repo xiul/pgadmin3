@@ -12,6 +12,7 @@
 pgadmin3_SOURCES += \
 	$(srcdir)/dd/ddmodel/ddDatabaseDesign.cpp \
 	$(srcdir)/dd/ddmodel/ddDrawingEditor.cpp \
+	$(srcdir)/dd/ddmodel/ddDrawingView.cpp \
 	$(srcdir)/dd/ddmodel/ddTextEditor.cpp
 
 EXTRA_DIST += \

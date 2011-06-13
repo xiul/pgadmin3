@@ -62,14 +62,14 @@ When a mouse is dragged this returns true: event.Dragging()
 */
 }
 
-void wxhdITool::keyDown(wxKeyEvent& event)
+void wxhdITool::keyDown(wxhdKeyEvent& event)
 {
 /*
 setAnchorCoords(event.GetPosition().x,event.GetPosition().y);
 */
 }
 
-void wxhdITool::keyUp(wxKeyEvent& event)
+void wxhdITool::keyUp(wxhdKeyEvent& event)
 {
 }
 
