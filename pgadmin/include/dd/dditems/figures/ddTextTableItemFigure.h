@@ -66,8 +66,10 @@ public:
 	void setDataType(ddDataType type);
 	void setOwnerTable(ddTableFigure *table);  //only used by columns working as table title figure for setAlias method
 	int getPrecision();
+	int getScale();
 protected:
 	void setPrecision(int value);
+	void setScale(int value);
 	ddColumnFigure *ownerColumn;
 	ddTableFigure *ownerTable;  
 	wxString colAlias;
@@ -78,5 +80,6 @@ private:
 	bool showAlias;
 	bool oneTimeNoAlias;
 	int precision;
+	int scale;
 };
 #endif

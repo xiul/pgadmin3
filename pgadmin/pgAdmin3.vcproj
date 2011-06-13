@@ -3991,6 +3991,10 @@
 							>
 						</File>
 						<File
+							RelativePath=".\include\dd\dditems\utilities\ddPrecisionScaleDialog.h"
+							>
+						</File>
+						<File
 							RelativePath=".\include\dd\dditems\utilities\ddTableNameDialog.h"
 							>
 						</File>
@@ -5819,6 +5823,10 @@
 				<Filter
 					Name="utilities"
 					>
+					<File
+						RelativePath=".\dd\dditems\utilities\ddPrecisionScaleDialog.cpp"
+						>
+					</File>
 					<File
 						RelativePath=".\dd\dditems\utilities\ddTableNameDialog.cpp"
 						>

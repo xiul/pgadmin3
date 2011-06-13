@@ -44,7 +44,7 @@ enum ddDataType {
 	dt_line,
 	dt_Lseg,
 	dt_macaddr,
-	dt_numeric, //(s,p)
+	dt_numeric, //(p,s)
 	dt_path,
 	dt_point,
 	dt_polygon,

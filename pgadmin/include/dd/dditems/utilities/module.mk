@@ -11,6 +11,7 @@
 
 pgadmin3_SOURCES += \
 	$(srcdir)/include/dd/dditems/utilities/ddDataType.h \
+	$(srcdir)/include/dd/dditems/utilities/ddPrecisionScaleDialog.h \
 	$(srcdir)/include/dd/dditems/utilities/ddTableNameDialog.h
 
 EXTRA_DIST += \

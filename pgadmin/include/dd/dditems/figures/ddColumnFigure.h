@@ -60,6 +60,7 @@ public:
 	void deactivateGenFkName();
 	ddRelationshipItem* getFkSource();
 	int getPrecision();
+	int getScale();
 
 protected:
 	ddColumnKindIcon *leftImage;

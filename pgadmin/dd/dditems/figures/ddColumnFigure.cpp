@@ -251,6 +251,11 @@ int ddColumnFigure::getPrecision()
 	return columnText->getPrecision();
 }
 
+int ddColumnFigure::getScale()
+{
+	return columnText->getScale();
+}
+
 int ddColumnFigure::getUniqueConstraintIndex()
 {
 	return leftImage->getUniqueConstraintIndex();

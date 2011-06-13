@@ -24,6 +24,7 @@
 #include "dd/wxhotdraw/figures/wxhdSimpleTextFigure.h"
 #include "dd/wxhotdraw/main/wxhdDrawingView.h"
 #include "dd/dditems/figures/ddTableFigure.h"
+#include "dd/dditems/utilities/ddPrecisionScaleDialog.h"
 
 ddTextTableItemFigure::ddTextTableItemFigure(wxString& columnName, ddDataType dataType, ddColumnFigure *owner):
 wxhdSimpleTextFigure(columnName)
@@ -35,9 +36,10 @@ wxhdSimpleTextFigure(columnName)
 	enablePopUp();
 	ownerColumn = owner;
 	showDataType = true;
-	showAlias=false;
+	showAlias = false;
 	recalculateDisplayBox();
-	precision=-1;
+	precision = -1;
+	scale = -1;
 }
 
 ddTextTableItemFigure::~ddTextTableItemFigure()
@@ -59,10 +61,14 @@ wxString& ddTextTableItemFigure::getText(bool extended)
 	if(showDataType && extended && getOwnerColumn())
 	{
 		wxString ddType = dataTypes()[getDataType()];   //Should use getDataType() & getPrecision(), because when column is fk, type is not taken from this column, instead from original column (source of fk)
-		if(columnType==dt_varchar && getPrecision()>0)
+		bool havePrecision = columnType == dt_numeric || dt_bit || columnType == dt_char || columnType == dt_interval || columnType == dt_varbit || columnType==dt_varchar;
+		if( havePrecision && getPrecision()>0)
 		{
 			ddType.Truncate(ddType.Find(wxT("(")));
-			ddType+=wxString::Format(wxT("(%d)"),getPrecision());
+			if(getScale()==-1)
+				ddType+=wxString::Format(wxT("(%d)"),getPrecision());
+			else
+				ddType+=wxString::Format(wxT("(%d,%d)"),getPrecision(),getScale());
 		}
 		out = wxString( wxhdSimpleTextFigure::getText() + wxString(wxT(" : ")) + ddType );
 		return  out;
@@ -99,6 +105,7 @@ wxString ddTextTableItemFigure::getType()
 void ddTextTableItemFigure::OnGenericPopupClick(wxCommandEvent& event, wxhdDrawingView *view)
 {
 	wxTextEntryDialog *nameDialog=NULL;
+	ddPrecisionScaleDialog *numericDialog=NULL;
 	wxString tmpString;
 	int answer;
     int tmpprecision;
@@ -182,8 +189,11 @@ void ddTextTableItemFigure::OnGenericPopupClick(wxCommandEvent& event, wxhdDrawi
                 _("Size for varchar datatype"),
                 _("Varchar size"),
                 getPrecision(), 0, 255, view);
-            if (tmpprecision > 0)
+			if (tmpprecision > 0)
+			{
                 setPrecision(tmpprecision);
+				setScale(-1);
+			}
             recalculateDisplayBox();
             getOwnerColumn()->displayBoxUpdate();
             getOwnerColumn()->getOwnerTable()->updateTableSize();
@@ -192,6 +202,43 @@ void ddTextTableItemFigure::OnGenericPopupClick(wxCommandEvent& event, wxhdDrawi
             answer = wxGetSingleChoiceIndex(wxT("New column datatype"),wxT("Column Datatypes"),dataTypes(),view);
 			if(answer >= 0)
 			{
+				
+			if(answer == dt_varchar || answer == dt_bit || answer == dt_char || answer == dt_interval || answer == dt_varbit)
+			{
+				tmpprecision = wxGetNumberFromUser(_("datatype size"),
+					_("Size for datatype"),
+					_("size"),
+					getPrecision(), 0, 255, view);
+				if (tmpprecision > 0){
+					setPrecision(tmpprecision);
+					setScale(-1);
+				}
+				recalculateDisplayBox();
+				getOwnerColumn()->displayBoxUpdate();
+				getOwnerColumn()->getOwnerTable()->updateTableSize();
+			}
+			if(answer == dt_numeric)
+			{
+				numericDialog = new ddPrecisionScaleDialog(	view,
+															DDPRECISIONSCALEDIALOG,
+															wxT("Input precision and scale"),
+															wxT("Precision"),
+															getPrecision(),
+															wxT("Scale"),
+															getScale()
+															);
+				numericDialog->ShowModal();
+				if (tmpprecision > 0){
+					setPrecision(numericDialog->GetValue1());
+					setScale(numericDialog->GetValue2());
+				}
+				delete numericDialog;
+				recalculateDisplayBox();
+				getOwnerColumn()->displayBoxUpdate();
+				getOwnerColumn()->getOwnerTable()->updateTableSize();
+			}			
+
+				
 				setDataType( (ddDataType) answer );
 				recalculateDisplayBox();
 				getOwnerColumn()->displayBoxUpdate();
@@ -275,7 +322,7 @@ void ddTextTableItemFigure::createMenu(wxMenu &mnu)
     item->Check(columnType==dt_integer);
 	item = submenu->AppendCheckItem(MNU_TYPEMONEY, _("money"));
     item->Check(columnType==dt_money);
-    item = submenu->AppendCheckItem(MNU_TYPEVARCHAR, _("varchar()"));
+    item = submenu->AppendCheckItem(MNU_TYPEVARCHAR, _("varchar(n)"));
     item->Check(columnType==dt_varchar);
 	item = submenu->Append(MNU_TYPEOTHER, _("Choose another datatype..."));
     mnu.AppendSeparator();
@@ -296,10 +343,10 @@ const wxArrayString ddTextTableItemFigure::dataTypes()
 		ddDatatypes.Add(wxT("boolean"));
 		ddDatatypes.Add(wxT("integer"));
 		ddDatatypes.Add(wxT("money"));
-		ddDatatypes.Add(wxT("varchar(1)"));
+		ddDatatypes.Add(wxT("varchar(n)"));
 	//Normal access ddDatatypes
 			ddDatatypes.Add(wxT("bigint"));
-			ddDatatypes.Add(wxT("bit(1)"));
+			ddDatatypes.Add(wxT("bit(n)"));
 			ddDatatypes.Add(wxT("bytea"));
 			ddDatatypes.Add(wxT("char(n)"));
 			ddDatatypes.Add(wxT("cidr"));
@@ -307,11 +354,11 @@ const wxArrayString ddTextTableItemFigure::dataTypes()
 			ddDatatypes.Add(wxT("date"));
 			ddDatatypes.Add(wxT("double precision"));
 			ddDatatypes.Add(wxT("inet"));
-			ddDatatypes.Add(wxT("interval(1)"));
+			ddDatatypes.Add(wxT("interval(n)"));
 			ddDatatypes.Add(wxT("line"));
 			ddDatatypes.Add(wxT("lseg"));
 			ddDatatypes.Add(wxT("macaddr"));
-			ddDatatypes.Add(wxT("numeric(1,1)"));
+			ddDatatypes.Add(wxT("numeric(p,s)"));
 			ddDatatypes.Add(wxT("path"));
 			ddDatatypes.Add(wxT("point"));
 			ddDatatypes.Add(wxT("polygon"));
@@ -320,7 +367,7 @@ const wxArrayString ddTextTableItemFigure::dataTypes()
 			ddDatatypes.Add(wxT("text"));
 			ddDatatypes.Add(wxT("time"));
 			ddDatatypes.Add(wxT("timestamp"));
-			ddDatatypes.Add(wxT("varbit(1)"));
+			ddDatatypes.Add(wxT("varbit(n)"));
 	}
 	return ddDatatypes;
 }
@@ -445,5 +492,27 @@ void ddTextTableItemFigure::setPrecision(int value)
 	{
 		precision = value;
 		ownerColumn->getOwnerTable()->updateSizeOfObservers();
+	}
+}
+
+void ddTextTableItemFigure::setScale(int value)
+{
+	if(!getOwnerColumn()->isForeignKey())
+	{
+		scale = value;
+		ownerColumn->getOwnerTable()->updateSizeOfObservers();
+	}
+}
+
+int ddTextTableItemFigure::getScale()
+{
+	if(getOwnerColumn()->isForeignKey())
+	{
+		scale = getOwnerColumn()->getFkSource()->original->getScale();
+		return scale;
+	}
+	else
+	{
+		return scale;
 	}
 }
