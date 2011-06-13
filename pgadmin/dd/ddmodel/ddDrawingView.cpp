@@ -83,10 +83,4 @@ void ddDrawingView::deleteSelectedFigures()
         }
 		clearSelection();  //after delete all items all relationships remains at selection and should be removed
 	}
-/*    else
-    {
-        while(selection->count()>0)
-            selection->removeItemAt(0);
-    }
-	*/
 }

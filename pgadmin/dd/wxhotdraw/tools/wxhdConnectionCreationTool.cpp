@@ -49,7 +49,7 @@ void wxhdConnectionCreationTool::mouseDown(wxhdMouseEvent& event)
 	if(event.LeftDown())
 	{
 		numClicks++;
-		int x=event.GetPosition().x, y=event.GetPosition().y;
+		int x=event.getScrolledPosX(), y=event.getScrolledPosY();
 		wxhdDrawingView *view = getDrawingEditor()->view();
 		wxhdIFigure *figure = view->getDrawing()->findFigure(x,y);
 

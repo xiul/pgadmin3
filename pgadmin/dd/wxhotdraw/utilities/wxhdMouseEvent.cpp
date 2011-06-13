@@ -37,6 +37,22 @@ wxhdPoint& wxhdMouseEvent::getUnScrolledPosition()
 	return unScrolled;
 }
 
+wxhdPoint& wxhdMouseEvent::getScrolledPosition()
+{
+	scrolled = mouseEvent.GetPosition();
+	return scrolled;
+}
+
+int wxhdMouseEvent::getScrolledPosX()
+{
+	return getScrolledPosition().x;
+}
+
+int wxhdMouseEvent::getScrolledPosY()
+{
+	return getScrolledPosition().y;
+}
+
 int wxhdMouseEvent::getUnScrolledPosX()
 {
 	return getUnScrolledPosition().x;

@@ -21,9 +21,12 @@ class wxhdMouseEvent : public wxhdObject
 	public:
 		wxhdMouseEvent(wxMouseEvent& event, wxhdDrawingView *owner);
 		wxhdPoint& getUnScrolledPosition();
+		wxhdPoint& getScrolledPosition();
 		wxhdPoint& GetPosition();
 		int getUnScrolledPosX();
 		int getUnScrolledPosY();
+		int getScrolledPosX();
+		int getScrolledPosY();
 		bool LeftDClick();
 		bool LeftDown();
 		bool LeftIsDown();
@@ -35,6 +38,6 @@ class wxhdMouseEvent : public wxhdObject
 private:
 		wxhdDrawingView *view;
 		wxMouseEvent& mouseEvent;
-		wxhdPoint unScrolled;
+		wxhdPoint unScrolled, scrolled;
 };
 #endif
