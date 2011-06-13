@@ -344,6 +344,8 @@ void wxhdDrawingView::onMotion(wxMouseEvent& event)
 
 void wxhdDrawingView::onMouseDown(wxMouseEvent& event)
 {
+	this->AcceptsFocus();
+	this->SetFocus();
 	startDrag = event.GetPosition();
 	wxhdMouseEvent ddEvent = wxhdMouseEvent(event,this);
 	drawingEditor->tool()->mouseDown(ddEvent);
@@ -352,6 +354,8 @@ void wxhdDrawingView::onMouseDown(wxMouseEvent& event)
 
 void wxhdDrawingView::onMouseUp(wxMouseEvent& event)
 {
+	this->AcceptsFocus();
+	this->SetFocus();
 	wxhdMouseEvent ddEvent = wxhdMouseEvent(event,this);
 	drawingEditor->tool()->mouseUp(ddEvent);
 	this->Refresh();

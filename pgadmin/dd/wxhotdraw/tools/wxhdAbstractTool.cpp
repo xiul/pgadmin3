@@ -45,12 +45,12 @@ void wxhdAbstractTool::mouseDrag(wxhdMouseEvent& event)
 {
 }
 
-void wxhdAbstractTool::keyDown(wxKeyEvent& event)
+void wxhdAbstractTool::keyDown(wxhdKeyEvent& event)
 {
-	setAnchorCoords(event.GetPosition().x,event.GetPosition().y);
+//	setAnchorCoords(event.GetPosition().x,event.GetPosition().y);
 }
 
-void wxhdAbstractTool::keyUp(wxKeyEvent& event)
+void wxhdAbstractTool::keyUp(wxhdKeyEvent& event)
 {
 }
 
