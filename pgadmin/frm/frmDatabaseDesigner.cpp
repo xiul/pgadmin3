@@ -246,6 +246,7 @@ void frmDatabaseDesigner::OnAddColumn(wxCommandEvent& event)
 void frmDatabaseDesigner::OnNewModel(wxCommandEvent& event)
 {
 	design->eraseModel();
+	sqltext->Clear();
 }
 
 

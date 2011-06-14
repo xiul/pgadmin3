@@ -236,8 +236,6 @@ void ddRelationshipFigure::createMenu(wxMenu &mnu)
 	mnu.AppendSeparator();
 	item = mnu.AppendCheckItem(MNU_1MRELATIONSHIP, _("1:M"));
 	item->Check(fkOneToMany);
-	item = mnu.AppendCheckItem(MNU_11RELATIONSHIP, _("1:1"));
-	item->Check(!fkOneToMany);
 	mnu.AppendSeparator();
 	mnu.Append(MNU_FKCONSTRAINTNAME, _("Foreign Key Constraint Name"));
 	
@@ -424,7 +422,6 @@ void ddRelationshipFigure::OnGenericPopupClick(wxCommandEvent& event, wxhdDrawin
 			break;
 
 		case MNU_1MRELATIONSHIP:
-		case MNU_11RELATIONSHIP:
 			fkOneToMany=!fkOneToMany;
 			break;
 		case MNU_DELETERELATIONSHIP:
@@ -653,11 +650,3 @@ wxString ddRelationshipFigure::generateSQL()
 	}
 	return tmp;
 }
-
-/*
-	 = 600,
-	,
-	,
-	,
-	
-	*/
