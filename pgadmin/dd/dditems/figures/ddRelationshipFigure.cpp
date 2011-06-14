@@ -223,11 +223,28 @@ void ddRelationshipFigure::createMenu(wxMenu &mnu)
 {
     wxMenu *submenu;
 	wxMenuItem *item;
-    
-	item = mnu.AppendCheckItem(MNU_FKEYFROMPKEY, _("Foreign Key from Primary Key"));
+	wxString tmp;
+	
+
+	submenu = new wxMenu(_("Select one")); 
+	
+	tmp = _("Foreign Key From");
+	mnu.AppendSubMenu(submenu,tmp);
+	item = submenu->AppendCheckItem(MNU_FKEYFROMPKEY, _("Primary Key"));
 	item->Check(fkFromPk);
-	item = mnu.AppendCheckItem(MNU_FKEYFROMUKEY, _("Foreign Key from Unique Key"));
-	item->Check(!fkFromPk);
+	
+	if(getStartFigure())
+	{
+		ddTableFigure *startTable = (ddTableFigure*) getStartFigure();
+		int i,last = startTable->getUkConstraintsNames().Count();
+		int eventID;  //Hack to allow multiple submenu items for select uk as fk origin
+		for(i=0;i<last;i++)
+		{
+			eventID =  MNU_FKEYFROMUKEYBASE + i;
+			item = submenu->AppendCheckItem(eventID, startTable->getUkConstraintsNames()[i] );
+			item->Check(!fkFromPk && ukIndex==i);
+		}
+	}
 	mnu.AppendSeparator();
 	item = mnu.AppendCheckItem(MNU_MANDATORYRELATIONSHIP, _("Mandatory relationship kind"));
 	item->Check(fkMandatory);
@@ -244,7 +261,7 @@ void ddRelationshipFigure::createMenu(wxMenu &mnu)
 	item->Check(matchSimple);
 	item = submenu->AppendCheckItem(MNU_FKMATCHTYPEFULL, _("Type Full"));
 	item->Check(!matchSimple);
-	wxString tmp = _("Match Type ");
+	tmp = _("Match Type ");
 	if(matchSimple)
 		tmp += _("[ Simple ]");
 	else
@@ -313,23 +330,6 @@ void ddRelationshipFigure::OnGenericPopupClick(wxCommandEvent& event, wxhdDrawin
 
 	switch(event.GetId())
 	{
-		case MNU_FKEYFROMPKEY:
-			fkFromPk = true;
-			updateForeignKey();
-			break;
-		case MNU_FKEYFROMUKEY:
-			fkFromPk = false;
-			startTable = (ddTableFigure*) getStartFigure();
-			if(startTable)
-				ukIndex = wxGetSingleChoiceIndex(wxT("Select Unique Key to usea as foreign Key Source"),wxT("Select Unique Key to add Column:"),startTable->getUkConstraintsNames(),view);
-			else
-				wxMessageBox(wxT("Error trying to get start table of foreign key connection"), wxT("Error trying to get start table of foreign key connection"),wxICON_ERROR, (wxScrolledWindow*)view);	
-			if(ukIndex == -1)
-			{
-				fkFromPk = true;
-			}
-			updateForeignKey();
-			break;
 		case MNU_MANDATORYRELATIONSHIP:
 			fkMandatory=!fkMandatory;
 			if(fkMandatory)
@@ -442,6 +442,19 @@ void ddRelationshipFigure::OnGenericPopupClick(wxCommandEvent& event, wxhdDrawin
 					if(r)
 						delete r;
 				}
+			}
+			break;
+		case MNU_FKEYFROMPKEY:
+			fkFromPk = true;
+			updateForeignKey();
+			break;
+		default:
+			answer = event.GetId();
+			if( answer >= MNU_FKEYFROMUKEYBASE)  //Hack to allow multiple selection of Uk in submenu
+			{
+				fkFromPk = false;
+				ukIndex = answer - MNU_FKEYFROMUKEYBASE;
+				updateForeignKey();
 			}
 			break;
 	}
