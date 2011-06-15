@@ -57,6 +57,11 @@ ddRelationshipFigure::~ddRelationshipFigure()
 	chm.clear();
 }
 
+wxString ddRelationshipFigure::getConstraintName()
+{
+	return constraintName;
+}
+
 //This function avoid a bug with recursive indentifying relationships when
 //a column is removed from pk or delete.
 void ddRelationshipFigure::prepareFkForDelete(ddColumnFigure *column)
@@ -110,9 +115,9 @@ void ddRelationshipFigure::updateForeignKey()
 		//Update all column with auto FK naming with different shortname
 		for (it = chm.begin(); it != chm.end(); ++it)
 		{
+			fkColumnRelItem = it->second;
 			if(fkColumnRelItem->original!=NULL)  //original column wasn't mark for delete.
 			{
-				fkColumnRelItem = it->second;
 				if(!fkColumnRelItem->original->getOwnerTable()->getShortTableName().IsSameAs(fkColumnRelItem->originalShortName,false))
 				{
 					fkColumnRelItem->syncAutoFkName();

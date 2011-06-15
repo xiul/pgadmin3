@@ -72,6 +72,7 @@ public:
 	void disconnectStart();
 	void disconnectEnd();
 	wxString generateSQL();
+	wxString getConstraintName();
 protected:
 
 private:
