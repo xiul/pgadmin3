@@ -290,6 +290,7 @@ void ddTableFigure::draw(wxBufferedDC& context, wxhdDrawingView *view)
 	if(scrollbar && figureHandles->existsObject(scrollbar))
 		scrollbar->draw(context,view);
 
+	//Use this in a future
 	//Hack to show message to select fk destination table
 	if(selectingFkDestination)
 	{
