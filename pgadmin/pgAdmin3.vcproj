@@ -3923,10 +3923,6 @@
 							>
 						</File>
 						<File
-							RelativePath=".\include\dd\dditems\handles\ddRemoveColButtonHandle.h"
-							>
-						</File>
-						<File
 							RelativePath=".\include\dd\dditems\handles\ddRemoveTableButtonHandle.h"
 							>
 						</File>
@@ -3952,10 +3948,6 @@
 						</File>
 						<File
 							RelativePath=".\include\dd\dditems\locators\ddMinMaxTableLocator.h"
-							>
-						</File>
-						<File
-							RelativePath=".\include\dd\dditems\locators\ddRemoveColLocator.h"
 							>
 						</File>
 						<File
@@ -5760,10 +5752,6 @@
 						>
 					</File>
 					<File
-						RelativePath=".\dd\dditems\handles\ddRemoveColButtonHandle.cpp"
-						>
-					</File>
-					<File
 						RelativePath=".\dd\dditems\handles\ddRemoveTableButtonHandle.cpp"
 						>
 					</File>
@@ -5789,10 +5777,6 @@
 					</File>
 					<File
 						RelativePath=".\dd\dditems\locators\ddMinMaxTableLocator.cpp"
-						>
-					</File>
-					<File
-						RelativePath=".\dd\dditems\locators\ddRemoveColLocator.cpp"
 						>
 					</File>
 					<File

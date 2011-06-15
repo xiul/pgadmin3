@@ -26,6 +26,7 @@ wxhdLineConnection()
 {
 	constraintName = wxEmptyString;
 	setKindId(DDRELATIONSHIPFIGURE);
+	firstTimeConnectEnd = true;
 	fkFromPk = true;
 	fkMandatory = true;
 	fkOneToMany = true;
@@ -482,8 +483,15 @@ bool ddRelationshipFigure::getMandatory()
 void ddRelationshipFigure::connectEnd(wxhdIConnector *end)
 {
 	wxhdLineConnection::connectEnd(end);
-	if(getEndFigure() && getStartFigure())
+	if(getEndFigure() && getStartFigure() &&!firstTimeConnectEnd)
 		updateForeignKey();
+	
+	if( !firstTimeConnectEnd )
+	{
+		ddTableFigure *startTable = (ddTableFigure*) getStartFigure();
+		startTable->setSelectFkDestMode(false);
+	}
+	firstTimeConnectEnd = false;
 }
 
 void ddRelationshipFigure::connectStart(wxhdIConnector *start)
@@ -491,6 +499,11 @@ void ddRelationshipFigure::connectStart(wxhdIConnector *start)
 	wxhdLineConnection::connectStart(start);
 	if(getEndFigure() && getStartFigure())
 		updateForeignKey();
+	else if(getStartFigure()) //only first figure is set
+	{
+		ddTableFigure *startTable = (ddTableFigure*) getStartFigure();
+		startTable->setSelectFkDestMode(true);
+	}
 }
 
 void ddRelationshipFigure::disconnectStart()

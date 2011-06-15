@@ -31,7 +31,7 @@ wxhdPoint& ddAddColLocator::locate(wxhdIFigure *owner)
 	if(owner)
 	{
 		ddTableFigure *table = (ddTableFigure*) owner;
-		locatePoint.x=table->getTitleRect().GetBottomRight().x-30;
+		locatePoint.x=table->getTitleRect().GetBottomRight().x-20;
 		locatePoint.y=table->getTitleRect().GetBottomRight().y-9;
 		return locatePoint;
 	}

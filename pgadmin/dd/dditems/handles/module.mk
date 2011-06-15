@@ -13,7 +13,6 @@ pgadmin3_SOURCES += \
 	$(srcdir)/dd/dditems/handles/ddAddColButtonHandle.cpp \
 	$(srcdir)/dd/dditems/handles/ddAddFkButtonHandle.cpp \
 	$(srcdir)/dd/dditems/handles/ddMinMaxTableButtonHandle.cpp \
-	$(srcdir)/dd/dditems/handles/ddRemoveColButtonHandle.cpp \
 	$(srcdir)/dd/dditems/handles/ddRemoveTableButtonHandle.cpp \
 	$(srcdir)/dd/dditems/handles/ddScrollBarHandle.cpp \
 	$(srcdir)/dd/dditems/handles/ddSouthTableSizeHandle.cpp

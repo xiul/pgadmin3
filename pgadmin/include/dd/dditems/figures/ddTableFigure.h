@@ -36,9 +36,8 @@ public:
 	virtual void drawSelected(wxBufferedDC& context, wxhdDrawingView *view);
 	virtual void basicMoveBy(int x, int y);
 	
-	//delete hack columns
-	bool deleteColumnActivated();
-	void toggleColumnDeleteMode(bool disable=false);
+	//show messages to set fk destination
+	void setSelectFkDestMode(bool value);
 
 	//delete hack tables
 	void processDeleteAlert(wxhdDrawingView *view);
@@ -96,8 +95,7 @@ private:
 	ddTextTableItemFigure *tableTitle;
 
 	//helper variables
-	bool fromSelToNOSel;
-	bool deleteColumnMode;
+	bool selectingFkDestination;
 	int internalPadding, externalPadding;
 	bool calcScrolled;
 	

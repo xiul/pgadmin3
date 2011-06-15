@@ -40,36 +40,6 @@ ddColumnTextTool::~ddColumnTextTool()
 
 void ddColumnTextTool::mouseDown(wxhdMouseEvent& event)
 {	
-	//Hack to graphically delete columns
-	if(event.LeftDown())
-	{
-		if(colTextFigure && colTextFigure->getOwnerColumn() && colTextFigure->getOwnerColumn()->getOwnerTable()->deleteColumnActivated())
-		{
-			if(colTextFigure->getOwnerColumn()->isForeignKey())
-			{
-				wxMessageBox(wxT("You can't delete column: ")+colTextFigure->getText(true)+ wxT(" because is a foreign key, instead just delete relationship"),wxT("Foreign key information"),wxICON_EXCLAMATION, event.getView());
-			}
-			else
-			{
-				ddTableFigure *table = colTextFigure->getOwnerColumn()->getOwnerTable();
-				if(getDrawingEditor()->view()->isFigureSelected(table))
-				{
-					int answer = wxMessageBox(wxT("Delete column: ") + colTextFigure->getText(true) + wxT("?"), wxT("Confirm"),wxYES_NO, event.getView());
-					if (answer == wxYES)
-					{
-						table->removeColumn(colTextFigure->getOwnerColumn());		
-						colTextFigure = NULL;
-					}
-				}
-				table->toggleColumnDeleteMode();
-			}
-			return;
-		}
-
-	}
-	if(colTextFigure && colTextFigure->getOwnerColumn() &&  colTextFigure->getOwnerColumn()->getOwnerTable()) //if click on any other place disable column delete
-		colTextFigure->getOwnerColumn()->getOwnerTable()->toggleColumnDeleteMode(true);
-
 	wxhdSimpleTextTool::mouseDown(event);
 }
 

@@ -13,7 +13,6 @@ pgadmin3_SOURCES += \
 	$(srcdir)/dd/dditems/locators/ddAddColLocator.cpp \
 	$(srcdir)/dd/dditems/locators/ddAddFkLocator.cpp \
 	$(srcdir)/dd/dditems/locators/ddMinMaxTableLocator.cpp \
-	$(srcdir)/dd/dditems/locators/ddRemoveColLocator.cpp \
 	$(srcdir)/dd/dditems/locators/ddRemoveTableLocator.cpp \
 	$(srcdir)/dd/dditems/locators/ddScrollBarTableLocator.cpp \
 	$(srcdir)/dd/dditems/locators/ddTableBottomLocator.cpp

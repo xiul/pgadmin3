@@ -25,8 +25,6 @@
 #include "dd/dditems/utilities/ddDataType.h"
 #include "dd/dditems/handles/ddAddColButtonHandle.h"
 #include "dd/dditems/locators/ddAddColLocator.h"
-#include "dd/dditems/handles/ddRemoveColButtonHandle.h"
-#include "dd/dditems/locators/ddRemoveColLocator.h"
 #include "dd/dditems/handles/ddAddFkButtonHandle.h"
 #include "dd/dditems/locators/ddAddFkLocator.h"
 #include "dd/dditems/handles/ddRemoveTableButtonHandle.h"
@@ -65,7 +63,7 @@ wxhdCompositeFigure()
 	setKindId(DDTABLEFIGURE);
 	internalPadding = 2;
 	externalPadding = 4;
-	deleteColumnMode=false;
+	selectingFkDestination=false;
 
 	//Set table size, width and position
 	rectangleFigure = new wxhdRectangleFigure();
@@ -86,8 +84,6 @@ wxhdCompositeFigure()
 	wxBitmap image=wxBitmap(ddAddColumn_xpm);
 	wxSize valueSize=wxSize(8,8);
 	figureHandles->addItem(new ddAddColButtonHandle((wxhdIFigure *)this,(wxhdILocator *)new ddAddColLocator(), image, valueSize));
-	image=wxBitmap(ddRemoveColumn_xpm);
-	figureHandles->addItem(new ddRemoveColButtonHandle((wxhdIFigure *)this,(wxhdILocator *)new ddRemoveColLocator(), image,valueSize));
 	image=wxBitmap(ddAddForeignKey_xpm);
 	figureHandles->addItem(new ddAddFkButtonHandle((wxhdIFigure *)this,(wxhdILocator *)new ddAddFkLocator(), image,valueSize));
 	image=wxBitmap(ddRemoveTable_xpm);
@@ -101,8 +97,6 @@ wxhdCompositeFigure()
 	valueSize=wxSize(10,colsRect.GetSize().GetHeight());
 	scrollbar=new ddScrollBarHandle(this,(wxhdILocator *)new ddScrollBarTableLocator(),valueSize);
 
-	fromSelToNOSel=false;
-	
 	//Intialize columns window (min is always 1 in both, with or without cols & indxs)
 	colsRowsSize = 0;
 	colsWindow = 0;
@@ -243,13 +237,6 @@ void ddTableFigure::draw(wxBufferedDC& context, wxhdDrawingView *view)
 	context.SetPen(defaultPen);
 	context.SetBrush(defaultBrush);
 
-	//Hack to disable delete column mode when the figure pass from selected to no selected.
-	if(fromSelToNOSel)
-	{
-		toggleColumnDeleteMode(true);
-		fromSelToNOSel=false;
-	}
-	
 	calcRectsAreas();
 	context.SetPen(*wxBLACK_PEN);
 	context.SetBrush(wxBrush (wxColour(255, 255, 224),wxSOLID));
@@ -295,23 +282,38 @@ void ddTableFigure::draw(wxBufferedDC& context, wxhdDrawingView *view)
 	//Draw Indexes Title Line 1
 	context.DrawLine(titleIndxsRect.GetTopLeft(),titleIndxsRect.GetTopRight());
 	//Draw Indexes Title	
-	context.DrawText(wxT("Indexes"),titleIndxsRect.x+3,titleIndxsRect.y);
+	//disable until implemented in a future: context.DrawText(wxT("Indexes"),titleIndxsRect.x+3,titleIndxsRect.y);
 	//Draw Indexes Title Line 2
 	context.DrawLine(titleIndxsRect.GetBottomLeft(),titleIndxsRect.GetBottomRight());
 
 	//Draw scrollbar is needed
 	if(scrollbar && figureHandles->existsObject(scrollbar))
 		scrollbar->draw(context,view);
+
+	//Hack to show message to select fk destination table
+	if(selectingFkDestination)
+	{
+		context.SetTextForeground(*wxWHITE);
+		wxBrush old=context.GetBrush();
+		context.SetBrush(*wxBLACK_BRUSH);
+
+		int w,h,x,y;
+		context.GetTextExtent(wxString(wxT("Select Destination table of foreign key")),&w,&h);
+		x=fullSizeRect.GetTopLeft().x+(((fullSizeRect.GetTopRight().x-fullSizeRect.GetTopLeft().x)-w)/2);
+		y=fullSizeRect.GetTopLeft().y-h-2;
+		context.DrawRectangle(wxRect(x,y,w,h));
+		context.DrawText(wxString(wxT("Select Destination table of foreign key")),x,y);
+		
+		context.SetBrush(old);
+		context.SetTextForeground(*wxBLACK);
+		context.SetBackground(*wxWHITE);
+	}
 }
 
 void ddTableFigure::drawSelected(wxBufferedDC& context, wxhdDrawingView *view)
 {
 	context.SetPen(defaultSelectedPen);
 	context.SetBrush(defaultSelectedBrush);
-
-	//Hack to unselect any table
-	if(!fromSelToNOSel)
-		fromSelToNOSel=true;
 
 	calcRectsAreas();
 	context.SetPen(wxPen(wxColour(70, 130, 180),2,wxSOLID));
@@ -361,25 +363,6 @@ void ddTableFigure::drawSelected(wxBufferedDC& context, wxhdDrawingView *view)
 	context.DrawText(wxT("Indexes"),titleIndxsRect.x+3,titleIndxsRect.y);
 	//Draw Indexes Title Line 2
 	context.DrawLine(titleIndxsRect.GetBottomLeft(),titleIndxsRect.GetBottomRight());
-
-	if(deleteColumnMode)
-	{
-		context.SetTextForeground(*wxRED);
-		wxBrush old=context.GetBrush();
-		context.SetBrush(*wxGREEN_BRUSH);
-
-		int w,h,x,y;
-		context.GetTextExtent(wxString(wxT("Select Column to delete")),&w,&h);
-		x=fullSizeRect.GetTopLeft().x+(((fullSizeRect.GetTopRight().x-fullSizeRect.GetTopLeft().x)-w)/2);
-		y=fullSizeRect.GetTopLeft().y-h-2;
-		context.DrawRectangle(wxRect(x,y,w,h));
-		context.DrawText(wxString(wxT("Select Column to delete")),x,y);
-		
-		context.SetBrush(old);
-		context.SetTextForeground(*wxBLACK);
-		context.SetBackground(*wxWHITE);
-		
-	}
 }
 
 void ddTableFigure::setColsRowsWindow(int num)
@@ -423,19 +406,10 @@ int ddTableFigure::getColDefaultHeight(wxFont font)
 	}
 }
 
-//Delete Column Hack
-bool ddTableFigure::deleteColumnActivated()
+//Show select fk destination Message Hack
+void ddTableFigure::setSelectFkDestMode(bool value)
 {
-	return deleteColumnMode;
-}
-
-//Delete Column Hack
-void ddTableFigure::toggleColumnDeleteMode(bool disable)
-{
-	if(disable)
-		deleteColumnMode = false;
-	else
-		deleteColumnMode = !deleteColumnMode;
+		selectingFkDestination = value;
 }
 
 int ddTableFigure::getFiguresMaxWidth()

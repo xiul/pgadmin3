@@ -77,6 +77,7 @@ protected:
 private:
 	virtual void OnGenericPopupClick(wxCommandEvent& event, wxhdDrawingView *view);
 	wxArrayString strings;
+	bool firstTimeConnectEnd;
 	bool fkFromPk;
 	bool fkMandatory;
 	bool fkOneToMany;
