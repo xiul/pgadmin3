@@ -230,7 +230,6 @@ void ddRelationshipFigure::createMenu(wxMenu &mnu)
 	wxMenuItem *item;
 	wxString tmp;
 	
-
 	submenu = new wxMenu(_("Select one")); 
 	
 	tmp = _("Foreign Key From");
@@ -246,7 +245,9 @@ void ddRelationshipFigure::createMenu(wxMenu &mnu)
 		for(i=0;i<last;i++)
 		{
 			eventID =  MNU_FKEYFROMUKEYBASE + i;
-			item = submenu->AppendCheckItem(eventID, startTable->getUkConstraintsNames()[i] );
+			tmp = _("Unique Key: ");
+			tmp += startTable->getUkConstraintsNames()[i];
+			item = submenu->AppendCheckItem(eventID, tmp );
 			item->Check(!fkFromPk && ukIndex==i);
 		}
 	}
