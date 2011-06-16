@@ -24,8 +24,6 @@ public:
     ~wxhdPolyLineFigure();
 
 	virtual wxhdRect& getBasicDisplayBox();
-	virtual void basicDraw (wxBufferedDC& context, wxhdDrawingView *view);
-	virtual void basicDrawSelected(wxBufferedDC& context, wxhdDrawingView *view);
 	virtual int pointCount();
 	virtual wxhdPoint& getStartPoint();
 	virtual void setStartPoint(wxhdPoint point);
@@ -53,9 +51,13 @@ public:
 	virtual void setLinePen(wxPen pen);
 
 protected:
+	virtual void basicDraw (wxBufferedDC& context, wxhdDrawingView *view);
+	virtual void basicDrawSelected(wxBufferedDC& context, wxhdDrawingView *view);
+
 	virtual void updateHandlesIndexes();
 	wxhdArrayCollection *points;
 	wxhdPoint endPoint, startPoint, pointAtPos;
+
 private:
 	wxhdLineTerminal *startTerminal, *endTerminal;
 	bool handlesChanged;

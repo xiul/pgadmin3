@@ -24,8 +24,8 @@ public:
     ~wxhdAbstractFigure();
 	
 	virtual bool canConnect ();
-	virtual void draw(wxBufferedDC& context, wxhdDrawingView *view);
-	virtual void drawSelected(wxBufferedDC& context, wxhdDrawingView *view);
+	void draw(wxBufferedDC& context, wxhdDrawingView *view);
+	void drawSelected(wxBufferedDC& context, wxhdDrawingView *view);
 	virtual bool includes(wxhdIFigure *figure);
 	virtual wxhdITool* CreateFigureTool(wxhdDrawingEditor *editor, wxhdITool *defaultTool);
 	virtual void moveBy(int x, int y);
@@ -42,6 +42,7 @@ protected:
 	void invalidate();
 	wxColour fillColor, lineColor;
 	double lineWidth;
+	wxSize spaceForMovement;
 
 private:
 

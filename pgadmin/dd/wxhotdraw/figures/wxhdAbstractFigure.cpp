@@ -24,6 +24,8 @@
 
 wxhdAbstractFigure::wxhdAbstractFigure()
 {
+	spaceForMovement.SetHeight(0);
+	spaceForMovement.SetWidth(0);
 }
 
 wxhdAbstractFigure::~wxhdAbstractFigure()
@@ -42,6 +44,8 @@ bool wxhdAbstractFigure::includes(wxhdIFigure *figure)
 
 void wxhdAbstractFigure::draw(wxBufferedDC& context, wxhdDrawingView *view)
 {
+	//Hack to Allow creations of limits for figures movements, but what to do should be defined at derivated classes
+	spaceForMovement = view->canvasSize;
 	wxhdIFigure::draw(context,view);
 	basicDraw(context,view);
 }

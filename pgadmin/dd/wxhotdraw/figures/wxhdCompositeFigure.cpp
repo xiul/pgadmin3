@@ -175,7 +175,7 @@ bool wxhdCompositeFigure::includes(wxhdIFigure *figure)
 	return out;
 }
 
-void wxhdCompositeFigure::draw(wxBufferedDC& context, wxhdDrawingView *view)
+void wxhdCompositeFigure::basicDraw(wxBufferedDC& context, wxhdDrawingView *view)
 {
 	wxhdIteratorBase *iterator = figuresEnumerator();
 	wxhdIFigure *f=NULL;
@@ -187,7 +187,7 @@ void wxhdCompositeFigure::draw(wxBufferedDC& context, wxhdDrawingView *view)
 	delete iterator;
 }
 
-void wxhdCompositeFigure::drawSelected(wxBufferedDC& context, wxhdDrawingView *view)
+void wxhdCompositeFigure::basicDrawSelected(wxBufferedDC& context, wxhdDrawingView *view)
 {
 	wxhdIteratorBase *iterator = figuresEnumerator();
 	wxhdIFigure *f = NULL;

@@ -231,7 +231,7 @@ void ddTableFigure::recalculateColsPos()
 
 
 
-void ddTableFigure::draw(wxBufferedDC& context, wxhdDrawingView *view)
+void ddTableFigure::basicDraw(wxBufferedDC& context, wxhdDrawingView *view)
 {
 
 	context.SetPen(defaultPen);
@@ -311,7 +311,7 @@ void ddTableFigure::draw(wxBufferedDC& context, wxhdDrawingView *view)
 	}
 }
 
-void ddTableFigure::drawSelected(wxBufferedDC& context, wxhdDrawingView *view)
+void ddTableFigure::basicDrawSelected(wxBufferedDC& context, wxhdDrawingView *view)
 {
 	context.SetPen(defaultSelectedPen);
 	context.SetBrush(defaultSelectedBrush);
@@ -829,9 +829,17 @@ void ddTableFigure::basicMoveBy(int x, int y)
 {
 
 wxhdIFigure *f = (wxhdIFigure *) figureFigures->getItemAt(0);
-if((f->displayBox().x+x) > 0 && (f->displayBox().y+y) > 0)
-wxhdCompositeFigure::basicMoveBy(x,y);
+//Hack to avoid bug in if clause
+int width =  spaceForMovement.GetWidth();
+int height =  spaceForMovement.GetHeight();
+int bottom = f->displayBox().y + f->displayBox().height + y;
+int right = f->displayBox().x + f->displayBox().width + x;
+int left = f->displayBox().x+x;
+int top = f->displayBox().y+y;
 
+//limit movemnt of table figures to canvas space
+if( (left > 0) && (top > 0) && (right < width) && (bottom < height) )
+	wxhdCompositeFigure::basicMoveBy(x,y);
 }
 
 //Using some options from http://www.postgresql.org/docs/8.1/static/sql-createtable.html, but new options can be added in a future.

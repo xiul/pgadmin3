@@ -119,7 +119,7 @@ wxhdRect& ddColumnFigure::getBasicDisplayBox()
 	return basicDisplayBox;
 }
 
-void ddColumnFigure::draw(wxBufferedDC& context, wxhdDrawingView *view)
+void ddColumnFigure::basicDraw(wxBufferedDC& context, wxhdDrawingView *view)
 {
 	columnText->draw(context,view);
     if(leftImage)
@@ -128,7 +128,7 @@ void ddColumnFigure::draw(wxBufferedDC& context, wxhdDrawingView *view)
         centerImage->draw(context,view);
 }
 
-void ddColumnFigure::drawSelected(wxBufferedDC& context, wxhdDrawingView *view)
+void ddColumnFigure::basicDrawSelected(wxBufferedDC& context, wxhdDrawingView *view)
 {
 	columnText->drawSelected(context,view);
     if(leftImage)

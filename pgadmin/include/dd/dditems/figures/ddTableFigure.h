@@ -31,9 +31,7 @@ public:
 	void addColumn(ddColumnFigure *column);
 	void removeColumn(ddColumnFigure *column);
 	
-	//drawing
-	virtual void draw(wxBufferedDC& context, wxhdDrawingView *view);
-	virtual void drawSelected(wxBufferedDC& context, wxhdDrawingView *view);
+	//movement
 	virtual void basicMoveBy(int x, int y);
 	
 	//show messages to set fk destination
@@ -75,6 +73,9 @@ public:
 	void prepareForDeleteFkColumn(ddColumnFigure *column);
 
 protected:
+	//drawing
+	virtual void basicDraw(wxBufferedDC& context, wxhdDrawingView *view);
+	virtual void basicDrawSelected(wxBufferedDC& context, wxhdDrawingView *view);
 
 private:
 	//Main Rectangle Sizes

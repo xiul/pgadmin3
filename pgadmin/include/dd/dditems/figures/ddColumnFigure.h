@@ -30,8 +30,8 @@ public:
 	virtual void setOwnerTable(ddTableFigure *table);
 	virtual bool containsPoint(int x, int y);
 	virtual wxhdRect& getBasicDisplayBox();
-	virtual void draw(wxBufferedDC& context, wxhdDrawingView *view);
-	virtual void drawSelected(wxBufferedDC& context, wxhdDrawingView *view);
+	virtual void basicDraw(wxBufferedDC& context, wxhdDrawingView *view);
+	virtual void basicDrawSelected(wxBufferedDC& context, wxhdDrawingView *view);
 	virtual wxhdIFigure* findFigure(int x, int y);
 	virtual wxhdIFigure* getFigureAt(int pos);
 	virtual wxhdITool* CreateFigureTool(wxhdDrawingEditor *editor, wxhdITool *defaultTool);
