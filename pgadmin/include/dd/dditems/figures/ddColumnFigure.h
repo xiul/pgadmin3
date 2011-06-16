@@ -53,7 +53,7 @@ public:
 	void setDataType(ddDataType type);
 	wxString& getColumnName(bool datatype=false);
 	void setColumnName(wxString name);
-	bool isForeignKey();
+	bool isGeneratedForeignKey();
 	wxString generateSQL();
 	bool isFkNameGenerated();
 	void activateGenFkName();

@@ -49,7 +49,7 @@ void ddColumnKindIcon::createMenu(wxMenu &mnu)
     
 	item = mnu.AppendCheckItem(MNU_DDCTPKEY, _("Primary key"));
     item->Check(colType==pk);
-    item->Enable(!getOwnerColumn()->isForeignKey());
+    item->Enable(!getOwnerColumn()->isGeneratedForeignKey());
 	item = mnu.AppendCheckItem(MNU_DDCTUKEY, _("Unique key"));
     item->Check(colType==uk);
 }
@@ -72,7 +72,7 @@ void ddColumnKindIcon::changeIcon(ddColumnType type, wxhdDrawingView *view, bool
 	switch(type)
 	{
 		case pk:	
-				if(getOwnerColumn()->isForeignKey())
+				if(getOwnerColumn()->isGeneratedForeignKey())
 				{
 					icon = wxBitmap(ddprimaryforeignkey_xpm);
 				}
@@ -94,10 +94,7 @@ void ddColumnKindIcon::changeIcon(ddColumnType type, wxhdDrawingView *view, bool
 					}
 					colType=pk;
 				}
-//				if(!getOwnerColumn()->isForeignKey())
-//				{
-					getOwnerColumn()->getOwnerTable()->updateFkObservers();
-//				}
+				getOwnerColumn()->getOwnerTable()->updateFkObservers();
 				break;
 		case uk:
 				uniqueConstraintManager(ukCol,view,interaction);
@@ -124,11 +121,8 @@ void ddColumnKindIcon::changeIcon(ddColumnType type, wxhdDrawingView *view, bool
 	{
 		iconToDraw = NULL;
 		ukIndex=-1;
-/*		if(!getOwnerColumn()->isForeignKey())  //this is not fk column
-		{*/
-			//getOwnerColumn()->getOwnerTable()->prepareForDeleteFkColumn(getOwnerColumn());
-			getOwnerColumn()->getOwnerTable()->updateFkObservers();
-		//}
+		
+		getOwnerColumn()->getOwnerTable()->updateFkObservers();
 	}
 	getBasicDisplayBox().SetSize(wxSize(getWidth(),getHeight()));
 }

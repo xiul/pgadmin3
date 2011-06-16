@@ -51,7 +51,7 @@ void ddRelationshipItem::syncAutoFkName()
 {
 	originalStartColName = original->getColumnName(false);  //Because original name was probably changed, now I should update it.
 	originalShortName = original->getOwnerTable()->getShortTableName(); //Because original short name was probably changed, now I should update it.
-	if(fkColumn->isForeignKey() && fkColumn->isFkNameGenerated() ) 
+	if(fkColumn->isGeneratedForeignKey() && fkColumn->isFkNameGenerated() ) 
 	{
 		fkColumn->setColumnName(autoGenerateNameForFk());
 		ownerRel->updateConnection();

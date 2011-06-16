@@ -77,7 +77,7 @@ bool ddColumnTextTool::callDialog()
 	else
 	{
 		bool change = wxhdSimpleTextTool::callDialog();
-		if(  change && colTextFigure->getOwnerColumn()->isForeignKey()) //after a manual user column rename, deactivated automatic generation of fk name.
+		if(  change && colTextFigure->getOwnerColumn()->isGeneratedForeignKey()) //after a manual user column rename, deactivated automatic generation of fk name.
 			colTextFigure->getOwnerColumn()->deactivateGenFkName();
 		return change;
 	}

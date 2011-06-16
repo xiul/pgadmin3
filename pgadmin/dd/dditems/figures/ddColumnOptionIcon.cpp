@@ -44,10 +44,10 @@ void ddColumnOptionIcon::createMenu(wxMenu &mnu)
     
 	item = mnu.AppendCheckItem(MNU_COLNULL, _("NULL"));
 	item->Check(colOption==null);
-	item->Enable(!getOwnerColumn()->isForeignKey());
+	item->Enable(!getOwnerColumn()->isGeneratedForeignKey());
 	item = mnu.AppendCheckItem(MNU_COLNOTNULL, _("Not NULL"));
 	item->Check(colOption==notnull);
-	item->Enable(!getOwnerColumn()->isForeignKey());
+	item->Enable(!getOwnerColumn()->isGeneratedForeignKey());
 }
 
 void ddColumnOptionIcon::OnGenericPopupClick(wxCommandEvent& event, wxhdDrawingView *view)
@@ -64,7 +64,7 @@ void ddColumnOptionIcon::changeIcon(ddColumnOptionType type)
             icon = wxBitmap(ddnull_xpm);
             if(getOwnerColumn()->isPrimaryKey())
             {
-                if(getOwnerColumn()->isForeignKey())
+                if(getOwnerColumn()->isGeneratedForeignKey())
                     getOwnerColumn()->setColumnKind(fk);
                 else
                     getOwnerColumn()->setColumnKind(none);

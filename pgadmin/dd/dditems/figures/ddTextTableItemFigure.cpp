@@ -134,7 +134,7 @@ void ddTextTableItemFigure::OnGenericPopupClick(wxCommandEvent& event, wxhdDrawi
 		case MNU_RENAMECOLUMN:
 				nameDialog = new wxTextEntryDialog(view, wxT("New column name"), wxT("Rename Column"), getText());
 				nameDialog->ShowModal();
-				if(getOwnerColumn()->isForeignKey()) //after a manual user column rename, deactivated automatic generation of fk name.
+				if(getOwnerColumn()->isGeneratedForeignKey()) //after a manual user column rename, deactivated automatic generation of fk name.
 					getOwnerColumn()->deactivateGenFkName();
 				setText(nameDialog->GetValue());
 				delete nameDialog;
@@ -289,22 +289,22 @@ void ddTextTableItemFigure::createMenu(wxMenu &mnu)
     
     mnu.Append(MNU_DDADDCOLUMN, _("Add a column..."));
 	item = mnu.Append(MNU_DELCOLUMN, _("Delete the selected column..."));
-    if(getOwnerColumn()->isForeignKey())
+    if(getOwnerColumn()->isGeneratedForeignKey())
         item->Enable(false);
     mnu.Append(MNU_RENAMECOLUMN, _("Rename the selected column..."));
-	if(getOwnerColumn()->isForeignKey() && !getOwnerColumn()->isFkNameGenerated())
+	if(getOwnerColumn()->isGeneratedForeignKey() && !getOwnerColumn()->isFkNameGenerated())
 		mnu.Append(MNU_AUTONAMCOLUMN, _("Activate fk auto-naming..."));
     mnu.AppendSeparator();
 	item = mnu.AppendCheckItem(MNU_NOTNULL, _("Not NULL constraint"));
     if(getOwnerColumn()->isNotNull())
         item->Check(true);
-    if(getOwnerColumn()->isForeignKey())
+    if(getOwnerColumn()->isGeneratedForeignKey())
         item->Enable(false);
     mnu.AppendSeparator();
 	item = mnu.AppendCheckItem(MNU_PKEY, _("Primary Key"));
     if(getOwnerColumn()->isPrimaryKey())
         item->Check(true);
-    if(getOwnerColumn()->isForeignKey())	
+    if(getOwnerColumn()->isGeneratedForeignKey())	
         item->Enable(false);
 	item = mnu.AppendCheckItem(MNU_UKEY, _("Unique Key"));
     if(getOwnerColumn()->isUniqueKey())
@@ -312,7 +312,7 @@ void ddTextTableItemFigure::createMenu(wxMenu &mnu)
     mnu.AppendSeparator();
     submenu = new wxMenu(_("Column datatype")); 
 	item = mnu.AppendSubMenu(submenu, _("Column datatype"));
-    if(getOwnerColumn()->isForeignKey())	
+    if(getOwnerColumn()->isGeneratedForeignKey())	
         item->Enable(false);
 	item = submenu->AppendCheckItem(MNU_TYPESERIAL, _("serial"));
     item->Check(columnType==dt_bigint);
@@ -458,7 +458,7 @@ int ddTextTableItemFigure::getTextHeight()
 
 ddDataType ddTextTableItemFigure::getDataType()
 {
-	if(!getOwnerColumn()->isForeignKey())
+	if(!getOwnerColumn()->isGeneratedForeignKey())
 		return columnType;
 	else
 	{
@@ -475,7 +475,7 @@ void ddTextTableItemFigure::setDataType(ddDataType type)
 
 int ddTextTableItemFigure::getPrecision()
 {
-	if(getOwnerColumn()->isForeignKey())
+	if(getOwnerColumn()->isGeneratedForeignKey())
 	{
 		precision = getOwnerColumn()->getFkSource()->original->getPrecision();
 		return precision;
@@ -488,7 +488,7 @@ int ddTextTableItemFigure::getPrecision()
 
 void ddTextTableItemFigure::setPrecision(int value)
 {
-	if(!getOwnerColumn()->isForeignKey())
+	if(!getOwnerColumn()->isGeneratedForeignKey())
 	{
 		precision = value;
 		ownerColumn->getOwnerTable()->updateSizeOfObservers();
@@ -497,7 +497,7 @@ void ddTextTableItemFigure::setPrecision(int value)
 
 void ddTextTableItemFigure::setScale(int value)
 {
-	if(!getOwnerColumn()->isForeignKey())
+	if(!getOwnerColumn()->isGeneratedForeignKey())
 	{
 		scale = value;
 		ownerColumn->getOwnerTable()->updateSizeOfObservers();
@@ -506,7 +506,7 @@ void ddTextTableItemFigure::setScale(int value)
 
 int ddTextTableItemFigure::getScale()
 {
-	if(getOwnerColumn()->isForeignKey())
+	if(getOwnerColumn()->isGeneratedForeignKey())
 	{
 		scale = getOwnerColumn()->getFkSource()->original->getScale();
 		return scale;
