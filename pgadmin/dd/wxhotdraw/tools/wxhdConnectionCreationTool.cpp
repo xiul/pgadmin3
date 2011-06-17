@@ -97,7 +97,7 @@ void wxhdConnectionCreationTool::mouseUp(wxhdMouseEvent& event)
 			}
 		}
 
-		if(toolConnection->getEndConnector()==NULL && numClicks > 1) //Delete connection only if a second click a connection figures isn't found
+		if((toolConnection->getEndConnector()==NULL && numClicks > 1) || (toolConnection->getEndConnector()==NULL && dragged))  //Delete connection only if a second click a connection figures isn't found
 		{
 			toolConnection->disconnectStart();
 			toolConnection->disconnectEnd();
