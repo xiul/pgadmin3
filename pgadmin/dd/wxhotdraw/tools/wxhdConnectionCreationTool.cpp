@@ -83,17 +83,26 @@ void wxhdConnectionCreationTool::mouseUp(wxhdMouseEvent& event)
 {
 	if(event.LeftUp())
 	{
+		 //Hack to allow one click and drag creation of connections
 		if(handle)
 		{
-			handle->invokeEnd(event,getDrawingEditor()->view());
+		if(!dragged && numClicks==1)   //mouse haven't be dragged and is first click of mouse at this tool
+		{ 
+				toolConnection->setEndPoint(event.GetPosition());
+				toolConnection->updateConnection();
+			}
+			else
+			{
+				handle->invokeEnd(event,getDrawingEditor()->view());
+			}
 		}
 
-		if(toolConnection->getEndConnector()==NULL)
+		if(toolConnection->getEndConnector()==NULL && numClicks > 1) //Delete connection only if a second click a connection figures isn't found
 		{
 			toolConnection->disconnectStart();
 			toolConnection->disconnectEnd();
 			getDrawingEditor()->view()->remove(toolConnection);
-			getDrawingEditor()->view()->clearSelection();
+			getDrawingEditor()->view()->clearSelection(); 
 		}
 	}
 	if(dragged || numClicks>1)   //if drag to select a figure or is second or higher click (to select end figure) then this tool ends.
