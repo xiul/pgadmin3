@@ -48,12 +48,15 @@ public:
 	void setColumnKind(ddColumnType type, wxhdDrawingView *view=NULL);
 	void setColumnOption(ddColumnOptionType type);
 	ddColumnType getColumnKind();
+	void checkConsistencyOfKind();
 	ddColumnOptionType getColumnOption();
 	ddDataType getDataType();
 	void setDataType(ddDataType type);
 	wxString& getColumnName(bool datatype=false);
 	void setColumnName(wxString name);
+	bool isForeignKey();
 	bool isGeneratedForeignKey();
+	bool isUserCreatedForeignKey();
 	wxString generateSQL();
 	bool isFkNameGenerated();
 	void activateGenFkName();
@@ -61,13 +64,14 @@ public:
 	ddRelationshipItem* getFkSource();
 	int getPrecision();
 	int getScale();
+	void setAsUserCreatedFk(bool value);
 
 protected:
 	ddColumnKindIcon *leftImage;
 	ddColumnOptionIcon *centerImage;
 	ddTextTableItemFigure *columnText;
 	ddTableFigure *ownerTable;
-	bool generateFkName;
+	bool generateFkName, usedAsFkDest;
 
 private:
 	ddRelationshipItem *fkSource;

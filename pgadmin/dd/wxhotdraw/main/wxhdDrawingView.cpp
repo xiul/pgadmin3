@@ -472,12 +472,18 @@ wxBitmapButton* wxhdDrawingView::getCancelTxt()
 //Hack to allow use (events) of wxmenu inside a tool like simpletexttool
 void wxhdDrawingView::OnGenericPopupClick(wxCommandEvent& event)
 {
-	if(simpleTextFigure)
-		simpleTextFigure->OnGenericPopupClick(event,this);
+
+	if(canvasMenu)
+		canvasMenu->OnGenericPopupClick(event,this);
 	else if(menuFigure)
 		menuFigure->OnGenericPopupClick(event,this);
-	else if(canvasMenu)
-		canvasMenu->OnGenericPopupClick(event,this);
+	else if(simpleTextFigure)
+		simpleTextFigure->OnGenericPopupClick(event,this);
+	
+	simpleTextFigure = NULL;
+	menuFigure = NULL;
+	canvasMenu = NULL;
+	
 	event.Skip();
 }
 

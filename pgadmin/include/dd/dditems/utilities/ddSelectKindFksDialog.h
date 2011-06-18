@@ -9,31 +9,42 @@
 //
 //////////////////////////////////////////////////////////////////////////
 
-#ifndef DDPRECISIONSCALEDIALOG_H
-#define DDPRECISIONSCALEDIALOG_H
+#ifndef DDSELECTKINDFKSDIALOG_H
+#define DDSELECTKINDFKSDIALOG_H
 
 #include <wx/statline.h>
+#include "dd/dditems/figures/ddRelationshipFigure.h"
 
 enum {
-    DDPRECISIONSCALEDIALOG=10000,
-	DDVALUE1 = 10001,
-    DDVALUE2 = 10002
+    DDSELECTKINDFKSDIALOG = 10000,
+	DDSELECTKINDFK = 10001,
+    DDCHOICESELECTBASE = 30000
 };
 
-class ddPrecisionScaleDialog : public wxDialog
+class ddSelectFkKindLine : public wxhdObject
 {
-	DECLARE_CLASS( ddPrecisionScaleDialog )
+public:
+	wxStaticText *sourceCtrl;
+	wxChoice *destinationCtrl;
+
+	ddSelectFkKindLine(wxWindow* parent, wxString sourceColumn, wxArrayString possibleTargets, wxWindowID eventId);
+	ddSelectFkKindLine();
+	~ddSelectFkKindLine();
+};
+
+
+WX_DECLARE_STRING_HASH_MAP( ddSelectFkKindLine*, choicesControlsHashMap );
+
+class ddSelectKindFksDialog : public wxDialog
+{
+	DECLARE_CLASS( ddSelectKindFksDialog )
     DECLARE_EVENT_TABLE()
 public:
-	ddPrecisionScaleDialog();
-	~ddPrecisionScaleDialog();
-	ddPrecisionScaleDialog(	wxWindow* parent,
-							wxWindowID id = DDPRECISIONSCALEDIALOG,
-							const wxString& caption = wxT("Two Numeric Values Input Dialog"),
-							const wxString& captionLabel1 = wxEmptyString,
-							const int& defaultValue1 = 0,
-							const wxString& captionLabel2 = wxEmptyString,
-							const int& defaultValue2 = 0,
+	ddSelectKindFksDialog();
+	~ddSelectKindFksDialog();
+	ddSelectKindFksDialog(	wxWindow* parent,
+							ddRelationshipFigure *relation,					
+							wxWindowID id = DDSELECTKINDFKSDIALOG,
 							const wxPoint& pos = wxDefaultPosition,
 							const wxSize& size = wxDefaultSize,
 							long style = wxCAPTION
@@ -44,7 +55,6 @@ public:
 	// Creation
 	bool Create(	wxWindow* parent,
 					wxWindowID id,
-					const wxString& caption,
 					const wxPoint& pos,
 					const wxSize& size,
 					long style);
@@ -54,34 +64,26 @@ public:
     void CreateControls();
 
 	// Sets the validators for the dialog controls
-    //void SetDialogValidators();
 	bool TransferDataToWindow();
 	bool TransferDataFromWindow();
 
 	// Sets the help text for the dialog controls
     void SetDialogHelp();
 
-	// Value1 accessors
-    void SetValue1(int value) { m_value1 = value; }
-    int GetValue1() { return m_value1; }
-
-	// Value1 accessors
-    void SetValue2(int value) { m_value2 = value; }
-    int GetValue2() { return m_value2; }
-
 	//wxEVT_COMMAND_TEXT_ENTER event_handle for DDVALUE1
 	void OnEnterPressed( wxCommandEvent& event );
+	void OnOkButtonClicked( wxCommandEvent& event );
 
 
 protected:
 	    // Data members
-    int m_value1, m_value2;
-	wxString label1, label2;
+	ddRelationshipFigure *tablesRelation;
+
 		// Dialog controls
-	wxBoxSizer *topSizer, *nameGenBox, *boxSizer, *okCancelBox;
-	wxStaticText *value1Label, *value2Label;
-	wxSpinCtrl *value1Ctrl, *value2Ctrl;
-	wxButton *ok, *cancel;
+	choicesControlsHashMap choices;
+	wxBoxSizer *topSizer, *linesSizer, *okCancelBox;
+
+	wxButton *ok;
 	wxStaticLine *line;
 
 private:

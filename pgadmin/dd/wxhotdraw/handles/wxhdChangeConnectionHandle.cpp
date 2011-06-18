@@ -54,7 +54,7 @@ wxCursor wxhdChangeConnectionHandle::createCursor()
 void wxhdChangeConnectionHandle::invokeStart(wxhdMouseEvent& event, wxhdDrawingView *view)
 {
 	originalTarget = target();
-	disconnect();
+	disconnect(view);
 }
 
 void wxhdChangeConnectionHandle::invokeStep(wxhdMouseEvent& event, wxhdDrawingView *view)
@@ -80,8 +80,7 @@ void wxhdChangeConnectionHandle::invokeEnd(wxhdMouseEvent& event, wxhdDrawingVie
 		{
 			target=originalTarget;
 		}
-	wxhdPoint p = wxhdPoint(x,y);
-	connect(target);
+	connect(target, view);
 	connection->updateConnection();
 }
 

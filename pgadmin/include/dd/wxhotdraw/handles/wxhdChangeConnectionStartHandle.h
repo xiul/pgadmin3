@@ -22,8 +22,8 @@ public:
     ~wxhdChangeConnectionStartHandle();
 	virtual wxhdPoint& locate();
 	virtual wxhdIConnector* target();
-	virtual void disconnect();
-	virtual void connect(wxhdIConnector *connector);
+	virtual void disconnect(wxhdDrawingView *view=NULL);
+	virtual void connect(wxhdIConnector *connector, wxhdDrawingView *view=NULL);
 	virtual bool isConnectionPossible(wxhdIFigure *figure);
 	virtual void setPoint(wxhdPoint p);
 };

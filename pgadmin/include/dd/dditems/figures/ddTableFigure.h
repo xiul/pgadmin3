@@ -61,12 +61,15 @@ public:
 	wxString getShortTableName();
 	wxString generateSQL();
 	static wxString generateShortName(wxString longName);
+	wxArrayString getAllColumnsNames();
+	wxArrayString getAllFkSourceColsNames(bool pk, int ukIndex=-1);
+	ddColumnFigure *getColumnByName(wxString name);
 
 	//uk pk constraints
 	void setPkConstraintName(wxString name);
 	wxString getPkConstraintName();
 	wxArrayString& getUkConstraintsNames();
-	
+		
 	//fk related
 	void updateFkObservers();
 	void updateSizeOfObservers();
@@ -111,6 +114,5 @@ private:
 	//pk uk(s)
 	wxString pkName;
 	wxArrayString ukNames;
-
 };
 #endif

@@ -72,7 +72,7 @@ void ddColumnKindIcon::changeIcon(ddColumnType type, wxhdDrawingView *view, bool
 	switch(type)
 	{
 		case pk:	
-				if(getOwnerColumn()->isGeneratedForeignKey())
+				if(getOwnerColumn()->isForeignKey())
 				{
 					icon = wxBitmap(ddprimaryforeignkey_xpm);
 				}
@@ -102,8 +102,15 @@ void ddColumnKindIcon::changeIcon(ddColumnType type, wxhdDrawingView *view, bool
 				getOwnerColumn()->getOwnerTable()->updateFkObservers();					
 				break;
 		case fk:
-				icon = wxBitmap(ddforeignkey_xpm);
-				colType=fk;
+				if(colType==pk || colType==uk ) //only possible when using an existing pk or uk column as fk column destination
+				{ 
+					icon = wxBitmap(ddprimaryforeignkey_xpm);
+				}
+				else
+				{
+					icon = wxBitmap(ddforeignkey_xpm);
+					colType=fk;
+				}
 				break;
 		case pkuk:
 				break;
@@ -306,4 +313,26 @@ void ddColumnKindIcon::syncUkIndexes()
 		getOwnerColumn()->setUniqueConstraintIndex(-1);
 	}
 	delete iterator;
+}
+
+//Hack to synchronize changes made by use of an existing column as foreign key target
+void ddColumnKindIcon::checkConsistencyOfKind()
+{
+	if(!getOwnerColumn()->isForeignKey())
+	{
+		if(colType==pk)
+		{
+			icon = wxBitmap(ddprimarykey_xpm);
+			iconToDraw = &icon;
+		}
+		else if(colType==uk)
+		{
+			icon = wxBitmap(ddunique_xpm);
+			iconToDraw = &icon;
+		}
+		else if(colType==none)
+		{
+			iconToDraw = NULL;
+		}
+	}	
 }

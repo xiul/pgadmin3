@@ -46,6 +46,7 @@ public:
 	ddColumnFigure* getOwnerColumn();
 	virtual int getUniqueConstraintIndex();
 	virtual void setUniqueConstraintIndex(int i);
+	virtual void checkConsistencyOfKind();
 	
 
 protected:

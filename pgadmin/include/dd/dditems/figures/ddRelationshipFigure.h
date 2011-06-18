@@ -35,6 +35,7 @@ enum
 	MNU_FKONUPDATESETNULL,
 	MNU_FKONUPDATESETDEFAULT,
 	MNU_FKEYFROMPKEY,
+	MNU_FKEYCUSTOMMAPPING,
 	MNU_FKEYFROMUKEYBASE  //This constant should be always the last one to allow hack of multiple uk selection in submenu
 };
 
@@ -62,17 +63,21 @@ public:
 	void prepareFkForDelete(ddColumnFigure *column);
 	void updateForeignKey();
 	void removeForeignKeys();
+	void addExistingColumnFk(ddColumnFigure *startTablesourceCol, wxString destColumn);
 	bool getIdentifying();
 	bool getOneToMany();
 	bool getMandatory();
 	void setOptionAtForeignKeys(ddColumnOptionType type);
 	void setKindAtForeignKeys(ddColumnType type);
-	virtual void connectEnd(wxhdIConnector *end);
-	virtual void connectStart(wxhdIConnector *start);
-	void disconnectStart();
-	void disconnectEnd();
+	virtual void connectEnd(wxhdIConnector *end, wxhdDrawingView *view=NULL);
+	virtual void connectStart(wxhdIConnector *start, wxhdDrawingView *view=NULL);
+	void disconnectStart(wxhdDrawingView *view=NULL);
+	void disconnectEnd(wxhdDrawingView *view=NULL);
 	wxString generateSQL();
 	wxString getConstraintName();
+	ddTableFigure* getStartTable();
+	ddTableFigure* getEndTable();
+
 protected:
 
 private:

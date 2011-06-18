@@ -26,6 +26,7 @@ wxhdAttributeFigure::wxhdAttributeFigure()
 
 wxhdAttributeFigure::~wxhdAttributeFigure()
 {
+	//before delete all items inside to free memory
 	attributes.clear();	
 }
 wxhdAttribute& wxhdAttributeFigure::getAttribute(wxString name)

@@ -38,7 +38,7 @@ public:
 	virtual void splitSegment(int x, int y);
 	virtual void changed();
 
-	virtual void awxhdPoint (int x, int y);
+	virtual void addPoint (int x, int y);
 	virtual void clearPoints ();
 	virtual void insertPointAt (int index, int x, int y);
 	virtual void setPointAt (int index, int x, int y);

@@ -29,8 +29,8 @@ public:
 	virtual void invokeStep(wxhdMouseEvent& event, wxhdDrawingView *view);
 	virtual void invokeEnd(wxhdMouseEvent& event, wxhdDrawingView *view);
 	virtual wxhdIConnector* target()=0;
-	virtual void disconnect()=0;
-	virtual void connect(wxhdIConnector *connector)=0;
+	virtual void disconnect(wxhdDrawingView *view=NULL)=0;
+	virtual void connect(wxhdIConnector *connector, wxhdDrawingView *view=NULL)=0;
 	virtual void setPoint(wxhdPoint p)=0;
 	virtual bool isConnectionPossible(wxhdIFigure *figure)=0;
 	wxhdIFigure* findConnectableFigure(int x, int y, wxhdDrawing *drawing);

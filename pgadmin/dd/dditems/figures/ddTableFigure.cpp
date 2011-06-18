@@ -633,6 +633,67 @@ wxString ddTableFigure::getPkConstraintName()
 	return pkName;	
 }
 
+wxArrayString ddTableFigure::getAllColumnsNames()
+{
+	wxArrayString tmp;
+	ddColumnFigure *f;
+	tmp.Clear();
+	wxhdIteratorBase *iterator=figuresEnumerator();
+	iterator->Next(); //First figure is main rect
+	iterator->Next(); //Second figure is main title
+
+	while(iterator->HasNext()){
+		f = (ddColumnFigure *) iterator->Next();
+		tmp.Add(f->getColumnName(false));
+	}
+	delete iterator;
+	return tmp;
+}
+
+wxArrayString ddTableFigure::getAllFkSourceColsNames(bool pk, int ukIndex)
+{
+	wxArrayString tmp;
+	ddColumnFigure *f;
+	tmp.Clear();
+	wxhdIteratorBase *iterator=figuresEnumerator();
+	iterator->Next(); //First figure is main rect
+	iterator->Next(); //Second figure is main title
+
+	while(iterator->HasNext()){
+		f = (ddColumnFigure *) iterator->Next();
+		if(pk)
+		{
+			if(f->isPrimaryKey())
+				tmp.Add(f->getColumnName(false));
+		}
+		else
+		{
+			if(f->isUniqueKey(ukIndex))
+				tmp.Add(f->getColumnName(false));
+		}
+	}
+	delete iterator;
+	return tmp;
+}
+
+ddColumnFigure* ddTableFigure::getColumnByName(wxString name)
+{
+	ddColumnFigure *f;	
+	wxhdIteratorBase *iterator=figuresEnumerator();
+	iterator->Next(); //First figure is main rect
+	iterator->Next(); //Second figure is main title
+
+	while(iterator->HasNext()){
+		f = (ddColumnFigure *) iterator->Next();
+		if(f->getColumnName().IsSameAs(name))
+		{
+			return f;
+		}
+	}
+	delete iterator;
+	return NULL;
+}
+
 wxArrayString& ddTableFigure::getUkConstraintsNames()
 {
 	return ukNames;

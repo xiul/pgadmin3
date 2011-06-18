@@ -103,7 +103,7 @@ void wxhdPolyLineFigure::setStartPoint(wxhdPoint point)
 {
 	willChange();
 	if(points->count()==0)
-		awxhdPoint(point.x,point.y);
+		addPoint(point.x,point.y);
 	else
 	{
 		wxhdPoint *p = (wxhdPoint *) points->getItemAt(0);
@@ -125,7 +125,7 @@ void wxhdPolyLineFigure::setEndPoint(wxhdPoint point)
 {
 	willChange();
 	if(points->count() < 2)
-		awxhdPoint(point.x,point.y);
+		addPoint(point.x,point.y);
 	else
     {
 		wxhdPoint *p = (wxhdPoint *) points->getItemAt(points->count()-1);
@@ -160,7 +160,7 @@ wxhdCollection* wxhdPolyLineFigure::handlesEnumerator()
 	return handles;
 }
 
-void wxhdPolyLineFigure::awxhdPoint (int x, int y)
+void wxhdPolyLineFigure::addPoint (int x, int y)
 {
 	willChange();
 	points->addItem((wxhdObject *) new wxhdPoint(x,y) );

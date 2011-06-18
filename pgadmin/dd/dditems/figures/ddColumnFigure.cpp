@@ -28,7 +28,8 @@
 ddColumnFigure::ddColumnFigure(wxString& columnName, ddTableFigure *owner, ddRelationshipItem *sourceFk)
 {
 	fkSource=sourceFk;
-	activateGenFkName(); //by default fk name is generate by using ( alias | tableName) . ColumnName combination
+	usedAsFkDest = false;
+	deactivateGenFkName(); //initializae by default at not generate auto fk name
 	columnText = new ddTextTableItemFigure(columnName,dt_null,this);
 	leftImage = new ddColumnKindIcon(this);
 	centerImage = new ddColumnOptionIcon(this);
@@ -271,6 +272,11 @@ ddColumnType ddColumnFigure::getColumnKind()
 	return leftImage->getKind();
 }
 
+void ddColumnFigure::checkConsistencyOfKind()
+{
+	leftImage->checkConsistencyOfKind();
+}
+
 ddColumnOptionType ddColumnFigure::getColumnOption()
 {
 	return centerImage->getOption();
@@ -291,9 +297,26 @@ void ddColumnFigure::setColumnName(wxString name)
 	columnText->setText(name);
 }
 
+bool ddColumnFigure::isForeignKey()
+{
+	bool a = isUserCreatedForeignKey();
+	bool b = isGeneratedForeignKey();
+	return (a || b);
+}
+
 bool ddColumnFigure::isGeneratedForeignKey()
 {
 	return fkSource!=NULL;
+}
+
+bool ddColumnFigure::isUserCreatedForeignKey()
+{
+	return usedAsFkDest; 
+}
+
+void ddColumnFigure::setAsUserCreatedFk(bool value)
+{
+	usedAsFkDest = value;
 }
 
 bool ddColumnFigure::isFkNameGenerated()

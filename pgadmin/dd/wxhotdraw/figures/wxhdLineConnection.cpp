@@ -73,7 +73,7 @@ void wxhdLineConnection::setEndConnector(wxhdIConnector* connector)
 	endConnector = connector;
 }
 
-void wxhdLineConnection::connectStart(wxhdIConnector *start)
+void wxhdLineConnection::connectStart(wxhdIConnector *start, wxhdDrawingView *view)
 {
 	if(startConnector == start)
 	{
@@ -85,7 +85,7 @@ void wxhdLineConnection::connectStart(wxhdIConnector *start)
 	connectFigure(startConnector);
 }
 
-void wxhdLineConnection::connectEnd(wxhdIConnector *end)
+void wxhdLineConnection::connectEnd(wxhdIConnector *end, wxhdDrawingView *view)
 {
 	if(endConnector == end)
 	{
@@ -97,13 +97,13 @@ void wxhdLineConnection::connectEnd(wxhdIConnector *end)
 	connectFigure(endConnector);
 }
 
-void wxhdLineConnection::disconnectStart()
+void wxhdLineConnection::disconnectStart(wxhdDrawingView *view)
 {
 	disconnectFigure (startConnector);
 	startConnector = NULL;
 }
 
-void wxhdLineConnection::disconnectEnd()
+void wxhdLineConnection::disconnectEnd(wxhdDrawingView *view)
 {
 	disconnectFigure (endConnector);
 	endConnector = NULL;
@@ -212,7 +212,7 @@ void wxhdLineConnection::onFigureChanged(wxhdIFigure *figure)
 	updateConnection();
 }
 
-void wxhdLineConnection::awxhdPoint (int x, int y){
+void wxhdLineConnection::addPoint (int x, int y){
 	willChange();
 	points->addItem((wxhdObject *) new wxhdPoint(x,y) );
 	//Update handles

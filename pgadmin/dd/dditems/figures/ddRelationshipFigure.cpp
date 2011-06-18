@@ -20,6 +20,7 @@
 #include "dd/dditems/figures/ddRelationshipItem.h"
 #include "dd/wxhotdraw/main/wxhdDrawingView.h"
 #include "dd/dditems/utilities/ddDataType.h"
+#include "dd/dditems/utilities/ddSelectKindFksDialog.h"
 
 ddRelationshipFigure::ddRelationshipFigure():
 wxhdLineConnection()
@@ -101,6 +102,7 @@ void ddRelationshipFigure::updateForeignKey()
 			fkColumnRelItem = it->second;
 			if(fkColumnRelItem->original!=NULL)  //original column wasn't mark for delete.
 			{
+				//if autonaming is set on this item and column name at original source column of fk have been changed
 				if(!fkColumnRelItem->original->getColumnName(false).IsSameAs(fkColumnRelItem->originalStartColName,false))
 				{
 					chm[fkColumnRelItem->original->getColumnName(false)]=fkColumnRelItem;
@@ -158,8 +160,8 @@ void ddRelationshipFigure::updateForeignKey()
 						fkColumnRelItem = it->second;
 						if( fkColumnRelItem->original==NULL || !fkColumnRelItem->original->isPrimaryKey() || !startTable->includes(fkColumnRelItem->original) ) //order matters fkColumnRelItem->original==NULL short circuit evaluation should be first
 						{
-							ddTableFigure *tmpTable=fkColumnRelItem->destinationTable;
-							fkColumnRelItem->destinationTable->removeColumn(fkColumnRelItem->fkColumn);
+							if(fkColumnRelItem->isAutomaticallyGenerated()) //fk from existing column
+								fkColumnRelItem->destinationTable->removeColumn(fkColumnRelItem->fkColumn);
 							chm.erase(it);
 							delete fkColumnRelItem;
 							repeat=true;
@@ -196,8 +198,8 @@ void ddRelationshipFigure::updateForeignKey()
 						fkColumnRelItem = it->second;
 						if( fkColumnRelItem->original==NULL || !fkColumnRelItem->original->isUniqueKey(ukIndex) || !startTable->includes(fkColumnRelItem->original) ) //order matters fkColumnRelItem->original==NULL short circuit evaluation should be first
 						{
-							ddTableFigure *tmpTable=fkColumnRelItem->destinationTable;
-							fkColumnRelItem->destinationTable->removeColumn(fkColumnRelItem->fkColumn);
+							if(fkColumnRelItem->isAutomaticallyGenerated()) //fk from existing column
+								fkColumnRelItem->destinationTable->removeColumn(fkColumnRelItem->fkColumn);
 							chm.erase(it);
 							delete fkColumnRelItem;
 							repeat=true;
@@ -252,6 +254,7 @@ void ddRelationshipFigure::createMenu(wxMenu &mnu)
 		}
 	}
 	mnu.AppendSeparator();
+	//disable right now item = mnu.AppendCheckItem(MNU_FKEYCUSTOMMAPPING, _("Foreign Key Columns Custom Mapping"));
 	item = mnu.AppendCheckItem(MNU_MANDATORYRELATIONSHIP, _("Mandatory relationship kind"));
 	item->Check(fkMandatory);
 	item = mnu.AppendCheckItem(MNU_IDENTIFYINGRELATIONSHIP, _("Identifying relationship"));
@@ -332,6 +335,7 @@ void ddRelationshipFigure::OnGenericPopupClick(wxCommandEvent& event, wxhdDrawin
 	ddTableFigure *startTable = NULL;
 	ddTableFigure *endTable = NULL;
 	wxTextEntryDialog *nameDialog=NULL;
+	ddSelectKindFksDialog *mappingDialog=NULL;
 	wxString tmpString;
 
 	switch(event.GetId())
@@ -454,6 +458,14 @@ void ddRelationshipFigure::OnGenericPopupClick(wxCommandEvent& event, wxhdDrawin
 			fkFromPk = true;
 			updateForeignKey();
 			break;
+		case MNU_FKEYCUSTOMMAPPING:
+			//disable right now 
+			/*
+			mappingDialog = new ddSelectKindFksDialog(view,this);
+			mappingDialog->ShowModal();
+			delete mappingDialog;
+			*/
+			break;
 		default:
 			answer = event.GetId();
 			if( answer >= MNU_FKEYFROMUKEYBASE)  //Hack to allow multiple selection of Uk in submenu
@@ -485,33 +497,62 @@ bool ddRelationshipFigure::getMandatory()
 //	relationship is observed by several tables at same time, one is the
 //	owner (start connector table) others are just observers of that 
 //	relationship (end connectors table)
-void ddRelationshipFigure::connectEnd(wxhdIConnector *end)
+void ddRelationshipFigure::connectEnd(wxhdIConnector *end, wxhdDrawingView *view)
 {
+	ddSelectKindFksDialog *mappingDialog=NULL;
 	wxhdLineConnection::connectEnd(end);
-	if(getEndFigure() && getStartFigure())
+	view->Refresh();
+	if(getEndFigure() && getStartFigure()){
+		if(getStartTable()->getAllFkSourceColsNames(fkFromPk,ukIndex).Count()>0 && getEndTable()->getAllColumnsNames().Count()>0)		
+		{
+			mappingDialog = new ddSelectKindFksDialog(view,this);
+			mappingDialog->ShowModal();
+			delete mappingDialog;
+			if(view){
+				view->AcceptsFocus();
+				view->SetFocus();
+			}
+		}
 		updateForeignKey();
+	}
 }
 
-void ddRelationshipFigure::connectStart(wxhdIConnector *start)
+void ddRelationshipFigure::connectStart(wxhdIConnector *start, wxhdDrawingView *view)
 {
 	wxhdLineConnection::connectStart(start);
 	if(getEndFigure() && getStartFigure())
 		updateForeignKey();
 }
 
-void ddRelationshipFigure::disconnectStart()
+void ddRelationshipFigure::disconnectStart(wxhdDrawingView *view)
 {
 	disconnectedEndTable = (ddTableFigure*) getEndFigure();
 	removeForeignKeys();
 	wxhdLineConnection::disconnectStart();
 }
 
-void ddRelationshipFigure::disconnectEnd()
+void ddRelationshipFigure::disconnectEnd(wxhdDrawingView *view)
 {
 	disconnectedEndTable = (ddTableFigure*) getEndFigure();
 	wxhdLineConnection::disconnectEnd();
 	removeForeignKeys();
+}
 
+void ddRelationshipFigure::addExistingColumnFk(ddColumnFigure *startTablesourceCol, wxString destColumn)
+{
+	ddTableFigure *endTable = (ddTableFigure*) getEndFigure();
+	ddRelationshipItem *fkColumnRelItem;
+	ddColumnFigure *endTablesourceCol = endTable->getColumnByName(destColumn);
+	//Create a new relationship item but with an existing column for fk at destination table
+	if(endTablesourceCol)
+	{
+		//Mark it as Custom Fk (fk from existing column not an automatic generated)
+		endTablesourceCol->setAsUserCreatedFk(true);
+		
+		fkColumnRelItem = new ddRelationshipItem(this,startTablesourceCol,endTable, (fkMandatory?notnull:null), (fkIdentifying?pk:fk), endTablesourceCol);
+		chm[startTablesourceCol->getColumnName()]=fkColumnRelItem; //hashmap key will be original table name always
+		updateConnection();
+	}
 }
 
 void ddRelationshipFigure::removeForeignKeys()
@@ -530,9 +571,28 @@ void ddRelationshipFigure::removeForeignKeys()
 			{
 				wxString key = it->first;
 				fkColumnRelItem = it->second;
-				if(fkColumnRelItem->destinationTable->includes(fkColumnRelItem->fkColumn) )
+				if(fkColumnRelItem->destinationTable->includes(fkColumnRelItem->fkColumn))
 				{
-					fkColumnRelItem->destinationTable->removeColumn(fkColumnRelItem->fkColumn);
+					//Remove fk column only if that column is automatically generated
+					if(fkColumnRelItem->isAutomaticallyGenerated())
+					{
+						fkColumnRelItem->destinationTable->removeColumn(fkColumnRelItem->fkColumn);
+					} //is an existing column use as fk
+					else
+					{
+						//Mark as existing column not used as foreign key destination
+						fkColumnRelItem->fkColumn->setAsUserCreatedFk(false);
+						//a foreignkey column is only marked as fk when not is pk or uk, in other case is an uk with  isForeignKey function = true
+						ddColumnType typeExistingCol= fkColumnRelItem->fkColumn->getColumnKind();
+						if(typeExistingCol!=pk && typeExistingCol!=uk)
+						{
+							fkColumnRelItem->fkColumn->setColumnKind(none);
+						}
+						else
+						{
+							fkColumnRelItem->fkColumn->checkConsistencyOfKind();
+						}
+					}
 					chm.erase(it);
 					delete fkColumnRelItem;
 					repeat = true;
@@ -553,7 +613,8 @@ void ddRelationshipFigure::setOptionAtForeignKeys(ddColumnOptionType type)
 	{
 		wxString key = it->first;
 		item = it->second;
-		item->fkColumn->setColumnOption(type);
+		if(item->isAutomaticallyGenerated())
+			item->fkColumn->setColumnOption(type);
 	}
 }
 
@@ -668,4 +729,14 @@ wxString ddRelationshipFigure::generateSQL()
 
 	}
 	return tmp;
+}
+
+ddTableFigure* ddRelationshipFigure::getStartTable()
+{
+	return (ddTableFigure*) getStartFigure();
+}
+
+ddTableFigure* ddRelationshipFigure::getEndTable()
+{
+	return (ddTableFigure*) getEndFigure();
 }

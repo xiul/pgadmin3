@@ -37,14 +37,14 @@ wxhdIConnector* wxhdChangeConnectionStartHandle::target()
 	return connection->getStartConnector();
 }
 
-void wxhdChangeConnectionStartHandle::connect(wxhdIConnector *connector)
+void wxhdChangeConnectionStartHandle::connect(wxhdIConnector *connector, wxhdDrawingView *view)
 {
-	connection->connectStart(connector);
+	connection->connectStart(connector, view);
 }
 
-void wxhdChangeConnectionStartHandle::disconnect()
+void wxhdChangeConnectionStartHandle::disconnect(wxhdDrawingView *view)
 {
-	connection->disconnectStart();
+	connection->disconnectStart(view);
 }
 
 bool wxhdChangeConnectionStartHandle::isConnectionPossible(wxhdIFigure *figure)

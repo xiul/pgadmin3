@@ -3987,6 +3987,10 @@
 							>
 						</File>
 						<File
+							RelativePath=".\include\dd\dditems\utilities\ddSelectKindFksDialog.h"
+							>
+						</File>
+						<File
 							RelativePath=".\include\dd\dditems\utilities\ddTableNameDialog.h"
 							>
 						</File>
@@ -5809,6 +5813,10 @@
 					>
 					<File
 						RelativePath=".\dd\dditems\utilities\ddPrecisionScaleDialog.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\dd\dditems\utilities\ddSelectKindFksDialog.cpp"
 						>
 					</File>
 					<File
