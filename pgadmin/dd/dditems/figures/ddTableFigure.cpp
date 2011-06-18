@@ -814,7 +814,7 @@ wxString ddTableFigure::getTableName()
 	return c->getText(false);
 }
 
-//set Null on all relationship items with a fk column to be delete
+//set Null on all relationship items with a fk column to be delete or a pk to be removed (pk attribute)
 void ddTableFigure::prepareForDeleteFkColumn(ddColumnFigure *column)
 {
 	wxhdIteratorBase *iterator = observersEnumerator();

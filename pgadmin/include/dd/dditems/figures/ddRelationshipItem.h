@@ -30,6 +30,8 @@ public:
 	void syncAutoFkName();
 	
 	bool isAutomaticallyGenerated();
+	bool relationIsIdentifying();
+	bool relationIsMandatory();
 
 
 private:

@@ -48,7 +48,6 @@ public:
 	void setColumnKind(ddColumnType type, wxhdDrawingView *view=NULL);
 	void setColumnOption(ddColumnOptionType type);
 	ddColumnType getColumnKind();
-	void checkConsistencyOfKind();
 	ddColumnOptionType getColumnOption();
 	ddDataType getDataType();
 	void setDataType(ddDataType type);
@@ -65,6 +64,7 @@ public:
 	int getPrecision();
 	int getScale();
 	void setAsUserCreatedFk(ddRelationshipItem *relatedFkItem);
+	ddRelationshipItem* getRelatedFkItem();
 
 protected:
 	ddColumnKindIcon *leftImage;

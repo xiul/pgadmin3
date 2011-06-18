@@ -64,10 +64,14 @@ void ddColumnOptionIcon::changeIcon(ddColumnOptionType type)
             icon = wxBitmap(ddnull_xpm);
             if(getOwnerColumn()->isPrimaryKey())
             {
-                if(getOwnerColumn()->isGeneratedForeignKey())
-                    getOwnerColumn()->setColumnKind(fk);
+                if(getOwnerColumn()->isForeignKey())
+				{
+                    getOwnerColumn()->setColumnKind(fkadjust);
+				}
                 else
+				{
                     getOwnerColumn()->setColumnKind(none);
+				}
             }
             break;
 		case MNU_COLNOTNULL:

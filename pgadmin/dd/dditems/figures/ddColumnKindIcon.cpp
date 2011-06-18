@@ -5,7 +5,7 @@
 // Copyright (C) 2002 - 2011, The pgAdmin Development Team
 // This software is released under the PostgreSQL Licence
 //
-// ddColumnKindIcon.cpp - Figure container for kind of Column Images
+// ddColumnKindIcon.cpp - Figure container for kind of Column Images (fk,pk,uk) only used
 //
 //////////////////////////////////////////////////////////////////////////
 
@@ -67,8 +67,8 @@ ddColumnFigure* ddColumnKindIcon::getOwnerColumn()
 void ddColumnKindIcon::changeIcon(ddColumnType type, wxhdDrawingView *view, bool interaction) 
 {
 	bool ukCol = colType==uk;
-	
 	wxString tmpString;
+
 	switch(type)
 	{
 		case pk:	
@@ -80,10 +80,19 @@ void ddColumnKindIcon::changeIcon(ddColumnType type, wxhdDrawingView *view, bool
 				{
 					icon = wxBitmap(ddprimarykey_xpm);
 				}
-
+				
 				if(colType==pk){
 					getOwnerColumn()->getOwnerTable()->prepareForDeleteFkColumn(getOwnerColumn());
-					colType=none;
+
+					if(!getOwnerColumn()->isUserCreatedForeignKey())  //User is trying to disable pk to none
+					{
+						colType=none;
+					}
+					else  //user disable pk but fk kind shouldn't be removed. Only possible when using existing column as fk destination
+					{
+						icon = wxBitmap(ddforeignkey_xpm);
+						colType = none;
+					}
 				}
 				else
 				{
@@ -91,6 +100,11 @@ void ddColumnKindIcon::changeIcon(ddColumnType type, wxhdDrawingView *view, bool
 					{
 						syncUkIndexes();
 						ukIndex=-1;
+					}
+					
+					if(getOwnerColumn()->isNull())
+					{
+						getOwnerColumn()->setColumnOption(notnull);
 					}
 					colType=pk;
 				}
@@ -101,28 +115,55 @@ void ddColumnKindIcon::changeIcon(ddColumnType type, wxhdDrawingView *view, bool
 				icon = wxBitmap(ddunique_xpm);
 				getOwnerColumn()->getOwnerTable()->updateFkObservers();					
 				break;
-		case fk:
-				if(colType==pk || colType==uk ) //only possible when using an existing pk or uk column as fk column destination
+		case fkadjust:
+				if(colType==pk) //only possible when using an existing pk or uk column as fk column destination
 				{ 
+					if(getOwnerColumn()->isNull()) //converting to null a column from a pk/fk column
+					{
+						icon = wxBitmap(ddforeignkey_xpm);
+						colType=none;						
+					}
+					else
+					{
+						icon = wxBitmap(ddprimaryforeignkey_xpm);
+					}
+				}
+				else if(colType==uk) //when using fk from uk
+				{
 					icon = wxBitmap(ddprimaryforeignkey_xpm);
 				}
 				else
 				{
 					icon = wxBitmap(ddforeignkey_xpm);
-					colType=fk;
+					colType=none;
 				}
 				break;
 		case pkuk:
 				break;
 		case none: 
 			    colType=none;
-				if(colType==uk || fk)
+				if(getOwnerColumn()->isForeignKey())
+				{
+					icon = wxBitmap(ddforeignkey_xpm);
+				}
+
+				if(colType == uk || getOwnerColumn()->isForeignKey())
+				{
 					getOwnerColumn()->getOwnerTable()->prepareForDeleteFkColumn(getOwnerColumn());
+				}
 				break;
 	}
     if(colType!=none)
     {
 		iconToDraw = &icon;
+	}
+	else if( getOwnerColumn()->isForeignKey() )  //there are fk with colType!=none after above switching
+	{
+		iconToDraw = &icon;
+		if(colType==none)
+		{
+			getOwnerColumn()->getOwnerTable()->updateFkObservers();
+		}
 	}
 	else
 	{
@@ -316,7 +357,7 @@ void ddColumnKindIcon::syncUkIndexes()
 }
 
 //Hack to synchronize changes made by use of an existing column as foreign key target
-void ddColumnKindIcon::checkConsistencyOfKind()
+void ddColumnKindIcon::checkConsistencyOfKindIcon()
 {
 	if(!getOwnerColumn()->isForeignKey())
 	{

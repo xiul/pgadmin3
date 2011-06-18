@@ -19,8 +19,8 @@ class ddColumnFigure;
 enum ddColumnType {
 	pk=0,
 	uk,
-	fk,
 	pkuk,
+	fkadjust, //This type only is used to create a menu case but never should be stored at colType of column
 	none
 };
 
@@ -46,8 +46,7 @@ public:
 	ddColumnFigure* getOwnerColumn();
 	virtual int getUniqueConstraintIndex();
 	virtual void setUniqueConstraintIndex(int i);
-	virtual void checkConsistencyOfKind();
-	
+	virtual void checkConsistencyOfKindIcon();
 
 protected:
 

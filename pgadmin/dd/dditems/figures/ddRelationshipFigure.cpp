@@ -142,7 +142,7 @@ void ddRelationshipFigure::updateForeignKey()
 
 				if( col->isPrimaryKey() && NotFound )
 				{
-					fkColumnRelItem = new ddRelationshipItem(this,col,endTable, (fkMandatory?notnull:null), (fkIdentifying?pk:fk) );
+					fkColumnRelItem = new ddRelationshipItem(this,col,endTable, (fkMandatory?notnull:null), (fkIdentifying?pk:fkadjust) );
 					chm[col->getColumnName()]=fkColumnRelItem; //hashmap key will be original table name always
 					endTable->addColumn(fkColumnRelItem->fkColumn);
 					updateConnection();
@@ -160,8 +160,14 @@ void ddRelationshipFigure::updateForeignKey()
 						fkColumnRelItem = it->second;
 						if( fkColumnRelItem->original==NULL || !fkColumnRelItem->original->isPrimaryKey() || !startTable->includes(fkColumnRelItem->original) ) //order matters fkColumnRelItem->original==NULL short circuit evaluation should be first
 						{
-							if(fkColumnRelItem->isAutomaticallyGenerated()) //fk from existing column
+							if(fkColumnRelItem->isAutomaticallyGenerated()) //don't remove from fk_dest table fk column created from existing column, just mark now as not foreign key
+							{
 								fkColumnRelItem->destinationTable->removeColumn(fkColumnRelItem->fkColumn);
+							}
+							else
+							{
+								fkColumnRelItem->fkColumn->setAsUserCreatedFk(NULL);
+							}
 							chm.erase(it);
 							delete fkColumnRelItem;
 							repeat=true;
@@ -180,7 +186,7 @@ void ddRelationshipFigure::updateForeignKey()
 
 				if( col->isUniqueKey(ukIndex) && NotFound )
 				{
-					fkColumnRelItem = new ddRelationshipItem(this,col,endTable, (fkMandatory?notnull:null), fk );
+					fkColumnRelItem = new ddRelationshipItem(this,col,endTable, (fkMandatory?notnull:null), fkadjust );
 					chm[col->getColumnName()]=fkColumnRelItem; //hashmap key will be original table name always
 					endTable->addColumn(fkColumnRelItem->fkColumn);
 					updateConnection();
@@ -198,8 +204,14 @@ void ddRelationshipFigure::updateForeignKey()
 						fkColumnRelItem = it->second;
 						if( fkColumnRelItem->original==NULL || !fkColumnRelItem->original->isUniqueKey(ukIndex) || !startTable->includes(fkColumnRelItem->original) ) //order matters fkColumnRelItem->original==NULL short circuit evaluation should be first
 						{
-							if(fkColumnRelItem->isAutomaticallyGenerated()) //fk from existing column
+							if(fkColumnRelItem->isAutomaticallyGenerated()) //don't remove from fk_dest table fk column created from existing column, just mark now as not foreign key
+							{
 								fkColumnRelItem->destinationTable->removeColumn(fkColumnRelItem->fkColumn);
+							}
+							else
+							{
+								fkColumnRelItem->fkColumn->setAsUserCreatedFk(NULL);
+							}							
 							chm.erase(it);
 							delete fkColumnRelItem;
 							repeat=true;
@@ -365,7 +377,7 @@ void ddRelationshipFigure::OnGenericPopupClick(wxCommandEvent& event, wxhdDrawin
 			}
 			else
 			{
-				setKindAtForeignKeys(fk);
+				setKindAtForeignKeys(fkadjust);
 			}
 			break;
 		case MNU_FKCONSTRAINTNAME:
@@ -546,7 +558,7 @@ void ddRelationshipFigure::addExistingColumnFk(ddColumnFigure *startTablesourceC
 	//Create a new relationship item but with an existing column for fk at destination table
 	if(endTablesourceCol)
 	{
-		fkColumnRelItem = new ddRelationshipItem(this,startTablesourceCol,endTable, (fkMandatory?notnull:null), (fkIdentifying?pk:fk), endTablesourceCol);
+		fkColumnRelItem = new ddRelationshipItem(this,startTablesourceCol,endTable, (fkMandatory?notnull:null), (fkIdentifying?pk:fkadjust), endTablesourceCol);
 		//Mark it as Custom Fk (fk from existing column not an automatic generated)
 		endTablesourceCol->setAsUserCreatedFk(fkColumnRelItem);
 		chm[startTablesourceCol->getColumnName()]=fkColumnRelItem; //hashmap key will be original table name always
@@ -581,16 +593,6 @@ void ddRelationshipFigure::removeForeignKeys()
 					{
 						//Mark as existing column not used as foreign key destination
 						fkColumnRelItem->fkColumn->setAsUserCreatedFk(NULL);
-						//a foreignkey column is only marked as fk when not is pk or uk, in other case is an uk with  isForeignKey function = true
-						ddColumnType typeExistingCol= fkColumnRelItem->fkColumn->getColumnKind();
-						if(typeExistingCol!=pk && typeExistingCol!=uk)
-						{
-							fkColumnRelItem->fkColumn->setColumnKind(none);
-						}
-						else
-						{
-							fkColumnRelItem->fkColumn->checkConsistencyOfKind();
-						}
 					}
 					chm.erase(it);
 					delete fkColumnRelItem;
@@ -625,9 +627,10 @@ void ddRelationshipFigure::setKindAtForeignKeys(ddColumnType type)
 	{
 		wxString key = it->first;
 		item = it->second;
-		item->fkColumn->setColumnKind(type);
+		if(item->isAutomaticallyGenerated())
+			item->fkColumn->setColumnKind(type);
 	}
-	if(type==pk || type==fk) //set as identifying relationship (hierarchy)
+	if(type==pk || type==fkadjust) //set as identifying relationship (hierarchy)
 	{
 		ddTableFigure *table = (ddTableFigure*) getEndFigure();
 		table->updateFkObservers();

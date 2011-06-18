@@ -272,11 +272,6 @@ ddColumnType ddColumnFigure::getColumnKind()
 	return leftImage->getKind();
 }
 
-void ddColumnFigure::checkConsistencyOfKind()
-{
-	leftImage->checkConsistencyOfKind();
-}
-
 ddColumnOptionType ddColumnFigure::getColumnOption()
 {
 	return centerImage->getOption();
@@ -314,9 +309,19 @@ bool ddColumnFigure::isUserCreatedForeignKey()
 	return usedAsFkDestFor!=NULL; 
 }
 
+ddRelationshipItem* ddColumnFigure::getRelatedFkItem()
+{
+	return usedAsFkDestFor;
+}
+
 void ddColumnFigure::setAsUserCreatedFk(ddRelationshipItem *relatedFkItem)
 {
 	usedAsFkDestFor = relatedFkItem;
+	//Now fix icons of kind of column
+	if(relatedFkItem==NULL)
+	{
+		leftImage->checkConsistencyOfKindIcon();
+	}
 }
 
 bool ddColumnFigure::isFkNameGenerated()
