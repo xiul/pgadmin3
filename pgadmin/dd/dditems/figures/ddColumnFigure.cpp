@@ -28,7 +28,7 @@
 ddColumnFigure::ddColumnFigure(wxString& columnName, ddTableFigure *owner, ddRelationshipItem *sourceFk)
 {
 	fkSource=sourceFk;
-	usedAsFkDest = false;
+	usedAsFkDestFor = NULL;
 	deactivateGenFkName(); //initializae by default at not generate auto fk name
 	columnText = new ddTextTableItemFigure(columnName,dt_null,this);
 	leftImage = new ddColumnKindIcon(this);
@@ -311,12 +311,12 @@ bool ddColumnFigure::isGeneratedForeignKey()
 
 bool ddColumnFigure::isUserCreatedForeignKey()
 {
-	return usedAsFkDest; 
+	return usedAsFkDestFor!=NULL; 
 }
 
-void ddColumnFigure::setAsUserCreatedFk(bool value)
+void ddColumnFigure::setAsUserCreatedFk(ddRelationshipItem *relatedFkItem)
 {
-	usedAsFkDest = value;
+	usedAsFkDestFor = relatedFkItem;
 }
 
 bool ddColumnFigure::isFkNameGenerated()

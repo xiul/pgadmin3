@@ -546,10 +546,9 @@ void ddRelationshipFigure::addExistingColumnFk(ddColumnFigure *startTablesourceC
 	//Create a new relationship item but with an existing column for fk at destination table
 	if(endTablesourceCol)
 	{
-		//Mark it as Custom Fk (fk from existing column not an automatic generated)
-		endTablesourceCol->setAsUserCreatedFk(true);
-		
 		fkColumnRelItem = new ddRelationshipItem(this,startTablesourceCol,endTable, (fkMandatory?notnull:null), (fkIdentifying?pk:fk), endTablesourceCol);
+		//Mark it as Custom Fk (fk from existing column not an automatic generated)
+		endTablesourceCol->setAsUserCreatedFk(fkColumnRelItem);
 		chm[startTablesourceCol->getColumnName()]=fkColumnRelItem; //hashmap key will be original table name always
 		updateConnection();
 	}
@@ -581,7 +580,7 @@ void ddRelationshipFigure::removeForeignKeys()
 					else
 					{
 						//Mark as existing column not used as foreign key destination
-						fkColumnRelItem->fkColumn->setAsUserCreatedFk(false);
+						fkColumnRelItem->fkColumn->setAsUserCreatedFk(NULL);
 						//a foreignkey column is only marked as fk when not is pk or uk, in other case is an uk with  isForeignKey function = true
 						ddColumnType typeExistingCol= fkColumnRelItem->fkColumn->getColumnKind();
 						if(typeExistingCol!=pk && typeExistingCol!=uk)

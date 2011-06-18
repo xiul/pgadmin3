@@ -64,14 +64,15 @@ public:
 	ddRelationshipItem* getFkSource();
 	int getPrecision();
 	int getScale();
-	void setAsUserCreatedFk(bool value);
+	void setAsUserCreatedFk(ddRelationshipItem *relatedFkItem);
 
 protected:
 	ddColumnKindIcon *leftImage;
 	ddColumnOptionIcon *centerImage;
 	ddTextTableItemFigure *columnText;
 	ddTableFigure *ownerTable;
-	bool generateFkName, usedAsFkDest;
+	ddRelationshipItem *usedAsFkDestFor;
+	bool generateFkName;
 
 private:
 	ddRelationshipItem *fkSource;
