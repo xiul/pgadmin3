@@ -64,7 +64,7 @@ public:
 	wxArrayString getAllColumnsNames();
 	wxArrayString getAllFkSourceColsNames(bool pk, int ukIndex=-1);
 	ddColumnFigure *getColumnByName(wxString name);
-	bool validateTable(wxString &errors);
+	bool validateTable(wxString& errors);
 
 	//uk pk constraints
 	void setPkConstraintName(wxString name);

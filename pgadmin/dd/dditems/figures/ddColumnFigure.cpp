@@ -358,33 +358,50 @@ ddRelationshipItem* ddColumnFigure::getFkSource()
 bool ddColumnFigure::validateColumn(wxString &errors)
 {
 	bool out = true;
+	wxString tmp;
 
 	if(usedAsFkDestFor)
 	{
 	//Validate if relationship is marked as identifying but column isn't marked as primary key
+		wxString sourceTableName = usedAsFkDestFor->sourceTableName();
+		wxString destTableName = usedAsFkDestFor->destTableName();
+		wxString fkColName = usedAsFkDestFor->fkColumn->getColumnName(false);
+		wxString sourceColName = usedAsFkDestFor->original->getColumnName(false);
+
 		if(usedAsFkDestFor->relationIsIdentifying() && !this->isPrimaryKey())
 		{
 			out = false;
-			errors.Append(wxString::Format(wxT("relation between table: %s and table: %s is marked as identifying but user created foreign key column: %s isn't set as primary key \n"),usedAsFkDestFor->sourceTableName(),usedAsFkDestFor->destTableName(),usedAsFkDestFor->fkColumn->getColumnName(false)));
+			tmp =  _("relation between table: ") + sourceTableName + _(" and table: ") + destTableName;
+			tmp += _(" is marked as identifying but user created foreign key column: ") + fkColName;
+			tmp += _(" isn't set as primary key \n");
+			errors.Append(tmp);
 		}
 	//Validate if relationship is marked as optional but column is mandatory
 		if( !usedAsFkDestFor->relationIsMandatory() && this->isNotNull())
 		{
 			out = false;
-			errors.Append(wxString::Format(wxT("relation between table: %s and table: %s is marked as optional but user created foreign key column: %s is set as mandatory \n"),usedAsFkDestFor->sourceTableName(),usedAsFkDestFor->destTableName(),usedAsFkDestFor->fkColumn->getColumnName(false)));
+			tmp =  _("relation between table:") + sourceTableName + _(" and table: ") + destTableName;
+			tmp += _("is marked as optional but user created foreign key column: ") + fkColName;
+			tmp += _("is set as mandatory \n");
+			errors.Append(tmp);
 		}
 	//Validate if relationship is marked as mandatory buy column is optional
 		if( usedAsFkDestFor->relationIsMandatory() && this->isNull())
 		{
 			out = false;
-			errors.Append(wxString::Format(wxT("relation between table: %s and table: %s is marked as mandatory but user created foreign key column: %s is set as optional \n"),usedAsFkDestFor->sourceTableName(),usedAsFkDestFor->destTableName(),usedAsFkDestFor->fkColumn->getColumnName(false)));
+			tmp =   _("relation between table:")+ sourceTableName + _(" and table: ") + destTableName + 
+			tmp +=  _(" is marked as mandatory but user created foreign key column: ") + fkColName;
+			tmp += _("is set as optional \n");
+			errors.Append(tmp);
 		}
 
 	//Validate datatype compatibility (right now only exactly same datatype)
 		if(this->getDataType()!=usedAsFkDestFor->original->getDataType())
 		{
 			out = false;
-			errors.Append(wxString::Format(wxT("User created foreign key column: %s have different datatype from source column of relationship: %s \n"),usedAsFkDestFor->fkColumn->getColumnName(false),usedAsFkDestFor->original->getColumnName(false)));
+			tmp=  _("User created foreign key column: ") + fkColName + _("have different datatype from source column of relationship: ");
+			tmp+= sourceColName + _(" \n");
+			errors.Append(tmp);
 		}
 	}
 
