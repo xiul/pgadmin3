@@ -24,6 +24,7 @@
 #include "dd/dditems/figures/ddColumnOptionIcon.h"
 #include "dd/dditems/utilities/ddDataType.h"
 #include "dd/dditems/figures/ddTableFigure.h"
+#include "dd/dditems/figures/ddRelationshipItem.h"
 
 ddColumnFigure::ddColumnFigure(wxString& columnName, ddTableFigure *owner, ddRelationshipItem *sourceFk)
 {
@@ -351,4 +352,41 @@ wxString ddColumnFigure::generateSQL()
 ddRelationshipItem* ddColumnFigure::getFkSource()
 {
 	return fkSource;
+}
+
+//Validate status of column for SQL DDL generation
+bool ddColumnFigure::validateColumn(wxString &errors)
+{
+	bool out = true;
+
+	if(usedAsFkDestFor)
+	{
+	//Validate if relationship is marked as identifying but column isn't marked as primary key
+		if(usedAsFkDestFor->relationIsIdentifying() && !this->isPrimaryKey())
+		{
+			out = false;
+			errors.Append(wxString::Format(wxT("relation between table: %s and table: %s is marked as identifying but user created foreign key column: %s isn't set as primary key \n"),usedAsFkDestFor->sourceTableName(),usedAsFkDestFor->destTableName(),usedAsFkDestFor->fkColumn->getColumnName(false)));
+		}
+	//Validate if relationship is marked as optional but column is mandatory
+		if( !usedAsFkDestFor->relationIsMandatory() && this->isNotNull())
+		{
+			out = false;
+			errors.Append(wxString::Format(wxT("relation between table: %s and table: %s is marked as optional but user created foreign key column: %s is set as mandatory \n"),usedAsFkDestFor->sourceTableName(),usedAsFkDestFor->destTableName(),usedAsFkDestFor->fkColumn->getColumnName(false)));
+		}
+	//Validate if relationship is marked as mandatory buy column is optional
+		if( usedAsFkDestFor->relationIsMandatory() && this->isNull())
+		{
+			out = false;
+			errors.Append(wxString::Format(wxT("relation between table: %s and table: %s is marked as mandatory but user created foreign key column: %s is set as optional \n"),usedAsFkDestFor->sourceTableName(),usedAsFkDestFor->destTableName(),usedAsFkDestFor->fkColumn->getColumnName(false)));
+		}
+
+	//Validate datatype compatibility (right now only exactly same datatype)
+		if(this->getDataType()!=usedAsFkDestFor->original->getDataType())
+		{
+			out = false;
+			errors.Append(wxString::Format(wxT("User created foreign key column: %s have different datatype from source column of relationship: %s \n"),usedAsFkDestFor->fkColumn->getColumnName(false),usedAsFkDestFor->original->getColumnName(false)));
+		}
+	}
+
+	return out;
 }

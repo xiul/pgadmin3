@@ -65,6 +65,7 @@ public:
 	int getScale();
 	void setAsUserCreatedFk(ddRelationshipItem *relatedFkItem);
 	ddRelationshipItem* getRelatedFkItem();
+	bool validateColumn(wxString &errors);
 
 protected:
 	ddColumnKindIcon *leftImage;

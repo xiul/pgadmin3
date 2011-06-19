@@ -32,6 +32,8 @@ public:
 	bool isAutomaticallyGenerated();
 	bool relationIsIdentifying();
 	bool relationIsMandatory();
+	wxString sourceTableName();
+	wxString destTableName();
 
 
 private:

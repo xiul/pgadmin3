@@ -252,7 +252,16 @@ void frmDatabaseDesigner::OnNewModel(wxCommandEvent& event)
 
 void frmDatabaseDesigner::OnModelGeneration(wxCommandEvent& event)
 {
-	sqltext->SetValue(design->generateModel());
+	wxString errors;
+	if(!design->validateModel(errors))
+	{
+	  wxMessageDialog dialog( this, errors ,wxT("Errors detected at database model"), wxOK | wxICON_EXCLAMATION | wxSTAY_ON_TOP );
+	  dialog.ShowModal();
+	}
+	else
+	{
+		sqltext->SetValue(design->generateModel());
+	}
 }
 
 

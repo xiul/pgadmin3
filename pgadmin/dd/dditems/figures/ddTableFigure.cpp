@@ -903,6 +903,38 @@ if( (left > 0) && (top > 0) && (right < width) && (bottom < height) )
 	wxhdCompositeFigure::basicMoveBy(x,y);
 }
 
+//Validate status of table for SQL DDL generation
+bool ddTableFigure::validateTable(wxString &errors)
+{
+	bool out = true;
+	wxString tmp = wxEmptyString;
+	ddColumnFigure *f;
+
+	wxhdIteratorBase *iterator=figuresEnumerator();
+	iterator->Next(); //First figure is main rect
+	iterator->Next(); //Second figure is main title
+
+	while(iterator->HasNext()){
+		f = (ddColumnFigure *) iterator->Next();
+		if(!f->validateColumn(tmp))
+		{
+			out=false;
+		}
+	}
+
+	if(!out)
+	{
+		errors.Append(_("\n"));
+		errors.Append(wxString::Format(wxT("Errors detected at table %s \n"),this->getTableName()));
+		errors.Append(tmp);
+		errors.Append(_("\n"));
+	}
+
+	delete iterator;
+
+	return out;
+}
+
 //Using some options from http://www.postgresql.org/docs/8.1/static/sql-createtable.html, but new options can be added in a future.
 wxString ddTableFigure::generateSQL()
 {

@@ -90,3 +90,13 @@ bool ddRelationshipItem::relationIsMandatory()
 {
 	return ownerRel->getMandatory();
 }
+
+wxString ddRelationshipItem::sourceTableName()
+{
+	return original->getOwnerTable()->getTableName();
+}
+
+wxString ddRelationshipItem::destTableName()
+{
+	return destinationTable->getTableName();
+}

@@ -71,6 +71,31 @@ void ddDatabaseDesign::eraseModel()
 	draw->view()->removeAll();
 }
 
+bool ddDatabaseDesign::validateModel(wxString &errors)
+{
+	bool out=true;
+
+	wxhdIteratorBase *iterator=draw->model()->figuresEnumerator();
+	wxhdIFigure *tmpFigure;
+	ddTableFigure *table;
+
+	while(iterator->HasNext())
+    {
+		tmpFigure=(wxhdIFigure *)iterator->Next();
+		if(tmpFigure->getKindId() == DDTABLEFIGURE)
+		{
+			table=(ddTableFigure*)tmpFigure;
+			if(!table->validateTable(errors))
+			{
+				out = false;
+			}
+		}
+	 }
+	delete iterator;
+
+	return out;
+}
+
 wxString ddDatabaseDesign::generateModel()
 {
 	wxString out;
