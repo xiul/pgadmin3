@@ -361,7 +361,7 @@ void ddTableFigure::basicDrawSelected(wxBufferedDC& context, wxhdDrawingView *vi
 	//Draw Indexes Title Line 1
 	context.DrawLine(titleIndxsRect.GetTopLeft(),titleIndxsRect.GetTopRight());
 	//Draw Indexes Title	
-	context.DrawText(wxT("Indexes"),titleIndxsRect.x+3,titleIndxsRect.y);
+	//disable until implemented in a future: context.DrawText(wxT("Indexes"),titleIndxsRect.x+3,titleIndxsRect.y);
 	//Draw Indexes Title Line 2
 	context.DrawLine(titleIndxsRect.GetBottomLeft(),titleIndxsRect.GetBottomRight());
 }

@@ -115,6 +115,10 @@ void ddColumnKindIcon::changeIcon(ddColumnType type, wxhdDrawingView *view, bool
 				{
 					icon = wxBitmap(ddunique_xpm);
 				}
+				else if(getOwnerColumn()->isForeignKey())
+				{
+					icon = wxBitmap(ddforeignkey_xpm);
+				}
 				getOwnerColumn()->getOwnerTable()->updateFkObservers();					
 				break;
 		case fkadjust:
