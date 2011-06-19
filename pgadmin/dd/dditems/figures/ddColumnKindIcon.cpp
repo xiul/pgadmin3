@@ -111,8 +111,10 @@ void ddColumnKindIcon::changeIcon(ddColumnType type, wxhdDrawingView *view, bool
 				getOwnerColumn()->getOwnerTable()->updateFkObservers();
 				break;
 		case uk:
-				uniqueConstraintManager(ukCol,view,interaction);
-				icon = wxBitmap(ddunique_xpm);
+				if(uniqueConstraintManager(ukCol,view,interaction))
+				{
+					icon = wxBitmap(ddunique_xpm);
+				}
 				getOwnerColumn()->getOwnerTable()->updateFkObservers();					
 				break;
 		case fkadjust:
@@ -238,7 +240,7 @@ void ddColumnKindIcon::setUniqueConstraintIndex(int i)
 	ukIndex=i;
 }
 
-void ddColumnKindIcon::uniqueConstraintManager(bool ukCol, wxhdDrawingView *view, bool interaction)
+bool ddColumnKindIcon::uniqueConstraintManager(bool ukCol, wxhdDrawingView *view, bool interaction)
 {
     wxString tmpString;
     colType=uk;
@@ -318,6 +320,10 @@ void ddColumnKindIcon::uniqueConstraintManager(bool ukCol, wxhdDrawingView *view
 
 		}
     }
+if(colType!=uk)
+	return false;
+else
+	return true;
 }
 
 //synchronize uk indexes when an uk is change kind from uk to other and other index should be update with that info

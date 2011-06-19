@@ -59,6 +59,6 @@ private:
 
 	//multiple Uk management at table
 	void syncUkIndexes();
-	void uniqueConstraintManager(bool ukCol, wxhdDrawingView *view=NULL, bool interaction=true);
+	bool uniqueConstraintManager(bool ukCol, wxhdDrawingView *view=NULL, bool interaction=true);
 };
 #endif
