@@ -25,11 +25,13 @@ wxhdCanvasMenuTool::wxhdCanvasMenuTool(wxhdDrawingEditor *editor, wxhdITool *dt)
 wxhdAbstractTool(editor)
 {
 	defaultTool = dt;
-	editor->view()->setCanvasMenuTool(NULL);
+	canvasEditor = editor;
+	canvasEditor->view()->setCanvasMenuTool(NULL);
 }
 
 wxhdCanvasMenuTool::~wxhdCanvasMenuTool()
 {
+	canvasEditor->view()->setCanvasMenuTool(NULL);
 	if(defaultTool)
 		delete defaultTool;
 }

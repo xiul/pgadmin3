@@ -29,6 +29,7 @@ public:
 	//Because a bug it was move to main View class as a hack. virtual void changeHandler(wxCommandEvent& event);
 protected:
 	wxhdITool *defaultTool;
+	wxhdDrawingEditor *canvasEditor;
 private:
 };
 #endif
