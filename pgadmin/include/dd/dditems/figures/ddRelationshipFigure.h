@@ -73,6 +73,7 @@ public:
 	virtual void connectStart(wxhdIConnector *start, wxhdDrawingView *view=NULL);
 	void disconnectStart(wxhdDrawingView *view=NULL);
 	void disconnectEnd(wxhdDrawingView *view=NULL);
+	void setFkFrom(bool primaryKey, int useUkIndex=-1, bool issueUpdateFk=false);
 	wxString generateSQL();
 	wxString getConstraintName();
 	ddTableFigure* getStartTable();

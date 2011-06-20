@@ -529,6 +529,23 @@ void ddRelationshipFigure::connectEnd(wxhdIConnector *end, wxhdDrawingView *view
 	}
 }
 
+void ddRelationshipFigure::setFkFrom(bool primaryKey, int useUkIndex, bool issueUpdateFk)
+{
+	if(useUkIndex >= 0)
+	{
+		fkFromPk = false;
+		ukIndex = useUkIndex;
+	}
+	else
+	{
+		fkFromPk = true;
+		ukIndex = -1;
+	}
+
+if(issueUpdateFk)
+	updateForeignKey();
+}
+
 void ddRelationshipFigure::connectStart(wxhdIConnector *start, wxhdDrawingView *view)
 {
 	wxhdLineConnection::connectStart(start);

@@ -76,12 +76,17 @@ public:
 
 
 protected:
+	void populateColumnsControls(bool primaryKey, int useUkIndex);
+	void deleteColsControls();
+	void OnChoiceFkKind(wxCommandEvent &event);
 	    // Data members
 	ddRelationshipFigure *tablesRelation;
 
 		// Dialog controls
 	choicesControlsHashMap choices;
-	wxBoxSizer *topSizer, *linesSizer, *okCancelBox;
+	wxBoxSizer *topSizer, *linesSizer, *okCancelBox, *colsTopSizer;
+
+	wxChoice *kindFkCtrl;
 
 	wxButton *ok;
 	wxStaticLine *line;
