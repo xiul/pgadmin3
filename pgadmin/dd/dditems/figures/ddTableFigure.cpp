@@ -904,7 +904,7 @@ if( (left > 0) && (top > 0) && (right < width) && (bottom < height) )
 }
 
 //Validate status of table for SQL DDL generation
-bool ddTableFigure::validateTable(wxString &errors)
+bool ddTableFigure::validateTable(wxString& errors)
 {
 	bool out = true;
 	wxString tmp = wxEmptyString;
@@ -924,10 +924,10 @@ bool ddTableFigure::validateTable(wxString &errors)
 
 	if(!out)
 	{
-		errors.Append(_("\n"));
-		errors.Append(wxString::Format(wxT("Errors detected at table %s \n"),this->getTableName()));
+		errors.Append(wxT("\n"));
+		errors.Append(wxT("Errors detected at table") + this->getTableName() + wxT(" \n"));
 		errors.Append(tmp);
-		errors.Append(_("\n"));
+		errors.Append(wxT("\n"));
 	}
 
 	delete iterator;

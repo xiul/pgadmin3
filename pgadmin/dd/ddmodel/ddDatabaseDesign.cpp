@@ -71,7 +71,7 @@ void ddDatabaseDesign::eraseModel()
 	draw->view()->removeAll();
 }
 
-bool ddDatabaseDesign::validateModel(wxString &errors)
+bool ddDatabaseDesign::validateModel(wxString& errors)
 {
 	bool out=true;
 

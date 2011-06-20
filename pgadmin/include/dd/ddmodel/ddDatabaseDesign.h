@@ -29,7 +29,7 @@ public:
 	void refreshDraw();
 	void eraseModel();
 	wxString generateModel();
-	bool validateModel(wxString &errors);
+	bool validateModel(wxString& errors);
 	wxString getNewTableName();
     ddTableFigure* getSelectedTable();
 	bool containsTable(wxString tableName);
