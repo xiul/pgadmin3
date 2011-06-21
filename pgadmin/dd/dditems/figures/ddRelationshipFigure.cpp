@@ -515,15 +515,12 @@ void ddRelationshipFigure::connectEnd(wxhdIConnector *end, wxhdDrawingView *view
 	wxhdLineConnection::connectEnd(end);
 	view->Refresh();
 	if(getEndFigure() && getStartFigure()){
-		if(getStartTable()->getAllFkSourceColsNames(fkFromPk,ukIndex).Count()>0 && getEndTable()->getAllColumnsNames().Count()>0)		
-		{
-			mappingDialog = new ddSelectKindFksDialog(view,this);
-			mappingDialog->ShowModal();
-			delete mappingDialog;
-			if(view){
-				view->AcceptsFocus();
-				view->SetFocus();
-			}
+		mappingDialog = new ddSelectKindFksDialog(view,this);
+		mappingDialog->ShowModal();
+		delete mappingDialog;
+		if(view){
+			view->AcceptsFocus();
+			view->SetFocus();
 		}
 		updateForeignKey();
 	}
