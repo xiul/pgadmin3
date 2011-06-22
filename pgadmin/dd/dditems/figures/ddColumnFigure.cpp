@@ -325,6 +325,10 @@ bool ddColumnFigure::isForeignKeyFromPk()
 	{
 		return fkSource->isForeignKeyFromPk();
 	}
+	else if(usedAsFkDestFor)
+	{
+		return usedAsFkDestFor->isForeignKeyFromPk();
+	}
 	return false;
 }
 
