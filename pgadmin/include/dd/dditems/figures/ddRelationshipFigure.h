@@ -68,7 +68,8 @@ public:
 	bool getOneToMany();
 	bool getMandatory();
 	void setOptionAtForeignKeys(ddColumnOptionType type);
-	void setKindAtForeignKeys(ddColumnType type);
+	void updatePkAtFkCols();
+	bool isForeignKeyFromPk();
 	virtual void connectEnd(wxhdIConnector *end, wxhdDrawingView *view=NULL);
 	virtual void connectStart(wxhdIConnector *start, wxhdDrawingView *view=NULL);
 	void disconnectStart(wxhdDrawingView *view=NULL);

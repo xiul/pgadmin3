@@ -70,6 +70,8 @@ public:
 	void setPkConstraintName(wxString name);
 	wxString getPkConstraintName();
 	wxArrayString& getUkConstraintsNames();
+	bool disablePrimaryKey();
+	bool enablePrimaryKey();
 		
 	//fk related
 	void updateFkObservers();

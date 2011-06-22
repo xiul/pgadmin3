@@ -174,7 +174,7 @@ void ddTableFigure::removeColumn(ddColumnFigure *column)
 	//Hack to allow to remove Fk before delete it.
 	if(column->isPrimaryKey() || column->isUniqueKey())
 	{
-		column->setColumnKind(none);
+		column->setColumnKindToNone();
 	}
 
 	column->setOwnerTable(NULL);

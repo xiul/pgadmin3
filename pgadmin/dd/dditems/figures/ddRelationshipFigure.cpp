@@ -142,7 +142,7 @@ void ddRelationshipFigure::updateForeignKey()
 
 				if( col->isPrimaryKey() && NotFound )
 				{
-					fkColumnRelItem = new ddRelationshipItem(this,col,endTable, (fkMandatory?notnull:null), (fkIdentifying?pk:fkadjust) );
+					fkColumnRelItem = new ddRelationshipItem(this,col,endTable, (fkMandatory?notnull:null), (fkIdentifying?pk:none) );
 					chm[col->getColumnName()]=fkColumnRelItem; //hashmap key will be original table name always
 					endTable->addColumn(fkColumnRelItem->fkColumn);
 					updateConnection();
@@ -186,7 +186,7 @@ void ddRelationshipFigure::updateForeignKey()
 
 				if( col->isUniqueKey(ukIndex) && NotFound )
 				{
-					fkColumnRelItem = new ddRelationshipItem(this,col,endTable, (fkMandatory?notnull:null), fkadjust );
+					fkColumnRelItem = new ddRelationshipItem(this,col,endTable, (fkMandatory?notnull:null), (fkIdentifying?pk:none) );
 					chm[col->getColumnName()]=fkColumnRelItem; //hashmap key will be original table name always
 					endTable->addColumn(fkColumnRelItem->fkColumn);
 					updateConnection();
@@ -371,14 +371,7 @@ void ddRelationshipFigure::OnGenericPopupClick(wxCommandEvent& event, wxhdDrawin
 			setLinePen(wxPen(*wxBLACK_PEN));
 			fkIdentifying=!fkIdentifying;
 			fkOneToMany = true;
-			if(fkIdentifying)
-			{
-				setKindAtForeignKeys(pk);
-			}
-			else
-			{
-				setKindAtForeignKeys(fkadjust);
-			}
+			updatePkAtFkCols();
 			break;
 		case MNU_FKCONSTRAINTNAME:
 			startTable = (ddTableFigure*) getStartFigure();
@@ -526,6 +519,11 @@ void ddRelationshipFigure::connectEnd(wxhdIConnector *end, wxhdDrawingView *view
 	}
 }
 
+bool ddRelationshipFigure::isForeignKeyFromPk()
+{
+	return fkFromPk;
+}
+
 void ddRelationshipFigure::setFkFrom(bool primaryKey, int useUkIndex, bool issueUpdateFk)
 {
 	if(useUkIndex >= 0)
@@ -572,7 +570,7 @@ void ddRelationshipFigure::addExistingColumnFk(ddColumnFigure *startTablesourceC
 	//Create a new relationship item but with an existing column for fk at destination table
 	if(endTablesourceCol)
 	{
-		fkColumnRelItem = new ddRelationshipItem(this,startTablesourceCol,endTable, (fkMandatory?notnull:null), (fkIdentifying?pk:fkadjust), endTablesourceCol);
+		fkColumnRelItem = new ddRelationshipItem(this,startTablesourceCol,endTable, (fkMandatory?notnull:null), (fkIdentifying?pk:noaction), endTablesourceCol);
 		//Mark it as Custom Fk (fk from existing column not an automatic generated)
 		endTablesourceCol->setAsUserCreatedFk(fkColumnRelItem);
 		chm[startTablesourceCol->getColumnName()]=fkColumnRelItem; //hashmap key will be original table name always
@@ -633,18 +631,30 @@ void ddRelationshipFigure::setOptionAtForeignKeys(ddColumnOptionType type)
 	}
 }
 
-void ddRelationshipFigure::setKindAtForeignKeys(ddColumnType type)
+void ddRelationshipFigure::updatePkAtFkCols()
 {
+	bool changed = false;
 	columnsHashMap::iterator it;
 	ddRelationshipItem *item;
 	for (it = chm.begin(); it != chm.end(); ++it)
 	{
 		wxString key = it->first;
 		item = it->second;
-		if(item->isAutomaticallyGenerated())
-			item->fkColumn->setColumnKind(type);
+		if(item->isAutomaticallyGenerated())  //only update fk status at fk NOT created from an existing column
+		{
+			if(fkIdentifying)
+			{
+				item->fkColumn->enablePrimaryKey();
+			}
+			else
+			{
+				item->fkColumn->disablePrimaryKey();
+			}
+			changed = true;
+		}
 	}
-	if(type==pk || type==fkadjust) //set as identifying relationship (hierarchy)
+
+	if(changed) //set as identifying relationship (hierarchy)
 	{
 		ddTableFigure *table = (ddTableFigure*) getEndFigure();
 		table->updateFkObservers();

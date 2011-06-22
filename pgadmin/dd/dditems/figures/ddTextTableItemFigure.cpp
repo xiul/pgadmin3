@@ -148,16 +148,16 @@ void ddTextTableItemFigure::OnGenericPopupClick(wxCommandEvent& event, wxhdDrawi
 		case MNU_PKEY:
             if(getOwnerColumn()->isPrimaryKey())
             {
-                getOwnerColumn()->setColumnKind(none);
+                getOwnerColumn()->disablePrimaryKey();
             }
             else
             {	
-                getOwnerColumn()->setColumnKind(pk);
+                getOwnerColumn()->enablePrimaryKey();
                 getOwnerColumn()->setColumnOption(notnull);
             }
             break;
 		case MNU_UKEY:
-            getOwnerColumn()->setColumnKind(uk,view);
+            getOwnerColumn()->toggleColumnKind(uk,view);
             break;
 		case MNU_TYPESERIAL:
             setDataType(dt_serial);  //Should use setDataType always to set this value to allow fk to work flawlessly

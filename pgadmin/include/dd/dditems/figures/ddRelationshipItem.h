@@ -32,6 +32,7 @@ public:
 	bool isAutomaticallyGenerated();
 	bool relationIsIdentifying();
 	bool relationIsMandatory();
+	bool isForeignKeyFromPk();
 	wxString sourceTableName();
 	wxString destTableName();
 

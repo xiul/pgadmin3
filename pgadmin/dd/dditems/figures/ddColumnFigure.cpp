@@ -210,32 +210,56 @@ bool ddColumnFigure::isNotNull()
 	return centerImage->getOption()==notnull;
 }
 
+bool ddColumnFigure::isNone()
+{
+	return leftImage->isNone();
+}
+
 bool ddColumnFigure::isPrimaryKey()
 {
-	return leftImage->getKind()==pk;
+	return leftImage->isPrimaryKey();
+}
+
+void ddColumnFigure::disablePrimaryKey()
+{
+	leftImage->disablePrimaryKey();
+}
+
+void ddColumnFigure::enablePrimaryKey()
+{
+	leftImage->enablePrimaryKey();
 }
 
 bool ddColumnFigure::isUniqueKey()
 {
-	return leftImage->getKind()==uk;
+	return leftImage->isUniqueKey();
 }
 
-bool ddColumnFigure::isUniqueKey(int ukIndex)
+bool ddColumnFigure::isUniqueKey(int uniqueIndex)
 {
-	if(leftImage->getKind()==uk)
-		return ukIndex==getUniqueConstraintIndex();
-	else
-		return false;
+	return leftImage->isUniqueKey(uniqueIndex);
 }
 
 bool ddColumnFigure::isPlain()
 {
-	return leftImage->getKind()==none;
+	return leftImage->isNone();
 }
 
-void ddColumnFigure::setColumnKind(ddColumnType type, wxhdDrawingView *view)
+void ddColumnFigure::setColumnKindToNone()
 {
-	leftImage->changeIcon(type,view);
+	leftImage->disablePrimaryKey();
+	leftImage->disableUniqueKey();
+	//Foreign key cannot be changed by set / toggle functions
+}
+
+void ddColumnFigure::setRightIconForColumn()
+{
+	leftImage->setRightIconForColumn();
+}
+
+void ddColumnFigure::toggleColumnKind(ddColumnType type, wxhdDrawingView *view)
+{
+	leftImage->toggleColumnKind(type,view);
 }
 
 void ddColumnFigure::setColumnOption(ddColumnOptionType type)
@@ -268,10 +292,12 @@ void ddColumnFigure::setUniqueConstraintIndex(int i)
 	leftImage->setUniqueConstraintIndex(i);
 }
 
+/*
 ddColumnType ddColumnFigure::getColumnKind()
 {
 	return leftImage->getKind();
 }
+*/
 
 ddColumnOptionType ddColumnFigure::getColumnOption()
 {
@@ -291,6 +317,15 @@ void ddColumnFigure::setDataType(ddDataType type)
 void ddColumnFigure::setColumnName(wxString name)
 {
 	columnText->setText(name);
+}
+
+bool ddColumnFigure::isForeignKeyFromPk()
+{
+	if(fkSource)
+	{
+		return fkSource->isForeignKeyFromPk();
+	}
+	return false;
 }
 
 bool ddColumnFigure::isForeignKey()
@@ -321,7 +356,7 @@ void ddColumnFigure::setAsUserCreatedFk(ddRelationshipItem *relatedFkItem)
 	//Now fix icons of kind of column
 	if(relatedFkItem==NULL)
 	{
-		leftImage->checkConsistencyOfKindIcon();
+		leftImage->setRightIconForColumn();
 	}
 }
 

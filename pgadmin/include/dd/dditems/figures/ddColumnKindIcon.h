@@ -19,9 +19,8 @@ class ddColumnFigure;
 enum ddColumnType {
 	pk=0,
 	uk,
-	pkuk,
-	fkadjust, //This type only is used to create a menu case but never should be stored at colType of column
-	none
+	none,
+	noaction  //no action kind means column type don't have right now a useful value
 };
 
 enum
@@ -39,23 +38,30 @@ public:
     virtual void createMenu(wxMenu &mnu);
 	virtual void basicDraw(wxBufferedDC& context, wxhdDrawingView *view);
 	virtual void basicDrawSelected(wxBufferedDC& context, wxhdDrawingView *view);		
-	virtual void changeIcon(ddColumnType type, wxhdDrawingView *view=NULL, bool interaction=true);
+	virtual void toggleColumnKind(ddColumnType type, wxhdDrawingView *view=NULL, bool interaction=true);
 	virtual int getWidth();
 	virtual int getHeight();
-	ddColumnType getKind();
+	bool isNone();
+	bool isPrimaryKey();
+	bool isForeignKey();
+	void disableUniqueKey();
+	void disablePrimaryKey();
+	void enablePrimaryKey();
 	ddColumnFigure* getOwnerColumn();
-	virtual int getUniqueConstraintIndex();
-	virtual void setUniqueConstraintIndex(int i);
-	virtual void checkConsistencyOfKindIcon();
+	bool isUniqueKey();
+	bool isUniqueKey(int uniqueIndex);
+	int getUniqueConstraintIndex();
+	void setUniqueConstraintIndex(int i);
+	void setRightIconForColumn();
 
 protected:
 
 private:
 	ddColumnFigure *ownerColumn;
-	ddColumnType colType;
 	wxBitmap *iconToDraw;
 	wxBitmap icon;
 	int ukIndex;
+	bool isPk;
 
 	//multiple Uk management at table
 	void syncUkIndexes();

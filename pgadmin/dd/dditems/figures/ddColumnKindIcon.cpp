@@ -27,16 +27,21 @@
 #include "images/ddprimarykey.xpm"
 #include "images/ddunique.xpm"
 #include "images/ddprimaryforeignkey.xpm"
+#include "images/ddprimarykeyuniquekey.xpm"
+#include "images/ddforeignkeyfromuk.xpm"
+#include "images/ddprimaryforeignkeyfromuk.xpm"
+#include "images/ddforeignkeyuniquekey.xpm"
+#include "images/ddforeignkeyuniquekeyfromuk.xpm"
 
 ddColumnKindIcon::ddColumnKindIcon(ddColumnFigure *owner)
 {
 	ownerColumn=owner;
-	colType = none;
 	// Initialize with an image to allow initial size calculations
 	icon = wxBitmap(ddprimarykey_xpm);
     iconToDraw = NULL;
 	getBasicDisplayBox().SetSize(wxSize(getWidth(),getHeight()));
-	ukIndex=-1;
+	isPk = false;
+	ukIndex = -1;
 }
 
 ddColumnKindIcon::~ddColumnKindIcon()
@@ -48,15 +53,15 @@ void ddColumnKindIcon::createMenu(wxMenu &mnu)
     wxMenuItem *item;
     
 	item = mnu.AppendCheckItem(MNU_DDCTPKEY, _("Primary key"));
-    item->Check(colType==pk);
+    item->Check(isPrimaryKey());
     item->Enable(!getOwnerColumn()->isGeneratedForeignKey());
 	item = mnu.AppendCheckItem(MNU_DDCTUKEY, _("Unique key"));
-    item->Check(colType==uk);
+    item->Check(isUniqueKey());
 }
 
 void ddColumnKindIcon::OnGenericPopupClick(wxCommandEvent& event, wxhdDrawingView *view)
 {
-	changeIcon((ddColumnType)event.GetId(),view);
+	toggleColumnKind((ddColumnType)event.GetId(),view);
 }
 
 ddColumnFigure* ddColumnKindIcon::getOwnerColumn()
@@ -64,119 +69,37 @@ ddColumnFigure* ddColumnKindIcon::getOwnerColumn()
 	return ownerColumn;
 }
 
-void ddColumnKindIcon::changeIcon(ddColumnType type, wxhdDrawingView *view, bool interaction) 
+//if columntype attribute (type) is active then disable, is disable then active.
+void ddColumnKindIcon::toggleColumnKind(ddColumnType type, wxhdDrawingView *view, bool interaction) 
 {
-	bool ukCol = colType==uk;
-	wxString tmpString;
 
 	switch(type)
 	{
-		case pk:	
-				if(getOwnerColumn()->isForeignKey())
+		case pk:
+			//Set Pk attribute
+			if(isPrimaryKey())
+			{
+				disablePrimaryKey();
+			}
+			else
+			{
+				enablePrimaryKey();
+				if(getOwnerColumn()->isNull())
 				{
-					icon = wxBitmap(ddprimaryforeignkey_xpm);
+					getOwnerColumn()->setColumnOption(notnull);
 				}
-				else
-				{
-					icon = wxBitmap(ddprimarykey_xpm);
-				}
-				
-				if(colType==pk){
-					getOwnerColumn()->getOwnerTable()->prepareForDeleteFkColumn(getOwnerColumn());
-
-					if(!getOwnerColumn()->isUserCreatedForeignKey())  //User is trying to disable pk to none
-					{
-						colType=none;
-					}
-					else  //user disable pk but fk kind shouldn't be removed. Only possible when using existing column as fk destination
-					{
-						icon = wxBitmap(ddforeignkey_xpm);
-						colType = none;
-					}
-				}
-				else
-				{
-					if(colType==uk)
-					{
-						syncUkIndexes();
-						ukIndex=-1;
-					}
-					
-					if(getOwnerColumn()->isNull())
-					{
-						getOwnerColumn()->setColumnOption(notnull);
-					}
-					colType=pk;
-				}
-				getOwnerColumn()->getOwnerTable()->updateFkObservers();
-				break;
+			}
+			break;
 		case uk:
-				if(uniqueConstraintManager(ukCol,view,interaction))
-				{
-					icon = wxBitmap(ddunique_xpm);
-				}
-				else if(getOwnerColumn()->isForeignKey())
-				{
-					icon = wxBitmap(ddforeignkey_xpm);
-				}
-				getOwnerColumn()->getOwnerTable()->updateFkObservers();					
-				break;
-		case fkadjust:
-				if(colType==pk) //only possible when using an existing pk or uk column as fk column destination
-				{ 
-					if(getOwnerColumn()->isNull()) //converting to null a column from a pk/fk column
-					{
-						icon = wxBitmap(ddforeignkey_xpm);
-						colType=none;						
-					}
-					else
-					{
-						icon = wxBitmap(ddprimaryforeignkey_xpm);
-					}
-				}
-				else if(colType==uk) //when using fk from uk
-				{
-					icon = wxBitmap(ddprimaryforeignkey_xpm);
-				}
-				else
-				{
-					icon = wxBitmap(ddforeignkey_xpm);
-					colType=none;
-				}
-				break;
-		case pkuk:
-				break;
-		case none: 
-			    colType=none;
-				if(getOwnerColumn()->isForeignKey())
-				{
-					icon = wxBitmap(ddforeignkey_xpm);
-				}
-
-				if(colType == uk || getOwnerColumn()->isForeignKey())
-				{
-					getOwnerColumn()->getOwnerTable()->prepareForDeleteFkColumn(getOwnerColumn());
-				}
-				break;
-	}
-    if(colType!=none)
-    {
-		iconToDraw = &icon;
-	}
-	else if( getOwnerColumn()->isForeignKey() )  //there are fk with colType!=none after above switching
-	{
-		iconToDraw = &icon;
-		if(colType==none)
-		{
-			getOwnerColumn()->getOwnerTable()->updateFkObservers();
-		}
-	}
-	else
-	{
-		iconToDraw = NULL;
-		ukIndex=-1;
-		
-		getOwnerColumn()->getOwnerTable()->updateFkObservers();
+			if(isUniqueKey())
+			{
+				disableUniqueKey();
+			}
+			else
+			{
+				uniqueConstraintManager(false,view,interaction);
+			}
+			break;
 	}
 	getBasicDisplayBox().SetSize(wxSize(getWidth(),getHeight()));
 }
@@ -188,7 +111,7 @@ void ddColumnKindIcon::basicDraw(wxBufferedDC& context, wxhdDrawingView *view)
 		wxhdRect copy = displayBox();
 		view->CalcScrolledPosition(copy.x,copy.y,&copy.x,&copy.y);
 		//Adding a yellow circle to increase visibility of uk index
-		if(colType==uk)
+		if(isUniqueKey())
 		{
 			context.SetBrush(wxBrush(wxColour(wxT("YELLOW")), wxSOLID));
 			context.SetPen(wxPen(wxColour(wxT("YELLOW"))));
@@ -197,7 +120,7 @@ void ddColumnKindIcon::basicDraw(wxBufferedDC& context, wxhdDrawingView *view)
 		//Draw icon
 		context.DrawBitmap(*iconToDraw,copy.GetPosition(),true);
 		//Draw Uk index if needed
-		if(colType==uk && ukIndex>0)
+		if(isUniqueKey() && ukIndex>0)
 		{
 			wxFont font = settings->GetSystemFont();
 			font.SetPointSize(6);
@@ -229,10 +152,12 @@ int ddColumnKindIcon::getHeight()
 		return 10;
 }
 
+/*
 ddColumnType ddColumnKindIcon::getKind()
 {
 	return colType;
 }
+*/
 
 int ddColumnKindIcon::getUniqueConstraintIndex()
 {
@@ -247,12 +172,12 @@ void ddColumnKindIcon::setUniqueConstraintIndex(int i)
 bool ddColumnKindIcon::uniqueConstraintManager(bool ukCol, wxhdDrawingView *view, bool interaction)
 {
     wxString tmpString;
-    colType=uk;
-    if(ukCol) //if already this column kind is Unique Key then convert in a normal column
+    bool isColUk = true;
+
+	if(ukCol) //if already this column kind is Unique Key then convert in a normal column
     {
         syncUkIndexes();
-        getOwnerColumn()->setUniqueConstraintIndex(-1);
-        colType=none;
+        setUniqueConstraintIndex(-1);
     }
     else //colType!=uk
     {
@@ -270,8 +195,7 @@ bool ddColumnKindIcon::uniqueConstraintManager(bool ukCol, wxhdDrawingView *view
                 }
                 else
                 {
-                    colType=none;
-                    ukIndex=-1;
+                    setUniqueConstraintIndex(-1);
                 }
             }
             else  //>0
@@ -303,8 +227,7 @@ bool ddColumnKindIcon::uniqueConstraintManager(bool ukCol, wxhdDrawingView *view
                         }
                         else
                         {
-                            colType=none;
-                            ukIndex=-1;
+                            setUniqueConstraintIndex(-1);
                         }
                     }
                     else
@@ -314,8 +237,7 @@ bool ddColumnKindIcon::uniqueConstraintManager(bool ukCol, wxhdDrawingView *view
                 }
                 else
                 {
-                    colType=none;
-                    ukIndex=-1;
+                    setUniqueConstraintIndex(-1);
                 }
             }
         }
@@ -324,10 +246,15 @@ bool ddColumnKindIcon::uniqueConstraintManager(bool ukCol, wxhdDrawingView *view
 
 		}
     }
-if(colType!=uk)
-	return false;
-else
-	return true;
+
+	//synchronize observers if this uk column is used as source of fk
+	setRightIconForColumn();
+	getOwnerColumn()->getOwnerTable()->updateFkObservers();								
+
+	if(!isUniqueKey())
+		return false;
+	else
+		return true;
 }
 
 //synchronize uk indexes when an uk is change kind from uk to other and other index should be update with that info
@@ -366,24 +293,122 @@ void ddColumnKindIcon::syncUkIndexes()
 	delete iterator;
 }
 
-//Hack to synchronize changes made by use of an existing column as foreign key target
-void ddColumnKindIcon::checkConsistencyOfKindIcon()
+void ddColumnKindIcon::setRightIconForColumn()
 {
-	if(!getOwnerColumn()->isForeignKey())
+	//for a pk Column
+	if(isPrimaryKey())
 	{
-		if(colType==pk)
+		if(isForeignKey())
+		{
+			if(getOwnerColumn()->isForeignKeyFromPk())
+			{
+				icon = wxBitmap(ddprimaryforeignkey_xpm);
+			}
+			else
+			{
+				icon = wxBitmap(ddprimaryforeignkeyfromuk_xpm);
+			}
+		}
+		else if(isUniqueKey())
+		{
+			icon = wxBitmap(ddprimarykeyuniquekey_xpm);
+		}
+		else
 		{
 			icon = wxBitmap(ddprimarykey_xpm);
-			iconToDraw = &icon;
 		}
-		else if(colType==uk)
+	}
+	else if(isUniqueKey())
+	{
+		if(isForeignKey())
+		{
+			if(getOwnerColumn()->isForeignKeyFromPk())
+			{
+				icon = wxBitmap(ddforeignkeyuniquekey_xpm);
+			}
+			else
+			{
+				icon = wxBitmap(ddforeignkeyuniquekeyfromuk_xpm);
+			}
+
+		}
+		else if(isPrimaryKey())
+		{
+			icon = wxBitmap(ddprimarykeyuniquekey_xpm);
+		}
+		else
 		{
 			icon = wxBitmap(ddunique_xpm);
-			iconToDraw = &icon;
 		}
-		else if(colType==none)
+
+	}
+	else if(isForeignKey() && !isPrimaryKey() && !isUniqueKey() )
+	{
+		
+		if(getOwnerColumn()->isForeignKeyFromPk())
 		{
-			iconToDraw = NULL;
+			icon = wxBitmap(ddforeignkey_xpm);
 		}
-	}	
+		else
+		{
+			icon = wxBitmap(ddforeignkeyfromuk_xpm);
+		}
+	}
+
+	
+	if(isNone())
+	{
+		iconToDraw = NULL;
+	}
+	else
+	{
+		iconToDraw = &icon;
+	}
+}
+
+bool ddColumnKindIcon::isPrimaryKey()
+{
+	return isPk;
+}
+
+bool ddColumnKindIcon::isUniqueKey()
+{
+	return ukIndex >= 0;
+}
+
+bool ddColumnKindIcon::isUniqueKey(int uniqueIndex)
+{
+	return (ukIndex == uniqueIndex);
+}
+
+bool ddColumnKindIcon::isNone()
+{
+	return !isUniqueKey() && !isPrimaryKey() && !isForeignKey();
+}
+bool ddColumnKindIcon::isForeignKey()
+{
+	return getOwnerColumn()->isForeignKey();
+}
+
+void ddColumnKindIcon::disableUniqueKey()
+{
+	syncUkIndexes();  //prepare to remove uk attribute to this column
+	ukIndex=-1;
+	getOwnerColumn()->getOwnerTable()->updateFkObservers();
+	setRightIconForColumn();
+}
+
+void ddColumnKindIcon::disablePrimaryKey()
+{
+	getOwnerColumn()->getOwnerTable()->prepareForDeleteFkColumn(getOwnerColumn());
+	isPk = false;
+	getOwnerColumn()->getOwnerTable()->updateFkObservers();	
+	setRightIconForColumn();
+}
+
+void ddColumnKindIcon::enablePrimaryKey()
+{
+	isPk = true;
+	getOwnerColumn()->getOwnerTable()->updateFkObservers();	
+	setRightIconForColumn();
 }

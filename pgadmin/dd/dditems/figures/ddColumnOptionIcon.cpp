@@ -64,13 +64,14 @@ void ddColumnOptionIcon::changeIcon(ddColumnOptionType type)
             icon = wxBitmap(ddnull_xpm);
             if(getOwnerColumn()->isPrimaryKey())
             {
-                if(getOwnerColumn()->isForeignKey())
+                if(getOwnerColumn()->isForeignKey() || getOwnerColumn()->isUniqueKey())
 				{
-                    getOwnerColumn()->setColumnKind(fkadjust);
+					getOwnerColumn()->toggleColumnKind(pk); //remove pk attribute because column now is null
+					getOwnerColumn()->setRightIconForColumn();
 				}
                 else
 				{
-                    getOwnerColumn()->setColumnKind(none);
+                   getOwnerColumn()->disablePrimaryKey();
 				}
             }
             break;
