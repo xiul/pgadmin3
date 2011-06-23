@@ -9,15 +9,19 @@
 //
 //////////////////////////////////////////////////////////////////////////
 
-#ifndef WXHDATTRIBUTE_H
-#define WXHDATTRIBUTE_H
-#include "dd/wxhotdraw/main/wxhdObject.h"
+#ifndef WXHDFONTATTRIBUTE_H
+#define WXHDFONTATTRIBUTE_H
 
-class wxhdAttribute : public wxhdObject
+#include "dd/wxhotdraw/figures/wxhdAttribute.h"
+
+class wxhdFontAttribute : public wxhdAttribute
 {
 public:
-	wxhdAttribute();
+	wxhdFontAttribute();
 	virtual void callDefaultChangeDialog(wxWindow *owner=NULL);
 	virtual void apply(wxBufferedDC& context);
+	wxFont& font();
+protected:
+	wxFont fontAttributes;
 };
 #endif

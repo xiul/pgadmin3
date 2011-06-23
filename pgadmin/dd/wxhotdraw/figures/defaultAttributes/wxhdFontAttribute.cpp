@@ -15,20 +15,29 @@
 #include <wx/wx.h>
 #include <wx/dcbuffer.h>
 #include <wx/pen.h>
+#include <wx/fontdlg.h>
 
 // App headers
+#include "dd/wxhotdraw/figures/defaultAttributes/wxhdFontAttribute.h"
 #include "dd/wxhotdraw/figures/wxhdAttribute.h"
 
-wxhdAttribute::wxhdAttribute():
-wxhdObject()
+wxhdFontAttribute::wxhdFontAttribute():
+wxhdAttribute()
 {
+	fontAttributes = settings->GetSystemFont();
 }
 
-void wxhdAttribute::apply(wxBufferedDC& context)
+void wxhdFontAttribute::apply(wxBufferedDC& context)
 {
+	context.SetFont(fontAttributes);
 }
 
-void wxhdAttribute::callDefaultChangeDialog(wxWindow *owner)
+void wxhdFontAttribute::callDefaultChangeDialog(wxWindow *owner)
 {
+	fontAttributes = wxGetFontFromUser(owner, fontAttributes,wxT("Select a font..."));
 }
 
+wxFont& wxhdFontAttribute::font()
+{
+	return fontAttributes;
+}

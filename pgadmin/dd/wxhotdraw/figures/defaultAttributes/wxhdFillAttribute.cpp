@@ -15,20 +15,31 @@
 #include <wx/wx.h>
 #include <wx/dcbuffer.h>
 #include <wx/pen.h>
+#include <wx/colordlg.h>
 
 // App headers
+#include "dd/wxhotdraw/figures/defaultAttributes/wxhdFillAttribute.h"
 #include "dd/wxhotdraw/figures/wxhdAttribute.h"
 
-wxhdAttribute::wxhdAttribute():
-wxhdObject()
+wxhdFillAttribute::wxhdFillAttribute():
+wxhdAttribute()
 {
+	fillAttributes = wxBrush(*wxBLACK);
 }
 
-void wxhdAttribute::apply(wxBufferedDC& context)
+void wxhdFillAttribute::apply(wxBufferedDC& context)
 {
+	context.SetBackground(fillAttributes);
 }
 
-void wxhdAttribute::callDefaultChangeDialog(wxWindow *owner)
+void wxhdFillAttribute::callDefaultChangeDialog(wxWindow *owner)
 {
+	//create brush dialog
+	wxColour color = wxGetColourFromUser(owner, fillAttributes.GetColour(),wxT("Select a color for fill color..."));
+	fillAttributes = wxBrush(color);
 }
 
+wxBrush& wxhdFillAttribute::brush()
+{
+	return fillAttributes;
+}

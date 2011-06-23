@@ -15,20 +15,29 @@
 #include <wx/wx.h>
 #include <wx/dcbuffer.h>
 #include <wx/pen.h>
+#include <wx/colordlg.h>
 
 // App headers
+#include "dd/wxhotdraw/figures/defaultAttributes/wxhdFontColorAttribute.h"
 #include "dd/wxhotdraw/figures/wxhdAttribute.h"
 
-wxhdAttribute::wxhdAttribute():
-wxhdObject()
+wxhdFontColorAttribute::wxhdFontColorAttribute():
+wxhdAttribute()
 {
+	fontColorAttribute = *wxBLACK;
 }
 
-void wxhdAttribute::apply(wxBufferedDC& context)
+void wxhdFontColorAttribute::apply(wxBufferedDC& context)
 {
+	context.SetTextForeground(fontColorAttribute);
 }
 
-void wxhdAttribute::callDefaultChangeDialog(wxWindow *owner)
+void wxhdFontColorAttribute::callDefaultChangeDialog(wxWindow *owner)
 {
+	fontColorAttribute = wxGetColourFromUser(owner, fontColorAttribute,wxT("Select a color for font..."));
 }
 
+wxColor& wxhdFontColorAttribute::fontColor()
+{
+	return fontColorAttribute;
+}

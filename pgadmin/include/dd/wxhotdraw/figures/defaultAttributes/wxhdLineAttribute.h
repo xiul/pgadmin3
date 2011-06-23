@@ -9,15 +9,19 @@
 //
 //////////////////////////////////////////////////////////////////////////
 
-#ifndef WXHDATTRIBUTE_H
-#define WXHDATTRIBUTE_H
-#include "dd/wxhotdraw/main/wxhdObject.h"
+#ifndef WXHDLINECOLORATTRIBUTE_H
+#define WXHDLINECOLORATTRIBUTE_H
 
-class wxhdAttribute : public wxhdObject
+#include "dd/wxhotdraw/figures/wxhdAttribute.h"
+
+class wxhdLineAttribute : public wxhdAttribute
 {
 public:
-	wxhdAttribute();
+	wxhdLineAttribute();
 	virtual void callDefaultChangeDialog(wxWindow *owner=NULL);
 	virtual void apply(wxBufferedDC& context);
+	wxPen& pen();
+protected:
+	wxPen penAttributes;
 };
 #endif

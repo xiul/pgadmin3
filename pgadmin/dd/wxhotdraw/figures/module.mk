@@ -26,3 +26,5 @@ pgadmin3_SOURCES += \
 
 EXTRA_DIST += \
 	$(srcdir)/dd/wxhotdraw/figures/module.mk
+
+include $(srcdir)/dd/wxhotdraw/figures/defaultAttributes/module.mk

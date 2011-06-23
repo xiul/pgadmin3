@@ -9,15 +9,19 @@
 //
 //////////////////////////////////////////////////////////////////////////
 
-#ifndef WXHDATTRIBUTE_H
-#define WXHDATTRIBUTE_H
-#include "dd/wxhotdraw/main/wxhdObject.h"
+#ifndef WXHDFILLCOLORATTRIBUTE_H
+#define WXHDFILLCOLORATTRIBUTE_H
 
-class wxhdAttribute : public wxhdObject
+#include "dd/wxhotdraw/figures/wxhdAttribute.h"
+
+class wxhdFillAttribute : public wxhdAttribute
 {
 public:
-	wxhdAttribute();
+	wxhdFillAttribute();
 	virtual void callDefaultChangeDialog(wxWindow *owner=NULL);
 	virtual void apply(wxBufferedDC& context);
+	wxBrush& brush();
+protected:
+	wxBrush fillAttributes;
 };
 #endif

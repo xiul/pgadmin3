@@ -11,10 +11,19 @@
 
 #ifndef WXHDATTRIBUTEFIGURE_H
 #define WXHDATTRIBUTEFIGURE_H
+
+// wxWindows headers
 #include "dd/wxhotdraw/figures/wxhdAbstractFigure.h"
 #include "dd/wxhotdraw/figures/wxhdAttribute.h"
 #include "dd/wxhotdraw/main/wxhdObject.h"
 #include <wx/arrstr.h>
+
+// App headers
+#include "dd/wxhotdraw/figures/defaultAttributes/wxhdFillAttribute.h"
+#include "dd/wxhotdraw/figures/defaultAttributes/wxhdFontAttribute.h"
+#include "dd/wxhotdraw/figures/defaultAttributes/wxhdFontColorAttribute.h"
+#include "dd/wxhotdraw/figures/defaultAttributes/wxhdLineAttribute.h"
+
 
 WX_DECLARE_STRING_HASH_MAP( wxhdAttribute, attributesHashMap );
 
@@ -26,6 +35,8 @@ public:
 	
 	attributesHashMap attributes;
 
+	void draw(wxBufferedDC& context, wxhdDrawingView *view);
+	void drawSelected(wxBufferedDC& context, wxhdDrawingView *view);
 	wxhdAttribute& getAttribute(wxString name);
 	void addAttribute(wxString name, wxhdAttribute attribute);
 	void modifyValueAttribute(wxString name, wxhdAttribute attribute);
@@ -35,6 +46,10 @@ public:
 protected:
 	
 private:
+	wxhdFontAttribute fontAttribute;
+	wxhdFontColorAttribute fontColorAttribute;
+	wxhdFillAttribute fillAttribute;
+	wxhdLineAttribute lineAttribute;	
 	wxArrayString defaultAttributes;
 };
 #endif

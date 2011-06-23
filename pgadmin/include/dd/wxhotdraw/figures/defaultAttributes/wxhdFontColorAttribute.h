@@ -9,15 +9,19 @@
 //
 //////////////////////////////////////////////////////////////////////////
 
-#ifndef WXHDATTRIBUTE_H
-#define WXHDATTRIBUTE_H
-#include "dd/wxhotdraw/main/wxhdObject.h"
+#ifndef WXHDFONTCOLORATTRIBUTE_H
+#define WXHDFONTCOLORATTRIBUTE_H
 
-class wxhdAttribute : public wxhdObject
+#include "dd/wxhotdraw/figures/wxhdAttribute.h"
+
+class wxhdFontColorAttribute : public wxhdAttribute
 {
 public:
-	wxhdAttribute();
+	wxhdFontColorAttribute();
 	virtual void callDefaultChangeDialog(wxWindow *owner=NULL);
 	virtual void apply(wxBufferedDC& context);
+	wxColor& fontColor();
+protected:
+	wxColor fontColorAttribute;
 };
 #endif

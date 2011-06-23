@@ -18,6 +18,11 @@
 
 // App headers
 #include "dd/wxhotdraw/figures/wxhdAttributeFigure.h"
+#include "dd/wxhotdraw/figures/wxhdAttribute.h"
+#include "dd/wxhotdraw/figures/defaultAttributes/wxhdFillAttribute.h"
+#include "dd/wxhotdraw/figures/defaultAttributes/wxhdFontAttribute.h"
+#include "dd/wxhotdraw/figures/defaultAttributes/wxhdFontColorAttribute.h"
+#include "dd/wxhotdraw/figures/defaultAttributes/wxhdLineAttribute.h"
 
 wxhdAttributeFigure::wxhdAttributeFigure()
 {
@@ -26,7 +31,6 @@ wxhdAttributeFigure::wxhdAttributeFigure()
 
 wxhdAttributeFigure::~wxhdAttributeFigure()
 {
-	//before delete all items inside to free memory
 	attributes.clear();	
 }
 wxhdAttribute& wxhdAttributeFigure::getAttribute(wxString name)
@@ -53,26 +57,35 @@ void wxhdAttributeFigure::modifyValueAttribute(wxString name, wxhdAttribute attr
 
 }
 
+void wxhdAttributeFigure::draw(wxBufferedDC& context, wxhdDrawingView *view)
+{
+	
+	wxhdAbstractFigure::draw(context, view);
+}
+
+void wxhdAttributeFigure::drawSelected(wxBufferedDC& context, wxhdDrawingView *view)
+{
+	wxhdAbstractFigure::drawSelected(context, view);
+
+	attributesHashMap::iterator it;
+	wxhdAttribute attribute;
+	for (it = attributes.begin(); it != attributes.end(); ++it)
+	{
+		wxString key = it->first;
+		attribute = it->second;
+		attribute.apply(context);
+	}
+}
+
 void wxhdAttributeFigure::initializeDefaultAttributes()
 {
 	defaultAttributes.Clear();
-	defaultAttributes.Add(wxT("FontAlignment"));
-	defaultAttributes.Add(wxT("FontFamily"));
-	defaultAttributes.Add(wxT("FontSize"));
-	defaultAttributes.Add(wxT("FontStyle"));
+	defaultAttributes.Add(wxT("Font"));
+	addAttribute(wxT("Font"),fontAttribute);
 	defaultAttributes.Add(wxT("FontColor"));
-	defaultAttributes.Add(wxT("FillColor"));
-	defaultAttributes.Add(wxT("LineColor"));
-	defaultAttributes.Add(wxT("LineWidth"));
-
-/*  Should be removed and changed by new class hierarchy
-
-	addAttribute(wxT("FontAlignment"),wxT("LEFT"));
-	addAttribute(wxT("FontFamily"),wxT("San Serif"));
-	addAttribute(wxT("FontSize"),wxT("10"));
-	addAttribute(wxT("FontStyle"),wxT("Normal")); //wxFONTSTYLE_NORMAL,
-	addAttribute(wxT("FontColor"),wxT(""));  //SetTextForeground
-	addAttribute(wxT("FillColor"),wxT(""));  //SetTextBackground
-	addAttribute(wxT("LineColor"),wxT(""));
-	addAttribute(wxT("LineWidth"),wxT("1.0"));*/
+	addAttribute(wxT("FontColor"),fontColorAttribute);
+	defaultAttributes.Add(wxT("Line"));
+	addAttribute(wxT("Line"),lineAttribute);
+	defaultAttributes.Add(wxT("Fill"));
+	addAttribute(wxT("Fill"),fillAttribute);
 }

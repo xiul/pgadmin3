@@ -4054,6 +4054,26 @@
 							RelativePath=".\include\dd\wxhotdraw\figures\wxhdSimpleTextFigure.h"
 							>
 						</File>
+						<Filter
+							Name="defaultAttributes"
+							>
+							<File
+								RelativePath=".\include\dd\wxhotdraw\figures\defaultAttributes\wxhdFillAttribute.h"
+								>
+							</File>
+							<File
+								RelativePath=".\include\dd\wxhotdraw\figures\defaultAttributes\wxhdFontAttribute.h"
+								>
+							</File>
+							<File
+								RelativePath=".\include\dd\wxhotdraw\figures\defaultAttributes\wxhdFontColorAttribute.h"
+								>
+							</File>
+							<File
+								RelativePath=".\include\dd\wxhotdraw\figures\defaultAttributes\wxhdLineAttribute.h"
+								>
+							</File>
+						</Filter>
 					</Filter>
 					<Filter
 						Name="handles"
@@ -5883,6 +5903,26 @@
 						RelativePath=".\dd\wxhotdraw\figures\wxhdSimpleTextFigure.cpp"
 						>
 					</File>
+					<Filter
+						Name="defaultAttributes"
+						>
+						<File
+							RelativePath=".\dd\wxhotdraw\figures\defaultAttributes\wxhdFillAttribute.cpp"
+							>
+						</File>
+						<File
+							RelativePath=".\dd\wxhotdraw\figures\defaultAttributes\wxhdFontAttribute.cpp"
+							>
+						</File>
+						<File
+							RelativePath=".\dd\wxhotdraw\figures\defaultAttributes\wxhdFontColorAttribute.cpp"
+							>
+						</File>
+						<File
+							RelativePath=".\dd\wxhotdraw\figures\defaultAttributes\wxhdLineAttribute.cpp"
+							>
+						</File>
+					</Filter>
 				</Filter>
 				<Filter
 					Name="handles"
