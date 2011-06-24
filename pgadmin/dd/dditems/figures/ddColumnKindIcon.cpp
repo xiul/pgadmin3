@@ -42,6 +42,9 @@ ddColumnKindIcon::ddColumnKindIcon(ddColumnFigure *owner)
 	getBasicDisplayBox().SetSize(wxSize(getWidth(),getHeight()));
 	isPk = false;
 	ukIndex = -1;
+	
+	//Set Value default Attributes
+fontAttribute->font().SetPointSize(owner->fontAttribute->font().GetPointSize());
 }
 
 ddColumnKindIcon::~ddColumnKindIcon()
@@ -128,6 +131,7 @@ void ddColumnKindIcon::basicDraw(wxBufferedDC& context, wxhdDrawingView *view)
 			wxString inumber = wxString::Format(wxT("%d"), (int)ukIndex+1);
 			context.DrawText(inumber,copy.x+4,copy.y+2);
 		}
+
 	}
 }
 

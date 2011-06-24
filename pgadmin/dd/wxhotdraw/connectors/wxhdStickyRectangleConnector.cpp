@@ -5,7 +5,7 @@
 // Copyright (C) 2002 - 2011, The pgAdmin Development Team
 // This software is released under the PostgreSQL Licence
 //
-// wxhdAbstractFigure.cpp - A StickyRectangleConnector locates connection points by choping
+// wxhdStickyRectangleConnector.cpp - A StickyRectangleConnector locates connection points by choping
 // the connection between the centers of the two figures at the display box. The location 
 // of the connection point is computed once, when the user connects the figure. 
 // Moving the figure around will not change the location.

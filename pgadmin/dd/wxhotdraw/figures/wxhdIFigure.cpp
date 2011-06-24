@@ -30,12 +30,6 @@ wxhdIFigure::wxhdIFigure()
 	selected=false;
 	connector=NULL;
 	basicDisplayBox.SetSize(wxSize(0,0));
-
-	//Default color and pen defined
-	defaultPen = wxPen(wxColour(0, 0, 0),1,wxSOLID);
-	defaultBrush = wxBrush (wxColour(255, 255, 255),wxSOLID);
-	defaultSelectedPen = wxPen(wxColour(255, 0, 0),1,wxSOLID);
-	defaultSelectedBrush = wxBrush (wxColour(225, 225, 225),wxSOLID);
 }
 
 wxhdIFigure::~wxhdIFigure()
@@ -67,14 +61,12 @@ bool wxhdIFigure::containsPoint (int x, int y)
 
 void wxhdIFigure::draw (wxBufferedDC& context, wxhdDrawingView *view)
 {
-	context.SetPen(defaultPen);
-	context.SetBrush(defaultBrush);
+
 }
 
 void wxhdIFigure::drawSelected (wxBufferedDC& context, wxhdDrawingView *view)
 {
-	context.SetPen(defaultSelectedPen);
-	context.SetBrush(defaultSelectedBrush);
+
 }
 
 wxhdCollection* wxhdIFigure::handlesEnumerator()
@@ -160,26 +152,6 @@ void wxhdIFigure::removeObserver(wxhdIFigure *observer)
 	if(observers){
 		observers->removeItem(observer);
 	}
-}
-
-void wxhdIFigure::setDefaultPen(wxPen& pen)
-{
-	defaultPen=pen;
-}
-
-void wxhdIFigure::setDefaultSelectedPen(wxPen& pen)
-{
-	defaultSelectedPen=pen;
-}
-
-void wxhdIFigure::setDefaultBrush(wxBrush& brush)
-{
-	defaultBrush=brush;
-}
-
-void wxhdIFigure::setDefaultSelectedBrush(wxBrush& brush)
-{
-	defaultSelectedBrush=brush;
 }
 
 wxhdIteratorBase* wxhdIFigure::observersEnumerator()

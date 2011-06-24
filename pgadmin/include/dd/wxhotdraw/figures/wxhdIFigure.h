@@ -54,12 +54,6 @@ protected:
 	wxhdRect basicDisplayBox;
 	wxhdCollection *handles;
 	wxhdCollection *observers;
-	void setDefaultPen(wxPen& pen);
-	void setDefaultSelectedPen(wxPen& pen);
-	void setDefaultBrush(wxBrush& brush);
-	void setDefaultSelectedBrush(wxBrush& brush);
-	wxPen defaultPen, defaultSelectedPen;
-	wxBrush defaultBrush, defaultSelectedBrush;
 	wxhdIConnector *connector;
 private:
 	bool selected;

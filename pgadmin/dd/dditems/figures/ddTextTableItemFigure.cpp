@@ -29,7 +29,7 @@
 ddTextTableItemFigure::ddTextTableItemFigure(wxString& columnName, ddDataType dataType, ddColumnFigure *owner):
 wxhdSimpleTextFigure(columnName)
 {
-	ownerTable = NULL;
+	ownerTable = NULL; //table name item is the only one case of use of this variable
 	oneTimeNoAlias = false;
 	columnType = dataType;
 	this->setEditable(true);
@@ -40,6 +40,12 @@ wxhdSimpleTextFigure(columnName)
 	recalculateDisplayBox();
 	precision = -1;
 	scale = -1;
+	
+	if(owner)  //is Column Object
+	{
+		fontColorAttribute->fontColor = owner->getOwnerTable()->fontColorAttribute->fontColor;
+		fontSelColorAttribute->fontColor = owner->getOwnerTable()->fontSelColorAttribute->fontColor;
+	}
 }
 
 ddTextTableItemFigure::~ddTextTableItemFigure()
@@ -54,6 +60,11 @@ void ddTextTableItemFigure::displayBoxUpdate()
 void ddTextTableItemFigure::setOwnerTable(ddTableFigure *table)
 {
 	ownerTable = table;
+	if(table)//is Table Name object
+	{
+		fontColorAttribute->fontColor = ownerTable->fontColorAttribute->fontColor;
+		fontSelColorAttribute->fontColor = ownerTable->fontSelColorAttribute->fontColor;
+	}
 }
 
 wxString& ddTextTableItemFigure::getText(bool extended)

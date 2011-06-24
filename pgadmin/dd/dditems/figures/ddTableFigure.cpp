@@ -65,6 +65,17 @@ wxhdCompositeFigure()
 	externalPadding = 4;
 	selectingFkDestination=false;
 
+	//Set Value default Attributes
+	fontAttribute->font().SetPointSize(8);
+	fontColorAttribute->fontColor = wxColour(49,79,79);
+	//Set Value default selected Attributes
+	lineSelAttribute->pen().SetColour(wxColour(204,0,0));
+	lineSelAttribute->pen().SetStyle(wxSOLID);
+	lineSelAttribute->pen().SetWidth(1);
+	fillSelAttribute->brush().SetColour(wxColour(255, 250, 205));
+	fillAttribute->brush().SetColour(wxColour(248,248,255));	
+	fontSelColorAttribute->fontColor = wxColour(49,79,79);
+	
 	//Set table size, width and position
 	rectangleFigure = new wxhdRectangleFigure();
 	rectangleFigure->moveTo(x,y);
@@ -233,13 +244,7 @@ void ddTableFigure::recalculateColsPos()
 
 void ddTableFigure::basicDraw(wxBufferedDC& context, wxhdDrawingView *view)
 {
-
-	context.SetPen(defaultPen);
-	context.SetBrush(defaultBrush);
-
 	calcRectsAreas();
-	context.SetPen(*wxBLACK_PEN);
-	context.SetBrush(wxBrush (wxColour(255, 255, 224),wxSOLID));
 
 	if(calcScrolled) //Hack to avoid pass view as parameter to calcRectsAreas() because is sometimes called outside a paint event
 	{
@@ -265,7 +270,10 @@ void ddTableFigure::basicDraw(wxBufferedDC& context, wxhdDrawingView *view)
 			f->draw(context,view);
 		}
 	}
+	
+	reapplyAttributes(context,view); //reset attributes to default of figure because can be modified at Draw functions.
 
+	//Set Font for title "Columns"
 	wxFont font = settings->GetSystemFont();
 	font.SetPointSize(7);
 	context.SetFont(font);
@@ -285,6 +293,8 @@ void ddTableFigure::basicDraw(wxBufferedDC& context, wxhdDrawingView *view)
 	//disable until implemented in a future: context.DrawText(wxT("Indexes"),titleIndxsRect.x+3,titleIndxsRect.y);
 	//Draw Indexes Title Line 2
 	context.DrawLine(titleIndxsRect.GetBottomLeft(),titleIndxsRect.GetBottomRight());
+
+	context.SetFont(fontAttribute->font()); 		//after change font return always to initial one
 
 	//Draw scrollbar is needed
 	if(scrollbar && figureHandles->existsObject(scrollbar))
@@ -308,17 +318,14 @@ void ddTableFigure::basicDraw(wxBufferedDC& context, wxhdDrawingView *view)
 		context.SetBrush(old);
 		context.SetTextForeground(*wxBLACK);
 		context.SetBackground(*wxWHITE);
+		
+		//don't draw anything else then don't reapply default attributes
 	}
 }
 
 void ddTableFigure::basicDrawSelected(wxBufferedDC& context, wxhdDrawingView *view)
 {
-	context.SetPen(defaultSelectedPen);
-	context.SetBrush(defaultSelectedBrush);
-
 	calcRectsAreas();
-	context.SetPen(wxPen(wxColour(70, 130, 180),2,wxSOLID));
-	context.SetBrush(wxBrush (wxColour(224, 248, 255),wxSOLID));
 
 	if(calcScrolled) //Hack to avoid pass view as parameter to calcRectsAreas() because is sometimes called outside a paint event
 	{
@@ -345,6 +352,7 @@ void ddTableFigure::basicDrawSelected(wxBufferedDC& context, wxhdDrawingView *vi
 		}
 	}
 
+	reapplySelAttributes(context,view); //reset attributes to default of figure because can be modified at Draw functions.
 	wxFont font = settings->GetSystemFont();
 	font.SetPointSize(7);
 	context.SetFont(font);

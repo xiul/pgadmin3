@@ -52,19 +52,17 @@ void ddAddFkButtonHandle::invokeStart(wxhdMouseEvent &event, wxhdDrawingView *vi
 		e.SetEventObject(view);
 		wxhdMouseEvent evento(e,view);
 		conn->mouseDown(evento);
+		ddTableFigure *table = (ddTableFigure*) getOwner();
+		table->setSelectFkDestMode(true);
 	}
 }
 
 void ddAddFkButtonHandle::invokeStep(wxhdMouseEvent &event, wxhdDrawingView *view)
 {
-	ddTableFigure *table = (ddTableFigure*) getOwner();
-	table->canConnect();
 }
 
 void ddAddFkButtonHandle::invokeEnd(wxhdMouseEvent &event, wxhdDrawingView *view)
 {
-	ddTableFigure *table = (ddTableFigure*) getOwner();
-	table->canConnect();
 }
 
 wxCursor ddAddFkButtonHandle::createCursor()

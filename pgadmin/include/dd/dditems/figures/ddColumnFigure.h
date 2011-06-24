@@ -11,7 +11,7 @@
 
 #ifndef DDCOLUMNFIGURE_H
 #define DDCOLUMNFIGURE_H
-#include "dd/wxhotdraw/figures/wxhdAbstractFigure.h"
+#include "dd/wxhotdraw/figures/wxhdAttributeFigure.h"
 #include "dd/dditems/figures/ddColumnKindIcon.h"
 #include "dd/dditems/figures/ddColumnOptionIcon.h"
 #include "dd/dditems/figures/ddTextTableItemFigure.h"
@@ -20,7 +20,7 @@ class ddTableFigure;
 class ddRelationshipItem;
 
 //Minimal overhead composite figure
-class ddColumnFigure : public wxhdAbstractFigure
+class ddColumnFigure : public wxhdAttributeFigure
 {
 public:
 	ddColumnFigure(wxString& columnName, ddTableFigure *owner, ddRelationshipItem *sourceFk=NULL);

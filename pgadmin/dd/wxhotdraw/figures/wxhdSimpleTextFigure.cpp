@@ -27,8 +27,6 @@ wxhdSimpleTextFigure::wxhdSimpleTextFigure(wxString textString)
 {
 	textEditable = false;
 	font = settings->GetSystemFont();
-	textForeground = *wxBLACK;
-	textBackground = *wxTRANSPARENT_BRUSH;
 	padding = 2;
 	setText(textString);
 	showMenu = false;
@@ -56,24 +54,12 @@ void wxhdSimpleTextFigure::setFont(wxFont textFont)
 	recalculateDisplayBox();
 }
 
-void wxhdSimpleTextFigure::setForeground(wxColour colour)
-{
-	textForeground = colour;
-}
-
-void wxhdSimpleTextFigure::setBackground(wxBrush background)
-{
-	textBackground = background;
-}
-
 void wxhdSimpleTextFigure::getFontMetrics(int &width, int &height)
 {
 	wxBitmap emptyBitmap(ddnull_xpm);	
 	wxMemoryDC temp_dc;
 	temp_dc.SelectObject(emptyBitmap);
 	temp_dc.SetFont(font);
-	temp_dc.SetTextForeground(textForeground);
-	temp_dc.SetBrush(textBackground);
 	if(getText(true).length()>5)
 		temp_dc.GetTextExtent(getText(true),&width,&height);
 	else
@@ -95,20 +81,14 @@ void wxhdSimpleTextFigure::basicDraw(wxBufferedDC& context, wxhdDrawingView *vie
 {
 	wxhdRect copy = displayBox();
 	view->CalcScrolledPosition(copy.x,copy.y,&copy.x,&copy.y);
-	setupLayout(context);
 	context.DrawText(getText(true),copy.GetPosition());
 }
 
 void wxhdSimpleTextFigure::basicDrawSelected(wxBufferedDC& context, wxhdDrawingView *view)
 {
-	basicDraw(context,view);
-}
-
-void wxhdSimpleTextFigure::setupLayout(wxBufferedDC& context)
-{
-	context.SetFont(font);
-	context.SetTextForeground(textForeground);
-	context.SetBrush(textBackground);
+	wxhdRect copy = displayBox();
+	view->CalcScrolledPosition(copy.x,copy.y,&copy.x,&copy.y);
+	context.DrawText(getText(true),copy.GetPosition());
 }
 
 void wxhdSimpleTextFigure::basicMoveBy(int x, int y)

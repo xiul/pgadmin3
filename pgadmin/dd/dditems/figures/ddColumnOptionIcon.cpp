@@ -32,6 +32,9 @@ ddColumnOptionIcon::ddColumnOptionIcon(ddColumnFigure *owner)
 	icon = wxBitmap(ddnull_xpm);
 	iconToDraw = &icon;
 	getBasicDisplayBox().SetSize(wxSize(getWidth(),getHeight()));
+
+	//Set Value default Attributes
+fontAttribute->font().SetPointSize(owner->fontAttribute->font().GetPointSize());
 }
 
 ddColumnOptionIcon::~ddColumnOptionIcon()

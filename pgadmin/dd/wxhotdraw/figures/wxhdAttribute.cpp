@@ -5,7 +5,7 @@
 // Copyright (C) 2002 - 2011, The pgAdmin Development Team
 // This software is released under the PostgreSQL Licence
 //
-// wxhdAbstractFigure.cpp - Base class for all figures with attributes (line size, fonts and others)
+// wxhdAttributeFigure.cpp - Base class for all figure attributes
 //
 //////////////////////////////////////////////////////////////////////////
 

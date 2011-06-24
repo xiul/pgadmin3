@@ -12,7 +12,7 @@
 #ifndef DDCOLUMNOPTIONICON_H
 #define DDCOLUMNOPTIONICON_H
 
-#include "dd/wxhotdraw/figures/wxhdAbstractMenuFigure.h"
+#include "dd/wxhotdraw/figures/wxhdAttributeFigure.h"
 
 class ddColumnFigure;
 
@@ -28,7 +28,7 @@ enum
     MNU_COLNOTNULL
 };
 
-class ddColumnOptionIcon : public wxhdAbstractMenuFigure
+class ddColumnOptionIcon : public wxhdAttributeFigure
 {
 public:
 	ddColumnOptionIcon(ddColumnFigure *owner);

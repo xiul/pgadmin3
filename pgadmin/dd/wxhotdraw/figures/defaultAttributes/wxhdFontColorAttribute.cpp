@@ -5,7 +5,7 @@
 // Copyright (C) 2002 - 2011, The pgAdmin Development Team
 // This software is released under the PostgreSQL Licence
 //
-// wxhdAbstractFigure.cpp - Base class for all figures with attributes (line size, fonts and others)
+// wxhdFontAttribute.cpp - Default attribute for color of fonts
 //
 //////////////////////////////////////////////////////////////////////////
 
@@ -24,20 +24,15 @@
 wxhdFontColorAttribute::wxhdFontColorAttribute():
 wxhdAttribute()
 {
-	fontColorAttribute = *wxBLACK;
+	fontColor = wxColour(*wxBLACK);
 }
 
 void wxhdFontColorAttribute::apply(wxBufferedDC& context)
 {
-	context.SetTextForeground(fontColorAttribute);
+	context.SetTextForeground(fontColor);
 }
 
 void wxhdFontColorAttribute::callDefaultChangeDialog(wxWindow *owner)
 {
-	fontColorAttribute = wxGetColourFromUser(owner, fontColorAttribute,wxT("Select a color for font..."));
-}
-
-wxColor& wxhdFontColorAttribute::fontColor()
-{
-	return fontColorAttribute;
+	fontColor = wxGetColourFromUser(owner, fontColor,wxT("Select a color for font..."));
 }

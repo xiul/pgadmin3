@@ -11,9 +11,9 @@
 
 #ifndef WXHDCOMPOSITEFIGURE_H
 #define WXHDCOMPOSITEFIGURE_H
-#include "dd/wxhotdraw/figures/wxhdAbstractFigure.h"
+#include "dd/wxhotdraw/figures/wxhdAttributeFigure.h"
 
-class wxhdCompositeFigure : public wxhdAbstractFigure
+class wxhdCompositeFigure : public wxhdAttributeFigure
 {
 public:
 	wxhdCompositeFigure();

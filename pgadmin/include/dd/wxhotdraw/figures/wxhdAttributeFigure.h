@@ -24,32 +24,32 @@
 #include "dd/wxhotdraw/figures/defaultAttributes/wxhdFontColorAttribute.h"
 #include "dd/wxhotdraw/figures/defaultAttributes/wxhdLineAttribute.h"
 
-
-WX_DECLARE_STRING_HASH_MAP( wxhdAttribute, attributesHashMap );
-
 class wxhdAttributeFigure : public wxhdAbstractFigure
 {
 public:
 	wxhdAttributeFigure();
     ~wxhdAttributeFigure();
 	
-	attributesHashMap attributes;
-
 	void draw(wxBufferedDC& context, wxhdDrawingView *view);
 	void drawSelected(wxBufferedDC& context, wxhdDrawingView *view);
-	wxhdAttribute& getAttribute(wxString name);
-	void addAttribute(wxString name, wxhdAttribute attribute);
-	void modifyValueAttribute(wxString name, wxhdAttribute attribute);
-	bool removeAttribute(wxString name);
+	void reapplyAttributes(wxBufferedDC& context, wxhdDrawingView *view);
+	void reapplySelAttributes(wxBufferedDC& context, wxhdDrawingView *view);
+
 	void initializeDefaultAttributes();
 
+	//Draw attributes	
+	wxhdFontAttribute* fontAttribute;
+	wxhdFontColorAttribute* fontColorAttribute;
+	wxhdFillAttribute* fillAttribute;
+	wxhdLineAttribute* lineAttribute;
+	//Draw selected attributes	
+	wxhdFontAttribute* fontSelAttribute;
+	wxhdFontColorAttribute* fontSelColorAttribute;
+	wxhdFillAttribute* fillSelAttribute;
+	wxhdLineAttribute* lineSelAttribute;
 protected:
 	
 private:
-	wxhdFontAttribute fontAttribute;
-	wxhdFontColorAttribute fontColorAttribute;
-	wxhdFillAttribute fillAttribute;
-	wxhdLineAttribute lineAttribute;	
-	wxArrayString defaultAttributes;
+
 };
 #endif

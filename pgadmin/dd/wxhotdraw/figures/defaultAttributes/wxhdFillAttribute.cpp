@@ -5,7 +5,7 @@
 // Copyright (C) 2002 - 2011, The pgAdmin Development Team
 // This software is released under the PostgreSQL Licence
 //
-// wxhdAbstractFigure.cpp - Base class for all figures with attributes (line size, fonts and others)
+// wxhdFillAttribute.cpp - Default attribute for fill color of figure
 //
 //////////////////////////////////////////////////////////////////////////
 
@@ -24,12 +24,12 @@
 wxhdFillAttribute::wxhdFillAttribute():
 wxhdAttribute()
 {
-	fillAttributes = wxBrush(*wxBLACK);
+	fillAttributes = wxBrush(*wxWHITE);
 }
 
 void wxhdFillAttribute::apply(wxBufferedDC& context)
 {
-	context.SetBackground(fillAttributes);
+	context.SetBrush(fillAttributes);
 }
 
 void wxhdFillAttribute::callDefaultChangeDialog(wxWindow *owner)

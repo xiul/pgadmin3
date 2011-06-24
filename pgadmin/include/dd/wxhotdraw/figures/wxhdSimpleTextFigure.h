@@ -11,11 +11,11 @@
 
 #ifndef WXHDSIMPLETEXTFIGURE_H
 #define WXHDSIMPLETEXTFIGURE_H
-#include "dd/wxhotdraw/figures/wxhdAbstractFigure.h"
+#include "dd/wxhotdraw/figures/wxhdAttributeFigure.h"
 
 class wxhdDrawingView;
 
-class wxhdSimpleTextFigure : public wxhdAbstractFigure
+class wxhdSimpleTextFigure : public wxhdAttributeFigure
 {
 public:
 	wxhdSimpleTextFigure(wxString textString);
@@ -25,8 +25,6 @@ public:
 	virtual void setEditable(bool value);
 	virtual bool getEditable();
 	virtual void setFont(wxFont textFont);
-	virtual void setForeground(wxColour colour);
-	virtual void setBackground(wxBrush background);
 	virtual int getPadding();
 	void basicMoveBy(int x, int y);
 	virtual void basicDraw(wxBufferedDC& context, wxhdDrawingView *view);
@@ -40,7 +38,6 @@ public:
 protected:
 	virtual void getFontMetrics(int &width, int &height);
 	virtual void recalculateDisplayBox();
-	virtual void setupLayout(wxBufferedDC& context);
 	wxArrayString strings;
 	bool showMenu;
 	bool textEditable;
@@ -48,9 +45,6 @@ private:
 	int padding;
 	wxString text;
 	wxFont font;
-	wxColour textForeground;
-	wxBrush textBackground;
-	
 
 };
 #endif

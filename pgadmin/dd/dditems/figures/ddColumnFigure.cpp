@@ -30,11 +30,12 @@ ddColumnFigure::ddColumnFigure(wxString& columnName, ddTableFigure *owner, ddRel
 {
 	fkSource=sourceFk;
 	usedAsFkDestFor = NULL;
+	setOwnerTable(owner);
 	deactivateGenFkName(); //initializae by default at not generate auto fk name
 	columnText = new ddTextTableItemFigure(columnName,dt_null,this);
 	leftImage = new ddColumnKindIcon(this);
 	centerImage = new ddColumnOptionIcon(this);
-	setOwnerTable(owner);
+
 
 	//Initialize displaybox and image coords
 	basicDisplayBox.SetPosition(wxPoint(0,0));
@@ -51,6 +52,9 @@ ddColumnFigure::ddColumnFigure(wxString& columnName, ddTableFigure *owner, ddRel
 		basicDisplayBox.width+=22; //default value = 1 + 8 + 3 + 8 + 2 
 		columnText->displayBox().x+=22;
 	}
+
+	//Set Value default Attributes
+fontAttribute->font().SetPointSize(owner->fontAttribute->font().GetPointSize());
 }
 
 ddColumnFigure::~ddColumnFigure()
