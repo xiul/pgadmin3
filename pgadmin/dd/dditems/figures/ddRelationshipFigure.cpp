@@ -554,6 +554,8 @@ void ddRelationshipFigure::connectStart(wxhdIConnector *start, wxhdDrawingView *
 
 void ddRelationshipFigure::disconnectStart(wxhdDrawingView *view)
 {
+	paintingFkColumns = false;
+	changeFkOSTextColor( *wxBLACK, *wxBLACK, true );
 	disconnectedEndTable = (ddTableFigure*) getEndFigure();
 	removeForeignKeys();
 	wxhdLineConnection::disconnectStart();
@@ -561,6 +563,8 @@ void ddRelationshipFigure::disconnectStart(wxhdDrawingView *view)
 
 void ddRelationshipFigure::disconnectEnd(wxhdDrawingView *view)
 {
+	paintingFkColumns = false;
+	changeFkOSTextColor( *wxBLACK, *wxBLACK, true );
 	disconnectedEndTable = (ddTableFigure*) getEndFigure();
 	wxhdLineConnection::disconnectEnd();
 	removeForeignKeys();
@@ -776,21 +780,7 @@ void ddRelationshipFigure::basicDrawSelected(wxBufferedDC& context, wxhdDrawingV
 	wxhdLineConnection::basicDrawSelected(context,view);
 	if(getEndFigure() && getStartFigure())
 	{   paintingFkColumns = true;
-		columnsHashMap::iterator it;
-		ddRelationshipItem *item;
-		for (it = chm.begin(); it != chm.end(); ++it)
-		{
-			wxString key = it->first;
-			item = it->second;
-			if(item->original)
-			{
-				item->original->setTextColour(wxColour(255,0,0));
-			}			
-			if(item->fkColumn)
-			{
-				item->fkColumn->setTextColour(wxColour(255,0,0));
-			}
-		}
+		changeFkOSTextColor(wxColour(255,0,0),wxColour(255,0,0));
 	}
 }
 
@@ -798,7 +788,14 @@ void ddRelationshipFigure::basicDraw(wxBufferedDC& context, wxhdDrawingView *vie
 {
 	wxhdLineConnection::basicDraw(context,view);
 	if(getEndFigure() && getStartFigure() && paintingFkColumns)
-	{   paintingFkColumns = false;
+	{  
+		paintingFkColumns = false;
+		changeFkOSTextColor( *wxBLACK, *wxBLACK, true );
+	}
+}
+
+void ddRelationshipFigure::changeFkOSTextColor(wxColour originalColour, wxColour fkColour, bool reset)
+{
 		columnsHashMap::iterator it;
 		ddRelationshipItem *item;
 		for (it = chm.begin(); it != chm.end(); ++it)
@@ -807,12 +804,19 @@ void ddRelationshipFigure::basicDraw(wxBufferedDC& context, wxhdDrawingView *vie
 			item = it->second;
 			if(item->original)
 			{
-				item->original->setTextColour(item->original->getOwnerTable()->fontColorAttribute->fontColor);
+				if(!reset)
+					item->original->setTextColour(originalColour);
+				else
+					item->original->setTextColour(item->original->getOwnerTable()->fontColorAttribute->fontColor);
+
 			}			
 			if(item->fkColumn)
 			{
-				item->fkColumn->setTextColour(item->fkColumn->getOwnerTable()->fontColorAttribute->fontColor);
+				if(!reset)
+					item->fkColumn->setTextColour(fkColour);
+				else
+					item->fkColumn->setTextColour(item->fkColumn->getOwnerTable()->fontColorAttribute->fontColor);
 			}
 		}
-	}
+
 }

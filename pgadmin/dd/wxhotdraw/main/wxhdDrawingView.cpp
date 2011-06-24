@@ -332,10 +332,9 @@ void wxhdDrawingView::onMotion(wxMouseEvent& event)
 {
 // simple hack to don't update so frequently the canvas and mouse events
 // Should be changed for a better one using time intervals not a simple counter
-// and the fact that with not selected figure neither mousedrag or move have any effect
 static int simpleOptimization = 0;
 simpleOptimization++;
-	if(simpleOptimization > 0 && selection && selection->count() > 0)
+	if(simpleOptimization > 0)
 	{
 		simpleOptimization=0;
 

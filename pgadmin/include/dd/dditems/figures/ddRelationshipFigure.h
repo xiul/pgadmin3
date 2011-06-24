@@ -79,6 +79,7 @@ public:
 	wxString getConstraintName();
 	ddTableFigure* getStartTable();
 	ddTableFigure* getEndTable();
+	void changeFkOSTextColor(wxColour originalColour, wxColour fkColour, bool reset=false);
 
 protected:
 	virtual void basicDrawSelected(wxBufferedDC& context, wxhdDrawingView *view);
