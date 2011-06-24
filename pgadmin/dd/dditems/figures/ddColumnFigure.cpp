@@ -397,6 +397,12 @@ ddRelationshipItem* ddColumnFigure::getFkSource()
 	return fkSource;
 }
 
+void ddColumnFigure::setTextColour(wxColour colour)
+{
+	columnText->fontColorAttribute->fontColor=colour;
+}
+
+
 //Validate status of column for SQL DDL generation
 bool ddColumnFigure::validateColumn(wxString &errors)
 {

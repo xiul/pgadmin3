@@ -33,6 +33,7 @@ wxhdLineConnection()
 	fkIdentifying = false;
 	ukIndex = -1;
 	disconnectedEndTable = NULL;
+	paintingFkColumns = false;
 	//DEFERRABLE, NOT DEFERRABLE, INITIALLY IMMEDIATE, INITIALLY DEFERRED can be added in a future
 	onUpdateAction = FK_ACTION_NO;
 	onDeleteAction = FK_ACTION_NO;
@@ -768,4 +769,50 @@ ddTableFigure* ddRelationshipFigure::getStartTable()
 ddTableFigure* ddRelationshipFigure::getEndTable()
 {
 	return (ddTableFigure*) getEndFigure();
+}
+
+void ddRelationshipFigure::basicDrawSelected(wxBufferedDC& context, wxhdDrawingView *view)
+{
+	wxhdLineConnection::basicDrawSelected(context,view);
+	if(getEndFigure() && getStartFigure())
+	{   paintingFkColumns = true;
+		columnsHashMap::iterator it;
+		ddRelationshipItem *item;
+		for (it = chm.begin(); it != chm.end(); ++it)
+		{
+			wxString key = it->first;
+			item = it->second;
+			if(item->original)
+			{
+				item->original->setTextColour(wxColour(255,0,0));
+			}			
+			if(item->fkColumn)
+			{
+				item->fkColumn->setTextColour(wxColour(255,0,0));
+			}
+		}
+	}
+}
+
+void ddRelationshipFigure::basicDraw(wxBufferedDC& context, wxhdDrawingView *view)
+{
+	wxhdLineConnection::basicDraw(context,view);
+	if(getEndFigure() && getStartFigure() && paintingFkColumns)
+	{   paintingFkColumns = false;
+		columnsHashMap::iterator it;
+		ddRelationshipItem *item;
+		for (it = chm.begin(); it != chm.end(); ++it)
+		{
+			wxString key = it->first;
+			item = it->second;
+			if(item->original)
+			{
+				item->original->setTextColour(item->original->getOwnerTable()->fontColorAttribute->fontColor);
+			}			
+			if(item->fkColumn)
+			{
+				item->fkColumn->setTextColour(item->fkColumn->getOwnerTable()->fontColorAttribute->fontColor);
+			}
+		}
+	}
 }

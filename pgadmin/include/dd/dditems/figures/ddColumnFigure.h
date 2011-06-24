@@ -71,6 +71,9 @@ public:
 	void setAsUserCreatedFk(ddRelationshipItem *relatedFkItem);
 	ddRelationshipItem* getRelatedFkItem();
 	bool validateColumn(wxString& errors);
+	void setTextColour(wxColour colour);
+
+
 
 protected:
 	ddColumnKindIcon *leftImage;

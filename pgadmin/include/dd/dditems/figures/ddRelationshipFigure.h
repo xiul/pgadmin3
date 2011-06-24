@@ -81,6 +81,8 @@ public:
 	ddTableFigure* getEndTable();
 
 protected:
+	virtual void basicDrawSelected(wxBufferedDC& context, wxhdDrawingView *view);
+	virtual void basicDraw(wxBufferedDC& context, wxhdDrawingView *view);
 
 private:
 	virtual void OnGenericPopupClick(wxCommandEvent& event, wxhdDrawingView *view);
@@ -90,6 +92,7 @@ private:
 	bool fkOneToMany;
 	bool fkIdentifying;
 	bool matchSimple;
+	bool paintingFkColumns;
 	actionKind onUpdateAction, onDeleteAction;
 	wxString constraintName;
 
