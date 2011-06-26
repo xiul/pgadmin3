@@ -342,13 +342,12 @@ simpleOptimization++;
 		if(event.Dragging())
 		{
 			drawingEditor->tool()->mouseDrag(ddEvent);
+			this->Refresh();  //this can be optimized too only doing it when a figure it's dragged.
 		}
 		else
 		{
 			drawingEditor->tool()->mouseMove(ddEvent);
 		}
-
-		this->Refresh();
 	}
 }
 
