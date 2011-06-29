@@ -17,8 +17,8 @@
 enum
 {
 	DDPRECISIONSCALEDIALOG = 10000,
-	DDVALUE1 = 10001,
-	DDVALUE2 = 10002
+	DDNUM1 = 10001,
+	DDNUM2 = 10002
 };
 
 class ddPrecisionScaleDialog : public wxDialog
@@ -82,7 +82,7 @@ public:
 		return m_value2;
 	}
 
-	//wxEVT_COMMAND_TEXT_ENTER event_handle for DDVALUE1
+	//wxEVT_COMMAND_TEXT_ENTER event_handle for DDNUM1
 	void OnEnterPressed( wxCommandEvent &event );
 
 

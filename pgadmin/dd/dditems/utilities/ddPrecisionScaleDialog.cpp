@@ -23,7 +23,7 @@
 IMPLEMENT_CLASS( ddPrecisionScaleDialog, wxDialog )
 
 BEGIN_EVENT_TABLE( ddPrecisionScaleDialog, wxDialog )
-	EVT_TEXT_ENTER(DDVALUE1, ddPrecisionScaleDialog::OnEnterPressed )
+	EVT_TEXT_ENTER(DDNUM1, ddPrecisionScaleDialog::OnEnterPressed )
 END_EVENT_TABLE()
 
 ddPrecisionScaleDialog::ddPrecisionScaleDialog(	wxWindow *parent,
@@ -121,7 +121,7 @@ void ddPrecisionScaleDialog::CreateControls()
 	boxSizer->Add(value1Label, 0, wxALIGN_LEFT | wxALL, 5);
 
 	// A text control for Value 1
-	value1Ctrl = new wxSpinCtrl ( this, DDVALUE1, wxString::Format(wxT("(%d)"), m_value1) , wxDefaultPosition,
+	value1Ctrl = new wxSpinCtrl ( this, DDNUM1, wxString::Format(wxT("(%d)"), m_value1) , wxDefaultPosition,
 	                              wxDefaultSize, wxSP_ARROW_KEYS, 0, 1000, 0 );
 	boxSizer->Add(value1Ctrl, 0, wxGROW | wxALL, 5);
 
@@ -131,7 +131,7 @@ void ddPrecisionScaleDialog::CreateControls()
 	boxSizer->Add(value2Label, 0, wxALIGN_LEFT | wxALL, 5);
 
 	// A text control for Value 2
-	value2Ctrl = new wxSpinCtrl ( this, DDVALUE2, wxString::Format(wxT("(%d)"), m_value2), wxDefaultPosition,
+	value2Ctrl = new wxSpinCtrl ( this, DDNUM2, wxString::Format(wxT("(%d)"), m_value2), wxDefaultPosition,
 	                              wxDefaultSize, wxSP_ARROW_KEYS, 0, 1000, 0 );
 
 	boxSizer->Add(value2Ctrl, 0, wxGROW | wxALL, 5);
@@ -164,8 +164,8 @@ void ddPrecisionScaleDialog::CreateControls()
 //Transfer data to the window
 bool ddPrecisionScaleDialog::TransferDataToWindow()
 {
-	wxSpinCtrl *val1Ctrl = (wxSpinCtrl *) FindWindow(DDVALUE1);
-	wxSpinCtrl *val2Ctrl = (wxSpinCtrl *) FindWindow(DDVALUE2);
+	wxSpinCtrl *val1Ctrl = (wxSpinCtrl *) FindWindow(DDNUM1);
+	wxSpinCtrl *val2Ctrl = (wxSpinCtrl *) FindWindow(DDNUM2);
 
 	val1Ctrl->SetValue(m_value1);
 	val2Ctrl->SetValue(m_value2);
@@ -176,8 +176,8 @@ bool ddPrecisionScaleDialog::TransferDataToWindow()
 //Transfer data from the window
 bool ddPrecisionScaleDialog::TransferDataFromWindow()
 {
-	wxSpinCtrl *val1Ctrl = (wxSpinCtrl *) FindWindow(DDVALUE1);
-	wxSpinCtrl *val2Ctrl = (wxSpinCtrl *) FindWindow(DDVALUE2);
+	wxSpinCtrl *val1Ctrl = (wxSpinCtrl *) FindWindow(DDNUM1);
+	wxSpinCtrl *val2Ctrl = (wxSpinCtrl *) FindWindow(DDNUM2);
 
 	m_value1 = val1Ctrl->GetValue();
 	m_value2 = val2Ctrl->GetValue();
