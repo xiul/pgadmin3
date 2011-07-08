@@ -14,6 +14,9 @@
 // wxWindows headers
 #include <wx/wx.h>
 
+// libxml2 headers
+#include <libxml/xmlwriter.h>
+
 // App headers
 #include "dd/ddmodel/ddDatabaseDesign.h"
 #include "dd/wxhotdraw/tools/wxhdSelectionTool.h"
@@ -21,6 +24,7 @@
 #include "dd/dditems/figures/ddRelationshipFigure.h"
 #include "dd/dditems/utilities/ddDataType.h"
 #include "dd/ddmodel/ddDrawingEditor.h"
+#include "dd/dditems/figures/xml/ddXmlStorage.h"
 
 
 ddDatabaseDesign::ddDatabaseDesign(wxWindow *parent)
@@ -175,9 +179,9 @@ ddTableFigure *ddDatabaseDesign::getSelectedTable()
 	return table;
 }
 
-bool ddDatabaseDesign::containsTable(wxString tableName)
+ddTableFigure* ddDatabaseDesign::getTable(wxString tableName)
 {
-	bool out = false;
+	ddTableFigure *out = NULL;
 	wxhdIteratorBase *iterator = draw->model()->figuresEnumerator();
 	wxhdIFigure *tmp;
 	ddTableFigure *table;
@@ -189,10 +193,122 @@ bool ddDatabaseDesign::containsTable(wxString tableName)
 			table = (ddTableFigure *)tmp;
 			if(table->getTableName().Contains(tableName))
 			{
-				out = true;
+				out = table;
 			}
 		}
 	}
 	delete iterator;
 	return out;
+}
+
+#define XML_FROM_WXSTRING(s) ((xmlChar *)(const char *)s.mb_str(wxConvUTF8))
+#define WXSTRING_FROM_XML(s) wxString((char *)s, wxConvUTF8)
+
+wxString ddDatabaseDesign::writeXmlModel()
+{
+		int rc;
+		xmlBufferPtr buffer;
+
+		buffer = xmlBufferCreate();
+		if(buffer == NULL)
+		{
+			wxMessageBox(_("Fatal Error at libxml for figure persistency"));
+			return wxEmptyString;
+		}
+
+		xmlWriter = xmlNewTextWriterMemory(buffer, 0);
+		if (xmlWriter == NULL) {
+			wxMessageBox(_("XmlwriterMemory: Error creating the xml writer\n"));
+			return wxEmptyString;
+		}
+		rc = xmlTextWriterStartDocument(xmlWriter, NULL, "UTF-8" , NULL);
+		if(rc < 0)
+		{
+			wxMessageBox(_("Fatal Error at libxml when creating memory buffer figure persistency"));
+			return wxEmptyString;
+		}
+		else
+		{
+			ddXmlStorage::StartModel(xmlWriter,this);
+			//initialize IDs of tables
+			mappingNameToId.clear();
+			wxhdIteratorBase *iterator = draw->model()->figuresEnumerator();
+			wxhdIFigure *tmp;
+			ddTableFigure *table;
+			int nextID=10;
+			
+			while(iterator->HasNext())
+			{
+				tmp = (wxhdIFigure *)iterator->Next();
+				if(tmp->getKindId() == DDTABLEFIGURE)
+				{
+					table = (ddTableFigure *)tmp;
+					mappingNameToId[table->getTableName()]=wxString::Format(wxT("TID%d"),nextID);
+					nextID+=10;
+				}
+			}
+			delete iterator;
+			
+
+			//Create table xml info
+			iterator = draw->model()->figuresEnumerator();
+			while(iterator->HasNext())
+			{
+				tmp = (wxhdIFigure *)iterator->Next();
+				if(tmp->getKindId() == DDTABLEFIGURE)
+				{
+					table = (ddTableFigure *)tmp;
+					ddXmlStorage::Write(xmlWriter,table);
+				}
+			}
+			delete iterator;
+
+			ddXmlStorage::EndModel(xmlWriter);
+			xmlTextWriterEndDocument(xmlWriter);
+			xmlFreeTextWriter(xmlWriter);
+			wxString out = WXSTRING_FROM_XML(buffer->content); 
+			return out;
+		}
+	return wxEmptyString;
+}
+
+wxString ddDatabaseDesign::readXmlModel(wxString model)
+{
+	eraseModel();
+	mappingIdToName.clear();
+	//Initial Parse Model
+	xmlParserInputBufferPtr buf = NULL;
+	buf = xmlParserInputBufferCreateMem(model.mb_str(wxConvUTF8),model.Length(), XML_CHAR_ENCODING_UTF8);
+	xmlTextReaderPtr reader = xmlNewTextReader(buf,NULL);
+	ddXmlStorage::setModel(this);
+	ddXmlStorage::initialModelParse(reader);
+	xmlFreeTextReader(reader);
+	xmlFreeParserInputBuffer(buf);
+
+	tablesMappingHashMap::iterator it;
+	for( it = mappingIdToName.begin(); it != mappingIdToName.end(); ++it )
+	{
+				wxString key = it->first;
+				wxString value= it->second;
+	}
+
+	//Parse Model
+	buf = NULL;
+	buf = xmlParserInputBufferCreateMem(model.mb_str(wxConvUTF8),model.Length(), XML_CHAR_ENCODING_UTF8);
+	reader = xmlNewTextReader(buf,NULL);
+	ddXmlStorage::setModel(this);
+	wxString sal = ddXmlStorage::Read(reader);
+	xmlFreeTextReader(reader);
+	xmlFreeParserInputBuffer(buf);
+	return sal;
+}
+
+wxString ddDatabaseDesign::getTableId(wxString tableName)
+{
+	return mappingNameToId[tableName];
+}
+
+void ddDatabaseDesign::addTableToMapping(wxString IdKey, wxString tableName)
+{
+	mappingIdToName[IdKey]=tableName;
 }

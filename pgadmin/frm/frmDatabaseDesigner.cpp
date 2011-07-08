@@ -42,6 +42,8 @@
 #include "dd/dditems/figures/ddTableFigure.h"
 #include "dd/dditems/utilities/ddTableNameDialog.h"
 
+#include "dd/dditems/figures/xml/ddXmlStorage.h"
+
 // Icons
 #include "images/ddmodel-32.pngc"
 #include "images/file_new.pngc"
@@ -49,6 +51,7 @@
 #include "images/ddRemoveTable2.pngc"
 #include "images/continue.pngc"
 #include "images/help.pngc"
+#include "images/storedata.pngc"
 
 BEGIN_EVENT_TABLE(frmDatabaseDesigner, pgFrame)
 	EVT_MENU(MNU_NEW,               frmDatabaseDesigner::OnNewModel)
@@ -56,6 +59,7 @@ BEGIN_EVENT_TABLE(frmDatabaseDesigner, pgFrame)
 	EVT_MENU(MNU_DELETETABLE,       frmDatabaseDesigner::OnDeleteTable)
 	EVT_MENU(MNU_ADDCOLUMN,         frmDatabaseDesigner::OnAddColumn)
 	EVT_MENU(MNU_GENERATEMODEL,     frmDatabaseDesigner::OnModelGeneration)
+	EVT_MENU(MNU_SAVEMODEL,			frmDatabaseDesigner::OnModelSave)
 	EVT_CLOSE(                      frmDatabaseDesigner::OnClose)
 END_EVENT_TABLE()
 
@@ -109,6 +113,7 @@ frmDatabaseDesigner::frmDatabaseDesigner(frmMain *form, const wxString &_title, 
 	toolBar->AddTool(MNU_DELETETABLE, _("Delete Table"), wxBitmap(*ddRemoveTable2_png_img), _("Delete selected table"), wxITEM_NORMAL);
 	toolBar->AddTool(MNU_ADDCOLUMN, _("Add Column"), *table_png_bmp, _("Add new column to the selected table"), wxITEM_NORMAL);
 	toolBar->AddTool(MNU_GENERATEMODEL, _("Generate Model"), *continue_png_bmp, _("Generate SQL for the current model"), wxITEM_NORMAL);
+	toolBar->AddTool(MNU_SAVEMODEL, _("Save /Load Model -- Testing"), *storedata_png_bmp, _("Generate SQL for the current model"), wxITEM_NORMAL);
 	toolBar->AddSeparator();
 	toolBar->AddTool(MNU_HELP, _("Help"), *help_png_bmp, _("Display help"), wxITEM_NORMAL);
 	toolBar->Realize();
@@ -201,7 +206,7 @@ void frmDatabaseDesigner::OnDeleteTable(wxCommandEvent &event)
 
 void frmDatabaseDesigner::OnAddColumn(wxCommandEvent &event)
 {
-	ddTableFigure *table = design->getSelectedTable();
+ 	ddTableFigure *table = design->getSelectedTable();
 	wxTextEntryDialog nameDialog (this, wxT("New column name"), wxT("Add a column"), wxT("NewColumn"));
 	int answer;
 	wxString tmpString;
@@ -259,6 +264,21 @@ void frmDatabaseDesigner::OnModelGeneration(wxCommandEvent &event)
 	}
 }
 
+//Saving/Loading function for testing purpose not real one.
+void frmDatabaseDesigner::OnModelSave(wxCommandEvent &event)
+{
+	static bool execute=false;
+	if(!execute){
+		sqltext->SetValue(design->writeXmlModel());
+	}
+	else
+	{
+		design->eraseModel();
+		design->readXmlModel(sqltext->GetValue());
+	}
+
+	execute=!execute;
+}
 
 ///////////////////////////////////////////////////////
 
