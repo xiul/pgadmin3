@@ -21,8 +21,8 @@ public:
 	ddXmlStorage();
 	
 	//Generic part
-	static wxString Read(xmlTextReaderPtr reader);
-	static void Write(xmlTextWriterPtr writer, wxhdIFigure *figure);
+	static bool Read(xmlTextReaderPtr reader);
+	static bool Write(xmlTextWriterPtr writer, wxhdIFigure *figure);
 	static void setModel(ddDatabaseDesign *sourceDesign);
 	static wxString getModelDTD();
 
@@ -34,18 +34,19 @@ public:
 	static void WriteLocal( xmlTextWriterPtr writer, ddTableFigure *figure);
 	static void StartModel( xmlTextWriterPtr writer, ddDatabaseDesign *design);
 	static void EndModel( xmlTextWriterPtr writer);
-	static void processResult(int value);
+	static bool processResult(int value);
 	
-	//Read xml info Database Designer Related
+	//Generic node processing functions
 	static wxString getNodeName(xmlTextReaderPtr reader);
 	static int getNodeType(xmlTextReaderPtr reader);
 	static wxString getNodeValue(xmlTextReaderPtr reader);
+	
+	//Read xml info Database Designer Related
 	static void selectReader(xmlTextReaderPtr reader);
 	static ddTableFigure* getTABLE(xmlTextReaderPtr reader);
 	static ddColumnFigure* getColumn(xmlTextReaderPtr reader, ddTableFigure *colOwner);
 	static void initialModelParse(xmlTextReaderPtr reader);
 	
-
 private:
 
 	static ddDatabaseDesign *design;

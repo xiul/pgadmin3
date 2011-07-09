@@ -61,12 +61,12 @@ void ddXmlStorage::EndModel( xmlTextWriterPtr writer)
 	design = NULL;
 }
 
-void ddXmlStorage::Write(xmlTextWriterPtr writer, wxhdIFigure *figure)
+bool ddXmlStorage::Write(xmlTextWriterPtr writer, wxhdIFigure *figure)
 {
 	if(design==NULL)
 	{
 		wxMessageBox(_("Error saving model: not source model have been set"));
-		return;
+		return false;
 	}
 
 	switch(figure->getKindId())
@@ -87,13 +87,16 @@ void ddXmlStorage::Write(xmlTextWriterPtr writer, wxhdIFigure *figure)
 			WriteLocal(writer,(ddTableFigure *)figure);
 			break;
 	}
+	return true;
 }
 
-void ddXmlStorage::processResult(int value)
+bool ddXmlStorage::processResult(int value)
 {
     if (value < 0) {
         wxMessageBox(_("Fatal Error at libxml for figure persistency"));
+		return false;
     }
+	return true;
 }
 
 void ddXmlStorage::WriteLocal(xmlTextWriterPtr writer, ddColumnOptionIcon *figure)
@@ -319,10 +322,6 @@ void ddXmlStorage::initialModelParse(xmlTextReaderPtr reader)
 						xmlFree(value);
 				}
 
-				//Look for table Name
-				if(value!=NULL)
-					xmlFree(value);
-				
 				tmp = xmlTextReaderRead(reader);	//go to TITLE
 				tmp = xmlTextReaderRead(reader);	//go to NAME
 				tmp = xmlTextReaderRead(reader);	//go to NAME Value
@@ -366,13 +365,9 @@ void ddXmlStorage::initialModelParse(xmlTextReaderPtr reader)
 
 
 
-wxString ddXmlStorage::Read(xmlTextReaderPtr reader)
+bool ddXmlStorage::Read(xmlTextReaderPtr reader)
 {
 	int ret;
-	wxString salida = wxEmptyString;
-
-
-
 
 	if(reader!=NULL)
 	{
@@ -380,7 +375,6 @@ wxString ddXmlStorage::Read(xmlTextReaderPtr reader)
 		ret = xmlTextReaderRead(reader);
         while (ret == 1) 
 		{
-            //salida += processNode(reader);
 			selectReader(reader);
             ret = xmlTextReaderRead(reader);
         }
@@ -389,18 +383,19 @@ wxString ddXmlStorage::Read(xmlTextReaderPtr reader)
 		if (xmlTextReaderIsValid(reader) != 1)
 		{
 			wxMessageBox(_("Model is not following embedded DTD definition, check it.\n"));
-			return wxEmptyString;
+			return false;
 		}
 
 		if (ret != 0) {
-            wxMessageBox(_("Failed to load document from memory"));
+            wxMessageBox(_("Failed to load document from disk"));
+			return false;
 		}
 		else
 		{
-			return salida;
+			return true;
 		}
 	}
-	return wxEmptyString;
+	return false;
 }
 
 wxString ddXmlStorage::getNodeName(xmlTextReaderPtr reader)
@@ -444,8 +439,8 @@ void ddXmlStorage::selectReader(xmlTextReaderPtr reader)
 
 		if(getNodeName(reader).IsSameAs(_("TABLE"),false))
 		{
-			design->addTable(getTABLE(reader));
-			design->refreshDraw();		
+			getTABLE(reader);
+			design->refreshDraw();
 		}
 	}
 }
@@ -490,10 +485,6 @@ xmlChar *value;
 			xmlFree(value);
 	}
 
-	if(value!=NULL)
-		xmlFree(value);
-
-
 	// --> ATTRIBUTE*
 	//Element(s) Attribute*
 	// NEED TO IMPLEMENT THIS
@@ -509,6 +500,7 @@ xmlChar *value;
 	tmp = xmlTextReaderRead(reader);	//go to NAME
 	tmp = xmlTextReaderRead(reader);	//go to NAME Value
 	value = xmlTextReaderValue(reader);  //Value of NAME
+
 	if(value)
 	{
 		tableName = WXSTRING_FROM_XML(value);
@@ -536,8 +528,8 @@ xmlChar *value;
 	wxArrayString ukNames;
 	if(getNodeName(reader).IsSameAs(_("UKNAMES"),false))
 	{
-		do{
 			tmp = xmlTextReaderRead(reader);	//go UKNAME
+		do{
 			tmp = xmlTextReaderRead(reader);	//go UKNAME Value
 			value = xmlTextReaderValue(reader);  //Value of UKNAME
 			if(value)
@@ -706,6 +698,7 @@ xmlChar *value;
 			if(c)
 			{
 				t->addColumnFromStorage(c);
+				c->setRightIconForColumn();
 			}
 		}while(c!=NULL);
 		//now at </COLUMNS>
@@ -713,6 +706,7 @@ xmlChar *value;
 
 	tmp = xmlTextReaderRead(reader);	//go to </TABLE>
 	t->syncPositionsAfterLoad();  //synchronize positions
+	t->updateTableSize();
 	return t;
 }
 

@@ -204,28 +204,20 @@ ddTableFigure* ddDatabaseDesign::getTable(wxString tableName)
 #define XML_FROM_WXSTRING(s) ((xmlChar *)(const char *)s.mb_str(wxConvUTF8))
 #define WXSTRING_FROM_XML(s) wxString((char *)s, wxConvUTF8)
 
-wxString ddDatabaseDesign::writeXmlModel()
+bool ddDatabaseDesign::writeXmlModel(wxString file)
 {
 		int rc;
-		xmlBufferPtr buffer;
 
-		buffer = xmlBufferCreate();
-		if(buffer == NULL)
-		{
-			wxMessageBox(_("Fatal Error at libxml for figure persistency"));
-			return wxEmptyString;
-		}
-
-		xmlWriter = xmlNewTextWriterMemory(buffer, 0);
+		xmlWriter = xmlNewTextWriterFilename(file.mb_str(wxConvUTF8),0);
 		if (xmlWriter == NULL) {
 			wxMessageBox(_("XmlwriterMemory: Error creating the xml writer\n"));
-			return wxEmptyString;
+			return false;
 		}
 		rc = xmlTextWriterStartDocument(xmlWriter, NULL, "UTF-8" , NULL);
 		if(rc < 0)
 		{
 			wxMessageBox(_("Fatal Error at libxml when creating memory buffer figure persistency"));
-			return wxEmptyString;
+			return false;
 		}
 		else
 		{
@@ -266,41 +258,29 @@ wxString ddDatabaseDesign::writeXmlModel()
 			ddXmlStorage::EndModel(xmlWriter);
 			xmlTextWriterEndDocument(xmlWriter);
 			xmlFreeTextWriter(xmlWriter);
-			wxString out = WXSTRING_FROM_XML(buffer->content); 
-			return out;
+			return true;
 		}
-	return wxEmptyString;
+	return false;
 }
 
-wxString ddDatabaseDesign::readXmlModel(wxString model)
+bool ddDatabaseDesign::readXmlModel(wxString file)
 {
 	eraseModel();
 	mappingIdToName.clear();
 	//Initial Parse Model
-	xmlParserInputBufferPtr buf = NULL;
-	buf = xmlParserInputBufferCreateMem(model.mb_str(wxConvUTF8),model.Length(), XML_CHAR_ENCODING_UTF8);
-	xmlTextReaderPtr reader = xmlNewTextReader(buf,NULL);
+	xmlTextReaderPtr reader = xmlReaderForFile(file.mb_str(wxConvUTF8), NULL, 0);
 	ddXmlStorage::setModel(this);
 	ddXmlStorage::initialModelParse(reader);
-	xmlFreeTextReader(reader);
-	xmlFreeParserInputBuffer(buf);
-
-	tablesMappingHashMap::iterator it;
-	for( it = mappingIdToName.begin(); it != mappingIdToName.end(); ++it )
-	{
-				wxString key = it->first;
-				wxString value= it->second;
-	}
-
+	
 	//Parse Model
-	buf = NULL;
-	buf = xmlParserInputBufferCreateMem(model.mb_str(wxConvUTF8),model.Length(), XML_CHAR_ENCODING_UTF8);
-	reader = xmlNewTextReader(buf,NULL);
+	xmlReaderNewFile(reader,file.mb_str(wxConvUTF8),NULL,0);
 	ddXmlStorage::setModel(this);
-	wxString sal = ddXmlStorage::Read(reader);
+	if(!ddXmlStorage::Read(reader))
+	{
+		return false;
+	}
 	xmlFreeTextReader(reader);
-	xmlFreeParserInputBuffer(buf);
-	return sal;
+	return true;
 }
 
 wxString ddDatabaseDesign::getTableId(wxString tableName)

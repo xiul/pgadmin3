@@ -37,8 +37,8 @@ public:
 	wxString getNewTableName();
 	ddTableFigure *getSelectedTable();
 	ddTableFigure *getTable(wxString tableName);
-	wxString writeXmlModel();
-	wxString readXmlModel(wxString model);
+	bool writeXmlModel(wxString file);
+	bool readXmlModel(wxString file);
 
 	wxString getTableId(wxString tableName);
 	void addTableToMapping(wxString IdKey, wxString tableName);

@@ -17,7 +17,7 @@ class wxhdStorage : public wxhdObject
 {
 public:
 	wxhdStorage();
-	static wxString Read(xmlTextReaderPtr reader);
-	static void Write(xmlTextWriterPtr writer, wxhdIFigure *figure);
+	static bool Read(xmlTextReaderPtr reader);
+	static bool Write(xmlTextWriterPtr writer, wxhdIFigure *figure);
 };
 #endif

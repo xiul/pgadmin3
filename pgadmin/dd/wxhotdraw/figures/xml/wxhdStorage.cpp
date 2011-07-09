@@ -19,12 +19,12 @@ wxhdStorage::wxhdStorage():
 {
 }
 
-wxString wxhdStorage::Read(xmlTextReaderPtr reader)
+bool wxhdStorage::Read(xmlTextReaderPtr reader)
 {
-	return wxEmptyString;
+	return false;
 }
 
-void wxhdStorage::Write(xmlTextWriterPtr writer, wxhdIFigure *figure)
+bool wxhdStorage::Write(xmlTextWriterPtr writer, wxhdIFigure *figure)
 {
-
+	return false;
 }
