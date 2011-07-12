@@ -42,7 +42,7 @@ public:
 
 	wxString getTableId(wxString tableName);
 	void addTableToMapping(wxString IdKey, wxString tableName);
-	//wxString getTableName(wxString Id);
+	wxString getTableName(wxString Id);
 
 protected:
 	tablesMappingHashMap mappingNameToId;

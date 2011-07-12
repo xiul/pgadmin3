@@ -484,3 +484,9 @@ bool ddColumnFigure::validateColumn(wxString &errors)
 
 	return out;
 }
+
+//Used by persistence classes
+void ddColumnFigure::setFkSource(ddRelationshipItem *newColumn)
+{
+	fkSource = newColumn;
+}

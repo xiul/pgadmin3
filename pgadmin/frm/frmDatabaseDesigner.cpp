@@ -225,7 +225,7 @@ void frmDatabaseDesigner::OnAddColumn(wxCommandEvent &event)
 			if (answer == wxID_OK)
 			{
 				tmpString = nameDialog.GetValue();
-				if(table->colNameAvailable(tmpString))
+				if(table->getColByName(tmpString)==NULL)
 					table->addColumn(new ddColumnFigure(tmpString, table));
 				else
 				{

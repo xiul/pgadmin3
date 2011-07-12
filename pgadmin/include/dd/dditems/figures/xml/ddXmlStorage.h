@@ -32,6 +32,8 @@ public:
 	static void WriteLocal( xmlTextWriterPtr writer, ddTextTableItemFigure *figure);
 	static void WriteLocal( xmlTextWriterPtr writer, ddColumnFigure *figure);
 	static void WriteLocal( xmlTextWriterPtr writer, ddTableFigure *figure);
+	static void WriteLocal( xmlTextWriterPtr writer, ddRelationshipFigure *figure);
+	static void WriteLocal( xmlTextWriterPtr writer, ddRelationshipItem *item);
 	static void StartModel( xmlTextWriterPtr writer, ddDatabaseDesign *design);
 	static void EndModel( xmlTextWriterPtr writer);
 	static bool processResult(int value);
@@ -43,8 +45,10 @@ public:
 	
 	//Read xml info Database Designer Related
 	static void selectReader(xmlTextReaderPtr reader);
-	static ddTableFigure* getTABLE(xmlTextReaderPtr reader);
+	static ddTableFigure* getTable(xmlTextReaderPtr reader);
 	static ddColumnFigure* getColumn(xmlTextReaderPtr reader, ddTableFigure *colOwner);
+	static ddRelationshipFigure* getRelationship(xmlTextReaderPtr reader);
+	static ddRelationshipItem* getRelationshipItem(xmlTextReaderPtr reader, ddRelationshipFigure *itemOwner, ddTableFigure *source, ddTableFigure *destination);
 	static void initialModelParse(xmlTextReaderPtr reader);
 	
 private:

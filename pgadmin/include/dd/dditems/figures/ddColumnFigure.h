@@ -68,6 +68,7 @@ public:
 	void activateGenFkName();
 	void deactivateGenFkName();
 	ddRelationshipItem *getFkSource();
+	void setFkSource(ddRelationshipItem *newColumn);
 	int getPrecision();
 	int getScale();
 	void setAsUserCreatedFk(ddRelationshipItem *relatedFkItem);

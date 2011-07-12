@@ -135,9 +135,9 @@ ddTableFigure::ddTableFigure(wxString tableName, int x, int y, wxString shortNam
 	Init(tableName,x,y,shortName);
 }
 
+//Used by persistence classes
 void ddTableFigure::InitTableValues(wxArrayString UniqueKeysName, wxString primaryKeyName, int bdc, int bdi, int maxcolsi, int minidxsi, int maxidxsi, int colsrs, int colsw, int idxsrs, int idxsw)
 {
-//	Init(tableName,x,y,shortName);
 	ukNames = UniqueKeysName;
 	pkName = primaryKeyName;
 	beginDrawCols = bdc;
@@ -162,9 +162,9 @@ ddTableFigure::~ddTableFigure()
 	}
 }
 
-bool ddTableFigure::colNameAvailable(wxString name)
+ddColumnFigure* ddTableFigure::getColByName(wxString name)
 {
-	bool out = true;
+	ddColumnFigure *out = NULL;
 	ddColumnFigure *f;
 
 	wxhdIteratorBase *iterator = figuresEnumerator();
@@ -176,7 +176,7 @@ bool ddTableFigure::colNameAvailable(wxString name)
 		f = (ddColumnFigure *) iterator->Next();
 		if(f->getColumnName(false).IsSameAs(name))
 		{
-			out = false;
+			out = f;
 			break;
 		}
 	}

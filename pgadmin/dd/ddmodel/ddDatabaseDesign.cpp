@@ -255,6 +255,21 @@ bool ddDatabaseDesign::writeXmlModel(wxString file)
 			}
 			delete iterator;
 
+
+			//Create relationships xml info
+			ddRelationshipFigure *relationship;
+			iterator = draw->model()->figuresEnumerator();
+			while(iterator->HasNext())
+			{
+				tmp = (wxhdIFigure *)iterator->Next();
+				if(tmp->getKindId() == DDRELATIONSHIPFIGURE)
+				{
+					relationship = (ddRelationshipFigure *)tmp;
+					ddXmlStorage::Write(xmlWriter,relationship);
+				}
+			}
+			delete iterator;
+
 			ddXmlStorage::EndModel(xmlWriter);
 			xmlTextWriterEndDocument(xmlWriter);
 			xmlFreeTextWriter(xmlWriter);
@@ -291,4 +306,21 @@ wxString ddDatabaseDesign::getTableId(wxString tableName)
 void ddDatabaseDesign::addTableToMapping(wxString IdKey, wxString tableName)
 {
 	mappingIdToName[IdKey]=tableName;
+}
+
+wxString ddDatabaseDesign::getTableName(wxString Id)
+{
+	wxString tableName = wxEmptyString;
+	
+	tablesMappingHashMap::iterator it;
+	for (it = mappingIdToName.begin(); it != mappingIdToName.end(); ++it)
+	{
+		wxString key = it->first;
+		if(key.IsSameAs(Id,false))
+		{
+			tableName = it->second;
+			break;
+		}
+	}
+	return tableName;
 }

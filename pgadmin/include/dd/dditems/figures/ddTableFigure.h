@@ -29,7 +29,7 @@ public:
 	~ddTableFigure();
 
 	//add remove items
-	bool colNameAvailable(wxString name);
+	ddColumnFigure* getColByName(wxString name);
 	void addColumn(ddColumnFigure *column);
 	void addColumnFromStorage(ddColumnFigure *column);
 	void syncPositionsAfterLoad();

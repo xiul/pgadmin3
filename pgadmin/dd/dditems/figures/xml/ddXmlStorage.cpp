@@ -5,7 +5,7 @@
 // Copyright (C) 2002 - 2011, The pgAdmin Development Team
 // This software is released under the PostgreSQL Licence
 //
-// wxhdAttributeFigure.cpp - Base class for all figure attributes
+// ddXmlStorage.cpp - Database designer class for storing / loading objects
 //
 //////////////////////////////////////////////////////////////////////////
 
@@ -85,6 +85,9 @@ bool ddXmlStorage::Write(xmlTextWriterPtr writer, wxhdIFigure *figure)
 			break;
 		case DDTABLEFIGURE:
 			WriteLocal(writer,(ddTableFigure *)figure);
+			break;
+		case DDRELATIONSHIPFIGURE:
+			WriteLocal(writer,(ddRelationshipFigure *)figure);
 			break;
 	}
 	return true;
@@ -194,7 +197,7 @@ void ddXmlStorage::WriteLocal( xmlTextWriterPtr writer, ddTableFigure *figure)
 		wxhdIteratorBase *iterator = figure->figuresEnumerator();
 		iterator->Next(); //First figure is main rect
 
-		//<!ELEMENT TITLE (NAME,ALIAS)>
+		//<!ELEMENT TITLE (NAME,ALIAS?)>
 		tmp = xmlTextWriterStartElement(writer, BAD_CAST "TITLE");
 		processResult(tmp);	
 		f = (ddColumnFigure *) iterator->Next();
@@ -232,9 +235,9 @@ void ddXmlStorage::WriteLocal( xmlTextWriterPtr writer, ddTableFigure *figure)
 			xmlTextWriterEndElement(writer);
 		}
 
-		//<!ELEMENT PKNAME (#PCDATA)>
-		tmp = xmlTextWriterWriteFormatElement(writer, BAD_CAST "PKNAME","%s",XML_FROM_WXSTRING(figure->getPkConstraintName()));
-		processResult(tmp);
+	//<!ELEMENT PKNAME (#PCDATA)>
+	tmp = xmlTextWriterWriteFormatElement(writer, BAD_CAST "PKNAME","%s",XML_FROM_WXSTRING(figure->getPkConstraintName()));
+	processResult(tmp);
 			
 	//<!ELEMENT BEGINDRAWCOLS (#PCDATA)>
 	tmp = xmlTextWriterWriteFormatElement(writer, BAD_CAST "BEGINDRAWCOLS","%d",figure->getBeginDrawCols());
@@ -292,6 +295,144 @@ void ddXmlStorage::WriteLocal( xmlTextWriterPtr writer, ddTableFigure *figure)
 
 }
 
+
+void ddXmlStorage::WriteLocal( xmlTextWriterPtr writer, ddRelationshipFigure *figure)
+{
+	int tmp;
+
+	//At RELATIONSHIPS Element
+	//<!ELEMENT RELATIONSHIP (Attributes*, POINTS, RELATIONITEMS, UKINDEX, NAME, ONUPDATE, ONDELETE, MATCHSIMPLE, IDENTIFYING, ONETOMANY, MANDATORY, FKFROMPK)>
+	tmp = xmlTextWriterStartElement(writer, BAD_CAST "RELATIONSHIP");
+
+	//<!ATTLIST RELATIONITEM SourceTableID IDREF #REQUIRED > --> ddTableFigure ID
+	wxString TableId = design->getTableId(figure->getStartTable()->getTableName());
+	tmp = xmlTextWriterWriteAttribute(writer, BAD_CAST "SourceTableID", XML_FROM_WXSTRING(TableId) );
+	processResult(tmp);
+	
+	//<!ATTLIST RELATIONSHIP DestTableID IDREF #REQUIRED >	
+	TableId = design->getTableId(figure->getEndTable()->getTableName());
+	tmp = xmlTextWriterWriteAttribute(writer, BAD_CAST "DestTableID", XML_FROM_WXSTRING(TableId) );
+	processResult(tmp);
+
+	//At RELATIONSHIP Element
+	//Start POINTS <!ELEMENT POINTS (POINT, POINT,POINT*)>
+	tmp = xmlTextWriterStartElement(writer, BAD_CAST "POINTS");
+	wxhdPoint point;
+	for(int i = 0; i < figure->pointCount(); i++)
+	{
+		//At POINTS Element
+		//Start POINT <!ELEMENT POINT (X,Y)>
+		tmp = xmlTextWriterStartElement(writer, BAD_CAST "POINT");
+			 point = figure->pointAt(i);	
+			//<!ELEMENT X (#PCDATA)>
+			tmp = xmlTextWriterWriteFormatElement(writer, BAD_CAST "X","%d", point.x);
+			processResult(tmp);
+			//<!ELEMENT Y (#PCDATA)>
+			tmp = xmlTextWriterWriteFormatElement(writer, BAD_CAST "Y","%d", point.x);
+			processResult(tmp);
+		//Close POINT Element
+		xmlTextWriterEndElement(writer);
+	}
+	
+	//Close POINTS Element
+	xmlTextWriterEndElement(writer);
+
+	//At RELATIONSHIP Element
+	//<!ELEMENT UKINDEX (#PCDATA)>
+    tmp = xmlTextWriterWriteFormatElement(writer, BAD_CAST "UKINDEX","%d", figure->getUkIndex());
+	processResult(tmp);
+
+	if(figure->getConstraintName().Length() > 0)
+	{
+		//<!ELEMENT NAME (#PCDATA)>
+		tmp = xmlTextWriterWriteFormatElement(writer, BAD_CAST "NAME","%s", figure->getConstraintName().mb_str(wxConvUTF8));
+		processResult(tmp);
+	}
+
+	//<!ELEMENT ONUPDATE (#PCDATA)>
+	tmp = xmlTextWriterWriteFormatElement(writer, BAD_CAST "ONUPDATE","%d", figure->getOnUpdateAction());
+	processResult(tmp);
+
+	//<!ELEMENT ONDELETE (#PCDATA)>
+	tmp = xmlTextWriterWriteFormatElement(writer, BAD_CAST "ONDELETE","%d", figure->getOnDeleteAction());
+	processResult(tmp);
+
+	//<!ELEMENT MATCHSIMPLE (#PCDATA)>
+    tmp = xmlTextWriterWriteFormatElement(writer, BAD_CAST "MATCHSIMPLE","%c", figure->getMatchSimple() ? 'T' : 'F' );
+	processResult(tmp);
+
+	//<!ELEMENT IDENTIFYING (#PCDATA)>
+    tmp = xmlTextWriterWriteFormatElement(writer, BAD_CAST "IDENTIFYING","%c", figure->getIdentifying() ? 'T' : 'F' );
+	processResult(tmp);
+
+	//<!ELEMENT ONETOMANY (#PCDATA)>
+    tmp = xmlTextWriterWriteFormatElement(writer, BAD_CAST "ONETOMANY","%c", figure->getOneToMany() ? 'T' : 'F' );
+	processResult(tmp);
+
+	//<!ELEMENT MANDATORY (#PCDATA)>
+    tmp = xmlTextWriterWriteFormatElement(writer, BAD_CAST "MANDATORY","%c", figure->getMandatory() ? 'T' : 'F' );
+	processResult(tmp);
+
+	//<!ELEMENT FKFROMPK (#PCDATA)>
+    tmp = xmlTextWriterWriteFormatElement(writer, BAD_CAST "FKFROMPK","%c", figure->isForeignKeyFromPk() ? 'T' : 'F' );
+	processResult(tmp);
+
+	//At RELATIONSHIP Element
+	//Start RELATIONITEMS <!ELEMENT RELATIONITEMS (RELATIONITEM*)>
+	tmp = xmlTextWriterStartElement(writer, BAD_CAST "RELATIONITEMS");
+
+	ddRelationshipItem *item;
+	wxString key;
+	columnsHashMap::iterator it;
+	for( it = figure->getItemsHashMap().begin(); it != figure->getItemsHashMap().end(); ++it )
+	{
+			key = it->first;
+			item = it->second;
+			ddXmlStorage::WriteLocal(writer, item);
+	}
+
+	//Close RELATIONITEMS
+	xmlTextWriterEndElement(writer);
+
+	//Close RELATIONSHIP Element
+	xmlTextWriterEndElement(writer);
+}
+
+void ddXmlStorage::WriteLocal( xmlTextWriterPtr writer, ddRelationshipItem *item)
+{
+	int tmp;
+
+	//At RELATIONITEMS Element
+	//<!ELEMENT RELATIONITEM (AUTOGENFK, FKCOLNAME,SOURCECOLNAME, INITIALCOLNAME, INITIALALIASNAME )>
+	tmp = xmlTextWriterStartElement(writer, BAD_CAST "RELATIONITEM");
+	
+	//<!ELEMENT AUTOGENFK (#PCDATA)>
+    tmp = xmlTextWriterWriteFormatElement(writer, BAD_CAST "AUTOGENFK","%c", item->isAutomaticallyGenerated() ? 'T' : 'F' );
+	processResult(tmp);
+
+	//<!ELEMENT FKCOLNAME (#PCDATA)>
+ 	wxString fkColName = item->fkColumn->getColumnName();
+    tmp = xmlTextWriterWriteFormatElement(writer, BAD_CAST "FKCOLNAME","%s",XML_FROM_WXSTRING(fkColName));
+	processResult(tmp);	
+
+	//<!ELEMENT SOURCECOLNAME (#PCDATA)>
+ 	wxString sourceColName = item->original->getColumnName();
+    tmp = xmlTextWriterWriteFormatElement(writer, BAD_CAST "SOURCECOLNAME","%s",XML_FROM_WXSTRING(sourceColName));
+	processResult(tmp);	
+
+	//<!ELEMENT INITIALCOLNAME (#PCDATA)>
+    tmp = xmlTextWriterWriteFormatElement(writer, BAD_CAST "INITIALCOLNAME","%s",XML_FROM_WXSTRING(item->originalStartColName));
+	processResult(tmp);	
+
+	if(item->originalShortName.Length()>0)
+	{
+		//<!ELEMENT INITIALALIASNAME (#PCDATA)>
+		tmp = xmlTextWriterWriteFormatElement(writer, BAD_CAST "INITIALALIASNAME","%s",XML_FROM_WXSTRING(item->originalShortName));
+		processResult(tmp);	
+	}
+	//Close RELATIONITEM Element
+	xmlTextWriterEndElement(writer);
+}
 
 //This is needed because table doesn't have any explicit order when stored then I created all first
 void ddXmlStorage::initialModelParse(xmlTextReaderPtr reader)
@@ -439,14 +580,22 @@ void ddXmlStorage::selectReader(xmlTextReaderPtr reader)
 
 		if(getNodeName(reader).IsSameAs(_("TABLE"),false))
 		{
-			getTABLE(reader);
+			getTable(reader);
 			design->refreshDraw();
 		}
+
+		if(getNodeName(reader).IsSameAs(_("RELATIONSHIP"),false))
+		{
+			ddRelationshipFigure *r = getRelationship(reader);
+			design->addTable(r);
+			design->refreshDraw();
+		}
+
 	}
 }
 
 //Table isn't create here because fk needs all tables created before assign it
-ddTableFigure* ddXmlStorage::getTABLE(xmlTextReaderPtr reader)
+ddTableFigure* ddXmlStorage::getTable(xmlTextReaderPtr reader)
 {
 /*
 <!ELEMENT TABLE (Attribute*,TITLE,UKNAMES?, PKNAME, COLUMNS, BEGINDRAWCOLS, BEGINDRAWIDXS, MAXCOLINDEX, MINIDXINDEX, MAXIDXINDEX, COLSROWSSIZE, COLSWINDOW,  IDXSROWSSIZE, IDXSWINDOW )>
@@ -857,11 +1006,364 @@ ddColumnFigure* ddXmlStorage::getColumn(xmlTextReaderPtr reader, ddTableFigure *
 	return NULL;   //found /COLUMNS node
 }
 
+ddRelationshipFigure* ddXmlStorage::getRelationship(xmlTextReaderPtr reader)
+{
+/*
+<!-- Points Element -->
+<!ELEMENT POINTS (POINT, POINT,POINT*)>
+<!ELEMENT POINT (X,Y)>
+<!ELEMENT X (#PCDATA)>
+<!ELEMENT Y (#PCDATA)>
+
+<!-- Relationship Element -->
+<!ELEMENT RELATIONSHIP (Attribute*, POINTS, RELATIONITEMS, UKINDEX, NAME, ONUPDATE, ONDELETE, MATCHSIMPLE, IDENTIFYING, ONETOMANY, MANDATORY, FKFROMPK)>
+<!ELEMENT RELATIONITEMS (RELATIONITEM*)>
+<!ELEMENT ONUPDATE (#PCDATA)>
+<!ELEMENT ONDELETE (#PCDATA)>
+<!ELEMENT MATCHSIMPLE (#PCDATA)>
+<!ELEMENT IDENTIFYING (#PCDATA)>
+<!ELEMENT ONETOMANY (#PCDATA)>
+<!ELEMENT MANDATORY (#PCDATA)>
+<!ELEMENT FKFROMPK (#PCDATA)>
+
+<!ATTLIST RELATIONSHIP	SourceTableID IDREF #REQUIRED >
+<!ATTLIST RELATIONSHIP	DestTableID IDREF #REQUIRED >	
+*/
+
+	xmlChar *value;	
+	wxString tmpInt;
+	int tmp;
+
+	//<!ATTLIST RELATIONSHIP SourceTableID IDREF #REQUIRED >
+	tmp = xmlTextReaderHasAttributes(reader);
+	wxString SourceTableID=_("SourceTableID");
+	if(tmp)
+	{
+		value = xmlTextReaderGetAttribute(reader,XML_FROM_WXSTRING(SourceTableID));
+	}
+	
+	if(value)
+	{
+			SourceTableID = WXSTRING_FROM_XML(value);
+			xmlFree(value);
+	}
+	
+	//<!ATTLIST RELATIONSHIP DestTableID IDREF #REQUIRED >	
+	tmp = xmlTextReaderHasAttributes(reader);
+	wxString DestTableID=_("DestTableID");
+	if(tmp)
+	{
+		value = xmlTextReaderGetAttribute(reader,XML_FROM_WXSTRING(DestTableID));
+	}
+	
+	if(value)
+	{
+			DestTableID = WXSTRING_FROM_XML(value);
+			xmlFree(value);
+	}
+	
+	ddTableFigure *source = design->getTable(design->getTableName(SourceTableID));
+	ddTableFigure *destination = design->getTable(design->getTableName(DestTableID));
+
+	ddRelationshipFigure *relation = new ddRelationshipFigure();
+	relation->setStartTerminal(new ddRelationshipTerminal(relation, false));
+	relation->setEndTerminal(new ddRelationshipTerminal(relation, true));
+//	relation->disconnectStart();
+//	relation->disconnectEnd();
+	relation->clearPoints();
+
+	// --> ATTRIBUTE*
+	//Element(s) Attribute*
+	// NEED TO IMPLEMENT THIS
+
+	// --> POINTS
+	//<!ELEMENT POINTS (POINT, POINT,POINT*)>
+	int x,y;
+
+	tmp = xmlTextReaderRead(reader);	//go to POINTS
+	if(getNodeName(reader).IsSameAs(_("POINTS"),false))
+	{
+			tmp = xmlTextReaderRead(reader);	//go POINT
+		do{
+			tmp = xmlTextReaderRead(reader);	//go X
+			tmp = xmlTextReaderRead(reader);	//go X Value
+			value = xmlTextReaderValue(reader);  //Value of X
+			if(value)
+			{
+				tmpInt = WXSTRING_FROM_XML(value);
+				x = wxAtoi(tmpInt);
+				xmlFree(value);
+			}
+			tmp = xmlTextReaderRead(reader);	//go to /X
+
+			tmp = xmlTextReaderRead(reader);	//go Y
+			tmp = xmlTextReaderRead(reader);	//go Y Value
+			value = xmlTextReaderValue(reader);  //Value of Y
+			if(value)
+			{
+				tmpInt = WXSTRING_FROM_XML(value);
+				y = wxAtoi(tmpInt);
+				xmlFree(value);
+			}
+			tmp = xmlTextReaderRead(reader);	//go to /Y
+			tmp = xmlTextReaderRead(reader);	//go /POINT
+			
+			relation->addPoint(x,y);
+			
+			tmp = xmlTextReaderRead(reader);	//go to POINT or /POINTS ?
+		}while(getNodeName(reader).IsSameAs(_("POINT"),false));
+	}
+	
+	// --> UKINDEX
+	//<!ELEMENT UKINDEX (#PCDATA)>
+	int ukindex;
+	tmp = xmlTextReaderRead(reader);	//go to UKINDEX
+	tmp = xmlTextReaderRead(reader);	//go to UKINDEX Value	
+	value = xmlTextReaderValue(reader);  //Value
+	if(value)
+	{
+		tmpInt = WXSTRING_FROM_XML(value);
+		ukindex = wxAtoi(tmpInt);
+		xmlFree(value);
+	}
+	tmp = xmlTextReaderRead(reader);	//go to /UKINDEX	
+	
+	// --> NAME
+	//<!ELEMENT NAME (#PCDATA)>
+	tmp = xmlTextReaderRead(reader);	//go to NAME or ONUPDATE
+	wxString RelationshipName=wxEmptyString;
+	if(getNodeName(reader).IsSameAs(_("NAME"),false))
+	{
+
+		tmp = xmlTextReaderRead(reader);	//go to NAME Value
+		value = xmlTextReaderValue(reader);  //Value of NAME
+		if(value)
+		{
+			RelationshipName = WXSTRING_FROM_XML(value);
+			xmlFree(value);
+		}
+		tmp = xmlTextReaderRead(reader);	//go to /NAME
+		tmp = xmlTextReaderRead(reader);	//go to ONUPDATE
+	}
+
+	// --> ONUPDATE
+	//<!ELEMENT ONUPDATE (#PCDATA)>
+	int onUpdate;
+
+	tmp = xmlTextReaderRead(reader);	//go to ONUPDATE Value	
+	value = xmlTextReaderValue(reader);  //Value
+	if(value)
+	{
+		tmpInt = WXSTRING_FROM_XML(value);
+		onUpdate = wxAtoi(tmpInt);
+		xmlFree(value);
+	}
+	tmp = xmlTextReaderRead(reader);	//go to /ONUPDATE	
+	tmp = xmlTextReaderRead(reader);	//go to ONDELETE
+
+	// --> ONDELETE
+	//<!ELEMENT ONDELETE (#PCDATA)>
+	int onDelete;
+	tmp = xmlTextReaderRead(reader);	//go to ONDELETE Value	
+	value = xmlTextReaderValue(reader);  //Value
+	if(value)
+	{
+		tmpInt = WXSTRING_FROM_XML(value);
+		onDelete = wxAtoi(tmpInt);
+		xmlFree(value);
+	}
+	tmp = xmlTextReaderRead(reader);	//go to /ONDELETE	
+	tmp = xmlTextReaderRead(reader);	//go to MATCHSIMPLE
+
+	// --> MATCHSIMPLE
+	//<!ELEMENT MATCHSIMPLE (#PCDATA)>
+	bool matchSimple=false;
+	tmp = xmlTextReaderRead(reader);	//go to MATCHSIMPLE Value
+	value = xmlTextReaderValue(reader);  //Value of MATCHSIMPLE
+		if(value)
+		{
+			tmpInt = WXSTRING_FROM_XML(value);
+			matchSimple = tmpInt.IsSameAs(_("T"));
+			xmlFree(value);
+		}
+	tmp = xmlTextReaderRead(reader);	//go to /MATCHSIMPLE
+	tmp = xmlTextReaderRead(reader);	//go to IDENTIFYING
+
+	// --> IDENTIFYING
+	//<!ELEMENT IDENTIFYING (#PCDATA)>
+	bool identifying=false;
+	tmp = xmlTextReaderRead(reader);	//go to IDENTIFYING Value
+	value = xmlTextReaderValue(reader);  //Value of IDENTIFYING
+		if(value)
+		{
+			tmpInt = WXSTRING_FROM_XML(value);
+			identifying = tmpInt.IsSameAs(_("T"));
+			xmlFree(value);
+		}
+	tmp = xmlTextReaderRead(reader);	//go to /IDENTIFYING
+	tmp = xmlTextReaderRead(reader);	//go to ONETOMANY		
+
+	// --> ONETOMANY
+	//<!ELEMENT ONETOMANY (#PCDATA)>
+	bool oneToMany=false;
+	tmp = xmlTextReaderRead(reader);	//go to ONETOMANY Value
+	value = xmlTextReaderValue(reader);  //Value of ONETOMANY
+		if(value)
+		{
+			tmpInt = WXSTRING_FROM_XML(value);
+			oneToMany = tmpInt.IsSameAs(_("T"));
+			xmlFree(value);
+		}
+	tmp = xmlTextReaderRead(reader);	//go to /ONETOMANY
+	tmp = xmlTextReaderRead(reader);	//go to MANDATORY	
+
+	// --> MANDATORY
+	//<!ELEMENT MANDATORY (#PCDATA)>
+	bool mandatory=false;
+	tmp = xmlTextReaderRead(reader);	//go to MANDATORY Value
+	value = xmlTextReaderValue(reader);  //Value of MANDATORY
+		if(value)
+		{
+			tmpInt = WXSTRING_FROM_XML(value);
+			mandatory = tmpInt.IsSameAs(_("T"));
+			xmlFree(value);
+		}
+	tmp = xmlTextReaderRead(reader);	//go to /MANDATORY
+	tmp = xmlTextReaderRead(reader);	//go to FKFROMPK	
+
+	// --> FKFROMPK
+	//<!ELEMENT FKFROMPK (#PCDATA)>
+	bool fkFromPk=false;
+	tmp = xmlTextReaderRead(reader);	//go to FKFROMPK Value
+	value = xmlTextReaderValue(reader);  //Value of FKFROMPK
+		if(value)
+		{
+			tmpInt = WXSTRING_FROM_XML(value);
+			fkFromPk = tmpInt.IsSameAs(_("T"));
+			xmlFree(value);
+		}
+	tmp = xmlTextReaderRead(reader);	//go to /FKFROMPK
+	
+
+	//refresh relationship after all values were setted
+	relation->initRelationValues(source,destination,ukindex, RelationshipName, (actionKind) onUpdate, (actionKind) onDelete,matchSimple,identifying,oneToMany,mandatory,fkFromPk);
+
+
+	// --> RELATIONITEMS
+	//<!ELEMENT RELATIONITEMS (RELATIONITEM*)>
+	tmp = xmlTextReaderRead(reader);	//go to RELATIONITEMS
+	if(getNodeName(reader).IsSameAs(_("RELATIONITEMS"))&& getNodeType(reader) == 1 && !xmlTextReaderIsEmptyElement(reader) )	
+	{
+			tmp = xmlTextReaderRead(reader);	//go RELATIONITEM
+		do{
+			//Now only add item to relationship
+			ddRelationshipItem *item = getRelationshipItem(reader,relation,source,destination);
+			relation->getItemsHashMap()[item->original->getColumnName()]=item;
+
+			tmp = xmlTextReaderRead(reader);	//go to RELATIONITEM or /RELATIONITEMS
+		}while(getNodeName(reader).IsSameAs(_("RELATIONITEM"),false));
+	}
+
+	tmp = xmlTextReaderRead(reader);	//go to /RELATIONSHIP	
+
+	relation->updateConnection();
+	return relation;
+}
+
+ddRelationshipItem* ddXmlStorage::getRelationshipItem(xmlTextReaderPtr reader, ddRelationshipFigure *itemOwner, ddTableFigure *source, ddTableFigure *destination)
+{
+/*
+<!ELEMENT RELATIONITEM (AUTOGENFK, FKCOLNAME,SOURCECOLNAME, INITIALCOLNAME, INITIALALIASNAME )>
+<!ELEMENT AUTOGENFK (#PCDATA)>
+<!ELEMENT FKCOLNAME (#PCDATA)>
+<!ELEMENT SOURCECOLNAME (#PCDATA)>
+<!ELEMENT INITIALCOLNAME (#PCDATA)>
+<!ELEMENT INITIALALIASNAME (#PCDATA)>
+*/
+	xmlChar *value;	
+	wxString tmpInt;
+	int tmp;
+	
+	// --> AUTOGENFK
+	//<!ELEMENT AUTOGENFK (#PCDATA)>
+	bool autoGenFk=false;
+	tmp = xmlTextReaderRead(reader);	//go to AUTOGENFK
+	tmp = xmlTextReaderRead(reader);	//go to AUTOGENFK Value
+	value = xmlTextReaderValue(reader);  //Value of AUTOGENFK
+		if(value)
+		{
+			tmpInt = WXSTRING_FROM_XML(value);
+			autoGenFk = tmpInt.IsSameAs(_("T"));
+			xmlFree(value);
+		}
+	tmp = xmlTextReaderRead(reader);	//go to /AUTOGENFK
+
+	//<!ELEMENT FKCOLNAME (#PCDATA)>
+	wxString fkColName;
+	tmp = xmlTextReaderRead(reader);	//go to FKCOLNAME
+	tmp = xmlTextReaderRead(reader);	//go to FKCOLNAME Value
+	value = xmlTextReaderValue(reader);  //Value of FKCOLNAME
+	if(value)
+	{
+		fkColName = WXSTRING_FROM_XML(value);
+		xmlFree(value);
+	}
+	tmp = xmlTextReaderRead(reader);	//go to /FKCOLNAME
+
+	//<!ELEMENT SOURCECOLNAME (#PCDATA)>
+	wxString sourceColName;
+	tmp = xmlTextReaderRead(reader);	//go to SOURCECOLNAME
+	tmp = xmlTextReaderRead(reader);	//go to SOURCECOLNAME Value
+	value = xmlTextReaderValue(reader);  //Value of SOURCECOLNAME
+	if(value)
+	{
+		sourceColName = WXSTRING_FROM_XML(value);
+		xmlFree(value);
+	}
+	tmp = xmlTextReaderRead(reader);	//go to /SOURCECOLNAME
+
+	//<!ELEMENT INITIALCOLNAME (#PCDATA)>
+	wxString initialColName;
+	tmp = xmlTextReaderRead(reader);	//go to INITIALCOLNAME
+	tmp = xmlTextReaderRead(reader);	//go to INITIALCOLNAME Value
+	value = xmlTextReaderValue(reader);  //Value of INITIALCOLNAME
+	if(value)
+	{
+		initialColName = WXSTRING_FROM_XML(value);
+		xmlFree(value);
+	}
+	tmp = xmlTextReaderRead(reader);	//go to /INITIALCOLNAME
+
+	//<!ELEMENT INITIALALIASNAME (#PCDATA)>
+	tmp = xmlTextReaderRead(reader);	//go to INITIALALIASNAME
+	wxString initialAliasName=wxEmptyString;
+	if(getNodeName(reader).IsSameAs(_("INITIALALIASNAME"),false))
+	{
+		tmp = xmlTextReaderRead(reader);	//go to INITIALALIASNAME Value
+		value = xmlTextReaderValue(reader);  //Value of INITIALALIASNAME
+		if(value)
+		{
+			initialAliasName = WXSTRING_FROM_XML(value);
+			xmlFree(value);
+		}
+		tmp = xmlTextReaderRead(reader);	//go to /INITIALALIASNAME
+		tmp = xmlTextReaderRead(reader);	//go to /RELATIONITEM
+	}
+
+	ddRelationshipItem *item = new ddRelationshipItem();
+	ddColumnFigure *sourceCol = source->getColByName(sourceColName);
+	ddColumnFigure *destinationCol = destination->getColByName(fkColName);
+	item->initRelationshipItemValues(itemOwner, destination, autoGenFk, destinationCol, sourceCol, initialColName, initialAliasName);
+
+	return item;
+
+}
+
 //Temporary DTD will change later
 wxString ddXmlStorage::getModelDTD()
 {
 	wxString dtd = wxEmptyString;
-dtd += _("<!ELEMENT MODEL (TABLE+)>");
+dtd += _("<!ELEMENT MODEL (TABLE+,RELATIONSHIP*)>");
 dtd += _("<!--Atribute Element-->");
 dtd += _("<!ELEMENT Attribute (#PCDATA)>");
 dtd += _(" ");
@@ -914,5 +1416,35 @@ dtd += _(" ");
 dtd += _("<!ATTLIST TABLE");
 dtd += _("	TableID ID #REQUIRED");
 dtd += _("	>");
+dtd += _(" ");
+dtd += _(" ");
+dtd += _("<!-- Relationship Element -->");
+dtd += _("<!ELEMENT RELATIONITEMS (RELATIONITEM*)>");
+dtd += _("<!ELEMENT RELATIONITEM (AUTOGENFK, FKCOLNAME,SOURCECOLNAME, INITIALCOLNAME, INITIALALIASNAME? )>");
+dtd += _("<!ELEMENT AUTOGENFK (#PCDATA)>");
+dtd += _("<!ELEMENT FKCOLNAME (#PCDATA)>");
+dtd += _("<!ELEMENT SOURCECOLNAME (#PCDATA)>");
+dtd += _("<!ELEMENT INITIALCOLNAME (#PCDATA)>");
+dtd += _("<!ELEMENT INITIALALIASNAME (#PCDATA)>");
+dtd += _(" ");
+dtd += _(" ");
+dtd += _("<!-- Points Element -->");
+dtd += _("<!ELEMENT POINTS (POINT, POINT, POINT*)>");
+dtd += _("<!ELEMENT POINT (X,Y)>");
+dtd += _("<!ELEMENT X (#PCDATA)>");
+dtd += _("<!ELEMENT Y (#PCDATA)>");
+dtd += _(" ");
+dtd += _(" ");
+dtd += _("<!ELEMENT RELATIONSHIP (Attribute*, POINTS, UKINDEX, NAME?, ONUPDATE, ONDELETE, MATCHSIMPLE, IDENTIFYING, ONETOMANY, MANDATORY, FKFROMPK, RELATIONITEMS)>");
+dtd += _("<!ELEMENT ONUPDATE (#PCDATA)>");
+dtd += _("<!ELEMENT ONDELETE (#PCDATA)>");
+dtd += _("<!ELEMENT MATCHSIMPLE (#PCDATA)>");
+dtd += _("<!ELEMENT IDENTIFYING (#PCDATA)>");
+dtd += _("<!ELEMENT ONETOMANY (#PCDATA)>");
+dtd += _("<!ELEMENT MANDATORY (#PCDATA)>");
+dtd += _("<!ELEMENT FKFROMPK (#PCDATA)>");
+dtd += _(" ");
+dtd += _("<!ATTLIST RELATIONSHIP SourceTableID IDREF #REQUIRED >");
+dtd += _("<!ATTLIST RELATIONSHIP DestTableID IDREF #REQUIRED >");
 	return dtd;
 }
