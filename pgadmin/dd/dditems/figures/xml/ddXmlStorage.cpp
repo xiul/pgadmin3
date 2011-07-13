@@ -13,11 +13,17 @@
 
 
 #include <libxml/xmlwriter.h>
+#include <libxml/xmlreader.h>
 
 // App headers
 #include "dd/dditems/figures/xml/ddXmlStorage.h"
 #include "dd/dditems/utilities/ddDataType.h"
-
+#include "dd/wxhotdraw/figures/wxhdIFigure.h"
+#include "dd/dditems/figures/ddTableFigure.h"
+#include "dd/dditems/figures/ddColumnFigure.h"
+#include "dd/dditems/figures/ddRelationshipFigure.h"
+#include "dd/dditems/figures/ddRelationshipItem.h"
+#include "dd/dditems/figures/ddRelationshipTerminal.h"
 #include "dd/dditems/figures/ddColumnKindIcon.h"
 #include "dd/dditems/figures/ddColumnOptionIcon.h"
 #include "dd/ddmodel/ddDatabaseDesign.h"
@@ -160,7 +166,8 @@ void ddXmlStorage::WriteLocal( xmlTextWriterPtr writer, ddColumnFigure *figure)
 	tmp = xmlTextWriterStartElement(writer, BAD_CAST "COLUMN");
 	
 	//<!ELEMENT NAME (#PCDATA)>
-	tmp = xmlTextWriterWriteFormatElement(writer, BAD_CAST "NAME","%s", figure->getColumnName(false).mb_str(wxConvUTF8));
+	wxString columnName = figure->getColumnName(false);
+	tmp = xmlTextWriterWriteFormatElement(writer, BAD_CAST "NAME","%s", XML_FROM_WXSTRING(columnName));
 	processResult(tmp);	
 
 	//At Column Element
@@ -236,9 +243,11 @@ void ddXmlStorage::WriteLocal( xmlTextWriterPtr writer, ddTableFigure *figure)
 
 			//<!ELEMENT UKNAME (#PCDATA)>  one for each name
 			int i, last = figure->getUkConstraintsNames().Count();
+			wxString ukName;
 			for(i = 0; i < last; i++)
 			{
-				tmp = xmlTextWriterWriteFormatElement(writer, BAD_CAST "UKNAME","%s", figure->getUkConstraintsNames()[i].mb_str(wxConvUTF8));
+				ukName = figure->getUkConstraintsNames()[i];
+				tmp = xmlTextWriterWriteFormatElement(writer, BAD_CAST "UKNAME","%s", XML_FROM_WXSTRING(ukName));
 				processResult(tmp);	
 			}
 			
@@ -356,7 +365,8 @@ void ddXmlStorage::WriteLocal( xmlTextWriterPtr writer, ddRelationshipFigure *fi
 	if(figure->getConstraintName().Length() > 0)
 	{
 		//<!ELEMENT NAME (#PCDATA)>
-		tmp = xmlTextWriterWriteFormatElement(writer, BAD_CAST "NAME","%s", figure->getConstraintName().mb_str(wxConvUTF8));
+		wxString name = figure->getConstraintName();
+		tmp = xmlTextWriterWriteFormatElement(writer, BAD_CAST "NAME","%s", XML_FROM_WXSTRING(name));
 		processResult(tmp);
 	}
 

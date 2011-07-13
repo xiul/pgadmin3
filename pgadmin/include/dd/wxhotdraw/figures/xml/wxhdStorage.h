@@ -11,7 +11,9 @@
 
 #ifndef WXHDSTORAGE_H
 #define WXHDSTORAGE_H
+
 #include "dd/wxhotdraw/main/wxhdObject.h"
+#include "dd/wxhotdraw/figures/wxhdIFigure.h"
 
 class wxhdStorage : public wxhdObject
 {

@@ -11,6 +11,10 @@
 
 #include "pgAdmin3.h"
 
+// libxml2 headers
+#include <libxml/xmlwriter.h>
+#include <libxml/xmlreader.h>
+
 // App headers
 #include "dd/wxhotdraw/figures/xml/wxhdStorage.h"
 

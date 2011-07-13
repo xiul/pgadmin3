@@ -16,6 +16,7 @@
 
 // libxml2 headers
 #include <libxml/xmlwriter.h>
+#include <libxml/xmlreader.h>
 
 // App headers
 #include "dd/ddmodel/ddDatabaseDesign.h"
