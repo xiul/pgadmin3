@@ -192,7 +192,18 @@ void ddXmlStorage::WriteLocal( xmlTextWriterPtr writer, ddTableFigure *figure)
 	tmp = xmlTextWriterWriteAttribute(writer, BAD_CAST "TableID", XML_FROM_WXSTRING(TableId) );
 	processResult(tmp);
 
-		//Add Columns
+		//Start POINT <!ELEMENT POINT (X,Y)>
+		tmp = xmlTextWriterStartElement(writer, BAD_CAST "POINT");
+		//<!ELEMENT X (#PCDATA)>
+		tmp = xmlTextWriterWriteFormatElement(writer, BAD_CAST "X","%d", figure->getBasicDisplayBox().x);
+		processResult(tmp);
+		//<!ELEMENT Y (#PCDATA)>
+		tmp = xmlTextWriterWriteFormatElement(writer, BAD_CAST "Y","%d", figure->getBasicDisplayBox().y);
+		processResult(tmp);
+		//Close POINT Element
+		xmlTextWriterEndElement(writer);
+
+		//Add Table Title
 		ddColumnFigure *f;
 		wxhdIteratorBase *iterator = figure->figuresEnumerator();
 		iterator->Next(); //First figure is main rect
@@ -328,7 +339,7 @@ void ddXmlStorage::WriteLocal( xmlTextWriterPtr writer, ddRelationshipFigure *fi
 			tmp = xmlTextWriterWriteFormatElement(writer, BAD_CAST "X","%d", point.x);
 			processResult(tmp);
 			//<!ELEMENT Y (#PCDATA)>
-			tmp = xmlTextWriterWriteFormatElement(writer, BAD_CAST "Y","%d", point.x);
+			tmp = xmlTextWriterWriteFormatElement(writer, BAD_CAST "Y","%d", point.y);
 			processResult(tmp);
 		//Close POINT Element
 		xmlTextWriterEndElement(writer);
@@ -463,6 +474,34 @@ void ddXmlStorage::initialModelParse(xmlTextReaderPtr reader)
 						xmlFree(value);
 				}
 
+				// --> POINT
+				//<!ELEMENT POINT (X,Y)>
+				int x=0,y=0;
+				wxString tmpInt;
+				tmp = xmlTextReaderRead(reader);	//go POINT
+				tmp = xmlTextReaderRead(reader);	//go X
+				tmp = xmlTextReaderRead(reader);	//go X Value
+				value = xmlTextReaderValue(reader);  //Value of X
+				if(value)
+				{
+					tmpInt = WXSTRING_FROM_XML(value);
+					x = wxAtoi(tmpInt);
+					xmlFree(value);
+				}
+				tmp = xmlTextReaderRead(reader);	//go to /X
+
+				tmp = xmlTextReaderRead(reader);	//go Y
+				tmp = xmlTextReaderRead(reader);	//go Y Value
+				value = xmlTextReaderValue(reader);  //Value of Y
+				if(value)
+				{
+					tmpInt = WXSTRING_FROM_XML(value);
+					y = wxAtoi(tmpInt);
+					xmlFree(value);
+				}
+				tmp = xmlTextReaderRead(reader);	//go to /Y
+				tmp = xmlTextReaderRead(reader);	//go /POINT
+
 				tmp = xmlTextReaderRead(reader);	//go to TITLE
 				tmp = xmlTextReaderRead(reader);	//go to NAME
 				tmp = xmlTextReaderRead(reader);	//go to NAME Value
@@ -488,7 +527,7 @@ void ddXmlStorage::initialModelParse(xmlTextReaderPtr reader)
 					tmp = xmlTextReaderRead(reader);	//go to /ALIAS
 					tmp = xmlTextReaderRead(reader);	//go to /TITLE
 				}
-				ddTableFigure *t = new ddTableFigure(tableName, 300, 300, tableAlias);
+				ddTableFigure *t = new ddTableFigure(tableName, x, y, tableAlias);
 				design->addTable(t);
 			}
 		 ret = xmlTextReaderRead(reader);			
@@ -598,7 +637,7 @@ void ddXmlStorage::selectReader(xmlTextReaderPtr reader)
 ddTableFigure* ddXmlStorage::getTable(xmlTextReaderPtr reader)
 {
 /*
-<!ELEMENT TABLE (Attribute*,TITLE,UKNAMES?, PKNAME, COLUMNS, BEGINDRAWCOLS, BEGINDRAWIDXS, MAXCOLINDEX, MINIDXINDEX, MAXIDXINDEX, COLSROWSSIZE, COLSWINDOW,  IDXSROWSSIZE, IDXSWINDOW )>
+<!ELEMENT TABLE (Attribute*,POINT,TITLE,UKNAMES?, PKNAME, COLUMNS, BEGINDRAWCOLS, BEGINDRAWIDXS, MAXCOLINDEX, MINIDXINDEX, MAXIDXINDEX, COLSROWSSIZE, COLSWINDOW,  IDXSROWSSIZE, IDXSWINDOW )>
 <!ELEMENT COLUMNS (COLUMN*)>
 <!ELEMENT UKNAMES (UKNAME+)>
 <!ELEMENT UKNAME (#PCDATA)>
@@ -617,7 +656,7 @@ ddTableFigure* ddXmlStorage::getTable(xmlTextReaderPtr reader)
 */
 
 int tmp;
-wxString TableID,node;
+wxString TableID,node,tmpInt;
 xmlChar *value;
 
 	//<!ATTLIST TABLE	TableID ID #REQUIRED >
@@ -637,6 +676,33 @@ xmlChar *value;
 	// --> ATTRIBUTE*
 	//Element(s) Attribute*
 	// NEED TO IMPLEMENT THIS
+
+	// --> POINT
+	//<!ELEMENT POINT (X,Y)>
+	int x=0,y=0;
+	tmp = xmlTextReaderRead(reader);	//go POINT
+	tmp = xmlTextReaderRead(reader);	//go X
+	tmp = xmlTextReaderRead(reader);	//go X Value
+	value = xmlTextReaderValue(reader);  //Value of X
+	if(value)
+	{
+		tmpInt = WXSTRING_FROM_XML(value);
+		x = wxAtoi(tmpInt);
+		xmlFree(value);
+	}
+	tmp = xmlTextReaderRead(reader);	//go to /X
+
+	tmp = xmlTextReaderRead(reader);	//go Y
+	tmp = xmlTextReaderRead(reader);	//go Y Value
+	value = xmlTextReaderValue(reader);  //Value of Y
+	if(value)
+	{
+		tmpInt = WXSTRING_FROM_XML(value);
+		y = wxAtoi(tmpInt);
+		xmlFree(value);
+	}
+	tmp = xmlTextReaderRead(reader);	//go to /Y
+	tmp = xmlTextReaderRead(reader);	//go /POINT
 
 	// --> TITLE
 	//<!ELEMENT TITLE (NAME,ALIAS?)>
@@ -708,7 +774,6 @@ xmlChar *value;
 	}
 	
 	int beginDrawCols, beginDrawIdxs, maxColIndex, minIdxIndex, maxIdxIndex, colsRowsSize, colsWindow, idxsRowsSize, idxsWindow;
-	wxString tmpInt;
 	// --> BEGINDRAWCOLS
 	//<!ELEMENT BEGINDRAWCOLS (#PCDATA)>
 	tmp = xmlTextReaderRead(reader);	//go to BEGINDRAWCOLS
@@ -833,7 +898,11 @@ xmlChar *value;
 	//Use empty table without columns created at preparsing to fill it with metadata
 	
 	ddTableFigure *t = design->getTable(tableName);
-	t->InitTableValues(ukNames, pkName, beginDrawCols, beginDrawIdxs, maxColIndex, minIdxIndex, maxIdxIndex, colsRowsSize, colsWindow, idxsRowsSize, idxsWindow);
+	if(t!=NULL)
+		t->InitTableValues(ukNames, pkName, beginDrawCols, beginDrawIdxs, maxColIndex, minIdxIndex, maxIdxIndex, colsRowsSize, colsWindow, idxsRowsSize, idxsWindow);
+	else
+		wxMessageBox(_("Table initial metadata info not found"));
+
 
 		//CHANGE 300,300 for right value when displaybox metadata will be added
 
@@ -1068,8 +1137,6 @@ ddRelationshipFigure* ddXmlStorage::getRelationship(xmlTextReaderPtr reader)
 	ddRelationshipFigure *relation = new ddRelationshipFigure();
 	relation->setStartTerminal(new ddRelationshipTerminal(relation, false));
 	relation->setEndTerminal(new ddRelationshipTerminal(relation, true));
-//	relation->disconnectStart();
-//	relation->disconnectEnd();
 	relation->clearPoints();
 
 	// --> ATTRIBUTE*
@@ -1397,7 +1464,7 @@ dtd += _("<!ELEMENT TITLE (NAME,ALIAS?)>");
 dtd += _("<!ELEMENT ALIAS (#PCDATA)>");
 dtd += _(" ");
 dtd += _("<!-- Table Element -->");
-dtd += _("<!ELEMENT TABLE (Attribute*,TITLE,UKNAMES?, PKNAME, BEGINDRAWCOLS, BEGINDRAWIDXS, MAXCOLINDEX, MINIDXINDEX, MAXIDXINDEX, COLSROWSSIZE,");
+dtd += _("<!ELEMENT TABLE (Attribute*,POINT,TITLE,UKNAMES?, PKNAME, BEGINDRAWCOLS, BEGINDRAWIDXS, MAXCOLINDEX, MINIDXINDEX, MAXIDXINDEX, COLSROWSSIZE,");
 dtd += _("COLSWINDOW,IDXSROWSSIZE, IDXSWINDOW, COLUMNS )>");
 dtd += _("<!ELEMENT COLUMNS (COLUMN*)>");
 dtd += _("<!ELEMENT UKNAMES (UKNAME+)>");
