@@ -201,6 +201,7 @@ void ddTableFigure::addColumn(ddColumnFigure *column)
 	colsRowsSize++;
 	calcRectsAreas();
 	recalculateColsPos();
+	updateTableSize();
 }
 
 //WARNING: Function should be called on a table generated from a storage
