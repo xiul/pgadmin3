@@ -357,6 +357,9 @@ const wxChar *pgHbaMethodStrings[] =
 	wxT("ldap"),
 	wxT("gss"),
 	wxT("sspi"),
+	wxT("cert"),
+	wxT("peer"),
+	wxT("radius"),
 	0
 };
 
@@ -384,6 +387,7 @@ void SkipNonspace(const wxChar* &ptr, const wxChar *spaceChars = wxT("\t "))
 pgHbaConfigLine::pgHbaConfigLine(const wxString &line)
 {
 	item = -1;
+	isValid = false;
 	connectType = PGC_INVALIDCONF;
 	method = PGC_INVALIDMETHOD;
 	Init(line);
@@ -392,6 +396,7 @@ pgHbaConfigLine::pgHbaConfigLine(const wxString &line)
 
 void pgHbaConfigLine::Init(const wxString &line)
 {
+	isValid = false;
 	connectType = PGC_INVALIDCONF;
 	changed = false;
 
@@ -424,7 +429,6 @@ void pgHbaConfigLine::Init(const wxString &line)
 	else
 	{
 		connectType = PGC_INVALIDCONF;
-		isComment = true;
 		return;
 	}
 
@@ -498,12 +502,12 @@ void pgHbaConfigLine::Init(const wxString &line)
 		method = (pgHbaMethod)i;
 	else
 	{
-		connectType = PGC_INVALIDCONF;
-		isComment = true;
 		return;
 	}
 	SkipSpace(p5);
 	option = p5;
+
+	isValid = true;
 }
 
 

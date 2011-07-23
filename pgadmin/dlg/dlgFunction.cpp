@@ -171,6 +171,7 @@ int dlgFunction::Go(bool modal)
 
 	if (function)
 	{
+		cbSchema->Enable(connection->BackendMinimumVersion(8, 1));
 		rdbIn->Disable();
 		rdbOut->Disable();
 		rdbInOut->Disable();
@@ -833,7 +834,7 @@ wxString dlgFunction::GetArgs(const bool withNames, const bool inOnly)
 wxString dlgFunction::GetSql()
 {
 	wxString sql;
-	wxString name = GetName();
+	wxString name;
 	wxString objType;
 	if (isProcedure)
 		objType = wxT("PROCEDURE ");
@@ -846,7 +847,6 @@ wxString dlgFunction::GetSql()
 	                 || cbVolatility->GetValue() != function->GetVolatility()
 	                 || chkSecureDefiner->GetValue() != function->GetSecureDefiner()
 	                 || chkStrict->GetValue() != function->GetIsStrict()
-	                 || cbOwner->GetValue() != function->GetOwner()
 	                 || GetArgs() != function->GetArgListWithNames()
 	                 || (isC && (txtObjectFile->GetValue() != function->GetBin() || txtLinkSymbol->GetValue() != function->GetSource()))
 	                 || (!isC && txtSqlBox->GetText() != function->GetSource());
@@ -860,23 +860,23 @@ wxString dlgFunction::GetSql()
 
 	if (function)
 	{
+		name = GetName();
 		// edit mode
 		if (name != function->GetName())
 		{
 			if (!isProcedure)
-				sql = wxT("ALTER FUNCTION ") + function->GetQuotedFullIdentifier()
-				      + wxT("(") + function->GetArgSigList() + wxT(")")
-				      + wxT(" RENAME TO ") + qtIdent(name) + wxT(";\n");
+				AppendNameChange(sql, wxT("FUNCTION ") + function->GetQuotedFullIdentifier()
+				                 + wxT("(") + function->GetArgSigList() + wxT(")"));
 			else
-				sql = wxT("ALTER PROCEDURE ") + function->GetQuotedFullIdentifier()
-				      + wxT(" RENAME TO ") + qtIdent(name) + wxT(";\n");
+				AppendNameChange(sql, wxT("FUNCTION ") + function->GetQuotedFullIdentifier());
 		}
-
 		if (didChange)
 			sql += wxT("CREATE OR REPLACE ") + objType;
 	}
 	else
 	{
+		name = qtIdent(cbSchema->GetValue()) + wxT(".") + qtIdent(GetName());
+
 		// create mode
 		sql = wxT("CREATE " ) + objType;
 	}
@@ -959,10 +959,8 @@ wxString dlgFunction::GetSql()
 
 	if (function)
 	{
-		if (cbOwner->GetValue() != function->GetOwner())
-			sql += wxT("ALTER FUNCTION ") + name
-			       +  wxT(" OWNER TO ") + qtIdent(cbOwner->GetValue())
-			       + wxT(";\n");
+		AppendOwnerChange(sql, wxT("FUNCTION ") + name);
+		AppendSchemaChange(sql, wxT("FUNCTION ") + name);
 	}
 	else
 	{
@@ -1011,12 +1009,12 @@ wxString dlgFunction::GetSql()
 			{
 				if (newVar != wxT("search_path") && newVar != wxT("temp_tablespaces"))
 					sql += wxT("ALTER FUNCTION ") + name
-					       +  wxT(" SET ") + newVar
+					       +  wxT("\n  SET ") + newVar
 					       +  wxT("='") + newVal
 					       +  wxT("';\n");
 				else
 					sql += wxT("ALTER FUNCTION ") + name
-					       +  wxT(" SET ") + newVar
+					       +  wxT("\n  SET ") + newVar
 					       +  wxT("=") + newVal
 					       +  wxT(";\n");
 			}
@@ -1026,7 +1024,7 @@ wxString dlgFunction::GetSql()
 		for (pos = 0 ; pos < (int)vars.GetCount() ; pos++)
 		{
 			sql += wxT("ALTER FUNCTION ") + name
-			       +  wxT(" RESET ") + vars.Item(pos).BeforeFirst('=')
+			       +  wxT("\n  RESET ") + vars.Item(pos).BeforeFirst('=')
 			       + wxT(";\n");
 		}
 
@@ -1036,7 +1034,7 @@ wxString dlgFunction::GetSql()
 	if (isProcedure)
 		AppendComment(sql, wxT("PROCEDURE ") + schema->GetQuotedPrefix() + qtIdent(GetName()), function);
 	else
-		AppendComment(sql, wxT("FUNCTION ") + name, function);
+		AppendComment(sql, wxT("FUNCTION ") + qtIdent(cbSchema->GetValue()) + wxT(".") + qtIdent(GetName()), function);
 
 	return sql;
 }

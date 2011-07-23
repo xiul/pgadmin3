@@ -112,11 +112,16 @@ dlgType::dlgType(pgaFactory *f, frmMain *frame, pgType *node, pgSchema *sch)
 
 void dlgType::OnChangeMember(wxCommandEvent &ev)
 {
+	wxString name = txtMembername->GetValue().Strip(wxString::both);
+
 	btnAddMember->Enable(
 	    ((type && connection->BackendMinimumVersion(9, 1)) || !type)
-	    && !txtMembername->GetValue().Strip(wxString::both).IsEmpty()
+	    && !name.IsEmpty()
+	    && lstMembers->FindItem(-1, name, false) == -1
 	    && cbDatatype->GetGuessedSelection() >= 0);
-	btnChangeMember->Enable(true);
+	btnChangeMember->Enable(
+	    lstMembers->FindItem(-1, name, false) == lstMembers->GetFirstSelected()
+	    || lstMembers->FindItem(-1, name, false) == -1);
 }
 
 void dlgType::showDefinition(int panel)
@@ -189,7 +194,8 @@ int dlgType::Go(bool modal)
 	if (type)
 	{
 		// Edit Mode
-		txtName->Disable();
+		cbSchema->Enable(connection->BackendMinimumVersion(8, 1));
+		txtName->Enable(connection->BackendMinimumVersion(8, 4));
 		rdbType->SetSelection(type->GetTypeClass());
 		rdbType->Disable();
 
@@ -238,7 +244,7 @@ int dlgType::Go(bool modal)
 		bool changeok = connection->BackendMinimumVersion(9, 1);
 		txtMembername->Enable(changeok);
 		cbCollation->Enable(changeok);
-		btnAddMember->Enable(changeok);
+		btnAddMember->Enable(false);
 		btnChangeMember->Enable(false);
 		btnRemoveMember->Enable(false);
 
@@ -285,6 +291,7 @@ int dlgType::Go(bool modal)
 			memberLengths.Add(typeLength);
 			memberPrecisions.Add(typePrecision);
 			memberCollations.Add(elements.Item(i + 2));
+			memberOriginalNames.Add(elements.Item(i));
 		}
 
 		cbDatatype->Enable(changeok);
@@ -446,36 +453,40 @@ void dlgType::OnSelChangeTypOrLen(wxCommandEvent &ev)
 
 void dlgType::CheckChange()
 {
+	bool enable = true;
+
+	if (rdbType->GetSelection() == TYPE_COMPOSITE)
+	{
+		CheckValid(enable, lstMembers->GetItemCount() > 1, _("Please specify at least two members."));
+	}
+	else if (rdbType->GetSelection() == TYPE_ENUM)
+	{
+		CheckValid(enable, lstLabels->GetItemCount() >= 1, _("Please specify at least one label."));
+	}
+	else
+	{
+		txtLength->Enable(!chkVariable->GetValue());
+		CheckValid(enable, cbInput->GetCurrentSelection() >= 0, _("Please specify input conversion function."));
+		CheckValid(enable, cbOutput->GetCurrentSelection() >= 0, _("Please specify output conversion function."));
+		CheckValid(enable, chkVariable->GetValue() || StrToLong(txtLength->GetValue()) > 0, _("Please specify internal storage length."));
+	}
+
 	if (type)
 	{
-		EnableOK(txtComment->GetValue() != type->GetComment()
-		         || cbOwner->GetValue() != type->GetOwner()
-		         || (rdbType->GetSelection() == TYPE_COMPOSITE && GetSqlForTypes() != wxEmptyString)
-		         || (GetSql().Length() > 0 && connection->BackendMinimumVersion(9, 1)));
+		EnableOK(enable && (txtName->GetValue() != type->GetName()
+		                    || txtComment->GetValue() != type->GetComment()
+		                    || cbSchema->GetValue() != type->GetSchema()->GetName()
+		                    || cbOwner->GetValue() != type->GetOwner()
+		                    || (rdbType->GetSelection() == TYPE_COMPOSITE && GetSqlForTypes() != wxEmptyString)
+		                    || (GetSql().Length() > 0 && connection->BackendMinimumVersion(9, 1))));
 	}
 	else
 	{
 		wxString name = GetName();
 
-		bool enable = true;
 		CheckValid(enable, !name.IsEmpty(), _("Please specify name."));
 		CheckValid(enable, !name.StartsWith(wxT("_")), _("Name may not start with '_'."));
 
-		if (rdbType->GetSelection() == TYPE_COMPOSITE)
-		{
-			CheckValid(enable, lstMembers->GetItemCount() > 1, _("Please specify at least two members."));
-		}
-		else if (rdbType->GetSelection() == TYPE_ENUM)
-		{
-			CheckValid(enable, lstLabels->GetItemCount() >= 1, _("Please specify at least one label."));
-		}
-		else
-		{
-			txtLength->Enable(!chkVariable->GetValue());
-			CheckValid(enable, cbInput->GetCurrentSelection() >= 0, _("Please specify input conversion function."));
-			CheckValid(enable, cbOutput->GetCurrentSelection() >= 0, _("Please specify output conversion function."));
-			CheckValid(enable, chkVariable->GetValue() || StrToLong(txtLength->GetValue()) > 0, _("Please specify internal storage length."));
-		}
 		EnableOK(enable);
 	}
 }
@@ -533,6 +544,7 @@ void dlgType::OnMemberAdd(wxCommandEvent &ev)
 		memberLengths.Add(length);
 		memberPrecisions.Add(precision);
 		memberCollations.Add(collation);
+		memberOriginalNames.Add(wxEmptyString);
 	}
 
 	CheckChange();
@@ -596,6 +608,7 @@ void dlgType::OnMemberRemove(wxCommandEvent &ev)
 		memberLengths.RemoveAt(pos);
 		memberPrecisions.RemoveAt(pos);
 		memberCollations.RemoveAt(pos);
+		memberOriginalNames.RemoveAt(pos);
 	}
 	CheckChange();
 }
@@ -675,13 +688,16 @@ pgObject *dlgType::CreateObject(pgCollection *collection)
 
 wxString dlgType::GetSql()
 {
-	wxString sql, direction;
+	wxString sql, direction, objname;
 	size_t existingitems_index, listitems_index, offset;
 
 	if (type)
 	{
 		// Edit Mode
-		AppendOwnerChange(sql, wxT("TYPE ") + type->GetQuotedFullIdentifier());
+		objname = schema->GetQuotedPrefix() + qtIdent(GetName());
+		AppendNameChange(sql, wxT("TYPE ") + type->GetQuotedFullIdentifier());
+		AppendOwnerChange(sql, wxT("TYPE ") + objname);
+
 		sql += GetSqlForTypes();
 		if (rdbType->GetSelection() == TYPE_ENUM && connection->BackendMinimumVersion(9, 1))
 		{
@@ -703,8 +719,8 @@ wxString dlgType::GetSql()
 						offset = -1;
 					}
 
-					sql += wxT("ALTER TYPE ") + type->GetQuotedFullIdentifier()
-					       +  wxT(" ADD VALUE ") + connection->qtDbString(lstLabels->GetItemText(listitems_index))
+					sql += wxT("ALTER TYPE ") + objname
+					       +  wxT("\n  ADD VALUE ") + connection->qtDbString(lstLabels->GetItemText(listitems_index))
 					       +  wxT(" ") + direction + wxT(" ")
 					       + connection->qtDbString(elements.Item(existingitems_index + offset))
 					       + wxT(";\n");
@@ -713,6 +729,7 @@ wxString dlgType::GetSql()
 					existingitems_index++;
 			}
 		}
+		AppendSchemaChange(sql, wxT("TYPE ") + objname);
 	}
 	else
 	{
@@ -817,7 +834,7 @@ wxString dlgType::GetSql()
 
 		sql += wxT(");\n");
 	}
-	AppendComment(sql, wxT("TYPE"), schema, type);
+	AppendComment(sql, wxT("TYPE ") + qtIdent(cbSchema->GetValue()) + wxT(".") + qtIdent(GetName()), type);
 
 	return sql;
 }
@@ -833,7 +850,7 @@ wxString dlgType::GetFullTypeName(int type)
 			typname += wxT(",") + memberPrecisions.Item(type);
 		typname += wxT(")");
 	}
-	if (!memberPrecisions.Item(type).IsEmpty() && memberPrecisions.Item(type) != wxT("pg_catalog.\"default\""))
+	if (!memberCollations.Item(type).IsEmpty() && memberCollations.Item(type) != wxT("pg_catalog.\"default\""))
 		typname += wxT(" COLLATE ") + memberCollations.Item(type);
 
 	return typname;
@@ -842,45 +859,108 @@ wxString dlgType::GetFullTypeName(int type)
 wxString dlgType::GetSqlForTypes()
 {
 	wxString sql = wxEmptyString;
-	wxString old_name, old_type, old_collation, new_name, new_type, new_collation;
+	wxString objname, old_name, old_type, old_collation, new_name, new_type, new_full_type, new_collation, original_name;
 	wxArrayString elements = type->GetTypesArray();
-	bool modified = lstMembers->GetItemCount() * 3 != (int)elements.GetCount();
-	size_t i;
+	size_t newindex;
+	size_t oldindex = 0;
+	int    hold = 0;
+	objname = schema->GetQuotedPrefix() + qtIdent(GetName());
 
-	// Check if there is a change
-	for (int i = 0 ; i < lstMembers->GetItemCount() && !modified; i++)
+	for (newindex = 0 ; newindex < lstMembers->GetItemCount() ; newindex = newindex + 1 - hold)
 	{
-		old_name = elements.Item(i * 3);
-		old_type = elements.Item(i * 3 + 1);
-		old_collation = elements.Item(i * 3 + 2);
-		new_name = lstMembers->GetItemText(i);
-		new_type = GetFullTypeName(i);
-		new_collation = memberCollations.Item(i);
-		modified = modified || old_name != new_name
-		           || old_type != new_type
-		           || old_collation != new_collation;
-	}
+		// this will decide whether we progress to the next new item,
+		// or whether we need to continue checking the old list first
+		hold = 0;
 
-	if (modified)
-	{
-		// Drop all old attributes
-		for (i = 0 ; i < elements.GetCount() ; i += 3)
+		// these are a copy of the list before any changes
+		if (elements.GetCount() >= (oldindex * 3) + 3)
 		{
-			old_name = elements.Item(i);
-			sql += wxT("ALTER TYPE ") + type->GetName() + wxT(" DROP ATTRIBUTE ") + old_name + wxT(";\n");
+			old_name = elements.Item(oldindex * 3);
+			old_type = elements.Item(oldindex * 3 + 1);
+			old_collation = elements.Item(oldindex * 3 + 2);
+		}
+		else
+		{
+			// we've now used up all the old attributes
+			old_name = wxEmptyString;
+			old_type = wxEmptyString;
+			old_collation = wxEmptyString;
 		}
 
-		// Add all new attributes
-		for (int i = 0 ; i < lstMembers->GetItemCount() ; i++)
+		// this is the original name of the type before editing
+		original_name = memberOriginalNames.Item(newindex);
+
+		new_name = lstMembers->GetItemText(newindex);
+		new_type = memberTypes.Item(newindex).AfterFirst(':');
+		new_full_type = GetFullTypeName(newindex);
+		new_collation = memberCollations.Item(newindex);
+
+		if (!original_name.IsEmpty() && original_name == old_name && (new_name != old_name
+		        || new_type != old_type || new_collation != old_collation))
 		{
-			new_name = lstMembers->GetItemText(i);
-			new_type = GetFullTypeName(i);
-			new_collation = memberCollations.Item(i);
-			sql += wxT("ALTER TYPE ") + type->GetName() + wxT(" ADD ATTRIBUTE ")
-			       + new_name + wxT(" ") + new_type;
-			if (!new_collation.IsEmpty() && new_collation != wxT("pg_catalog.\"default\""))
-				sql += wxT(" COLLATE ") + new_collation;
-			sql += wxT(";\n");
+			// if this was originally in the list and the name has changed then rename it
+
+			if (new_name != old_name)
+			{
+				sql += wxT("ALTER TYPE ") + objname + wxT("\n  RENAME ATTRIBUTE ")
+				       + qtIdent(original_name) + wxT(" TO ") + qtIdent(new_name) + wxT(";\n");
+			}
+
+			if (new_type != old_type || new_collation != old_collation)
+			{
+				sql += wxT("ALTER TYPE ") + objname + wxT("\n  ALTER ATTRIBUTE ")
+				       + qtIdent(new_name);
+
+				// the syntax for alter attribute requires that we always specify the type
+				sql += wxT(" SET DATA TYPE ") + new_type;
+
+				if (new_collation != old_collation)
+					sql += wxT(" COLLATE ") + new_collation;
+
+				sql += wxT(";\n");
+			}
+		}
+		else if (!original_name.IsEmpty() && original_name != old_name)
+		{
+			// the old attribute isn't in the new list so drop it
+
+			// don't move through new list yet
+			hold = 1;
+
+			sql += wxT("ALTER TYPE ") + objname + wxT("\n  DROP ATTRIBUTE ")
+			       + qtIdent(old_name) + wxT(";\n");
+		}
+		else if (original_name.IsEmpty())
+		{
+			if (!old_name.IsEmpty())
+			{
+				sql += wxT("ALTER TYPE ") + objname + wxT("\n  DROP ATTRIBUTE ")
+				       + qtIdent(old_name) + wxT(";\n");
+			}
+
+			sql += wxT("ALTER TYPE ") + objname + wxT("\n  ADD ATTRIBUTE ")
+			       + qtIdent(new_name) + wxT(" ") + new_full_type + wxT(";\n");
+		}
+		else
+		{
+			// do nothing
+		}
+
+		oldindex++;
+
+		if (newindex + 1 - hold == lstMembers->GetItemCount() && elements.GetCount() >= (oldindex * 3) + 3)
+		{
+			// remove remaining old attributes
+			for (; elements.GetCount() >= (oldindex * 3) + 3; oldindex++)
+			{
+				old_name = elements.Item(oldindex * 3);
+				old_type = elements.Item(oldindex * 3 + 1);
+				old_collation = elements.Item(oldindex * 3 + 2);
+
+				sql += wxT("ALTER TYPE ") + objname + wxT("\n  DROP ATTRIBUTE ")
+				       + qtIdent(old_name) + wxT(";\n");
+			}
+			break;
 		}
 	}
 

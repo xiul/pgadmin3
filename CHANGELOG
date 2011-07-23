@@ -37,9 +37,17 @@ Changes
 
 Date       Dev Ver     Change details
 ---------- --- ------  --------------
+2011-07-09 GL  1.16.0  Allow change of schema in the UI. Patch from Thom
+                       Brown.
+2011-07-05 GL  1.16.0  Add "Search Objects" dialog. Patch from Jasmin Dizdarevic.
+2011-07-03 GL  1.16.0  New maintenance action: CLUSTER. Patch from Thom Brown.
+2011-07-02 GL  1.16.0  Enable "Has OIDs" on 8.4+ even when the table is
+                       already created. Patch from Thom Brown.
+2011-06-27 GL  1.16.0  Add Database Designer. Patch from Luis Ochoa.
 2011-06-23 MH  1.14.0  Rename "Replication" node and menu to
                        "Slony Replication", and "Use Replication" to
-		       "Use Slony".
+        		       "Use Slony".
+2011-06-23 DP  1.16.0  Allow change of the fill factor. Patch from Thom Brown.
 2011-05-04 MH  1.12.4  Properly show blocked processes when the lock is on
                        transactionid, and show -1 if it's blocking but we
                        can't figure out what it's blocking on.
