@@ -42,6 +42,8 @@ private:
 	void OnAddColumn(wxCommandEvent &event);
 	void OnNewModel(wxCommandEvent &event);
 	void OnModelGeneration(wxCommandEvent &event);
+	void OnModelSave(wxCommandEvent &event);
+	void OnModelLoad(wxCommandEvent &event);
 	wxAuiManager manager;
 	DECLARE_EVENT_TABLE()
 };

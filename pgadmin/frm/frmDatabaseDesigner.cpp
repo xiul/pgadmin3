@@ -16,6 +16,7 @@
 #include <wx/dcbuffer.h>
 #include <wx/aui/aui.h>
 #include <wx/splitter.h>
+#include <wx/filename.h>
 
 // App headers
 #include "frm/frmMain.h"
@@ -42,6 +43,8 @@
 #include "dd/dditems/figures/ddTableFigure.h"
 #include "dd/dditems/utilities/ddTableNameDialog.h"
 
+#include "dd/dditems/figures/xml/ddXmlStorage.h"
+
 // Icons
 #include "images/ddmodel-32.pngc"
 #include "images/file_new.pngc"
@@ -49,6 +52,8 @@
 #include "images/ddRemoveTable2.pngc"
 #include "images/continue.pngc"
 #include "images/help.pngc"
+#include "images/file_save.pngc"
+#include "images/file_open.pngc"
 
 BEGIN_EVENT_TABLE(frmDatabaseDesigner, pgFrame)
 	EVT_MENU(MNU_NEW,               frmDatabaseDesigner::OnNewModel)
@@ -56,6 +61,8 @@ BEGIN_EVENT_TABLE(frmDatabaseDesigner, pgFrame)
 	EVT_MENU(MNU_DELETETABLE,       frmDatabaseDesigner::OnDeleteTable)
 	EVT_MENU(MNU_ADDCOLUMN,         frmDatabaseDesigner::OnAddColumn)
 	EVT_MENU(MNU_GENERATEMODEL,     frmDatabaseDesigner::OnModelGeneration)
+	EVT_MENU(MNU_SAVEMODEL,			frmDatabaseDesigner::OnModelSave)
+	EVT_MENU(MNU_LOADMODEL,			frmDatabaseDesigner::OnModelLoad)
 	EVT_CLOSE(                      frmDatabaseDesigner::OnClose)
 END_EVENT_TABLE()
 
@@ -109,6 +116,8 @@ frmDatabaseDesigner::frmDatabaseDesigner(frmMain *form, const wxString &_title, 
 	toolBar->AddTool(MNU_DELETETABLE, _("Delete Table"), wxBitmap(*ddRemoveTable2_png_img), _("Delete selected table"), wxITEM_NORMAL);
 	toolBar->AddTool(MNU_ADDCOLUMN, _("Add Column"), *table_png_bmp, _("Add new column to the selected table"), wxITEM_NORMAL);
 	toolBar->AddTool(MNU_GENERATEMODEL, _("Generate Model"), *continue_png_bmp, _("Generate SQL for the current model"), wxITEM_NORMAL);
+	toolBar->AddTool(MNU_SAVEMODEL, _("Save Model"), *file_save_png_bmp, _("Save current database designer model"), wxITEM_NORMAL);
+	toolBar->AddTool(MNU_LOADMODEL, _("Load Model"), *file_open_png_bmp, _("Load database designer model from a file"), wxITEM_NORMAL);
 	toolBar->AddSeparator();
 	toolBar->AddTool(MNU_HELP, _("Help"), *help_png_bmp, _("Display help"), wxITEM_NORMAL);
 	toolBar->Realize();
@@ -201,7 +210,7 @@ void frmDatabaseDesigner::OnDeleteTable(wxCommandEvent &event)
 
 void frmDatabaseDesigner::OnAddColumn(wxCommandEvent &event)
 {
-	ddTableFigure *table = design->getSelectedTable();
+ 	ddTableFigure *table = design->getSelectedTable();
 	wxTextEntryDialog nameDialog (this, wxT("New column name"), wxT("Add a column"), wxT("NewColumn"));
 	int answer;
 	wxString tmpString;
@@ -216,7 +225,7 @@ void frmDatabaseDesigner::OnAddColumn(wxCommandEvent &event)
 			if (answer == wxID_OK)
 			{
 				tmpString = nameDialog.GetValue();
-				if(table->colNameAvailable(tmpString))
+				if(table->getColByName(tmpString)==NULL)
 					table->addColumn(new ddColumnFigure(tmpString, table));
 				else
 				{
@@ -240,6 +249,7 @@ void frmDatabaseDesigner::OnAddColumn(wxCommandEvent &event)
 
 void frmDatabaseDesigner::OnNewModel(wxCommandEvent &event)
 {
+	
 	design->eraseModel();
 	sqltext->Clear();
 }
@@ -259,6 +269,43 @@ void frmDatabaseDesigner::OnModelGeneration(wxCommandEvent &event)
 	}
 }
 
+//Saving/Loading function for testing purpose not real one.
+void frmDatabaseDesigner::OnModelSave(wxCommandEvent &event)
+{
+	wxFileDialog openFileDialog( this, _("Save model"), _(""), _(""), _("*.pgd"),
+		                  wxFD_SAVE | wxFD_OVERWRITE_PROMPT, wxDefaultPosition);
+ 
+	if ( openFileDialog.ShowModal() == wxID_OK )
+	{
+		wxString path;
+		path.append( openFileDialog.GetDirectory() );
+		path.append( wxFileName::GetPathSeparator() );
+		path.append( openFileDialog.GetFilename() );
+		if(!path.Lower().Matches(_("*.pgd")))
+			path.append(_(".pgd"));
+		design->writeXmlModel(path);
+	}
+}
+
+
+void frmDatabaseDesigner::OnModelLoad(wxCommandEvent &event)
+{
+	wxFileDialog openFileDialog( this, _("Open model"), _(""), _(""), _("*.pgd"),
+		                  wxOPEN | wxFD_FILE_MUST_EXIST, wxDefaultPosition);
+ 
+	if ( openFileDialog.ShowModal() == wxID_OK )
+	{
+		wxString path;
+		path.append( openFileDialog.GetDirectory() );
+		path.append( wxFileName::GetPathSeparator() );
+		path.append( openFileDialog.GetFilename() );
+		if(!path.Lower().Matches(_("*.pgd")))
+			path.append(_(".pgd"));		design->eraseModel();
+		design->readXmlModel(path);
+	}
+
+
+}
 
 ///////////////////////////////////////////////////////
 
