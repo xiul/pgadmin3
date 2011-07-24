@@ -33,8 +33,8 @@ public:
 	virtual void connect(wxhdIConnector *connector, wxhdDrawingView *view = NULL) = 0;
 	virtual void setPoint(wxhdPoint p) = 0;
 	virtual bool isConnectionPossible(wxhdIFigure *figure) = 0;
-	wxhdIFigure *findConnectableFigure(int x, int y, wxhdDrawing *drawing);
-	wxhdIConnector *findConnectionTarget(int x, int y, wxhdDrawing *drawing);
+	wxhdIFigure *findConnectableFigure(int posIdx, int x, int y, wxhdDrawing *drawing);
+	wxhdIConnector *findConnectionTarget(int posIdx, int x, int y, wxhdDrawing *drawing);
 protected:
 	wxhdLineConnection *connection;
 	wxhdIFigure *targetFigure;

@@ -34,7 +34,7 @@ wxhdPolyLineHandle::~wxhdPolyLineHandle()
 
 void wxhdPolyLineHandle::draw(wxBufferedDC &context, wxhdDrawingView *view)
 {
-	wxhdRect copy = getDisplayBox();
+	wxhdRect copy = getDisplayBox(view->getIdx());
 	view->CalcScrolledPosition(copy.x, copy.y, &copy.x, &copy.y);
 
 	double middle = copy.width / 2;

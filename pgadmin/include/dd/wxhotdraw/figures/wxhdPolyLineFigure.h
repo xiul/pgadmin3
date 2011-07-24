@@ -23,7 +23,7 @@ public:
 	wxhdPolyLineFigure();
 	~wxhdPolyLineFigure();
 
-	virtual wxhdRect &getBasicDisplayBox();
+	virtual wxhdMultiPosRect &getBasicDisplayBox();
 	virtual int pointCount();
 	virtual wxhdPoint &getStartPoint();
 	virtual void setStartPoint(wxhdPoint point);
@@ -44,10 +44,10 @@ public:
 	virtual void setPointAt (int index, int x, int y);
 	virtual void removePointAt (int index);
 	virtual void basicMoveBy(int x, int y);
-	virtual wxhdITool *CreateFigureTool(wxhdDrawingEditor *editor, wxhdITool *defaultTool);
+	virtual wxhdITool *CreateFigureTool(wxhdDrawingView *view, wxhdITool *defaultTool);
 
 	virtual wxhdPoint &pointAt(int index);
-	virtual bool containsPoint (int x, int y);
+	virtual bool containsPoint (int posIdx, int x, int y);
 	virtual void setLinePen(wxPen pen);
 
 protected:

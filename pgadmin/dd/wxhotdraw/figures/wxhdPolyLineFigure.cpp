@@ -56,34 +56,41 @@ wxhdPolyLineFigure::~wxhdPolyLineFigure()
 		delete endTerminal;
 }
 
-wxhdRect &wxhdPolyLineFigure::getBasicDisplayBox()
+//666 now with a terrible overhead of calculating for each position, SOLUTION should be tell what display should I refresh not alll....
+wxhdMultiPosRect &wxhdPolyLineFigure::getBasicDisplayBox()
 {
 	basicDisplayBox.height = 0;
 	basicDisplayBox.width = 0;
 	if(points->count() < 2)
 	{
-
 		return basicDisplayBox;
 	}
-	if(points->count() >= 1)
-	{
-		basicDisplayBox.SetPosition(pointAt(0));
-	}
-	else
-	{
-		basicDisplayBox.SetPosition(wxPoint(0, 0));
-	}
 
+
+	int posIdx;
 	wxhdIteratorBase *iterator = points->createIterator();
-	while(iterator->HasNext())
+	for(posIdx=0; posIdx < basicDisplayBox.CountPositions(); posIdx++)
 	{
-		wxhdPoint *p = (wxhdPoint *) iterator->Next();
-		wxhdRect r = wxhdRect(p->x, p->y, 0, 0);
-		basicDisplayBox.add(r);
+		if(points->count() >= 1)
+		{
+			basicDisplayBox.SetPosition(posIdx, pointAt(0));
+		}
+		else
+		{
+			basicDisplayBox.SetPosition(posIdx, wxPoint(0, 0));
+		}
+
+		while(iterator->HasNext())
+		{
+			wxhdPoint *p = (wxhdPoint *) iterator->Next();
+			wxhdRect r = wxhdRect(p->x, p->y, 0, 0);   //666 rect o multiposrect ?????
+			basicDisplayBox.add(posIdx, r);
+		}
+
+		iterator->ResetIterator();
 	}
 
 	delete iterator;
-
 	return basicDisplayBox;
 }
 
@@ -246,9 +253,9 @@ void wxhdPolyLineFigure::basicMoveBy(int x, int y)
 	}
 }
 
-wxhdITool *wxhdPolyLineFigure::CreateFigureTool(wxhdDrawingEditor *editor, wxhdITool *defaultTool)
+wxhdITool *wxhdPolyLineFigure::CreateFigureTool(wxhdDrawingView *view, wxhdITool *defaultTool)
 {
-	return new wxhdPolyLineFigureTool(editor, this, new wxhdMenuTool(editor, this, defaultTool));
+	return new wxhdPolyLineFigureTool(view, this, new wxhdMenuTool(view, this, defaultTool));
 }
 
 
@@ -283,9 +290,9 @@ wxhdPoint &wxhdPolyLineFigure::pointAt(int index)
 	return pointAtPos;
 }
 
-bool wxhdPolyLineFigure::containsPoint (int x, int y)
+bool wxhdPolyLineFigure::containsPoint (int posIdx, int x, int y)
 {
-	wxhdRect rect = wxhdRect(this->displayBox());
+	wxhdRect rect = this->displayBox().getwxhdRect(posIdx);
 	rect.Inflate(4, 4);
 	if(!rect.Contains(x, y))
 	{

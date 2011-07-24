@@ -27,7 +27,8 @@ wxhdChangeConnectionStartHandle::~wxhdChangeConnectionStartHandle()
 {
 }
 
-wxhdPoint &wxhdChangeConnectionStartHandle::locate()
+//666 hacer algo con el posIdx??????
+wxhdPoint &wxhdChangeConnectionStartHandle::locate(int posIdx)
 {
 	return connection->getStartPoint();
 }

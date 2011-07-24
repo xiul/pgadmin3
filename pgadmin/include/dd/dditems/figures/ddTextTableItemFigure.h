@@ -53,12 +53,12 @@ public:
 	virtual void createMenu(wxMenu &mnu);
 	virtual const wxArrayString dataTypes();
 	virtual void OnGenericPopupClick(wxCommandEvent &event, wxhdDrawingView *view);
-	virtual void setText(wxString textString);
+	virtual void setText(wxString textString);   //666 posidx necesario realmente en SetText y setAlias????
 	virtual ddColumnFigure *getOwnerColumn();
 	virtual void setOwnerColumn(ddColumnFigure *column);
 	virtual void setShowDataType(bool value);
 	virtual bool getShowDataType() {return showDataType;};
-	wxhdITool *CreateFigureTool(wxhdDrawingEditor *editor, wxhdITool *defaultTool);
+	wxhdITool *CreateFigureTool(wxhdDrawingView *view, wxhdITool *defaultTool);
 	virtual void displayBoxUpdate();
 	int getTextWidth();
 	int getTextHeight();

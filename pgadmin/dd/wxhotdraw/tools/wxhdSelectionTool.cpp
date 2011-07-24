@@ -28,7 +28,7 @@
 class wxhdDrawingView;
 class wxhdDrawingEditor;
 
-wxhdSelectionTool::wxhdSelectionTool(wxhdDrawingEditor *owner):
+wxhdSelectionTool::wxhdSelectionTool(wxhdDrawingView *owner):
 	wxhdAbstractTool(owner)
 {
 	_delegateTool = NULL;
@@ -44,25 +44,26 @@ void wxhdSelectionTool::mouseDown(wxhdMouseEvent &event)
 {
 	wxhdITool::mouseDown(event);
 
-	wxhdDrawingView *view = getDrawingEditor()->view();
+	//666 000 wxhdDrawingView *view = getDrawingEditor()->view();
+	wxhdDrawingView *view = event.getView();
 	int x = event.GetPosition().x, y = event.GetPosition().y;
 
-	wxhdIHandle *handle = view->findHandle(x, y);
+	wxhdIHandle *handle = view->findHandle(view->getIdx(), x, y);
 	if(handle)
 	{
-		setDelegateTool(new wxhdHandleTrackerTool(getDrawingEditor(), handle));
+		setDelegateTool(view, new wxhdHandleTrackerTool(view, handle));
 	}
 	else
 	{
-		wxhdIFigure *figure = view->getDrawing()->findFigure(x, y);
+		wxhdIFigure *figure = view->getDrawing()->findFigure(view->getIdx(), x, y);
 		if(figure)
 		{
 			view->getDrawing()->bringToFront(figure);
-			setDelegateTool(figure->CreateFigureTool(getDrawingEditor(), new wxhdDragTrackerTool(getDrawingEditor(), figure)));
+			setDelegateTool(event.getView(), figure->CreateFigureTool(view, new wxhdDragTrackerTool(view, figure)));
 		}
 		else
 		{
-			setDelegateTool( new wxhdCanvasMenuTool(getDrawingEditor(), new wxhdSelectAreaTool(getDrawingEditor())) );
+			setDelegateTool(event.getView(),  new wxhdCanvasMenuTool(view, new wxhdSelectAreaTool(view)) );
 		}
 	}
 
@@ -82,9 +83,10 @@ void wxhdSelectionTool::mouseUp(wxhdMouseEvent &event)
 void wxhdSelectionTool::mouseMove(wxhdMouseEvent &event)
 {
 	wxhdAbstractTool::mouseMove(event);
-	wxhdDrawingView *view = getDrawingEditor()->view();
+	//666 000 wxhdDrawingView *view = getDrawingEditor()->view();
+	wxhdDrawingView *view = event.getView();
 	int x = event.GetPosition().x, y = event.GetPosition().y;
-	wxhdIHandle *handle = view->findHandle(x, y);
+	wxhdIHandle *handle = view->findHandle(view->getIdx(), x, y);
 
 	if(handle)
 	{
@@ -92,7 +94,7 @@ void wxhdSelectionTool::mouseMove(wxhdMouseEvent &event)
 	}
 	else
 	{
-		wxhdIFigure *figure = view->getDrawing()->findFigure(x, y);
+		wxhdIFigure *figure = view->getDrawing()->findFigure(view->getIdx(), x, y);
 		if(figure)
 		{
 			view->SetCursor(wxCursor(wxCURSOR_HAND));
@@ -120,7 +122,7 @@ void wxhdSelectionTool::keyDown(wxhdKeyEvent &event)
 	}
 	if(event.GetKeyCode() == WXK_DELETE)
 	{
-		event.getView()->deleteSelectedFigures();
+		event.getView()->getDrawing()->deleteSelectedFigures();
 	}
 }
 
@@ -132,11 +134,11 @@ void wxhdSelectionTool::keyUp(wxhdKeyEvent &event)
 	}
 }
 
-void wxhdSelectionTool::setDelegateTool(wxhdITool *tool)
+void wxhdSelectionTool::setDelegateTool(wxhdDrawingView *view, wxhdITool *tool)
 {
 	if(_delegateTool)
 	{
-		_delegateTool->deactivate();
+		_delegateTool->deactivate(view);
 		delete _delegateTool;
 	}
 
@@ -144,7 +146,7 @@ void wxhdSelectionTool::setDelegateTool(wxhdITool *tool)
 
 	if(_delegateTool)
 	{
-		_delegateTool->activate();
+		_delegateTool->activate(view);
 	}
 }
 
@@ -155,6 +157,7 @@ wxhdITool *wxhdSelectionTool::getDelegateTool()
 
 void wxhdSelectionTool::deleteAllFigures(wxhdDrawingView *view)
 {
-	view->clearSelection();
+	view->getDrawing()->clearSelection();
 	view->getDrawing()->deleteAllFigures();
 }
+

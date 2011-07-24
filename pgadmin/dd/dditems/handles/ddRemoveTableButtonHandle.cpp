@@ -53,14 +53,14 @@ void ddRemoveTableButtonHandle::invokeEnd(wxhdMouseEvent &event, wxhdDrawingView
 		if (answer == wxYES)
 		{
 			//unselect table
-			if(view->isFigureSelected(table))
+			if(view->getDrawing()->isFigureSelected(table))
 			{
-				view->removeFromSelection(table);
+				view->getDrawing()->removeFromSelection(table);
 			}
 			//drop foreign keys with this table as origin or destination
-			table->processDeleteAlert(view);
+			table->processDeleteAlert(view->getDrawing());
 			//drop table
-			view->remove(table);
+			view->getDrawing()->remove(table);
 			if(table)
 			{
 				delete table;

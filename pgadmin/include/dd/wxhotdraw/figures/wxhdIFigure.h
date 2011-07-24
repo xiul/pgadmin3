@@ -11,10 +11,11 @@
 
 #ifndef WXHDIFIGURE_H
 #define WXHDIFIGURE_H
-#include "dd/wxhotdraw/utilities/wxhdRect.h"
+#include "dd/wxhotdraw/utilities/wxhdMultiPosRect.h"
 #include "dd/wxhotdraw/main/wxhdObject.h"
 #include "dd/wxhotdraw/utilities/wxhdCollection.h"
 #include "dd/wxhotdraw/handles/wxhdIHandle.h"
+#include "dd/wxhotdraw/utilities/wxhdMultiPosRect.h"
 
 class wxhdITool;
 class wxhdDrawingEditor;
@@ -27,18 +28,18 @@ public:
 	wxhdIFigure();
 	~wxhdIFigure();
 
-	virtual wxhdRect &displayBox();
-	virtual wxhdRect &getBasicDisplayBox();
+	virtual wxhdMultiPosRect &displayBox();
+	virtual wxhdMultiPosRect &getBasicDisplayBox();
 	virtual void draw (wxBufferedDC &context, wxhdDrawingView *view);
 	virtual void drawSelected (wxBufferedDC &context, wxhdDrawingView *view);
 	virtual wxhdCollection *handlesEnumerator();
 	virtual void addHandle (wxhdIHandle *handle);
 	virtual void removeHandle (wxhdIHandle *handle);
-	virtual wxhdIConnector *connectorAt (int x, int y);
-	virtual void moveBy(int x, int y);
-	virtual void moveTo(int x, int y);
-	virtual bool containsPoint(int x, int y);
-	virtual bool isSelected();
+	virtual wxhdIConnector *connectorAt (int posIdx, int x, int y);
+	virtual void moveBy(int posIdx, int x, int y)=0;
+	virtual void moveTo(int posIdx, int x, int y)=0;
+	virtual bool containsPoint(int posIdx, int x, int y)=0;
+	virtual bool isSelected(); //666 777 adecuar el seleccionado para varias posiciones
 	virtual void setSelected(bool value);
 	virtual bool includes(wxhdIFigure *figure);
 	virtual bool canConnect() = 0;
@@ -48,10 +49,11 @@ public:
 	virtual wxhdIteratorBase *observersEnumerator();
 	virtual void setKindId(int objectId = -1);
 	virtual int getKindId();
-	virtual wxhdITool *CreateFigureTool(wxhdDrawingEditor *editor, wxhdITool *defaultTool);
+	virtual wxhdITool *CreateFigureTool(wxhdDrawingView *view, wxhdITool *defaultTool);
 
 protected:
-	wxhdRect basicDisplayBox;
+	wxhdMultiPosRect basicDisplayBox;
+	//666 borrado wxhdRect basicDisplayBoxRect;
 	wxhdCollection *handles;
 	wxhdCollection *observers;
 	wxhdIConnector *connector;

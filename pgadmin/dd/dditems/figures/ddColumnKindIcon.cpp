@@ -40,7 +40,7 @@ ddColumnKindIcon::ddColumnKindIcon(ddColumnFigure *owner)
 	// Initialize with an image to allow initial size calculations
 	icon = wxBitmap(*ddprimarykey_png_img);
 	iconToDraw = NULL;
-	getBasicDisplayBox().SetSize(wxSize(getWidth(), getHeight()));
+	getBasicDisplayBox().SetSize(wxSize(getWidth(), getHeight()));   //666 importa el indice para el tamaño????
 	isPk = false;
 	ukIndex = -1;
 
@@ -105,14 +105,14 @@ void ddColumnKindIcon::toggleColumnKind(ddColumnType type, wxhdDrawingView *view
 			}
 			break;
 	}
-	getBasicDisplayBox().SetSize(wxSize(getWidth(), getHeight()));
+	getBasicDisplayBox().SetSize(wxSize(getWidth(), getHeight()));   //666 really need index or zero works because affects only size????
 }
 
 void ddColumnKindIcon::basicDraw(wxBufferedDC &context, wxhdDrawingView *view)
 {
 	if(iconToDraw)
 	{
-		wxhdRect copy = displayBox();
+		wxhdRect copy = displayBox().getwxhdRect(view->getIdx());
 		view->CalcScrolledPosition(copy.x, copy.y, &copy.x, &copy.y);
 		//Adding a yellow circle to increase visibility of uk index
 		if(isUniqueKey())

@@ -24,9 +24,9 @@ ddSouthTableSizeHandle::ddSouthTableSizeHandle(ddTableFigure *owner, wxhdILocato
 {
 }
 
-wxhdRect &ddSouthTableSizeHandle::getDisplayBox()
+wxhdRect &ddSouthTableSizeHandle::getDisplayBox(int posIdx)
 {
-	wxhdPoint p = locate();
+	wxhdPoint p = locate(posIdx);
 	ddTableFigure *table = (ddTableFigure *) getOwner();
 	displayBox.width = table->getFullSpace().width * 0.5; //as defined at locator
 	displayBox.height = 3;
@@ -69,24 +69,26 @@ void ddSouthTableSizeHandle::invokeStep(wxhdMouseEvent &event, wxhdDrawingView *
 	{
 		if((anchorY - y) > 0)
 		{
-			table->setColumnsWindow(table->getColumnsWindow() - 1);
+			table->setColumnsWindow(view->getIdx(), table->getColumnsWindow() - 1);
 		}
 		else
 		{
-			table->setColumnsWindow(table->getColumnsWindow() + 1);
+			table->setColumnsWindow(view->getIdx(), table->getColumnsWindow() + 1);
 		}
 		anchorY = y;
 	}
 
 	//hack to update relationship position when table size change
-	table->moveBy(-1, 0);
-	table->moveBy(1, 0);
+	table->manuallyNotifyChange();
+/*	table->moveBy(view->getIdx(), -1, 0);
+	table->moveBy(view->getIdx(), 1, 0);
+	*/
 }
 
 void ddSouthTableSizeHandle::invokeEnd(wxhdMouseEvent &event, wxhdDrawingView *view)
 {
 	//hack to update relationship position when table size change
 	ddTableFigure *table = (ddTableFigure *) getOwner();
-	table->moveBy(-1, 0);
-	table->moveBy(1, 0);
+	table->moveBy(view->getIdx(), -1, 0);
+	table->moveBy(view->getIdx(), 1, 0);
 }

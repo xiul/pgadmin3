@@ -131,14 +131,14 @@ void ddTextTableItemFigure::OnGenericPopupClick(wxCommandEvent &event, wxhdDrawi
 			if (answer == wxID_OK)
 			{
 				tmpString = nameDialog->GetValue();
-				getOwnerColumn()->getOwnerTable()->addColumn(new ddColumnFigure(tmpString, getOwnerColumn()->getOwnerTable()));
+				getOwnerColumn()->getOwnerTable()->addColumn(view->getIdx(), new ddColumnFigure(tmpString, getOwnerColumn()->getOwnerTable()));
 			}
 			delete nameDialog;
 			break;
 		case MNU_DELCOLUMN:
 			answer = wxMessageBox(wxT("Are you sure you wish to delete column ") + getText(true) + wxT("?"), wxT("Delete column?"), wxYES_NO | wxNO_DEFAULT, view);
 			if (answer == wxYES)
-				getOwnerColumn()->getOwnerTable()->removeColumn(getOwnerColumn());
+				getOwnerColumn()->getOwnerTable()->removeColumn(view->getIdx(), getOwnerColumn());
 			break;
 		case MNU_AUTONAMCOLUMN:
 			getOwnerColumn()->activateGenFkName();
@@ -274,14 +274,14 @@ void ddTextTableItemFigure::OnGenericPopupClick(wxCommandEvent &event, wxhdDrawi
 			{
 				ddTableFigure *table = getOwnerColumn()->getOwnerTable();
 				//Unselect table
-				if(view->isFigureSelected(table))
+				if(view->getDrawing()->isFigureSelected(table))
 				{
-					view->removeFromSelection(table);
+					view->getDrawing()->removeFromSelection(table);
 				}
 				//Drop foreign keys with this table as origin or destination
-				table->processDeleteAlert(view);
+				table->processDeleteAlert(view->getDrawing());
 				//Drop table
-				view->remove(table);
+				view->getDrawing()->remove(table);
 				if(table)
 				{
 					delete table;
@@ -438,16 +438,16 @@ void ddTextTableItemFigure::setShowDataType(bool value)
 	showDataType = value;
 }
 
-wxhdITool *ddTextTableItemFigure::CreateFigureTool(wxhdDrawingEditor *editor, wxhdITool *defaultTool)
+wxhdITool *ddTextTableItemFigure::CreateFigureTool(wxhdDrawingView *view, wxhdITool *defaultTool)
 {
 	if(getOwnerColumn())
 	{
-		return textEditable ? new ddColumnTextTool(editor, this, defaultTool, false, wxT("New Column Name"), wxT("Rename Column")) : defaultTool;
+		return textEditable ? new ddColumnTextTool(view, this, defaultTool, false, wxT("New Column Name"), wxT("Rename Column")) : defaultTool;
 	}
 	else
 	{
 		setOneTimeNoAlias();
-		return textEditable ? new ddColumnTextTool(editor, this, defaultTool, false, wxT("New Table Name"), wxT("Rename Table")) : defaultTool;
+		return textEditable ? new ddColumnTextTool(view, this, defaultTool, false, wxT("New Table Name"), wxT("Rename Table")) : defaultTool;
 	}
 }
 

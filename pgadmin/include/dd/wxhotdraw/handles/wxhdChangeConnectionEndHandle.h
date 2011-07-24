@@ -20,7 +20,7 @@ class wxhdChangeConnectionEndHandle : public wxhdChangeConnectionHandle
 public:
 	wxhdChangeConnectionEndHandle(wxhdLineConnection *owner);
 	~wxhdChangeConnectionEndHandle();
-	virtual wxhdPoint &locate();
+	virtual wxhdPoint &locate(int posIdx);
 	virtual wxhdIConnector *target();
 	virtual void disconnect(wxhdDrawingView *view = NULL);
 	virtual void connect(wxhdIConnector *connector, wxhdDrawingView *view = NULL);

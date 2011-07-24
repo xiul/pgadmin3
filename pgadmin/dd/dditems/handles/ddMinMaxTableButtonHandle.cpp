@@ -51,7 +51,7 @@ void ddMinMaxTableButtonHandle::invokeEnd(wxhdMouseEvent &event, wxhdDrawingView
 	if(showFirst)
 	{
 		buttonIcon = buttonMaximizeImage;
-		table->setColumnsWindow(1);
+		table->setColumnsWindow(view->getIdx(),1);
 	}
 	else
 	{

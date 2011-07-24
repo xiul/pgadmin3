@@ -103,7 +103,7 @@ void ddRelationshipItem::syncAutoFkName()
 	if(fkColumn->isGeneratedForeignKey() && fkColumn->isFkNameGenerated() )
 	{
 		fkColumn->setColumnName(autoGenerateNameForFk());
-		ownerRel->updateConnection();
+		ownerRel->updateConnection(0); //666 pq necesitaria usar aqui el indice??? pq no lo hago para todos lo indices??
 	}
 }
 

@@ -4463,6 +4463,10 @@
 							>
 						</File>
 						<File
+							RelativePath=".\include\dd\wxhotdraw\utilities\wxhdMultiPosRect.h"
+							>
+						</File>
+						<File
 							RelativePath=".\include\dd\wxhotdraw\utilities\wxhdPoint.h"
 							>
 						</File>
@@ -6445,6 +6449,10 @@
 					</File>
 					<File
 						RelativePath=".\dd\wxhotdraw\utilities\wxhdMouseEvent.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\dd\wxhotdraw\utilities\wxhdMultiPosRect.cpp"
 						>
 					</File>
 					<File

@@ -25,17 +25,19 @@ class ddDatabaseDesign : public wxObject
 public:
 	ddDatabaseDesign(wxWindow *parent);
 	~ddDatabaseDesign();
-	wxhdDrawingView *getView();
+	wxhdDrawingView *getView(int diagramIndex);
 	wxhdDrawingEditor *getEditor();
-	void addTable(wxhdIFigure *figure);
-	void removeTable(wxhdIFigure *figure);
-	void setTool(wxhdITool *tool);
-	void refreshDraw();
-	void eraseModel();
-	wxString generateModel();
-	bool validateModel(wxString &errors);
+	void addTableToModel(wxhdIFigure *figure);
+	void addTableToView(int diagramIndex, wxhdIFigure *figure);
+	void removeTable(int diagramIndex, wxhdIFigure *figure);
+	wxhdDrawing* createDiagram(wxWindow *owner);
+//666 000	void setTool(wxhdITool *tool);
+	void refreshDraw(int diagramIndex);
+	void eraseDiagram(int diagramIndex);
+	wxString generateDiagram(int diagramIndex);
+	bool validateModel(wxString &errors, int diagramIndex);
 	wxString getNewTableName();
-	ddTableFigure *getSelectedTable();
+	ddTableFigure *getSelectedTable(int diagramIndex);
 	ddTableFigure *getTable(wxString tableName);
 	bool writeXmlModel(wxString file);
 	bool readXmlModel(wxString file);
@@ -48,7 +50,8 @@ protected:
 	tablesMappingHashMap mappingNameToId;
 	tablesMappingHashMap mappingIdToName;
 private:
-	wxhdDrawingEditor *draw;
+	int diagramCounter;
+	wxhdDrawingEditor *editor;
 	wxhdITool *tool;
 	xmlTextWriterPtr xmlWriter;
 

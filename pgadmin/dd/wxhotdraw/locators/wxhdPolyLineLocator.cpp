@@ -29,7 +29,7 @@ wxhdPolyLineLocator::wxhdPolyLineLocator(int index)
 	indx = index;
 }
 
-wxhdPoint &wxhdPolyLineLocator::locate(wxhdIFigure *owner)
+wxhdPoint &wxhdPolyLineLocator::locate(int posIdx, wxhdIFigure *owner)
 {
 	if(owner)
 	{

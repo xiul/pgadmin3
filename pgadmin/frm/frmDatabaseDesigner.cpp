@@ -122,14 +122,25 @@ frmDatabaseDesigner::frmDatabaseDesigner(frmMain *form, const wxString &_title, 
 	toolBar->AddTool(MNU_HELP, _("Help"), *help_png_bmp, _("Display help"), wxITEM_NORMAL);
 	toolBar->Realize();
 
+
+	// Create notebook for diagrams
+	ctlAuiNotebook *diagrams = new ctlAuiNotebook(this, 666, wxDefaultPosition, wxDefaultSize, wxAUI_NB_TOP | wxAUI_NB_TAB_SPLIT | wxAUI_NB_TAB_MOVE | wxAUI_NB_SCROLL_BUTTONS | wxAUI_NB_WINDOWLIST_BUTTON);
+
 	// Add the database designer
-	design = new ddDatabaseDesign(this);
+	design = new ddDatabaseDesign(diagrams);
 
 	// Now, the scratchpad
 	sqltext = new wxTextCtrl(this, -1, wxT(""), wxDefaultPosition, wxDefaultSize, wxTE_MULTILINE | wxHSCROLL);
 
+	// Add view to notebook
+	diagrams->AddPage(design->getView(0), _("Diagrama Test"));
+	diagrams->AddPage(design->createDiagram(diagrams)->getView(), _("Diagrama Test #2"));
+	diagrams->AddPage(design->createDiagram(diagrams)->getView(), _("Diagrama Test #3"));
+	//666 diagrams->AddPage(design->getView(1), _("Diagrama Test #2"));
+
 	// Add the panes
-	manager.AddPane(design->getView(),
+	//manager.AddPane(design->getView(),
+	manager.AddPane(diagrams,
 	                wxAuiPaneInfo().Center().
 	                Name(wxT("sqlQuery")).Caption(_("Database Designer")).
 	                CaptionVisible(true).CloseButton(true).MaximizeButton(true).
@@ -196,21 +207,30 @@ void frmDatabaseDesigner::OnAddTable(wxCommandEvent &event)
 		        rand() % 90 + 140,
 		        newTableDialog->GetValue2()
 		                                           );
-		design->addTable(newTable);
-		design->refreshDraw();
+		//666 Fixed at model 0 right now....
+		design->addTableToView(0, newTable);
+		design->addTableToView(1, newTable);  //777 borrar 6666
+		//666 Fixed at model 0 right now....
+		design->refreshDraw(0);  //777 borrar 6666
+		design->refreshDraw(1);
+
+		//666 design->addTable2(newTable);
+		//666 design->refreshDraw();
 	}
 	delete newTableDialog;
 }
 
 void frmDatabaseDesigner::OnDeleteTable(wxCommandEvent &event)
 {
-	ddDrawingView *v = (ddDrawingView *) design->getEditor()->view();
-	v->deleteSelectedFigures();
+	//666 Fixed at model 0 right now....
+	ddDrawingView *v = (ddDrawingView *) design->getEditor()->getExistingView(0);
+	v->getDrawing()->deleteSelectedFigures();
 }
 
 void frmDatabaseDesigner::OnAddColumn(wxCommandEvent &event)
 {
- 	ddTableFigure *table = design->getSelectedTable();
+ 	//666 Fixed at model 0 right now....
+	ddTableFigure *table = design->getSelectedTable(0);
 	wxTextEntryDialog nameDialog (this, wxT("New column name"), wxT("Add a column"), wxT("NewColumn"));
 	int answer;
 	wxString tmpString;
@@ -226,7 +246,7 @@ void frmDatabaseDesigner::OnAddColumn(wxCommandEvent &event)
 			{
 				tmpString = nameDialog.GetValue();
 				if(table->getColByName(tmpString)==NULL)
-					table->addColumn(new ddColumnFigure(tmpString, table));
+					table->addColumn(0, new ddColumnFigure(tmpString, table)); //666 pq debo colocarle indice a estoo??
 				else
 				{
 					wxString msg(wxT("Error trying to add new column '"));
@@ -243,6 +263,11 @@ void frmDatabaseDesigner::OnAddColumn(wxCommandEvent &event)
 		}
 		while(again);
 	}
+
+	if(table){
+		table->syncPositionsAfterLoad(0);   //777 666 delete this
+		table->syncPositionsAfterLoad(1);   //777 666 delete this
+	}
 	this->Refresh();
 }
 
@@ -250,7 +275,8 @@ void frmDatabaseDesigner::OnAddColumn(wxCommandEvent &event)
 void frmDatabaseDesigner::OnNewModel(wxCommandEvent &event)
 {
 	
-	design->eraseModel();
+	//666 Fixed at model 0 right now....
+	design->eraseDiagram(0);
 	sqltext->Clear();
 }
 
@@ -258,14 +284,16 @@ void frmDatabaseDesigner::OnNewModel(wxCommandEvent &event)
 void frmDatabaseDesigner::OnModelGeneration(wxCommandEvent &event)
 {
 	wxString errors;
-	if(!design->validateModel(errors))
+	//666 Fixed at model 0 right now....
+	if(!design->validateModel(errors,0))
 	{
 		wxMessageDialog dialog( this, errors , wxT("Errors detected at database model"), wxOK | wxICON_EXCLAMATION | wxSTAY_ON_TOP );
 		dialog.ShowModal();
 	}
 	else
 	{
-		sqltext->SetValue(design->generateModel());
+		//666 Fixed at model 0 right now....
+		sqltext->SetValue(design->generateDiagram(0));
 	}
 }
 
@@ -300,7 +328,10 @@ void frmDatabaseDesigner::OnModelLoad(wxCommandEvent &event)
 		//theText->LoadFile(path);
 		//SetStatusText(path, 0);
 		//SetStatusText(openFileDialog->GetDirectory(),1);
-		design->eraseModel();
+		
+		
+		//666 Fixed at model 0 right now....
+		design->eraseDiagram(0);
 		design->readXmlModel(path);
 	}
 

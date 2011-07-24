@@ -202,10 +202,10 @@ void ddXmlStorage::WriteLocal( xmlTextWriterPtr writer, ddTableFigure *figure)
 		//Start POINT <!ELEMENT POINT (X,Y)>
 		tmp = xmlTextWriterStartElement(writer, BAD_CAST "POINT");
 		//<!ELEMENT X (#PCDATA)>
-		tmp = xmlTextWriterWriteFormatElement(writer, BAD_CAST "X","%d", figure->getBasicDisplayBox().x);
+		tmp = xmlTextWriterWriteFormatElement(writer, BAD_CAST "X","%d", figure->getBasicDisplayBox().x); //666 solo guardo indice 0 por ahora
 		processResult(tmp);
 		//<!ELEMENT Y (#PCDATA)>
-		tmp = xmlTextWriterWriteFormatElement(writer, BAD_CAST "Y","%d", figure->getBasicDisplayBox().y);
+		tmp = xmlTextWriterWriteFormatElement(writer, BAD_CAST "Y","%d", figure->getBasicDisplayBox().y);  //666 solo guardo indice 0 por ahora
 		processResult(tmp);
 		//Close POINT Element
 		xmlTextWriterEndElement(writer);
@@ -538,7 +538,9 @@ void ddXmlStorage::initialModelParse(xmlTextReaderPtr reader)
 					tmp = xmlTextReaderRead(reader);	//go to /TITLE
 				}
 				ddTableFigure *t = new ddTableFigure(tableName, x, y, tableAlias);
-				design->addTable(t);
+				
+				//666 000 fixed at model 0 right now fix it
+				design->addTableToView(0,t);
 			}
 		 ret = xmlTextReaderRead(reader);			
 		}
@@ -630,14 +632,17 @@ void ddXmlStorage::selectReader(xmlTextReaderPtr reader)
 		if(getNodeName(reader).IsSameAs(_("TABLE"),false))
 		{
 			getTable(reader);
-			design->refreshDraw();
+			//666 000 fixed at model 0 right now fix it
+			design->refreshDraw(0);
 		}
 
 		if(getNodeName(reader).IsSameAs(_("RELATIONSHIP"),false))
 		{
 			ddRelationshipFigure *r = getRelationship(reader);
-			design->addTable(r);
-			design->refreshDraw();
+			//666 000 fixed at model 0 right now fix it
+			design->addTableToView(0,r);
+			//666 000 fixed at model 0 right now fix it
+			design->refreshDraw(0);
 		}
 
 	}
@@ -933,7 +938,7 @@ xmlChar *value;
 	} 
 
 	tmp = xmlTextReaderRead(reader);	//go to </TABLE>
-	t->syncPositionsAfterLoad();  //synchronize positions
+	t->syncPositionsAfterLoad(0);  //synchronize positions    //666 solo lo hago al indice 0 por ahora
 	t->updateTableSize();
 	return t;
 }
@@ -1343,7 +1348,7 @@ ddRelationshipFigure* ddXmlStorage::getRelationship(xmlTextReaderPtr reader)
 
 	tmp = xmlTextReaderRead(reader);	//go to /RELATIONSHIP	
 
-	relation->updateConnection();
+	relation->updateConnection(0);  //666 solo lo hago indice 0 por ahora
 	return relation;
 }
 

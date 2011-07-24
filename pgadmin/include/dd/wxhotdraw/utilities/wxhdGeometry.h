@@ -24,7 +24,9 @@ public:
 	static int min(double a, double b);
 	static int max(double a, double b);
 	static double angleFromPoint(wxhdRect r, wxhdPoint point);
+	static double angleFromPoint(int posIdx, wxhdMultiPosRect r, wxhdPoint point);
 	static wxhdPoint edgePointFromAngle(wxhdRect r, double angle);
+	static wxhdPoint edgePointFromAngle(int posIdx,wxhdMultiPosRect r, double angle);
 	static double range(double min, double max, double num);
 	static double lineSize (wxhdPoint p1, wxhdPoint p2);
 	static bool intersection(wxhdPoint p1, wxhdPoint p2, wxhdPoint p3, wxhdPoint p4);

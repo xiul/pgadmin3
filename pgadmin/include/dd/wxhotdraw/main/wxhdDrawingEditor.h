@@ -20,19 +20,30 @@ class wxhdDrawingEditor : public wxhdObject
 public:
 	wxhdDrawingEditor(wxWindow *owner, bool defaultView = true );
 	~wxhdDrawingEditor();
-	wxhdDrawingView *view();
-	wxhdDrawing *model();
-	wxhdITool *tool();
-	void setTool(wxhdITool *tool);
-	virtual void createView(wxWindow *owner);
-	//Hack To allow right click menu at canvas without a figure
-	virtual void createMenu(wxMenu &mnu);
-	virtual void OnGenericPopupClick(wxCommandEvent &event, wxhdDrawingView *view);
+	wxhdDrawingView *getExistingView(int diagramIndex);
+//	wxhdDrawingView *createDiagram();
+	wxhdDrawing *getExistingDiagram(int diagramIndex);
+	virtual wxhdDrawing* createDiagram(wxWindow *owner);
+	virtual void addModelFigure(wxhdIFigure *figure);
+	virtual void removeModelFigure(wxhdIFigure *figure);
+	virtual bool modelIncludes(wxhdIFigure *figure);
+	virtual void deleteSelectedFigures(int diagramIndex);
+	int modelCount();
 
+
+//666 000	wxhdITool *tool();
+//666 000	void setTool(wxhdITool *tool);
+
+/*
+	//Hack To allow right click menu at canvas without a figure
+	virtual void createMenu(wxMenu &mnu); 666 000
+	virtual void OnGenericPopupClick(wxCommandEvent &event, wxhdDrawingView *view); 666 000
+*/
 protected:
-	wxhdDrawingView *_view;
-	wxhdDrawing *_model;
-	wxhdITool *_tool;
+	//int index;
+	wxhdArrayCollection *_diagrams;
+	wxhdArrayCollection *_model;
+//666 000	wxhdITool *_tool;
 private:
 };
 #endif

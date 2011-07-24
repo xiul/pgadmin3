@@ -19,8 +19,8 @@
 #include "dd/wxhotdraw/tools/wxhdSelectionTool.h"
 #include "dd/wxhotdraw/main/wxhdDrawingView.h"
 
-wxhdConnectionCreationTool::wxhdConnectionCreationTool(wxhdDrawingEditor *editor, wxhdLineConnection *figure):
-	wxhdAbstractTool(editor)
+wxhdConnectionCreationTool::wxhdConnectionCreationTool(wxhdDrawingView *view, wxhdLineConnection *figure):
+	wxhdAbstractTool(view)
 {
 	toolConnection = figure;
 	toolConnection->disconnectStart();
@@ -39,7 +39,8 @@ void wxhdConnectionCreationTool::mouseDrag(wxhdMouseEvent &event)
 	if(handle && event.LeftIsDown())
 	{
 		dragged = true;
-		handle->invokeStep(event, getDrawingEditor()->view());
+		//666 000 handle->invokeStep(event, getDrawingEditor()->view());
+		handle->invokeStep(event, event.getView());
 	}
 }
 
@@ -50,8 +51,8 @@ void wxhdConnectionCreationTool::mouseDown(wxhdMouseEvent &event)
 	{
 		numClicks++;
 		int x = event.getScrolledPosX(), y = event.getScrolledPosY();
-		wxhdDrawingView *view = getDrawingEditor()->view();
-		wxhdIFigure *figure = view->getDrawing()->findFigure(x, y);
+		wxhdDrawingView *view = event.getView();
+		wxhdIFigure *figure = view->getDrawing()->findFigure(view->getIdx(), x, y);
 
 		if(figure)
 		{
@@ -59,22 +60,23 @@ void wxhdConnectionCreationTool::mouseDown(wxhdMouseEvent &event)
 			{
 				toolConnection->setEndPoint(wxhdPoint(x, y));
 				toolConnection->setStartPoint(wxhdPoint(x, y));
-				toolConnection->connectStart(figure->connectorAt(x, y));
-				toolConnection->updateConnection();
-				view->add(toolConnection);
-				view->clearSelection();
-				view->addToSelection(toolConnection);
+				toolConnection->connectStart(figure->connectorAt(event.getView()->getIdx(), x, y));
+				toolConnection->updateConnection(event.getView()->getIdx());
+				view->getDrawing()->add(toolConnection);
+				view->getDrawing()->clearSelection();
+				view->getDrawing()->addToSelection(toolConnection);
 				handle = toolConnection->getEndHandle();
 			}
 			else if(numClicks > 1) //second mouse click to select end figure only
 			{
 				toolConnection->setEndPoint(wxhdPoint(x, y));
-				toolConnection->updateConnection();
+				toolConnection->updateConnection(event.getView()->getIdx());
 			}
 		}
 		else
 		{
-			getDrawingEditor()->setTool(new wxhdSelectionTool(getDrawingEditor()));
+			//666 000 getDrawingEditor()->setTool(new wxhdSelectionTool(getDrawingEditor()));
+			event.getView()->setTool(new wxhdSelectionTool(event.getView()));
 		}
 	}
 }
@@ -89,11 +91,12 @@ void wxhdConnectionCreationTool::mouseUp(wxhdMouseEvent &event)
 			if(!dragged && numClicks == 1) //mouse haven't be dragged and is first click of mouse at this tool
 			{
 				toolConnection->setEndPoint(event.GetPosition());
-				toolConnection->updateConnection();
+				toolConnection->updateConnection(event.getView()->getIdx());
 			}
 			else
 			{
-				handle->invokeEnd(event, getDrawingEditor()->view());
+				//666 000 handle->invokeEnd(event, getDrawingEditor()->view());
+				handle->invokeEnd(event, event.getView());
 			}
 		}
 
@@ -101,13 +104,16 @@ void wxhdConnectionCreationTool::mouseUp(wxhdMouseEvent &event)
 		{
 			toolConnection->disconnectStart();
 			toolConnection->disconnectEnd();
-			getDrawingEditor()->view()->remove(toolConnection);
-			getDrawingEditor()->view()->clearSelection();
+			//666 000 getDrawingEditor()->view()->remove(toolConnection);
+			event.getView()->getDrawing()->remove(toolConnection);
+			//666 000 getDrawingEditor()->view()->clearSelection();
+			event.getView()->getDrawing()->clearSelection();
 		}
 	}
 	if(dragged || numClicks > 1) //if drag to select a figure or is second or higher click (to select end figure) then this tool ends.
 	{
-		getDrawingEditor()->setTool(new wxhdSelectionTool(getDrawingEditor()));
+		//666 000 getDrawingEditor()->setTool(new wxhdSelectionTool(getDrawingEditor()));
+		event.getView()->setTool(new wxhdSelectionTool(event.getView()));
 	}
 	else if(!dragged && numClicks == 1) //if not dragged before and is first click then allow to select end, disconnecting it
 	{
@@ -119,19 +125,24 @@ void wxhdConnectionCreationTool::mouseUp(wxhdMouseEvent &event)
 void wxhdConnectionCreationTool::mouseMove(wxhdMouseEvent &event)
 {
 	int x = event.GetPosition().x, y = event.GetPosition().y;
-	wxhdDrawingView *view = getDrawingEditor()->view();
-	wxhdIFigure *figure = view->getDrawing()->findFigure(x, y);
+	//666 000 wxhdDrawingView *view = getDrawingEditor()->view();   //666 eliminar estas expresiones por ahi
+	wxhdDrawingView *view = event.getView();   //666 eliminar estas expresiones por ahi
+	//666 000 wxhdIFigure *figure = view->getDrawing()->findFigure(view->getIdx(), x, y);
+	wxhdIFigure *figure = view->getDrawing()->findFigure(view->getIdx(), x, y);
 	if(figure)
 	{
-		getDrawingEditor()->view()->SetCursor(wxCursor(wxCURSOR_PENCIL));
+		//666 000 getDrawingEditor()->view()->SetCursor(wxCursor(wxCURSOR_PENCIL));
+		view->SetCursor(wxCursor(wxCURSOR_PENCIL));
 	}
 	else
 	{
-		getDrawingEditor()->view()->SetCursor(wxCursor(wxCURSOR_CROSS));
+		//666 000 getDrawingEditor()->view()->SetCursor(wxCursor(wxCURSOR_CROSS));
+		view->SetCursor(wxCursor(wxCURSOR_CROSS));
 	}
 
 	if(handle && numClicks > 0)
 	{
-		handle->invokeStep(event, getDrawingEditor()->view());
+		//666 000 handle->invokeStep(event, getDrawingEditor()->view());
+		handle->invokeStep(event, view);
 	}
 }

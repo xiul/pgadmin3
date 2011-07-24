@@ -38,7 +38,7 @@
 #include "dd/wxhotdraw/utilities/wxhdGeometry.h"
 #include "dd/dditems/figures/ddRelationshipFigure.h"
 #include "dd/wxhotdraw/connectors/wxhdLocatorConnector.h"
-
+#include "dd/wxhotdraw/main/wxhdDrawing.h"
 //Images
 #include "images/ddAddColumn.pngc"
 #include "images/ddRemoveColumn.pngc"
@@ -77,18 +77,21 @@ void ddTableFigure::Init(wxString tableName, int x, int y, wxString shortName)
 
 	//Set table size, width and position
 	rectangleFigure = new wxhdRectangleFigure();
-	rectangleFigure->moveTo(x, y);
+	rectangleFigure->moveTo(0, x, y);  //666 at position 0 only???
 	add(rectangleFigure);
 
 	tableTitle = new ddTextTableItemFigure(tableName, dt_null, NULL);
 	tableTitle->setOwnerTable(this);
 	tableTitle->setEditable(true);
-	tableTitle->moveTo(x, y);
+	tableTitle->moveTo(0, x, y);     //666 at position 0 only???
 	tableTitle->disablePopUp();
 	tableTitle->setShowDataType(false);
 	add(tableTitle);
 	tableTitle->setAlias(shortName);  //Should be here to avoid a null pointer bug
-	tableTitle->moveTo(rectangleFigure->getBasicDisplayBox().x + internalPadding * 2, rectangleFigure->getBasicDisplayBox().y + internalPadding / 2);
+	tableTitle->moveTo(0, rectangleFigure->getBasicDisplayBox().x[0] + internalPadding * 2, rectangleFigure->getBasicDisplayBox().y[0] + internalPadding / 2);
+//666 use index 0 at displaybox and mvoTo or other at above line
+
+//666 locators at 0???
 
 	//Intialize handles
 	wxBitmap image = wxBitmap(*ddAddColumn_png_img);
@@ -127,6 +130,9 @@ void ddTableFigure::Init(wxString tableName, int x, int y, wxString shortName)
 	ukNames.clear();
 
 	updateTableSize();
+
+	basicDisplayBox.x[0]=x;
+	basicDisplayBox.y[0]=y;   //666 init with all xs values
 }
 
 ddTableFigure::ddTableFigure(wxString tableName, int x, int y, wxString shortName):
@@ -186,7 +192,7 @@ ddColumnFigure* ddTableFigure::getColByName(wxString name)
 }
 
 //WARNING: Columns SHOULD BE ADDED only using this function to avoid strange behaviors
-void ddTableFigure::addColumn(ddColumnFigure *column)
+void ddTableFigure::addColumn(int posIdx, ddColumnFigure *column)
 {
 	column->setOwnerTable(this);
 	add(column);
@@ -199,15 +205,15 @@ void ddTableFigure::addColumn(ddColumnFigure *column)
 	maxColIndex++;
 	colsWindow++;  //by default add a column increase initial window
 	colsRowsSize++;
-	calcRectsAreas();
-	recalculateColsPos();
+	calcInternalSubAreas(posIdx);
+	recalculateColsPos(posIdx);
 }
 
 //WARNING: Function should be called on a table generated from a storage
-void ddTableFigure::syncPositionsAfterLoad()
+void ddTableFigure::syncPositionsAfterLoad(int posIdx)
 {
-	calcRectsAreas();
-	recalculateColsPos();
+	calcInternalSubAreas(posIdx);
+	recalculateColsPos(posIdx);
 }
 
 //WARNING: Columns SHOULD BE ADDED only using this columns if was created as an image from storage one
@@ -216,7 +222,7 @@ void ddTableFigure::addColumnFromStorage(ddColumnFigure *column)
 	add(column);
 }
 
-void ddTableFigure::removeColumn(ddColumnFigure *column)
+void ddTableFigure::removeColumn(int posIdx, ddColumnFigure *column)
 {
 	//Hack to allow to remove Fk before delete it.
 	if(column->isPrimaryKey() || column->isUniqueKey())
@@ -241,26 +247,29 @@ void ddTableFigure::removeColumn(ddColumnFigure *column)
 	colsRowsSize--;
 	if(beginDrawCols > 2)
 		beginDrawCols--;
-	calcRectsAreas();
-	recalculateColsPos();
+	calcInternalSubAreas(posIdx);
+	recalculateColsPos(posIdx);
 	if(colsWindow == colsRowsSize) //if handle need to be removed, remove it
 	{
 		if(figureHandles->existsObject(scrollbar))
 			figureHandles->removeItem(scrollbar);
 	}
 	//hack to update relationship position when table size change
-	moveBy(-1, 0);
-	moveBy(1, 0);
+	manuallyNotifyChange();
+/*	moveBy(posIdx, -1, 0);  //666 el 0 basta o debo colocar el indice que es???
+	moveBy(posIdx, 1, 0);  //666 el 0 basta o debo colocar el indice que es???
+	*/
+	
 	column = NULL;
 }
 
-void ddTableFigure::recalculateColsPos()
+void ddTableFigure::recalculateColsPos(int posIdx)
 {
 	wxFont font = settings->GetSystemFont();
 	int defaultHeight = getColDefaultHeight(font);
 
 	wxhdIFigure *f = (wxhdIFigure *) figureFigures->getItemAt(0); //first figure is always Rect
-	int horizontalPos = f->displayBox().x + 2;
+	int horizontalPos = f->displayBox().x[posIdx] + 2;
 	int verticalPos = 0;
 
 	for(int i = 2; i < maxColIndex ; i++)
@@ -268,11 +277,11 @@ void ddTableFigure::recalculateColsPos()
 		f = (wxhdIFigure *) figureFigures->getItemAt(i); //table title
 		if( (i >= beginDrawCols) && (i <= (colsWindow + beginDrawCols)) ) //Visible to draw
 		{
-			verticalPos = colsRect.y + (defaultHeight * (i - beginDrawCols) + ((i - beginDrawCols) * internalPadding));
-			f->moveTo(horizontalPos, verticalPos);
+			verticalPos = colsRect.y[posIdx] + (defaultHeight * (i - beginDrawCols) + ((i - beginDrawCols) * internalPadding));
+			f->moveTo(posIdx, horizontalPos, verticalPos);
 		}
 		else
-			f->moveTo(-65000, -65000); //any figure outside canvas (x<0 || y<0) is not draw & not used to calculate displaybox
+			f->moveTo(posIdx, -65000, -65000); //any figure outside canvas (x<0 || y<0) is not draw & not used to calculate displaybox
 	}
 }
 
@@ -280,16 +289,17 @@ void ddTableFigure::recalculateColsPos()
 
 void ddTableFigure::basicDraw(wxBufferedDC &context, wxhdDrawingView *view)
 {
-	calcRectsAreas();
+	int idx = view->getIdx();
+	calcInternalSubAreas(idx);
 
-	if(calcScrolled) //Hack to avoid pass view as parameter to calcRectsAreas() because is sometimes called outside a paint event
+	if(calcScrolled) //Hack to avoid pass view as parameter to calcInternalSubAreas() because is sometimes called outside a paint event
 	{
-		view->CalcScrolledPosition(fullSizeRect.x, fullSizeRect.y, &fullSizeRect.x, &fullSizeRect.y);
-		view->CalcScrolledPosition(titleRect.x, titleRect.y, &titleRect.x, &titleRect.y);
-		view->CalcScrolledPosition(titleColsRect.x, titleColsRect.y, &titleColsRect.x, &titleColsRect.y);
-		view->CalcScrolledPosition(colsRect.x, colsRect.y, &colsRect.x, &colsRect.y);
-		view->CalcScrolledPosition(titleIndxsRect.x, titleIndxsRect.y, &titleIndxsRect.x, &titleIndxsRect.y);
-		view->CalcScrolledPosition(indxsRect.x, indxsRect.y, &indxsRect.x, &indxsRect.y);
+		view->CalcScrolledPosition(fullSizeRect.x[idx], fullSizeRect.y[idx], &fullSizeRect.x[idx], &fullSizeRect.y[idx]);
+		view->CalcScrolledPosition(titleRect.x[idx], titleRect.y[idx], &titleRect.x[idx], &titleRect.y[idx]);
+		view->CalcScrolledPosition(titleColsRect.x[idx], titleColsRect.y[idx], &titleColsRect.x[idx], &titleColsRect.y[idx]);
+		view->CalcScrolledPosition(colsRect.x[idx], colsRect.y[idx], &colsRect.x[idx], &colsRect.y[idx]);
+		view->CalcScrolledPosition(titleIndxsRect.x[idx], titleIndxsRect.y[idx], &titleIndxsRect.x[idx], &titleIndxsRect.y[idx]);
+		view->CalcScrolledPosition(indxsRect.x[idx], indxsRect.y[idx], &indxsRect.x[idx], &indxsRect.y[idx]);
 		calcScrolled = false;
 	}
 
@@ -301,7 +311,7 @@ void ddTableFigure::basicDraw(wxBufferedDC &context, wxhdDrawingView *view)
 	for(int i = beginDrawCols; i < (colsWindow + beginDrawCols); i++)
 	{
 		f = (wxhdIFigure *) figureFigures->getItemAt(i); //table title
-		if(f->displayBox().GetPosition().x > 0 && f->displayBox().GetPosition().y > 0)
+		if(f->displayBox().GetPosition(view->getIdx()).x > 0 && f->displayBox().GetPosition(view->getIdx()).y > 0)
 		{
 			f->draw(context, view);
 		}
@@ -315,20 +325,20 @@ void ddTableFigure::basicDraw(wxBufferedDC &context, wxhdDrawingView *view)
 	context.SetFont(font);
 
 	//Draw Columns Title Line 1
-	context.DrawLine(titleColsRect.GetTopLeft(), titleColsRect.GetTopRight());
+	context.DrawLine(titleColsRect.GetTopLeft(idx), titleColsRect.GetTopRight(idx));
 	//Draw Columns Title
-	context.DrawText(wxT("Columns"), titleColsRect.x + 3, titleColsRect.y);
+	context.DrawText(wxT("Columns"), titleColsRect.x[idx] + 3, titleColsRect.y[idx]);
 	//Draw Columns Title Line 2
-	context.DrawLine(titleColsRect.GetBottomLeft(), titleColsRect.GetBottomRight());
+	context.DrawLine(titleColsRect.GetBottomLeft(idx), titleColsRect.GetBottomRight(idx));
 	//DrawVertical Lines
-	context.DrawLine(titleColsRect.GetBottomLeft().x + 11, titleColsRect.GetBottomLeft().y, titleColsRect.GetBottomLeft().x + 11, titleIndxsRect.GetTopLeft().y);
-	context.DrawLine(titleColsRect.GetBottomLeft().x + 22, titleColsRect.GetBottomLeft().y, titleColsRect.GetBottomLeft().x + 22, titleIndxsRect.GetTopLeft().y);
+	context.DrawLine(titleColsRect.GetBottomLeft(idx).x + 11, titleColsRect.GetBottomLeft(idx).y, titleColsRect.GetBottomLeft(idx).x + 11, titleIndxsRect.GetTopLeft(idx).y);
+	context.DrawLine(titleColsRect.GetBottomLeft(idx).x + 22, titleColsRect.GetBottomLeft(idx).y, titleColsRect.GetBottomLeft(idx).x + 22, titleIndxsRect.GetTopLeft(idx).y);
 	//Draw Indexes Title Line 1
-	context.DrawLine(titleIndxsRect.GetTopLeft(), titleIndxsRect.GetTopRight());
+	context.DrawLine(titleIndxsRect.GetTopLeft(idx), titleIndxsRect.GetTopRight(idx));
 	//Draw Indexes Title
 	//disable until implemented in a future: context.DrawText(wxT("Indexes"),titleIndxsRect.x+3,titleIndxsRect.y);
 	//Draw Indexes Title Line 2
-	context.DrawLine(titleIndxsRect.GetBottomLeft(), titleIndxsRect.GetBottomRight());
+	context.DrawLine(titleIndxsRect.GetBottomLeft(idx), titleIndxsRect.GetBottomRight(idx));
 
 	context.SetFont(fontAttribute->font()); 		//after change font return always to initial one
 
@@ -346,8 +356,8 @@ void ddTableFigure::basicDraw(wxBufferedDC &context, wxhdDrawingView *view)
 
 		int w, h, x, y;
 		context.GetTextExtent(wxString(wxT("Select Destination table of foreign key")), &w, &h);
-		x = fullSizeRect.GetTopLeft().x + (((fullSizeRect.GetTopRight().x - fullSizeRect.GetTopLeft().x) - w) / 2);
-		y = fullSizeRect.GetTopLeft().y - h - 2;
+		x = fullSizeRect.GetTopLeft(idx).x + (((fullSizeRect.GetTopRight(idx).x - fullSizeRect.GetTopLeft(idx).x) - w) / 2);
+		y = fullSizeRect.GetTopLeft(idx).y - h - 2;
 		context.DrawRectangle(wxRect(x, y, w, h));
 		context.DrawText(wxString(wxT("Select Destination table of foreign key")), x, y);
 
@@ -361,16 +371,17 @@ void ddTableFigure::basicDraw(wxBufferedDC &context, wxhdDrawingView *view)
 
 void ddTableFigure::basicDrawSelected(wxBufferedDC &context, wxhdDrawingView *view)
 {
-	calcRectsAreas();
+	int idx = view->getIdx();
+	calcInternalSubAreas(idx);
 
-	if(calcScrolled) //Hack to avoid pass view as parameter to calcRectsAreas() because is sometimes called outside a paint event
+	if(calcScrolled) //Hack to avoid pass view as parameter to calcInternalSubAreas() because is sometimes called outside a paint event
 	{
-		view->CalcScrolledPosition(fullSizeRect.x, fullSizeRect.y, &fullSizeRect.x, &fullSizeRect.y);
-		view->CalcScrolledPosition(titleRect.x, titleRect.y, &titleRect.x, &titleRect.y);
-		view->CalcScrolledPosition(titleColsRect.x, titleColsRect.y, &titleColsRect.x, &titleColsRect.y);
-		view->CalcScrolledPosition(colsRect.x, colsRect.y, &colsRect.x, &colsRect.y);
-		view->CalcScrolledPosition(titleIndxsRect.x, titleIndxsRect.y, &titleIndxsRect.x, &titleIndxsRect.y);
-		view->CalcScrolledPosition(indxsRect.x, indxsRect.y, &indxsRect.x, &indxsRect.y);
+		view->CalcScrolledPosition(fullSizeRect.x[idx], fullSizeRect.y[idx], &fullSizeRect.x[idx], &fullSizeRect.y[idx]);
+		view->CalcScrolledPosition(titleRect.x[idx], titleRect.y[idx], &titleRect.x[idx], &titleRect.y[idx]);
+		view->CalcScrolledPosition(titleColsRect.x[idx], titleColsRect.y[idx], &titleColsRect.x[idx], &titleColsRect.y[idx]);
+		view->CalcScrolledPosition(colsRect.x[idx], colsRect.y[idx], &colsRect.x[idx], &colsRect.y[idx]);
+		view->CalcScrolledPosition(titleIndxsRect.x[idx], titleIndxsRect.y[idx], &titleIndxsRect.x[idx], &titleIndxsRect.y[idx]);
+		view->CalcScrolledPosition(indxsRect.x[idx], indxsRect.y[idx], &indxsRect.x[idx], &indxsRect.y[idx]);
 		calcScrolled = false;
 	}
 
@@ -382,7 +393,7 @@ void ddTableFigure::basicDrawSelected(wxBufferedDC &context, wxhdDrawingView *vi
 	for(int i = beginDrawCols; i < (colsWindow + beginDrawCols); i++)
 	{
 		f = (wxhdIFigure *) figureFigures->getItemAt(i); //table title
-		if(f->displayBox().GetPosition().x > 0 && f->displayBox().GetPosition().y > 0)
+		if(f->displayBox().GetPosition(view->getIdx()).x > 0 && f->displayBox().GetPosition(view->getIdx()).y > 0)
 		{
 			f->drawSelected(context, view);
 		}
@@ -394,20 +405,29 @@ void ddTableFigure::basicDrawSelected(wxBufferedDC &context, wxhdDrawingView *vi
 	context.SetFont(font);
 
 	//Draw Columns Title Line 1
-	context.DrawLine(titleColsRect.GetTopLeft(), titleColsRect.GetTopRight());
+	context.DrawLine(titleColsRect.GetTopLeft(idx), titleColsRect.GetTopRight(idx));
 	//Draw Columns Title
-	context.DrawText(wxT("Columns"), titleColsRect.x + 3, titleColsRect.y);
+	context.DrawText(wxT("Columns"), titleColsRect.x[idx] + 3, titleColsRect.y[idx]);
 	//Draw Columns Title Line 2
-	context.DrawLine(titleColsRect.GetBottomLeft(), titleColsRect.GetBottomRight());
+	context.DrawLine(titleColsRect.GetBottomLeft(idx), titleColsRect.GetBottomRight(idx));
 	//DrawVertical Lines
-	context.DrawLine(titleColsRect.GetBottomLeft().x + 11, titleColsRect.GetBottomLeft().y, titleColsRect.GetBottomLeft().x + 11, titleIndxsRect.GetTopLeft().y);
-	context.DrawLine(titleColsRect.GetBottomLeft().x + 22, titleColsRect.GetBottomLeft().y, titleColsRect.GetBottomLeft().x + 22, titleIndxsRect.GetTopLeft().y);
+	context.DrawLine(titleColsRect.GetBottomLeft(idx).x + 11, titleColsRect.GetBottomLeft(idx).y, titleColsRect.GetBottomLeft(idx).x + 11, titleIndxsRect.GetTopLeft(idx).y);
+	context.DrawLine(titleColsRect.GetBottomLeft(idx).x + 22, titleColsRect.GetBottomLeft(idx).y, titleColsRect.GetBottomLeft(idx).x + 22, titleIndxsRect.GetTopLeft(idx).y);
 	//Draw Indexes Title Line 1
-	context.DrawLine(titleIndxsRect.GetTopLeft(), titleIndxsRect.GetTopRight());
+	context.DrawLine(titleIndxsRect.GetTopLeft(idx), titleIndxsRect.GetTopRight(idx));
 	//Draw Indexes Title
 	//disable until implemented in a future: context.DrawText(wxT("Indexes"),titleIndxsRect.x+3,titleIndxsRect.y);
 	//Draw Indexes Title Line 2
-	context.DrawLine(titleIndxsRect.GetBottomLeft(), titleIndxsRect.GetBottomRight());
+	context.DrawLine(titleIndxsRect.GetBottomLeft(idx), titleIndxsRect.GetBottomRight(idx));
+}
+
+wxhdMultiPosRect& ddTableFigure::getBasicDisplayBox()
+{
+	//Only recalculate
+/*	calcInternalSubAreas(0);
+	basicDisplayBox.SetSize(fullSizeRect.GetSize());
+	*/
+	return basicDisplayBox;
 }
 
 void ddTableFigure::setColsRowsWindow(int num)
@@ -447,7 +467,7 @@ int ddTableFigure::getColDefaultHeight(wxFont font)
 	else
 	{
 		wxhdIFigure *f = (wxhdIFigure *) figureFigures->getItemAt(1); //table title
-		return f->displayBox().height;
+		return f->displayBox().height; //666 con el indice 0 esta bien o necesito un displaybox en especifico???
 	}
 }
 
@@ -466,11 +486,11 @@ int ddTableFigure::getFiguresMaxWidth()
 	iterator->Next(); //First figure is main rect
 	int maxWidth = 0;
 	cf = (ddColumnFigure *) iterator->Next(); //Second figure is main title
-	maxWidth = g.max(maxWidth, cf->displayBox().width + 20);
+	maxWidth = g.max(maxWidth, cf->displayBox().width + 20); //666 con el indice 0 esta bien o necesito un displaybox en especifico???
 	while(iterator->HasNext())
 	{
 		cf = (ddColumnFigure *) iterator->Next();
-		maxWidth = g.max(maxWidth, cf->displayBox().width);
+		maxWidth = g.max(maxWidth, cf->displayBox().width);   //666 con el indice 0 esta bien o necesito un displaybox en especifico???
 	}
 	delete iterator;
 	if(figureHandles->existsObject(scrollbar))
@@ -479,30 +499,31 @@ int ddTableFigure::getFiguresMaxWidth()
 		return maxWidth;
 }
 
-
-void ddTableFigure::calcRectsAreas()
+void ddTableFigure::calcInternalSubAreas(int posIdx)
 {
 	calcScrolled = true;
 
 	int maxWidth = getFiguresMaxWidth() + externalPadding;
 	if(maxWidth < 100)
 		maxWidth = 100;
-	wxFont font = settings->GetSystemFont();
+	wxFont font = settings->GetSystemFont(); //666 get attribute font here
 	int defaultHeight = getColDefaultHeight(font);
 
-	//cache displayBox()
-	wxhdRect db = displayBox();
+	//cache displayBox()    666 necesito realmente un displaybox en especifico o con el 0 esta bien???   777 claro que si
+	wxhdRect db = basicDisplayBox.getwxhdRect(posIdx);
+		//displayBox().getwxhdRect(posIdx);  
 
 	//*** titleRect
 	font.SetPointSize(7);
 	int colsTitleHeight = getHeightFontMetric(wxT("Columns"), font);
-	titleRect.x = db.x;
-	titleRect.y = db.y;
+
+	titleRect.x[posIdx] = db.x;
+	titleRect.y[posIdx] = db.y;
 	titleRect.width = maxWidth;
 	titleRect.height = defaultHeight;
 
-	titleColsRect.x = db.x;
-	titleColsRect.y = titleRect.y + titleRect.height;
+	titleColsRect.x[posIdx] = db.x;
+	titleColsRect.y[posIdx] = titleRect.y[posIdx] + titleRect.height;
 	titleColsRect.width = maxWidth;
 	titleColsRect.height = colsTitleHeight;
 	unScrolledTitleRect = titleColsRect;
@@ -513,35 +534,35 @@ void ddTableFigure::calcRectsAreas()
 		colsRect.height = defaultHeight * colsWindow + (colsWindow * internalPadding);
 	else
 		colsRect.height = defaultHeight;
-	colsRect.x = db.x;
-	colsRect.y = titleRect.y + titleRect.height + titleColsRect.height;
+	colsRect.x[posIdx] = db.x;
+	colsRect.y[posIdx] = titleRect.y[posIdx] + titleRect.height + titleColsRect.height;
 	unScrolledColsRect = colsRect;
 
 	//*** idxTitleRect
 	titleIndxsRect.width = maxWidth;
 	titleIndxsRect.height = colsTitleHeight;
-	titleIndxsRect.x = db.x;
-	titleIndxsRect.y = colsRect.y + colsRect.height;
+	titleIndxsRect.x[posIdx] = db.x;
+	titleIndxsRect.y[posIdx] = colsRect.y[posIdx] + colsRect.height;
 
 	//*** indexesRect
 	indxsRect.width = maxWidth;
 	indxsRect.height = defaultHeight * idxsWindow + (idxsWindow * internalPadding);
-	indxsRect.x = db.x;
-	indxsRect.y = titleIndxsRect.y + titleIndxsRect.height;
+	indxsRect.x[posIdx] = db.x;
+	indxsRect.y[posIdx] = titleIndxsRect.y[posIdx] + titleIndxsRect.height;
 
 	//*** FullTable Size
 	fullSizeRect.width = maxWidth;
 	fullSizeRect.height = titleRect.height + titleColsRect.height + colsRect.height + titleIndxsRect.height + indxsRect.height;
-	fullSizeRect.x = db.x;
-	fullSizeRect.y = titleRect.y;
+	fullSizeRect.x[posIdx] = db.x;
+	fullSizeRect.y[posIdx] = titleRect.y[posIdx];
 	unScrolledFullSizeRect = fullSizeRect;
 
-	//Update sizes
-	wxSize value = fullSizeRect.GetSize();
-	rectangleFigure->setSize(value);
+	//Update size
+	wxSize sizeValue = fullSizeRect.GetSize();
+	rectangleFigure->setSize(sizeValue);
 }
 
-void ddTableFigure::updateTableSize()
+void ddTableFigure::updateTableSize(bool notifyChange)
 {
 	//Step 0: Recalculate displaybox size, in case of an external modification as change of datatype in a fk from a source (data is stored in original table)
 	ddColumnFigure *cf;
@@ -556,25 +577,29 @@ void ddTableFigure::updateTableSize()
 	delete iterator;
 
 	//Step 1: Update table size
-	calcRectsAreas();
-	wxSize value = fullSizeRect.GetSize();
-	rectangleFigure->setSize(value);
-	//hack to update relationship position when table size change
-	moveBy(-1, 0);
-	moveBy(1, 0);
+	calcInternalSubAreas(0);   //666 first position is enough here or I should put right position
+	basicDisplayBox.SetSize(fullSizeRect.GetSize());
+	if(notifyChange)
+	{
+		//hack to update relationship position when table size change
+		manuallyNotifyChange();
+	}
+/*	moveBy(0,-1, 0); //  666 el cero hace lo que debe o busco el indice???
+	moveBy(0,1, 0);  //  666 el cero hace lo que debe o busco el indice???
+	*/
 }
 
-wxhdRect &ddTableFigure::getColsSpace()
+wxhdMultiPosRect &ddTableFigure::getColsSpace()
 {
 	return unScrolledColsRect;
 }
 
-wxhdRect &ddTableFigure::getFullSpace()
+wxhdMultiPosRect &ddTableFigure::getFullSpace()
 {
 	return unScrolledFullSizeRect;
 }
 
-wxhdRect &ddTableFigure::getTitleRect()
+wxhdMultiPosRect &ddTableFigure::getTitleRect()
 {
 	return unScrolledTitleRect;
 }
@@ -590,7 +615,7 @@ int ddTableFigure::getColumnsWindow()
 	return colsWindow;
 }
 
-void ddTableFigure::setColumnsWindow(int value, bool maximize)
+void ddTableFigure::setColumnsWindow(int posIdx, int value, bool maximize)
 {
 
 	if(!maximize)
@@ -600,8 +625,8 @@ void ddTableFigure::setColumnsWindow(int value, bool maximize)
 		if( (value > 0) && (value <= colsRowsSize) && (maxColIndex >= ( beginDrawCols + value ) ) )
 		{
 			colsWindow = value;
-			calcRectsAreas();
-			recalculateColsPos();
+			calcInternalSubAreas(posIdx);
+			recalculateColsPos(posIdx);
 		}
 
 		//if special case of needing to modify beginDrawCols then do it
@@ -614,8 +639,8 @@ void ddTableFigure::setColumnsWindow(int value, bool maximize)
 				{
 					beginDrawCols -= diff;
 					colsWindow = value;
-					calcRectsAreas();
-					recalculateColsPos();
+					calcInternalSubAreas(posIdx);
+					recalculateColsPos(posIdx);
 
 				}
 			}
@@ -625,8 +650,8 @@ void ddTableFigure::setColumnsWindow(int value, bool maximize)
 	{
 		beginDrawCols = 2;
 		colsWindow = value;
-		calcRectsAreas();
-		recalculateColsPos();
+		calcInternalSubAreas(posIdx);
+		recalculateColsPos(posIdx);
 	}
 
 
@@ -644,23 +669,23 @@ void ddTableFigure::setColumnsWindow(int value, bool maximize)
 
 }
 
-void ddTableFigure::columnsWindowUp()  //move window from number to zero
+void ddTableFigure::columnsWindowUp(int posIdx)  //move window from number to zero
 {
 	if( beginDrawCols > 2 )
 	{
 		beginDrawCols--;
-		calcRectsAreas();
-		recalculateColsPos();
+		calcInternalSubAreas(posIdx);
+		recalculateColsPos(posIdx);
 	}
 }
 
-void ddTableFigure::columnsWindowDown()  //move window from number to maxcolumns
+void ddTableFigure::columnsWindowDown(int posIdx)  //move window from number to maxcolumns
 {
 	if( (beginDrawCols + colsWindow) < maxColIndex)
 	{
 		beginDrawCols++;
-		calcRectsAreas();
-		recalculateColsPos();
+		calcInternalSubAreas(posIdx);
+		recalculateColsPos(posIdx);
 	}
 }
 
@@ -916,7 +941,7 @@ void ddTableFigure::updateSizeOfObservers()
 }
 
 //drop foreign keys with this table as origin or destination
-void ddTableFigure::processDeleteAlert(wxhdDrawingView *view)
+void ddTableFigure::processDeleteAlert(wxhdDrawing *drawing)
 {
 	wxhdIteratorBase *iterator = observersEnumerator();
 	bool repeatFlag;
@@ -929,9 +954,9 @@ void ddTableFigure::processDeleteAlert(wxhdDrawingView *view)
 			ddRelationshipFigure *rel = (ddRelationshipFigure *) iterator->Next();
 			rel->disconnectStart();
 			rel->disconnectEnd();
-			if(view->isFigureSelected(rel))
-				view->removeFromSelection(rel);
-			view->remove(rel);
+			if(drawing->isFigureSelected(rel))
+				drawing->removeFromSelection(rel);
+			drawing->remove(rel);
 			repeatFlag = true;
 			delete rel;
 			break;
@@ -942,21 +967,21 @@ void ddTableFigure::processDeleteAlert(wxhdDrawingView *view)
 	delete iterator;
 }
 
-void ddTableFigure::basicMoveBy(int x, int y)
+void ddTableFigure::basicMoveBy(int posIdx, int x, int y)
 {
 
 	wxhdIFigure *f = (wxhdIFigure *) figureFigures->getItemAt(0);
 //Hack to avoid bug in if clause
 	int width =  spaceForMovement.GetWidth();
 	int height =  spaceForMovement.GetHeight();
-	int bottom = f->displayBox().y + f->displayBox().height + y;
-	int right = f->displayBox().x + f->displayBox().width + x;
-	int left = f->displayBox().x + x;
-	int top = f->displayBox().y + y;
+	int bottom = f->displayBox().y[posIdx] + f->displayBox().height + y;
+	int right = f->displayBox().x[posIdx] + f->displayBox().width + x;
+	int left = f->displayBox().x[posIdx] + x;
+	int top = f->displayBox().y[posIdx] + y;
 
 //limit movemnt of table figures to canvas space
 	if( (left > 0) && (top > 0) && (right < width) && (bottom < height) )
-		wxhdCompositeFigure::basicMoveBy(x, y);
+		wxhdCompositeFigure::basicMoveBy(posIdx, x, y);
 }
 
 //Validate status of table for SQL DDL generation

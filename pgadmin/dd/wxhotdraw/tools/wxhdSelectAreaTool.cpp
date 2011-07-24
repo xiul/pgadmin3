@@ -23,10 +23,10 @@
 #include "dd/wxhotdraw/utilities/wxhdGeometry.h"
 
 
-wxhdSelectAreaTool::wxhdSelectAreaTool(wxhdDrawingEditor *editor)
-	: wxhdAbstractTool(editor)
+wxhdSelectAreaTool::wxhdSelectAreaTool(wxhdDrawingView *view)
+	: wxhdAbstractTool(view)
 {
-	view = editor->view();
+	//666 000 view = editor->view();
 }
 
 wxhdSelectAreaTool::~wxhdSelectAreaTool()
@@ -38,7 +38,7 @@ void wxhdSelectAreaTool::mouseDown(wxhdMouseEvent &event)
 	wxhdAbstractTool::mouseDown(event);
 	if(!event.ShiftDown())
 	{
-		view->clearSelection();
+		event.getView()->getDrawing()->clearSelection();
 	}
 	if(event.LeftDown())
 	{
@@ -47,7 +47,7 @@ void wxhdSelectAreaTool::mouseDown(wxhdMouseEvent &event)
 		selectionRect.y = y;
 		selectionRect.width = 0;
 		selectionRect.height = 0;
-		drawSelectionRect();
+		drawSelectionRect(event.getView());
 	}
 }
 
@@ -74,9 +74,9 @@ void wxhdSelectAreaTool::mouseUp(wxhdMouseEvent &event)
 			selectionRect.height = g.ddabs(tmp);
 		}
 		//end hack-fix
-		drawSelectionRect();
-		selectFiguresOnRect(event.ShiftDown());
-		view->disableSelRectDraw();
+		drawSelectionRect(event.getView());
+		selectFiguresOnRect(event.ShiftDown(),event.getView());
+		event.getView()->disableSelRectDraw();
 	}
 }
 
@@ -85,39 +85,40 @@ void wxhdSelectAreaTool::mouseDrag(wxhdMouseEvent &event)
 	wxhdAbstractTool::mouseDrag(event);
 	if(event.LeftIsDown())
 	{
-		drawSelectionRect();
+		drawSelectionRect(event.getView());
 		int x = event.GetPosition().x, y = event.GetPosition().y;
 		selectionRect.x = anchorX;
 		selectionRect.y = anchorY;
 		selectionRect.SetBottomRight(wxPoint(x, y));
-		drawSelectionRect();
-		view->ScrollToMakeVisible(event.GetPosition());
+		drawSelectionRect(event.getView());
+		event.getView()->ScrollToMakeVisible(event.GetPosition());
 	}
 }
 
-void wxhdSelectAreaTool::selectFiguresOnRect(bool shiftPressed)
+void wxhdSelectAreaTool::selectFiguresOnRect(bool shiftPressed, wxhdDrawingView *view)
 {
 	wxhdIFigure *figure;
-	wxhdIteratorBase *iterator = getDrawingEditor()->model()->figuresInverseEnumerator();
+	//666 000 wxhdIteratorBase *iterator = getDrawingEditor()->model()->figuresInverseEnumerator();
+	wxhdIteratorBase *iterator = view->getDrawing()->figuresInverseEnumerator();
 	while(iterator->HasNext())
 	{
 		figure = (wxhdIFigure *)iterator->Next();
-		if(selectionRect.Contains(figure->displayBox()))
+		if(selectionRect.Contains(figure->displayBox().getwxhdRect(view->getIdx())))
 		{
 			if(shiftPressed)
 			{
-				view->toggleSelection(figure);
+				view->getDrawing()->toggleSelection(figure);
 			}
 			else
 			{
-				view->addToSelection(figure);
+				view->getDrawing()->addToSelection(figure);
 			}
 		}
 	}
 	delete iterator;
 }
 
-void wxhdSelectAreaTool::drawSelectionRect()
+void wxhdSelectAreaTool::drawSelectionRect(wxhdDrawingView *view)
 {
 	view->setSelRect(selectionRect);
 }

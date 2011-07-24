@@ -56,7 +56,7 @@ class ddRelationshipFigure : public wxhdLineConnection
 {
 public:
 	ddRelationshipFigure();
-	ddRelationshipFigure(wxhdIFigure *figure1, wxhdIFigure *figure2);
+	ddRelationshipFigure(int posIdx, wxhdIFigure *figure1, wxhdIFigure *figure2);
 	~ddRelationshipFigure();
 	virtual void createMenu(wxMenu &mnu);
 

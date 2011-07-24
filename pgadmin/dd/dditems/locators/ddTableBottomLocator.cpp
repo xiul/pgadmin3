@@ -26,14 +26,15 @@ ddTableBottomLocator::~ddTableBottomLocator()
 {
 }
 
-wxhdPoint &ddTableBottomLocator::locate(wxhdIFigure *owner)
+//666 aqui debo usar el posIDx para algooo??????????????????????????????????
+wxhdPoint &ddTableBottomLocator::locate(int posIdx, wxhdIFigure *owner)
 {
 	if(owner)
 	{
 		ddTableFigure *table = (ddTableFigure *) owner;
 
-		int x = table->getFullSpace().GetLeftBottom().x + table->getFullSpace().width * 0.25;
-		int y = table->getFullSpace().GetLeftBottom().y - 2;
+		int x = table->getFullSpace().GetLeftBottom(posIdx).x + table->getFullSpace().width * 0.25;
+		int y = table->getFullSpace().GetLeftBottom(posIdx).y - 2;
 
 		locatePoint.x = x;
 		locatePoint.y = y;

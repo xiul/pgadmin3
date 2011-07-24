@@ -45,20 +45,22 @@ wxhdIFigure::~wxhdIFigure()
 	}
 }
 
-wxhdRect &wxhdIFigure::displayBox()
+wxhdMultiPosRect &wxhdIFigure::displayBox()
 {
 	return getBasicDisplayBox();
 }
 
-wxhdRect &wxhdIFigure::getBasicDisplayBox()
+wxhdMultiPosRect &wxhdIFigure::getBasicDisplayBox()
 {
 	return basicDisplayBox;
 }
 
-bool wxhdIFigure::containsPoint (int x, int y)
+/*
+bool wxhdIFigure::containsPoint (int posIdx, int x, int y)
 {
 	return false;
 }
+*/
 
 void wxhdIFigure::draw (wxBufferedDC &context, wxhdDrawingView *view)
 {
@@ -92,15 +94,17 @@ void wxhdIFigure::removeHandle (wxhdIHandle *handle)
 	}
 }
 
-void wxhdIFigure::moveBy (int x, int y)
+/*
+void wxhdIFigure::moveBy (int posIdx, int x, int y)
 {
 }
 
-void wxhdIFigure::moveTo(int x, int y)
+void wxhdIFigure::moveTo(int posIdx, int x, int y)
 {
 }
+*/
 
-wxhdITool *wxhdIFigure::CreateFigureTool(wxhdDrawingEditor *editor, wxhdITool *defaultTool)
+wxhdITool *wxhdIFigure::CreateFigureTool(wxhdDrawingView *view, wxhdITool *defaultTool)
 {
 	return defaultTool;
 }
@@ -115,7 +119,7 @@ void wxhdIFigure::setSelected(bool value)
 	selected = value;
 }
 
-wxhdIConnector *wxhdIFigure::connectorAt (int x, int y)
+wxhdIConnector *wxhdIFigure::connectorAt (int posIdx, int x, int y)
 {
 	if(!connector)
 		connector = new wxhdChopBoxConnector(this);

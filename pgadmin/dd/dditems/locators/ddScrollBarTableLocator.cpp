@@ -26,14 +26,15 @@ ddScrollBarTableLocator::~ddScrollBarTableLocator()
 {
 }
 
-wxhdPoint &ddScrollBarTableLocator::locate(wxhdIFigure *owner)
+//666 aqui debo usar el posIDx para algooo??????????????????????????????????
+wxhdPoint &ddScrollBarTableLocator::locate(int posIdx, wxhdIFigure *owner)
 {
 	if(owner)
 	{
 		ddTableFigure *table = (ddTableFigure *) owner;
 		;
-		int x = table->getColsSpace().GetTopRight().x - 11; //scrollwidth
-		int y = table->getColsSpace().y;
+		int x = table->getColsSpace().GetTopRight(posIdx).x - 11; //scrollwidth
+		int y = table->getColsSpace().y[posIdx];
 
 		locatePoint.x = x;
 		locatePoint.y = y;

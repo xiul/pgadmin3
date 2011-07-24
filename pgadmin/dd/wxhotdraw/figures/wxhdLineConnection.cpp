@@ -32,7 +32,7 @@ wxhdLineConnection::wxhdLineConnection():
 	changeConnEndHandle = NULL;
 }
 
-wxhdLineConnection::wxhdLineConnection(wxhdIFigure *figure1, wxhdIFigure *figure2):
+wxhdLineConnection::wxhdLineConnection(int posIdx, wxhdIFigure *figure1, wxhdIFigure *figure2):
 	wxhdPolyLineFigure()
 {
 	startConnector = NULL;
@@ -40,12 +40,12 @@ wxhdLineConnection::wxhdLineConnection(wxhdIFigure *figure1, wxhdIFigure *figure
 
 	if(figure1)
 	{
-		connectStart(figure1->connectorAt(0, 0));
+		connectStart(figure1->connectorAt(posIdx, 0, 0));
 	}
 
 	if(figure2)
 	{
-		connectEnd(figure2->connectorAt(0, 0));
+		connectEnd(figure2->connectorAt(posIdx, 0, 0));
 	}
 }
 
@@ -139,15 +139,15 @@ wxhdIFigure *wxhdLineConnection::getEndFigure()
 	return NULL;
 }
 
-void wxhdLineConnection::updateConnection()
+void wxhdLineConnection::updateConnection(int posIdx)
 {
 	if(startConnector)
 	{
-		setStartPoint(startConnector->findStart(this));
+		setStartPoint(startConnector->findStart(posIdx, this));
 	}
 	if(endConnector)
 	{
-		setEndPoint(endConnector->findEnd(this));
+		setEndPoint(endConnector->findEnd(posIdx, this));
 	}
 }
 
@@ -169,10 +169,10 @@ wxhdIHandle *wxhdLineConnection::getEndHandle()
 	return changeConnEndHandle;
 }
 
-void wxhdLineConnection::basicMoveBy(int x, int y)
+void wxhdLineConnection::basicMoveBy(int posIdx, int x, int y)
 {
 	wxhdPolyLineFigure::basicMoveBy(x, y);
-	updateConnection();
+	updateConnection(posIdx);
 }
 
 bool wxhdLineConnection::canConnect()
@@ -180,10 +180,10 @@ bool wxhdLineConnection::canConnect()
 	return false;
 }
 
-void wxhdLineConnection::setPointAt (int index, int x, int y)
+void wxhdLineConnection::setPointAt (int posIdx, int index, int x, int y)
 {
 	wxhdPolyLineFigure::setPointAt(index, x, y);
-	updateConnection();
+	updateConnection(posIdx);
 }
 
 wxhdCollection *wxhdLineConnection::handlesEnumerator()
@@ -210,7 +210,7 @@ void wxhdLineConnection::disconnectFigure (wxhdIConnector *connector)
 
 void wxhdLineConnection::onFigureChanged(wxhdIFigure *figure)
 {
-	updateConnection();
+	 updateConnection(0); //666 disable  this is needed????  BUG BUG BUG
 }
 
 void wxhdLineConnection::addPoint (int x, int y)
