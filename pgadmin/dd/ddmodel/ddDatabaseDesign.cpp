@@ -193,7 +193,7 @@ ddTableFigure *ddDatabaseDesign::getSelectedTable(int diagramIndex)
 	while(iterator->HasNext())
 	{
 		tmp = (wxhdIFigure *)iterator->Next();
-		if (tmp->isSelected() && tmp->getKindId() == DDTABLEFIGURE)
+		if (tmp->isSelected(diagramIndex) && tmp->getKindId() == DDTABLEFIGURE)
 			table = (ddTableFigure *)tmp;
 	}
 	delete iterator;

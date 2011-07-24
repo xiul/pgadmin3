@@ -22,6 +22,8 @@ class wxhdDrawingEditor;
 class wxhdIConnector;
 class wxhdITool;
 
+WX_DEFINE_ARRAY_INT(bool,wxArrayBool);
+
 class wxhdIFigure : public wxhdObject
 {
 public:
@@ -39,8 +41,8 @@ public:
 	virtual void moveBy(int posIdx, int x, int y)=0;
 	virtual void moveTo(int posIdx, int x, int y)=0;
 	virtual bool containsPoint(int posIdx, int x, int y)=0;
-	virtual bool isSelected(); //666 777 adecuar el seleccionado para varias posiciones
-	virtual void setSelected(bool value);
+	virtual bool isSelected(int posIdx);
+	virtual void setSelected(int posIdx, bool value);
 	virtual bool includes(wxhdIFigure *figure);
 	virtual bool canConnect() = 0;
 	virtual void onFigureChanged(wxhdIFigure *figure) = 0;
@@ -58,7 +60,8 @@ protected:
 	wxhdCollection *observers;
 	wxhdIConnector *connector;
 private:
-	bool selected;
+	//bool selected;
+	wxArrayBool selected;
 	int kindHiddenId;
 
 };

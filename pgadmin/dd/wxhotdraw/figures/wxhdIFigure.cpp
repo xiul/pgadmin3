@@ -27,7 +27,16 @@ wxhdIFigure::wxhdIFigure()
 {
 	handles = new wxhdCollection(new wxhdArrayCollection());
 	observers = new wxhdCollection(new wxhdArrayCollection());
-	selected = false;
+//	selected = false;
+	unsigned int i;
+	if(selected.Count() < MAXPOS)
+	{
+		selected.Insert(0,0,MAXPOS);
+	}
+	for(i=0; i < selected.Count();i++)
+	{
+		selected[i]=false;
+	}
 	connector = NULL;
 	basicDisplayBox.SetSize(wxSize(0, 0));
 }
@@ -109,14 +118,14 @@ wxhdITool *wxhdIFigure::CreateFigureTool(wxhdDrawingView *view, wxhdITool *defau
 	return defaultTool;
 }
 
-bool wxhdIFigure::isSelected()
+bool wxhdIFigure::isSelected(int posIdx)
 {
-	return selected;
+	return selected[posIdx];
 }
 
-void wxhdIFigure::setSelected(bool value)
+void wxhdIFigure::setSelected(int posIdx, bool value)
 {
-	selected = value;
+	selected[posIdx] = value;
 }
 
 wxhdIConnector *wxhdIFigure::connectorAt (int posIdx, int x, int y)

@@ -183,7 +183,7 @@ void wxhdDrawing::addToSelection(wxhdIFigure *figure)
 	}
 	if(figure)
 	{
-		figure->setSelected(true);
+		figure->setSelected(usedView->getIdx(),true);
 		selection->addItem(figure);
 	}
 }
@@ -194,7 +194,7 @@ void wxhdDrawing::addToSelection(wxhdCollection *figures)
 
 void wxhdDrawing::removeFromSelection(wxhdIFigure *figure)
 {
-	figure->setSelected(false);
+	figure->setSelected(usedView->getIdx(), false);
 	if(selection)
 		selection->removeItem(figure);
 }
@@ -202,12 +202,12 @@ void wxhdDrawing::removeFromSelection(wxhdIFigure *figure)
 
 void wxhdDrawing::toggleSelection(wxhdIFigure *figure)
 {
-	if(figure->isSelected() &&	selection->existsObject(figure))
+	if(figure->isSelected(usedView->getIdx()) &&	selection->existsObject(figure))
 		selection->removeItem(figure);
-	else if(!figure->isSelected() && this->includes(figure))
+	else if(!figure->isSelected(usedView->getIdx()) && this->includes(figure))
 		selection->addItem(figure);
 
-	figure->setSelected(!figure->isSelected());
+	figure->setSelected(usedView->getIdx(), !figure->isSelected(usedView->getIdx()));
 }
 
 void wxhdDrawing::clearSelection()
@@ -217,7 +217,7 @@ void wxhdDrawing::clearSelection()
 	while(iterator->HasNext())
 	{
 		tmp = (wxhdIFigure *)iterator->Next();
-		tmp->setSelected(false);
+		tmp->setSelected(usedView->getIdx(), false);
 	}
 	selection->removeAll();
 	delete iterator;

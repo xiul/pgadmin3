@@ -92,7 +92,7 @@ void wxhdDrawingView::onPaint(wxPaintEvent &event)
 	while(iterator->HasNext())
 	{
 		toDraw = (wxhdIFigure *)iterator->Next();
-		if(toDraw->isSelected())
+		if(toDraw->isSelected(diagramIndex))
 			toDraw->drawSelected(dc, this);
 		else
 			toDraw->draw(dc, this);
