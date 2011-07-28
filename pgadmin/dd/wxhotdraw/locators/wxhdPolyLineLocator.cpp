@@ -37,8 +37,8 @@ wxhdPoint &wxhdPolyLineLocator::locate(int posIdx, wxhdIFigure *owner)
 	//Hack to allow handles of polylines reuse between different versions of same line.
 	if(figure && indx >= (figure->countPointsAt(posIdx)-1) ) //indx 0 is first, count first is 1
 	{
-		locatePoint.x=-1;
-		locatePoint.y=-1;
+		locatePoint.x=-100; //Any negative number that don't allow to the mouse to reach this locator
+		locatePoint.y=-100;
 		return locatePoint;
 	}
 	else if(figure)

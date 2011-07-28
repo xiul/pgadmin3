@@ -62,7 +62,8 @@ void wxhdConnectionCreationTool::mouseDown(wxhdMouseEvent &event)
 				toolConnection->setStartPoint(view->getIdx(), wxhdPoint(x, y));
 				toolConnection->connectStart(figure->connectorAt(view->getIdx(), x, y));
 				toolConnection->updateConnection(view->getIdx());
-				view->getDrawing()->add(toolConnection);
+				//666 view->getDrawing()->add(toolConnection);
+				view->editor()->addDiagramFigure(view->getIdx(), toolConnection); 
 				view->getDrawing()->clearSelection();
 				view->getDrawing()->addToSelection(toolConnection);
 				handle = toolConnection->getEndHandle();

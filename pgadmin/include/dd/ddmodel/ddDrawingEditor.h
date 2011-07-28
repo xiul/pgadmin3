@@ -31,6 +31,8 @@ public:
 	virtual void createMenu(wxMenu &mnu);
 	virtual void OnGenericPopupClick(wxCommandEvent &event, wxhdDrawingView *view);
 	*/
+	void checkRelationshipsConsistency(int diagramIndex);
+	void checkAllDigramsRelConsistency();
 protected:
 private:
 	ddDatabaseDesign *databaseDesign;

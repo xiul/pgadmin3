@@ -154,7 +154,66 @@ void ddDrawingEditor::deleteSelectedFigures(int diagramIndex)
 
 }
 
+void ddDrawingEditor::checkRelationshipsConsistency(int diagramIndex)
+{
+	wxhdIFigure *tmp;
+	ddRelationshipFigure *relation;
+	wxhdDrawing *diagram = getExistingDiagram(diagramIndex);
 
+	// First Step Removel all orphan [relations without source or destination] relationships 
+	// from DIAGRAM but NOT from MODEL 
+	wxhdIteratorBase *iterator = diagram->figuresEnumerator();
+	while(iterator->HasNext())
+	{
+		tmp = (wxhdIFigure *)iterator->Next();
+		if(tmp->getKindId() == DDRELATIONSHIPFIGURE)
+		{
+			relation = (ddRelationshipFigure *)tmp;
+			//test if all tables of a relationship are included if this is not the case then remove relationship from this diagram
+			bool sourceExists = diagram->getFiguresCollection()->existsObject(relation->getStartTable());
+			bool destinationExists = diagram->getFiguresCollection()->existsObject(relation->getEndTable());
+			if(!sourceExists || !destinationExists)
+			{
+				diagram->remove(relation);
+			}
+
+		}
+	}
+	delete iterator;
+
+	// Now add all existing relationships in MODEL to DIAGRAM if both source and destination
+	// tables exists at DIAGRAM
+	iterator = _model->createIterator();
+	while(iterator->HasNext())
+	{
+		tmp = (wxhdIFigure *)iterator->Next();
+		if(tmp->getKindId() == DDRELATIONSHIPFIGURE)
+		{
+			relation = (ddRelationshipFigure *)tmp;
+
+			//test if all tables of a relationship are included if this is the case then include relationship at this diagram
+			bool sourceExists = diagram->getFiguresCollection()->existsObject(relation->getStartTable());
+			bool destinationExists = diagram->getFiguresCollection()->existsObject(relation->getEndTable());
+			bool relationExists = diagram->getFiguresCollection()->existsObject(relation);
+			if(sourceExists && destinationExists && !relationExists)
+			{
+				diagram->add(relation);
+				relation->updateConnection(diagramIndex);
+			}
+		}
+	}
+	delete iterator;
+}
+
+void ddDrawingEditor::checkAllDigramsRelConsistency()
+{
+	int i, size = _diagrams->count();
+
+	for(i=0; i < size ; i++)
+	{
+		checkRelationshipsConsistency(i);
+	}
+}
 
 
 

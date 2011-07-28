@@ -60,7 +60,7 @@ wxhdDrawingView *ddDatabaseDesign::getView2()
 
 void ddDatabaseDesign::addTableToView(int diagramIndex, wxhdIFigure *figure)
 {
-	editor->getExistingDiagram(diagramIndex)->add(figure);
+	editor->addDiagramFigure(diagramIndex, figure);
 }
 
 /*
@@ -74,7 +74,7 @@ void ddDatabaseDesign::addTable2(wxhdIFigure *figure)
 
 void ddDatabaseDesign::removeTable(int diagramIndex, wxhdIFigure *figure)
 {
-	editor->getExistingDiagram(diagramIndex)->remove(figure);
+	editor->removeDiagramFigure(diagramIndex, figure);
 }
 
 /* 666 000

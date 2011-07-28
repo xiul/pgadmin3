@@ -44,6 +44,7 @@ public:
 	virtual wxhdIteratorBase *selectionFigures();
 	virtual int countSelectedFigures();
 	wxhdCollection* selectedFigures() {return selection;};
+	wxhdCollection* getFiguresCollection() {return figures;};
 protected:
 
 private:

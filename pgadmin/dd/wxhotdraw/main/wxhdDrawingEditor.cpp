@@ -127,6 +127,20 @@ void wxhdDrawingEditor::removeModelFigure(wxhdIFigure *figure)
 	}
 }
 
+void wxhdDrawingEditor::addDiagramFigure(int diagramIndex, wxhdIFigure *figure)
+{
+	getExistingDiagram(diagramIndex)->add(figure);
+	if(!modelIncludes(figure))
+	{
+		addModelFigure(figure);
+	}
+}
+
+void wxhdDrawingEditor::removeDiagramFigure(int diagramIndex, wxhdIFigure *figure)
+{
+	getExistingDiagram(diagramIndex)->remove(figure);
+}
+
 bool wxhdDrawingEditor::modelIncludes(wxhdIFigure *figure)
 {
 	if(_model)

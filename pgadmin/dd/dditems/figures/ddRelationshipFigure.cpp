@@ -525,8 +525,11 @@ void ddRelationshipFigure::connectEnd(wxhdIConnector *end, wxhdDrawingView *view
 		updateForeignKey();
 	}
 
-	if(getStartFigure())
+	if(getStartFigure()){
 		getStartTable()->setSelectFkDestMode(false);
+		ddDrawingEditor *editor = (ddDrawingEditor *) view->editor();
+		editor->checkAllDigramsRelConsistency();
+	}
 }
 
 bool ddRelationshipFigure::isForeignKeyFromPk()

@@ -21,9 +21,10 @@ public:
 	wxhdDrawingEditor(wxWindow *owner, bool defaultView = true );
 	~wxhdDrawingEditor();
 	wxhdDrawingView *getExistingView(int diagramIndex);
-//	wxhdDrawingView *createDiagram();
 	wxhdDrawing *getExistingDiagram(int diagramIndex);
 	virtual wxhdDrawing* createDiagram(wxWindow *owner);
+	virtual void addDiagramFigure(int diagramIndex, wxhdIFigure *figure);
+	virtual void removeDiagramFigure(int diagramIndex, wxhdIFigure *figure);
 	virtual void addModelFigure(wxhdIFigure *figure);
 	virtual void removeModelFigure(wxhdIFigure *figure);
 	virtual bool modelIncludes(wxhdIFigure *figure);
