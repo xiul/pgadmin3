@@ -37,6 +37,12 @@ void wxhdPolyLineHandle::draw(wxBufferedDC &context, wxhdDrawingView *view)
 	wxhdRect copy = getDisplayBox(view->getIdx());
 	view->CalcScrolledPosition(copy.x, copy.y, &copy.x, &copy.y);
 
+	//666 delete this
+	wxString pos = wxString::Format(_("%d"),indx);
+	double middle2 = copy.width / 2;
+	context.DrawText(pos,copy.x + middle2+3, copy.y + middle2); //666 delete this
+
+
 	double middle = copy.width / 2;
 	context.DrawCircle(
 	    wxPoint(copy.x + middle, copy.y + middle),
@@ -47,7 +53,7 @@ void wxhdPolyLineHandle::draw(wxBufferedDC &context, wxhdDrawingView *view)
 void wxhdPolyLineHandle::invokeStep(wxhdMouseEvent &event, wxhdDrawingView *view)
 {
 	int x = event.GetPosition().x, y = event.GetPosition().y;
-	((wxhdPolyLineFigure *) getOwner())->setPointAt(indx, x, y);
+	((wxhdPolyLineFigure *) getOwner())->setPointAt(view->getIdx(), indx, x, y);
 
 }
 
@@ -55,7 +61,7 @@ void wxhdPolyLineHandle::invokeStart(wxhdMouseEvent &event, wxhdDrawingView *vie
 {
 	if(event.RightDown())
 	{
-		((wxhdPolyLineFigure *) getOwner())->removePointAt(indx);
+		((wxhdPolyLineFigure *) getOwner())->removePointAt(view->getIdx(), indx);
 	}
 }
 wxCursor wxhdPolyLineHandle::createCursor()

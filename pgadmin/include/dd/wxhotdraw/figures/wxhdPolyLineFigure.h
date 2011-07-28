@@ -17,6 +17,9 @@
 #include "dd/wxhotdraw/utilities/wxhdArrayCollection.h"
 #include "dd/wxhotdraw/utilities/wxhdPoint.h"
 
+
+WX_DEFINE_ARRAY(wxhdArrayCollection*,pointsCollections);
+
 class wxhdPolyLineFigure : public wxhdAbstractMenuFigure
 {
 public:
@@ -24,38 +27,41 @@ public:
 	~wxhdPolyLineFigure();
 
 	virtual wxhdMultiPosRect &getBasicDisplayBox();
-	virtual int pointCount();
-	virtual wxhdPoint &getStartPoint();
-	virtual void setStartPoint(wxhdPoint point);
-	virtual wxhdPoint &getEndPoint();
-	virtual void setEndPoint(wxhdPoint point);
+	virtual int pointCount(int posIdx);
+	virtual wxhdPoint &getStartPoint(int posIdx);
+	virtual void setStartPoint(int posIdx, wxhdPoint point);
+	virtual wxhdPoint &getEndPoint(int posIdx);
+	virtual void setEndPoint(int posIdx, wxhdPoint point);
 	virtual void setStartTerminal(wxhdLineTerminal *terminal);
 	virtual wxhdLineTerminal *getStartTerminal();
 	virtual void setEndTerminal(wxhdLineTerminal *terminal);
 	virtual wxhdLineTerminal *getEndTerminal();
 	wxhdCollection *handlesEnumerator();
-	virtual int findSegment (int x, int y);
-	virtual void splitSegment(int x, int y);
+	virtual int findSegment (int posIdx, int x, int y);
+	virtual void splitSegment(int posIdx, int x, int y);
 	virtual void changed();
 
-	virtual void addPoint (int x, int y);
-	virtual void clearPoints ();
-	virtual void insertPointAt (int index, int x, int y);
-	virtual void setPointAt (int index, int x, int y);
-	virtual void removePointAt (int index);
-	virtual void basicMoveBy(int x, int y);
+	virtual void addPoint (int posIdx, int x, int y);
+	virtual void clearPoints (int posIdx);
+	virtual void insertPointAt (int posIdx, int index, int x, int y);
+	virtual void setPointAt (int posIdx, int index, int x, int y);
+	virtual void removePointAt (int posIdx, int index);
+	virtual void basicMoveBy(int posIdx, int x, int y);
 	virtual wxhdITool *CreateFigureTool(wxhdDrawingView *view, wxhdITool *defaultTool);
 
-	virtual wxhdPoint &pointAt(int index);
+	virtual wxhdPoint &pointAt(int posIdx, int index);
 	virtual bool containsPoint (int posIdx, int x, int y);
 	virtual void setLinePen(wxPen pen);
+	int countPointsAt(int posIdx);
 
 protected:
 	virtual void basicDraw (wxBufferedDC &context, wxhdDrawingView *view);
 	virtual void basicDrawSelected(wxBufferedDC &context, wxhdDrawingView *view);
 
+	int getMaximunIndex();
 	virtual void updateHandlesIndexes();
-	wxhdArrayCollection *points;
+	//666 wxhdArrayCollection *points;
+	pointsCollections points;
 	wxhdPoint endPoint, startPoint, pointAtPos;
 
 private:

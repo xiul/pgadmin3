@@ -56,6 +56,16 @@ void wxhdDrawing::add(wxhdIFigure *figure)
 {
 	if(figures)
 		figures->addItem(figure);
+	//666 just for testing... DELETE IT RIGHT NOW
+/*		if(figure->getKindId() == DDRELATIONSHIPFIGURE && usedView->getIdx()==0 )
+		{
+			ddRelationshipFigure *r = (ddRelationshipFigure*) figure;
+			r->setEndPoint(1, wxhdPoint(0, 0));
+			r->setStartPoint(1, wxhdPoint(100, 100));
+			//r->updateConnection(1);
+			this->ownerEditor->getExistingDiagram(1)->add(figure);
+		}
+Solo era una prueba borrar...		*/
 }
 
 void wxhdDrawing::remove(wxhdIFigure *figure)

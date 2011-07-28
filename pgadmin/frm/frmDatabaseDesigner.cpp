@@ -267,6 +267,30 @@ void frmDatabaseDesigner::OnAddColumn(wxCommandEvent &event)
 	if(table){
 		table->syncPositionsAfterLoad(0);   //777 666 delete this
 		table->syncPositionsAfterLoad(1);   //777 666 delete this
+	}else
+	{ ///666 mugre para borrar solo era para probar
+		wxhdIteratorBase *iterator = design->getEditor()->getExistingDiagram(0)->figuresEnumerator();
+		wxhdIFigure *tmp;
+		ddTableFigure *table = NULL;
+		while(iterator->HasNext())
+		{
+			tmp = (wxhdIFigure *)iterator->Next();
+			if (tmp->getKindId() == DDRELATIONSHIPFIGURE)
+			{
+				design->addTableToView(1,tmp);
+				ddRelationshipFigure *r = (ddRelationshipFigure*) tmp;
+				int cero = r->pointCount(0);
+				int uno = r->pointCount(1);
+//				r->addPoint(1, 0, 0);
+//				r->addPoint(1, 100, 100);
+				uno = r->pointCount(1);
+				/*
+				r->setEndPoint(1, wxhdPoint(0, 0));
+				r->setStartPoint(1, wxhdPoint(100, 100)); */
+				r->updateConnection(1);
+			}
+		}
+		delete iterator;
 	}
 	this->Refresh();
 }

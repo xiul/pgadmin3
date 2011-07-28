@@ -40,7 +40,7 @@ void wxhdPolyLineFigureTool::mouseDown(wxhdMouseEvent &event)
 	if(event.LeftDClick())
 	{
 		wxhdPolyLineFigure *connection = (wxhdPolyLineFigure *) figure;
-		connection->splitSegment(x, y);
+		connection->splitSegment(event.getView()->getIdx(), x, y);
 		//666 000 getDrawingEditor()->view()->clearSelection();
 		event.getView()->getDrawing()->clearSelection();
 		//666 000 getDrawingEditor()->view()->addToSelection(figure);
@@ -48,6 +48,7 @@ void wxhdPolyLineFigureTool::mouseDown(wxhdMouseEvent &event)
 		//666 000 wxhdIHandle *handle = getDrawingEditor()->view()->findHandle(event.getView()->getIdx(),x, y);
 		wxhdIHandle *handle = event.getView()->findHandle(event.getView()->getIdx(),x, y);
 		//666 000 getDrawingEditor()->view()->SetCursor(handle->createCursor());
+		event.getView()->SetCursor(handle->createCursor());
 		if(defaultTool)
 			delete defaultTool;
 		defaultTool = new wxhdHandleTrackerTool(event.getView(), handle);

@@ -31,7 +31,7 @@ public:
 	virtual wxhdIConnector *target() = 0;
 	virtual void disconnect(wxhdDrawingView *view = NULL) = 0;
 	virtual void connect(wxhdIConnector *connector, wxhdDrawingView *view = NULL) = 0;
-	virtual void setPoint(wxhdPoint p) = 0;
+	virtual void setPoint(int posIdx, wxhdPoint p) = 0;
 	virtual bool isConnectionPossible(wxhdIFigure *figure) = 0;
 	wxhdIFigure *findConnectableFigure(int posIdx, int x, int y, wxhdDrawing *drawing);
 	wxhdIConnector *findConnectionTarget(int posIdx, int x, int y, wxhdDrawing *drawing);

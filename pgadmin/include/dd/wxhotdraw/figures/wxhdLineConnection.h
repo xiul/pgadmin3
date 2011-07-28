@@ -45,8 +45,8 @@ public:
 	virtual wxhdIFigure *getEndFigure();
 	virtual wxhdIHandle *getStartHandle();
 	virtual wxhdIHandle *getEndHandle();
-	virtual void addPoint (int x, int y);
-	virtual void insertPointAt (int index, int x, int y);
+	virtual void addPoint (int posIdx, int x, int y);
+	virtual void insertPointAt (int posIdx, int index, int x, int y);
 
 protected:
 	virtual void updateHandlesIndexes();

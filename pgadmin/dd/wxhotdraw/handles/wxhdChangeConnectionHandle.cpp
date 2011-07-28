@@ -69,7 +69,7 @@ void wxhdChangeConnectionHandle::invokeStep(wxhdMouseEvent &event, wxhdDrawingVi
 	{
 		p = target->getDisplayBox().center(view->getIdx());
 	}
-	setPoint(p);
+	setPoint(view->getIdx(), p);
 	connection->updateConnection(view->getIdx());
 }
 

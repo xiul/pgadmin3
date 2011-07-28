@@ -30,7 +30,7 @@ wxhdChangeConnectionEndHandle::~wxhdChangeConnectionEndHandle()
 //666 hacer algo con el posIdx??????
 wxhdPoint &wxhdChangeConnectionEndHandle::locate(int posIdx)
 {
-	return connection->getEndPoint();
+	return connection->getEndPoint(posIdx);
 }
 
 wxhdIConnector *wxhdChangeConnectionEndHandle::target()
@@ -60,7 +60,7 @@ bool wxhdChangeConnectionEndHandle::isConnectionPossible(wxhdIFigure *figure)
 	}
 }
 
-void wxhdChangeConnectionEndHandle::setPoint(wxhdPoint p)
+void wxhdChangeConnectionEndHandle::setPoint(int posIdx, wxhdPoint p)
 {
-	connection->setEndPoint(p);
+	connection->setEndPoint(posIdx, p);
 }

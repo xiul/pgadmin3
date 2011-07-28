@@ -189,7 +189,7 @@ ddTableFigure *ddDatabaseDesign::getSelectedTable(int diagramIndex)
 {
 	wxhdIteratorBase *iterator = editor->getExistingDiagram(diagramIndex)->figuresEnumerator();
 	wxhdIFigure *tmp;
-	ddTableFigure *table = 0L;
+	ddTableFigure *table = NULL;
 	while(iterator->HasNext())
 	{
 		tmp = (wxhdIFigure *)iterator->Next();

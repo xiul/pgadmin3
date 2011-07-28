@@ -338,12 +338,12 @@ void ddXmlStorage::WriteLocal( xmlTextWriterPtr writer, ddRelationshipFigure *fi
 	//Start POINTS <!ELEMENT POINTS (POINT, POINT,POINT*)>
 	tmp = xmlTextWriterStartElement(writer, BAD_CAST "POINTS");
 	wxhdPoint point;
-	for(int i = 0; i < figure->pointCount(); i++)
+	for(int i = 0; i < figure->pointCount(0); i++)  //666 fixed at 0 because right now I don't have index of line
 	{
 		//At POINTS Element
 		//Start POINT <!ELEMENT POINT (X,Y)>
 		tmp = xmlTextWriterStartElement(writer, BAD_CAST "POINT");
-			 point = figure->pointAt(i);	
+			 point = figure->pointAt(0, i);	//666 fixed at 0 because right now I don't have index of line
 			//<!ELEMENT X (#PCDATA)>
 			tmp = xmlTextWriterWriteFormatElement(writer, BAD_CAST "X","%d", point.x);
 			processResult(tmp);
@@ -1152,7 +1152,7 @@ ddRelationshipFigure* ddXmlStorage::getRelationship(xmlTextReaderPtr reader)
 	ddRelationshipFigure *relation = new ddRelationshipFigure();
 	relation->setStartTerminal(new ddRelationshipTerminal(relation, false));
 	relation->setEndTerminal(new ddRelationshipTerminal(relation, true));
-	relation->clearPoints();
+	relation->clearPoints(0); //666 fixed at 0 because right now I don't have index of line
 
 	// --> ATTRIBUTE*
 	//Element(s) Attribute*
@@ -1190,7 +1190,7 @@ ddRelationshipFigure* ddXmlStorage::getRelationship(xmlTextReaderPtr reader)
 			tmp = xmlTextReaderRead(reader);	//go to /Y
 			tmp = xmlTextReaderRead(reader);	//go /POINT
 			
-			relation->addPoint(x,y);
+			relation->addPoint(0,x,y); //666 fixed at 0 because right now I don't have index of line
 			
 			tmp = xmlTextReaderRead(reader);	//go to POINT or /POINTS ?
 		}while(getNodeName(reader).IsSameAs(_("POINT"),false));

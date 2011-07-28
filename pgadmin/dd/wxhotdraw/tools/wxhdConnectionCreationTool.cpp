@@ -58,10 +58,10 @@ void wxhdConnectionCreationTool::mouseDown(wxhdMouseEvent &event)
 		{
 			if(numClicks == 1) //first mouse click to select start/end figure
 			{
-				toolConnection->setEndPoint(wxhdPoint(x, y));
-				toolConnection->setStartPoint(wxhdPoint(x, y));
-				toolConnection->connectStart(figure->connectorAt(event.getView()->getIdx(), x, y));
-				toolConnection->updateConnection(event.getView()->getIdx());
+				toolConnection->setEndPoint(view->getIdx(), wxhdPoint(x, y));
+				toolConnection->setStartPoint(view->getIdx(), wxhdPoint(x, y));
+				toolConnection->connectStart(figure->connectorAt(view->getIdx(), x, y));
+				toolConnection->updateConnection(view->getIdx());
 				view->getDrawing()->add(toolConnection);
 				view->getDrawing()->clearSelection();
 				view->getDrawing()->addToSelection(toolConnection);
@@ -69,7 +69,7 @@ void wxhdConnectionCreationTool::mouseDown(wxhdMouseEvent &event)
 			}
 			else if(numClicks > 1) //second mouse click to select end figure only
 			{
-				toolConnection->setEndPoint(wxhdPoint(x, y));
+				toolConnection->setEndPoint(view->getIdx(), wxhdPoint(x, y));
 				toolConnection->updateConnection(event.getView()->getIdx());
 			}
 		}
@@ -90,7 +90,7 @@ void wxhdConnectionCreationTool::mouseUp(wxhdMouseEvent &event)
 		{
 			if(!dragged && numClicks == 1) //mouse haven't be dragged and is first click of mouse at this tool
 			{
-				toolConnection->setEndPoint(event.GetPosition());
+				toolConnection->setEndPoint(event.getView()->getIdx(), event.GetPosition());
 				toolConnection->updateConnection(event.getView()->getIdx());
 			}
 			else

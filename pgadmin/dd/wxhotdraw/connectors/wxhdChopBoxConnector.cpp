@@ -57,14 +57,14 @@ wxhdPoint wxhdChopBoxConnector::findStart(int posIdx, wxhdLineConnection *connFi
 		return point;
 	}
 
-	if(connFigure->pointCount() < 2)
+	if(connFigure->pointCount(posIdx) < 2)
 	{
 		point = getDisplayBox().center(posIdx);
 		return point;
 	}
 
 	wxhdIFigure *start = connFigure->getStartConnector()->getOwner();
-	point = connFigure->pointAt(1);
+	point = connFigure->pointAt(posIdx, 1);
 	point = chop(posIdx, start, point);
 	return point;
 }
@@ -76,7 +76,7 @@ wxhdPoint wxhdChopBoxConnector::findEnd(int posIdx, wxhdLineConnection *connFigu
 		return getDisplayBox().center(posIdx);
 	}
 	wxhdIFigure *end = connFigure->getEndConnector()->getOwner();
-	point = connFigure->pointAt(connFigure->pointCount() - 2);
+	point = connFigure->pointAt(posIdx, connFigure->pointCount(posIdx) - 2);
 	point = chop(posIdx, end, point);
 	return point;
 }

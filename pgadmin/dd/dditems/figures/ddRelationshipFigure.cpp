@@ -510,7 +510,8 @@ void ddRelationshipFigure::connectEnd(wxhdIConnector *end, wxhdDrawingView *view
 {
 	ddSelectKindFksDialog *mappingDialog = NULL;
 	wxhdLineConnection::connectEnd(end);
-	view->Refresh();
+	if(view)
+		view->Refresh();
 	if(getEndFigure() && getStartFigure())
 	{
 		mappingDialog = new ddSelectKindFksDialog(view, this);
@@ -866,6 +867,6 @@ void ddRelationshipFigure::initRelationValues( ddTableFigure *source, ddTableFig
 	onDeleteAction=onDelete;
 	constraintName = constraint;
 
-	wxhdLineConnection::connectStart(source->connectorAt(0, getStartPoint().x, getStartPoint().y));   //666 el posIdx esta fijo en 0 debo arreglarolo cuando arregle el xml
-	wxhdLineConnection::connectEnd(destination->connectorAt(0, getEndPoint().x, getEndPoint().y)); //666 el posIdx esta fijo en 0 debo arreglarolo cuando arregle el xml
+	wxhdLineConnection::connectStart(source->connectorAt(0, getStartPoint(0).x, getStartPoint(0).y));   //666 el posIdx esta fijo en 0 debo arreglarolo cuando arregle el xml
+	wxhdLineConnection::connectEnd(destination->connectorAt(0, getEndPoint(0).x, getEndPoint(0).y)); //666 el posIdx esta fijo en 0 debo arreglarolo cuando arregle el xml
 }
