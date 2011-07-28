@@ -71,6 +71,8 @@ void wxhdChangeConnectionHandle::invokeStep(wxhdMouseEvent &event, wxhdDrawingVi
 	}
 	setPoint(view->getIdx(), p);
 	connection->updateConnection(view->getIdx());
+	if(view)
+		view->Refresh();
 }
 
 void wxhdChangeConnectionHandle::invokeEnd(wxhdMouseEvent &event, wxhdDrawingView *view)
@@ -83,6 +85,8 @@ void wxhdChangeConnectionHandle::invokeEnd(wxhdMouseEvent &event, wxhdDrawingVie
 	}
 	connect(target, view);
 	connection->updateConnection(view->getIdx());
+	if(view)
+		view->Refresh();
 }
 
 
