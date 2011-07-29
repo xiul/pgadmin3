@@ -14,7 +14,8 @@
 
 #include <libxml/xmlwriter.h>
 
-#include "dd/wxhotdraw/main/wxhdDrawingEditor.h"
+#include "dd/ddmodel/ddDrawingEditor.h"
+#include "dd/ddmodel/ddModelBrowser.h"
 #include "dd/wxhotdraw/tools/wxhdITool.h"
 #include "dd/dditems/figures/ddTableFigure.h"
 
@@ -45,13 +46,15 @@ public:
 	wxString getTableId(wxString tableName);
 	void addTableToMapping(wxString IdKey, wxString tableName);
 	wxString getTableName(wxString Id);
+	void registerBrowser(ddModelBrowser *browser);
 
 protected:
 	tablesMappingHashMap mappingNameToId;
 	tablesMappingHashMap mappingIdToName;
 private:
+	ddModelBrowser *attachedBrowser;
 	int diagramCounter;
-	wxhdDrawingEditor *editor;
+	ddDrawingEditor *editor;
 	wxhdITool *tool;
 	xmlTextWriterPtr xmlWriter;
 

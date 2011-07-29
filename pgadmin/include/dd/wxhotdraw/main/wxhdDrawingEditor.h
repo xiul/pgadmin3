@@ -30,6 +30,8 @@ public:
 	virtual bool modelIncludes(wxhdIFigure *figure);
 	virtual void deleteSelectedFigures(int diagramIndex);
 	int modelCount();
+	wxhdIteratorBase *modelFiguresEnumerator();
+
 
 
 //666 000	wxhdITool *tool();

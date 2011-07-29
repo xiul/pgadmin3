@@ -24,4 +24,39 @@ public:
 protected:
 private:
 };
+
+// A drop target that do nothing only accept text, if accept then tree add table to model
+class ddDropTarget : public wxTextDropTarget
+{
+public:
+	ddDropTarget(ddDatabaseDesign *sourceDesign, wxhdDrawing *targetDrawing)
+	{
+		target = targetDrawing;
+		source = sourceDesign;
+
+	}
+	virtual bool OnDropText(wxCoord x, wxCoord y, const wxString &text)
+	{
+		ddTableFigure *t = source->getTable(text);
+		if(t!=NULL && !target->includes(t))
+		{
+			target->add(t);
+			return true;
+		}
+		else
+		{
+			if(target->includes(t))
+			{
+				wxMessageBox(_("This tables exists yet at the diagram"));
+				return true;
+			}
+			else
+				return false;
+		}
+	}
+
+private:
+	wxhdDrawing *target;
+	ddDatabaseDesign *source;
+};
 #endif

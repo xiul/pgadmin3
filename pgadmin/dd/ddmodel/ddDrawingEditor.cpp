@@ -44,6 +44,8 @@ wxhdDrawing* ddDrawingEditor::createDiagram(wxWindow *owner)
 
 	_tmpModel->registerView(_viewTmp);
 
+	_viewTmp->SetDropTarget(new ddDropTarget(databaseDesign,_tmpModel));
+
 	//Add Diagram
 	_diagrams->addItem((wxhdObject *) _tmpModel);
 	return _tmpModel;

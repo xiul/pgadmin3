@@ -33,6 +33,7 @@
 #include "dd/wxhotdraw/figures/wxhdRectangleFigure.h"
 #include "dd/wxhotdraw/figures/wxhdBitmapFigure.h"
 #include "dd/wxhotdraw/tools/wxhdConnectionCreationTool.h"
+#include "dd/ddmodel/ddModelBrowser.h"
 
 #include "dd/ddmodel/ddDatabaseDesign.h"
 #include "dd/ddmodel/ddDrawingView.h"
@@ -122,38 +123,52 @@ frmDatabaseDesigner::frmDatabaseDesigner(frmMain *form, const wxString &_title, 
 	toolBar->AddTool(MNU_HELP, _("Help"), *help_png_bmp, _("Display help"), wxITEM_NORMAL);
 	toolBar->Realize();
 
-
 	// Create notebook for diagrams
 	ctlAuiNotebook *diagrams = new ctlAuiNotebook(this, 666, wxDefaultPosition, wxDefaultSize, wxAUI_NB_TOP | wxAUI_NB_TAB_SPLIT | wxAUI_NB_TAB_MOVE | wxAUI_NB_SCROLL_BUTTONS | wxAUI_NB_WINDOWLIST_BUTTON);
-
-	// Add the database designer
-	design = new ddDatabaseDesign(diagrams);
 
 	// Now, the scratchpad
 	sqltext = new wxTextCtrl(this, -1, wxT(""), wxDefaultPosition, wxDefaultSize, wxTE_MULTILINE | wxHSCROLL);
 
+	//Now, the Objects Browser
+	wxPanel *browserPanel = new wxPanel(this, wxID_ANY, wxDefaultPosition, wxDefaultSize); 
+	//666 change 9969 pro el numero real
+
+	// Add the database designer
+	design = new ddDatabaseDesign(diagrams);
+
+	// Create database model browser
+	ddModelBrowser *modelBrowser = new ddModelBrowser(browserPanel, 9969, wxDefaultPosition, wxDefaultSize, wxTR_HAS_BUTTONS | wxSIMPLE_BORDER, design);
+	design->registerBrowser(modelBrowser);
+
 	// Add view to notebook
-	diagrams->AddPage(design->getView(0), _("Diagrama Test"));
+	diagrams->AddPage(design->createDiagram(diagrams)->getView(), _("Diagrama Test"));
 	diagrams->AddPage(design->createDiagram(diagrams)->getView(), _("Diagrama Test #2"));
 	diagrams->AddPage(design->createDiagram(diagrams)->getView(), _("Diagrama Test #3"));
-	//666 diagrams->AddPage(design->getView(1), _("Diagrama Test #2"));
 
 	// Add the panes
-	//manager.AddPane(design->getView(),
 	manager.AddPane(diagrams,
 	                wxAuiPaneInfo().Center().
 	                Name(wxT("sqlQuery")).Caption(_("Database Designer")).
 	                CaptionVisible(true).CloseButton(true).MaximizeButton(true).
 	                Dockable(true).Movable(true));
-	manager.AddPane(sqltext,
-	                wxAuiPaneInfo().Right().
-	                Name(wxT("sqlText")).Caption(_("SQL query")).
+	manager.AddPane(browserPanel,
+	                wxAuiPaneInfo().Left().
+	                Name(wxT("ModelBrowser")).Caption(_("Model Browser")).
 	                CaptionVisible(true).CloseButton(true).
-	                MinSize(wxSize(200, 100)).BestSize(wxSize(350, 200)));
+	                MinSize(wxSize(140, 100)).BestSize(wxSize(200, 200)));
+	manager.AddPane(sqltext,
+					wxAuiPaneInfo().Bottom().
+	                Name(wxT("sqlText")).Caption(_("SQL query")).
+					CaptionVisible(true).CloseButton(true).MaximizeButton(true).
+	                MinSize(wxSize(200, 100)).BestSize(wxSize(350, 150)));
 	manager.AddPane(toolBar, wxAuiPaneInfo().Name(wxT("toolBar")).Caption(_("Tool bar")).ToolbarPane().Top().LeftDockable(false).RightDockable(false));
 
 	// Update the AUI manager
 	manager.Update();
+
+	//Update browser info
+	modelBrowser->SetSize(browserPanel->GetSize());
+		
 
 	SetStatusText(wxString(wxT("Ready")), 1);
 }

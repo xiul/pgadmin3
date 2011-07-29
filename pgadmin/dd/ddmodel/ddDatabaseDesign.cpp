@@ -31,6 +31,7 @@
 ddDatabaseDesign::ddDatabaseDesign(wxWindow *parent)
 {
 	editor = new ddDrawingEditor(parent, this);
+	attachedBrowser = NULL;
 //666 000	tool = new wxhdSelectionTool(draw);
 //666 000	draw->setTool(tool);
 }
@@ -57,10 +58,18 @@ wxhdDrawingView *ddDatabaseDesign::getView2()
 	return draw->view2();
 }
 */
+void ddDatabaseDesign::registerBrowser(ddModelBrowser *browser)
+{
+	attachedBrowser=browser;
+}
 
 void ddDatabaseDesign::addTableToView(int diagramIndex, wxhdIFigure *figure)
 {
 	editor->addDiagramFigure(diagramIndex, figure);
+	if(attachedBrowser)
+	{
+		attachedBrowser->refreshFromModel();
+	}
 }
 
 /*
@@ -204,7 +213,7 @@ ddTableFigure* ddDatabaseDesign::getTable(wxString tableName)
 {
 	ddTableFigure *out = NULL;
 	//666 change this to look at all tables no just from one model fixed in 0 right now
-	wxhdIteratorBase *iterator = editor->getExistingDiagram(0)->figuresEnumerator();
+	wxhdIteratorBase *iterator = editor->modelFiguresEnumerator();
 	wxhdIFigure *tmp;
 	ddTableFigure *table;
 	while(iterator->HasNext())

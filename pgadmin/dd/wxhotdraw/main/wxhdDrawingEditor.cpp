@@ -25,10 +25,6 @@ wxhdDrawingEditor::wxhdDrawingEditor(wxWindow *owner, bool defaultView)
 	//666 index = 0;
 	_diagrams = new wxhdArrayCollection();
 	_model = new wxhdArrayCollection();
-	if(defaultView)
-	{
-		createDiagram(owner);
-	}
 //666 000	_tool = NULL;
 }
 
@@ -153,6 +149,11 @@ int wxhdDrawingEditor::modelCount()
 	if(_model)
 		return _diagrams->count();
 	return 0;
+}
+
+wxhdIteratorBase *wxhdDrawingEditor::modelFiguresEnumerator()
+{
+	return _model->createIterator();
 }
 
 

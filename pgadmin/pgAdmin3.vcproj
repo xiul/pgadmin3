@@ -4140,6 +4140,10 @@
 					Name="ddmodel"
 					>
 					<File
+						RelativePath=".\include\dd\ddmodel\ddBrowserDataContainer.h"
+						>
+					</File>
+					<File
 						RelativePath=".\include\dd\ddmodel\ddDatabaseDesign.h"
 						>
 					</File>
@@ -4149,6 +4153,10 @@
 					</File>
 					<File
 						RelativePath=".\include\dd\ddmodel\ddDrawingView.h"
+						>
+					</File>
+					<File
+						RelativePath=".\include\dd\ddmodel\ddModelBrowser.h"
 						>
 					</File>
 					<File
@@ -6137,6 +6145,10 @@
 				Name="ddmodel"
 				>
 				<File
+					RelativePath=".\dd\ddmodel\ddBrowserDataContainer.cpp"
+					>
+				</File>
+				<File
 					RelativePath=".\dd\ddmodel\ddDatabaseDesign.cpp"
 					>
 				</File>
@@ -6146,6 +6158,10 @@
 				</File>
 				<File
 					RelativePath=".\dd\ddmodel\ddDrawingView.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\dd\ddmodel\ddModelBrowser.cpp"
 					>
 				</File>
 				<File
