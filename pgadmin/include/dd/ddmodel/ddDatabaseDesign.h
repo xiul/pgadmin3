@@ -27,7 +27,7 @@ public:
 	ddDatabaseDesign(wxWindow *parent);
 	~ddDatabaseDesign();
 	wxhdDrawingView *getView(int diagramIndex);
-	wxhdDrawingEditor *getEditor();
+	ddDrawingEditor *getEditor();
 	void addTableToModel(wxhdIFigure *figure);
 	void addTableToView(int diagramIndex, wxhdIFigure *figure);
 	void removeTable(int diagramIndex, wxhdIFigure *figure);
@@ -47,6 +47,8 @@ public:
 	void addTableToMapping(wxString IdKey, wxString tableName);
 	wxString getTableName(wxString Id);
 	void registerBrowser(ddModelBrowser *browser);
+	void checkRelationshipsConsistency(int diagramIndex);
+	void checkAllDigramsRelConsistency();
 
 protected:
 	tablesMappingHashMap mappingNameToId;

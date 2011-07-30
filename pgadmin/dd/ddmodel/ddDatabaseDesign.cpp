@@ -42,7 +42,7 @@ ddDatabaseDesign::~ddDatabaseDesign()
 		delete editor;
 }
 
-wxhdDrawingEditor *ddDatabaseDesign::getEditor()
+ddDrawingEditor *ddDatabaseDesign::getEditor()
 {
 	return editor;
 }
@@ -158,8 +158,7 @@ wxString ddDatabaseDesign::generateDiagram(int diagramIndex)
 wxString ddDatabaseDesign::getNewTableName()
 {
 	wxString out, tmpStr;
-	//666 change this to look at all tables no just from one model fixed in 0 right now
-	wxhdIteratorBase *iterator = editor->getExistingDiagram(0)->figuresEnumerator();
+	wxhdIteratorBase *iterator = editor->modelFiguresEnumerator();
 	wxhdIFigure *tmp;
 	ddTableFigure *table;
 	int indx = 0;
@@ -212,7 +211,6 @@ ddTableFigure *ddDatabaseDesign::getSelectedTable(int diagramIndex)
 ddTableFigure* ddDatabaseDesign::getTable(wxString tableName)
 {
 	ddTableFigure *out = NULL;
-	//666 change this to look at all tables no just from one model fixed in 0 right now
 	wxhdIteratorBase *iterator = editor->modelFiguresEnumerator();
 	wxhdIFigure *tmp;
 	ddTableFigure *table;

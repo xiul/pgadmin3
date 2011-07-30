@@ -938,7 +938,7 @@ xmlChar *value;
 	} 
 
 	tmp = xmlTextReaderRead(reader);	//go to </TABLE>
-	t->syncPositionsAfterLoad(0);  //synchronize positions    //666 solo lo hago al indice 0 por ahora
+	t->syncInternalsPosAt(0,x,y);  //synchronize positions    //666 solo lo hago al indice 0 por ahora
 	t->updateTableSize();
 	return t;
 }

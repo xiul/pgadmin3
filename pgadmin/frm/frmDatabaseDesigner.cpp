@@ -124,20 +124,20 @@ frmDatabaseDesigner::frmDatabaseDesigner(frmMain *form, const wxString &_title, 
 	toolBar->Realize();
 
 	// Create notebook for diagrams
-	ctlAuiNotebook *diagrams = new ctlAuiNotebook(this, 666, wxDefaultPosition, wxDefaultSize, wxAUI_NB_TOP | wxAUI_NB_TAB_SPLIT | wxAUI_NB_TAB_MOVE | wxAUI_NB_SCROLL_BUTTONS | wxAUI_NB_WINDOWLIST_BUTTON);
+	diagrams = new ctlAuiNotebook(this, 666, wxDefaultPosition, wxDefaultSize, wxAUI_NB_TOP | wxAUI_NB_TAB_SPLIT | wxAUI_NB_TAB_MOVE | wxAUI_NB_SCROLL_BUTTONS | wxAUI_NB_WINDOWLIST_BUTTON);
 
 	// Now, the scratchpad
 	sqltext = new wxTextCtrl(this, -1, wxT(""), wxDefaultPosition, wxDefaultSize, wxTE_MULTILINE | wxHSCROLL);
 
 	//Now, the Objects Browser
-	wxPanel *browserPanel = new wxPanel(this, wxID_ANY, wxDefaultPosition, wxDefaultSize); 
-	//666 change 9969 pro el numero real
-
+	browserPanel = new wxPanel(this, wxID_ANY, wxDefaultPosition, wxDefaultSize); 
+	
 	// Add the database designer
 	design = new ddDatabaseDesign(diagrams);
 
 	// Create database model browser
-	ddModelBrowser *modelBrowser = new ddModelBrowser(browserPanel, 9969, wxDefaultPosition, wxDefaultSize, wxTR_HAS_BUTTONS | wxSIMPLE_BORDER, design);
+	//666 change 9969 pro el numero real
+	modelBrowser = new ddModelBrowser(browserPanel, 9969, wxDefaultPosition, wxDefaultSize, wxTR_HAS_BUTTONS | wxSIMPLE_BORDER, design);
 	design->registerBrowser(modelBrowser);
 
 	// Add view to notebook
@@ -176,6 +176,8 @@ frmDatabaseDesigner::frmDatabaseDesigner(frmMain *form, const wxString &_title, 
 
 frmDatabaseDesigner::~frmDatabaseDesigner()
 {
+	//666 delete all other objects
+
 	// Save form's position
 	SavePosition();
 
@@ -184,6 +186,12 @@ frmDatabaseDesigner::~frmDatabaseDesigner()
 
 	if (mainForm)
 		mainForm->RemoveFrame(this);
+	
+	if(modelBrowser)
+		delete modelBrowser;
+
+	if(browserPanel)
+		delete browserPanel;
 
 	if (connection)
 	{
@@ -205,47 +213,56 @@ void frmDatabaseDesigner::OnClose(wxCloseEvent &event)
 	Destroy();
 }
 
-
 void frmDatabaseDesigner::OnAddTable(wxCommandEvent &event)
 {
+	wxhdDrawingView *view = (wxhdDrawingView *) diagrams->GetPage(diagrams->GetSelection());
+
 	ddTableNameDialog *newTableDialog = new ddTableNameDialog(
 	    this,
 	    design->getNewTableName(),
 	    wxEmptyString,
 	    NULL
 	);
-	int answer = newTableDialog->ShowModal();
-	if (answer == wxID_OK && !newTableDialog->GetValue1().IsEmpty())
-	{
-		ddTableFigure *newTable = new ddTableFigure(newTableDialog->GetValue1(),
-		        rand() % 90 + 200,
-		        rand() % 90 + 140,
-		        newTableDialog->GetValue2()
-		                                           );
-		//666 Fixed at model 0 right now....
-		design->addTableToView(0, newTable);
-		design->addTableToView(1, newTable);  //777 borrar 6666
-		//666 Fixed at model 0 right now....
-		design->refreshDraw(0);  //777 borrar 6666
-		design->refreshDraw(1);
+	
+	bool done=false, existsTable;
+	int answer;
 
-		//666 design->addTable2(newTable);
-		//666 design->refreshDraw();
-	}
+	do{
+		answer = newTableDialog->ShowModal();
+		existsTable = design->getTable(newTableDialog->GetValue1())!=NULL;
+
+		if (answer == wxID_OK && !newTableDialog->GetValue1().IsEmpty() && !existsTable)
+		{
+			ddTableFigure *newTable = new ddTableFigure(newTableDialog->GetValue1(),
+					view->getIdx(),
+					rand() % 90 + 200,
+					rand() % 90 + 140,
+					newTableDialog->GetValue2()
+													   );
+			design->addTableToView(view->getIdx(), newTable);
+			design->refreshDraw(view->getIdx());
+			done=true;
+		}else if(existsTable && answer==wxID_OK)
+		{
+					wxMessageBox(_("Table name already in use at this Model in this or another diagram."),_("Warning about table name"), wxICON_EXCLAMATION);
+		}
+	}while(answer!=wxID_CANCEL && !done);
+
 	delete newTableDialog;
 }
 
 void frmDatabaseDesigner::OnDeleteTable(wxCommandEvent &event)
 {
-	//666 Fixed at model 0 right now....
-	ddDrawingView *v = (ddDrawingView *) design->getEditor()->getExistingView(0);
-	v->getDrawing()->deleteSelectedFigures();
+	wxhdDrawingView *view = (wxhdDrawingView *) diagrams->GetPage(diagrams->GetSelection());
+
+	//666 ddDrawingView *v = (ddDrawingView *) design->getEditor()->getExistingView(view->getIdx());
+	view->getDrawing()->deleteSelectedFigures();
 }
 
 void frmDatabaseDesigner::OnAddColumn(wxCommandEvent &event)
 {
- 	//666 Fixed at model 0 right now....
-	ddTableFigure *table = design->getSelectedTable(0);
+	wxhdDrawingView *view = (wxhdDrawingView *) diagrams->GetPage(diagrams->GetSelection());
+	ddTableFigure *table = design->getSelectedTable(view->getIdx());
 	wxTextEntryDialog nameDialog (this, wxT("New column name"), wxT("Add a column"), wxT("NewColumn"));
 	int answer;
 	wxString tmpString;
@@ -261,7 +278,7 @@ void frmDatabaseDesigner::OnAddColumn(wxCommandEvent &event)
 			{
 				tmpString = nameDialog.GetValue();
 				if(table->getColByName(tmpString)==NULL)
-					table->addColumn(0, new ddColumnFigure(tmpString, table)); //666 pq debo colocarle indice a estoo??
+					table->addColumn(view->getIdx(), new ddColumnFigure(tmpString, table)); //666 pq debo colocarle indice a estoo??
 				else
 				{
 					wxString msg(wxT("Error trying to add new column '"));
@@ -278,45 +295,31 @@ void frmDatabaseDesigner::OnAddColumn(wxCommandEvent &event)
 		}
 		while(again);
 	}
-
-	if(table){
-		table->syncPositionsAfterLoad(0);   //777 666 delete this
-		table->syncPositionsAfterLoad(1);   //777 666 delete this
-	}else
-	{ ///666 mugre para borrar solo era para probar
-		wxhdIteratorBase *iterator = design->getEditor()->getExistingDiagram(0)->figuresEnumerator();
-		wxhdIFigure *tmp;
-		ddTableFigure *table = NULL;
-		while(iterator->HasNext())
-		{
-			tmp = (wxhdIFigure *)iterator->Next();
-			if (tmp->getKindId() == DDRELATIONSHIPFIGURE)
-			{
-				design->addTableToView(1,tmp);
-				ddRelationshipFigure *r = (ddRelationshipFigure*) tmp;
-				int cero = r->pointCount(0);
-				int uno = r->pointCount(1);
-//				r->addPoint(1, 0, 0);
-//				r->addPoint(1, 100, 100);
-				uno = r->pointCount(1);
-				/*
-				r->setEndPoint(1, wxhdPoint(0, 0));
-				r->setStartPoint(1, wxhdPoint(100, 100)); */
-				r->updateConnection(1);
-			}
-		}
-		delete iterator;
-	}
 	this->Refresh();
 }
 
 
 void frmDatabaseDesigner::OnNewModel(wxCommandEvent &event)
 {
-	
-	//666 Fixed at model 0 right now....
-	design->eraseDiagram(0);
+	wxhdDrawingView *view = (wxhdDrawingView *) diagrams->GetPage(diagrams->GetSelection());
+	design->eraseDiagram(view->getIdx());
 	sqltext->Clear();
+}
+
+void frmDatabaseDesigner::OnModelGeneration(wxCommandEvent &event)
+{
+	wxString errors;
+	//666 Fixed at model 0 right now....
+	if(!design->validateModel(errors,0))
+	{
+		wxMessageDialog dialog( this, errors , wxT("Errors detected at database model"), wxOK | wxICON_EXCLAMATION | wxSTAY_ON_TOP );
+		dialog.ShowModal();
+	}
+	else
+	{
+		//666 Fixed at model 0 right now....
+		sqltext->SetValue(design->generateDiagram(0));
+	}
 }
 
 

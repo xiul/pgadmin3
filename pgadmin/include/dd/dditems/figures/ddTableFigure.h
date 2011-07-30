@@ -25,6 +25,7 @@ class ddTableFigure : public wxhdCompositeFigure
 {
 public:
 	ddTableFigure(wxString tableName, int x, int y, wxString shortName = wxEmptyString);
+	ddTableFigure(wxString tableName, int posIdx, int x, int y, wxString shortName = wxEmptyString);
 	void InitTableValues(wxArrayString UniqueKeysName, wxString primaryKeyName, int bdc, int bdi, int maxcolsi, int minidxsi, int maxidxsi, int colsrs, int colsw, int idxsrs, int idxsw);
 	void Init(wxString tableName, int x, int y, wxString shortName = wxEmptyString);
 	wxhdMultiPosRect& getBasicDisplayBox();
@@ -34,7 +35,7 @@ public:
 	ddColumnFigure* getColByName(wxString name);
 	void addColumn(int posIdx, ddColumnFigure *column);
 	void addColumnFromStorage(ddColumnFigure *column);
-	void syncPositionsAfterLoad(int posIdx);
+	void syncInternalsPosAt(int posIdx, int x, int y);
 	void removeColumn(int posIdx, ddColumnFigure *column);
 
 	//movement

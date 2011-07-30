@@ -155,7 +155,7 @@ void ddModelBrowser::OnBeginDrag(wxTreeEvent &event)
 				controller->getView()->updateModelSize(queryObj, false);
 			}
 			*/
-			wxMessageBox(_("Error at drag and drop"));
+			wxMessageBox(wxT("Error invalid kind of data at drag and drop operation"), wxT("Drag and drop error"), wxICON_ERROR);
 		}
 	}
 }

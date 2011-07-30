@@ -41,13 +41,16 @@ public:
 		if(t!=NULL && !target->includes(t))
 		{
 			target->add(t);
+			t->syncInternalsPosAt(target->getView()->getIdx(),x,y);
+			source->getEditor()->checkRelationshipsConsistency(target->getView()->getIdx());
+			target->getView()->Refresh();
 			return true;
 		}
 		else
 		{
 			if(target->includes(t))
 			{
-				wxMessageBox(_("This tables exists yet at the diagram"));
+				wxMessageBox(_("Table exists already at this diagram"),_("Drag and drop warning"), wxICON_EXCLAMATION);
 				return true;
 			}
 			else

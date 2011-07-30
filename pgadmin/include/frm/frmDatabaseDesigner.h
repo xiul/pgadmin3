@@ -35,6 +35,9 @@ private:
 	frmMain *mainForm;
 	pgConn *connection;
 	ddDatabaseDesign *design;
+	wxPanel *browserPanel;
+	ddModelBrowser *modelBrowser;
+	ctlAuiNotebook *diagrams;
 	wxTextCtrl *sqltext;
 	void OnClose(wxCloseEvent &event);
 	void OnAddTable(wxCommandEvent &event);
@@ -42,6 +45,7 @@ private:
 	void OnAddColumn(wxCommandEvent &event);
 	void OnNewModel(wxCommandEvent &event);
 	void OnModelGeneration(wxCommandEvent &event);
+	void OnDiagramGeneration(wxCommandEvent &event);
 	void OnModelSave(wxCommandEvent &event);
 	void OnModelLoad(wxCommandEvent &event);
 	wxAuiManager manager;

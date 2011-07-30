@@ -83,7 +83,7 @@ void ddTableFigure::Init(wxString tableName, int x, int y, wxString shortName)
 	tableTitle = new ddTextTableItemFigure(tableName, dt_null, NULL);
 	tableTitle->setOwnerTable(this);
 	tableTitle->setEditable(true);
-	tableTitle->moveTo(0, x, y);     //666 at position 0 only???
+//777?????	tableTitle->moveTo(0, x, y);     //666 at position 0 only???
 	tableTitle->disablePopUp();
 	tableTitle->setShowDataType(false);
 	add(tableTitle);
@@ -139,6 +139,13 @@ ddTableFigure::ddTableFigure(wxString tableName, int x, int y, wxString shortNam
 	wxhdCompositeFigure()
 {
 	Init(tableName,x,y,shortName);
+}
+
+ddTableFigure::ddTableFigure(wxString tableName, int posIdx, int x, int y, wxString shortName):
+	wxhdCompositeFigure()
+{
+	Init(tableName,0,0,shortName);
+	syncInternalsPosAt(posIdx,x,y);
 }
 
 //Used by persistence classes
@@ -210,8 +217,12 @@ void ddTableFigure::addColumn(int posIdx, ddColumnFigure *column)
 }
 
 //WARNING: Function should be called on a table generated from a storage
-void ddTableFigure::syncPositionsAfterLoad(int posIdx)
+void ddTableFigure::syncInternalsPosAt(int posIdx, int x, int y)
 {
+	basicDisplayBox.x[posIdx]=x;
+	basicDisplayBox.y[posIdx]=y;
+	rectangleFigure->moveTo(posIdx, x, y);  //666 at position 0 only???
+	tableTitle->moveTo(posIdx, rectangleFigure->getBasicDisplayBox().x[posIdx] + internalPadding * 2, rectangleFigure->getBasicDisplayBox().y[posIdx] + internalPadding / 2);
 	calcInternalSubAreas(posIdx);
 	recalculateColsPos(posIdx);
 }
