@@ -89,6 +89,7 @@ void wxhdDrawingView::onPaint(wxPaintEvent &event)
 	dc.Clear();
 	wxhdIFigure *toDraw = NULL;
 	wxhdIteratorBase *iterator = drawing->figuresEnumerator();
+	
 	while(iterator->HasNext())
 	{
 		toDraw = (wxhdIFigure *)iterator->Next();
@@ -100,6 +101,9 @@ void wxhdDrawingView::onPaint(wxPaintEvent &event)
 
 	delete iterator;
 
+	int Estoyen666 = this->getIdx(); ///666 delete
+	int Estoyen6662 = drawing->selectedFigures()->count(); ///666 delete
+	
 	wxhdIHandle *tmpHandle = NULL;
 	wxhdIteratorBase *selectionIterator = drawing->selectionFigures();//selection->createIterator();
 	while(selectionIterator->HasNext())

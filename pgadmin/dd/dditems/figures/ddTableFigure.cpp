@@ -951,7 +951,7 @@ void ddTableFigure::updateSizeOfObservers()
 	delete iterator;
 }
 
-//drop foreign keys with this table as origin or destination
+//drop foreign keys with this table as origin or destination because table is going to be deleted
 void ddTableFigure::processDeleteAlert(wxhdDrawing *drawing)
 {
 	wxhdIteratorBase *iterator = observersEnumerator();
@@ -965,11 +965,15 @@ void ddTableFigure::processDeleteAlert(wxhdDrawing *drawing)
 			ddRelationshipFigure *rel = (ddRelationshipFigure *) iterator->Next();
 			rel->disconnectStart();
 			rel->disconnectEnd();
-			if(drawing->isFigureSelected(rel))
+/*			if(drawing->isFigureSelected(rel))
 				drawing->removeFromSelection(rel);
-			drawing->remove(rel);
+				*/
+			//drawing->remove(rel);
+			//666 debe borrarse del modelo tambien .....
+			drawing->getOwnerEditor()->removeFromAllSelections(rel);
+			drawing->getOwnerEditor()->deleteModelFigure(rel);
 			repeatFlag = true;
-			delete rel;
+			//delete rel;
 			break;
 		}
 	}

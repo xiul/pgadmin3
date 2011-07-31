@@ -26,13 +26,15 @@ class ddDrawingEditor : public wxhdDrawingEditor
 public:
 	ddDrawingEditor(wxWindow *owner, ddDatabaseDesign *design);
 	virtual wxhdDrawing* createDiagram(wxWindow *owner);
-	virtual void deleteSelectedFigures(int diagramIndex);
+	virtual void remOrDelSelFigures(int diagramIndex);
 /*	//Hack To allow right click menu at canvas without a figure
 	virtual void createMenu(wxMenu &mnu);
 	virtual void OnGenericPopupClick(wxCommandEvent &event, wxhdDrawingView *view);
 	*/
 	void checkRelationshipsConsistency(int diagramIndex);
 	void checkAllDigramsRelConsistency();
+	ddDatabaseDesign* getDesign() {return databaseDesign;};
+
 protected:
 private:
 	ddDatabaseDesign *databaseDesign;

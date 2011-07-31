@@ -25,6 +25,7 @@
 #include "dd/wxhotdraw/main/wxhdDrawingView.h"
 #include "dd/dditems/figures/ddTableFigure.h"
 #include "dd/dditems/utilities/ddPrecisionScaleDialog.h"
+#include "dd/wxhotdraw/utilities/wxhdRemoveDeleteDialog.h"
 
 ddTextTableItemFigure::ddTextTableItemFigure(wxString &columnName, ddDataType dataType, ddColumnFigure *owner):
 	wxhdSimpleTextFigure(columnName)
@@ -122,6 +123,7 @@ void ddTextTableItemFigure::OnGenericPopupClick(wxCommandEvent &event, wxhdDrawi
 	int answer;
 	int tmpprecision;
 	long tmpvalue;
+	wxhdRemoveDeleteDialog *delremDialog = NULL;
 
 	switch(event.GetId())
 	{
@@ -269,10 +271,15 @@ void ddTextTableItemFigure::OnGenericPopupClick(wxCommandEvent &event, wxhdDrawi
 			}
 			break;
 		case MNU_DELTABLE:
-			answer = wxMessageBox(wxT("Are you sure you wish to delete table ") + getOwnerColumn()->getOwnerTable()->getTableName() + wxT("?"), wxT("Delete table?"), wxYES_NO | wxNO_DEFAULT, view);
-			if (answer == wxYES)
+
+			delremDialog = new wxhdRemoveDeleteDialog(wxT("Are you sure you wish to delete table ") + getOwnerColumn()->getOwnerTable()->getTableName() + wxT("?"), wxT("Delete table?"), view);
+			answer = delremDialog->ShowModal();
+			ddTableFigure *table = getOwnerColumn()->getOwnerTable();
+			if (answer == DD_DELETE)
 			{
-				ddTableFigure *table = getOwnerColumn()->getOwnerTable();
+
+		
+				/* 666
 				//Unselect table
 				if(view->getDrawing()->isFigureSelected(table))
 				{
@@ -286,7 +293,24 @@ void ddTextTableItemFigure::OnGenericPopupClick(wxCommandEvent &event, wxhdDrawi
 				{
 					delete table;
 				}
+				*/
+				
+				ddDrawingEditor *editor = (ddDrawingEditor*) view->editor();					
+				//Unselect table at all diagrams
+				editor->removeFromAllSelections(table);
+				//Drop foreign keys with this table as origin or destination
+				table->processDeleteAlert(view->getDrawing());
+				//Drop table
+				editor->deleteModelFigure(table);
+				editor->getDesign()->refreshBrowser();
 			}
+			else if(answer == DD_REMOVE)
+			{
+				ddDrawingEditor *editor = (ddDrawingEditor*) view->editor();
+				editor->getExistingDiagram(view->getIdx())->removeFromSelection(table); 
+				editor->getExistingDiagram(view->getIdx())->remove(table);
+			}
+			delete delremDialog;
 			break;
 	}
 }

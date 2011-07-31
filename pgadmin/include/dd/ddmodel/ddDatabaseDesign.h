@@ -47,6 +47,7 @@ public:
 	void addTableToMapping(wxString IdKey, wxString tableName);
 	wxString getTableName(wxString Id);
 	void registerBrowser(ddModelBrowser *browser);
+	void refreshBrowser();
 	void checkRelationshipsConsistency(int diagramIndex);
 	void checkAllDigramsRelConsistency();
 

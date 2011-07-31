@@ -63,6 +63,7 @@ void ddAddColButtonHandle::invokeStart(wxhdMouseEvent &event, wxhdDrawingView *v
 
 	}
 	while(again);
+	view->Refresh();
 }
 
 void ddAddColButtonHandle::invokeStep(wxhdMouseEvent &event, wxhdDrawingView *view)

@@ -21,6 +21,7 @@
 #include "dd/wxhotdraw/main/wxhdDrawingView.h"
 #include "dd/dditems/utilities/ddDataType.h"
 #include "dd/dditems/utilities/ddSelectKindFksDialog.h"
+#include "dd/wxhotdraw/utilities/wxhdRemoveDeleteDialog.h"
 
 ddRelationshipFigure::ddRelationshipFigure():
 	wxhdLineConnection()
@@ -351,6 +352,7 @@ void ddRelationshipFigure::OnGenericPopupClick(wxCommandEvent &event, wxhdDrawin
 	ddTableFigure *startTable = NULL;
 	ddTableFigure *endTable = NULL;
 	wxTextEntryDialog *nameDialog = NULL;
+	wxhdRemoveDeleteDialog *delremDialog = NULL;
 	ddSelectKindFksDialog *mappingDialog = NULL;
 	wxString tmpString;
 
@@ -448,10 +450,12 @@ void ddRelationshipFigure::OnGenericPopupClick(wxCommandEvent &event, wxhdDrawin
 			{
 				ddTableFigure *t1 = (ddTableFigure *)getStartFigure();
 				ddTableFigure *t2 = (ddTableFigure *)getEndFigure();
-				answer = wxMessageBox(wxT("Are you sure you wish to delete relationship between tables ") + t1->getTableName() + wxT(" and ") + t2->getTableName() + wxT("?"), wxT("Delete relationship?"), wxYES_NO | wxNO_DEFAULT, (wxScrolledWindow *)view);
-				if (answer == wxYES)
+				delremDialog = new wxhdRemoveDeleteDialog(wxT("Are you sure you wish to delete relationship between tables ") + t1->getTableName() + wxT(" and ") + t2->getTableName() + wxT("?"), wxT("Delete relationship?"), (wxScrolledWindow *)view);
+				answer = delremDialog->ShowModal();
+				ddDrawingEditor *editor = (ddDrawingEditor*) view->editor();					
+				if (answer == DD_DELETE)
 				{
-					if(view->getDrawing()->isFigureSelected(this))
+					/*666 if(view->getDrawing()->isFigureSelected(this))
 						view->getDrawing()->removeFromSelection(this);
 					disconnectStart();
 					disconnectEnd();
@@ -460,7 +464,23 @@ void ddRelationshipFigure::OnGenericPopupClick(wxCommandEvent &event, wxhdDrawin
 					view->getDrawing()->remove(this);
 					if(r)
 						delete r;
+						*/
+					editor->removeFromAllSelections(this);
+					removeForeignKeys();
+					disconnectStart();
+					disconnectEnd();
+					//Hack to autodelete relationship
+					ddRelationshipFigure *r = this;
+					if(r)
+						editor->deleteModelFigure(r);
+					editor->getDesign()->refreshBrowser();
 				}
+				else if(answer == DD_REMOVE)
+				{
+					editor->getExistingDiagram(view->getIdx())->removeFromSelection(this); 
+					editor->getExistingDiagram(view->getIdx())->remove(this);
+				}
+				delete delremDialog;
 			}
 			break;
 		case MNU_FKEYFROMPKEY:

@@ -182,7 +182,7 @@ void wxhdDrawing::removeAllFigures()
 void wxhdDrawing::deleteSelectedFigures()
 {
 	 //Allow to customize delete dialog at Editor
-	ownerEditor->deleteSelectedFigures(usedView->getIdx());
+	ownerEditor->remOrDelSelFigures(usedView->getIdx());
 }
 
 void wxhdDrawing::addToSelection(wxhdIFigure *figure)

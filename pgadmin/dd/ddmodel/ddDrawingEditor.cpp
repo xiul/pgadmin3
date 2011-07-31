@@ -20,6 +20,7 @@
 #include "dd/dditems/utilities/ddTableNameDialog.h"
 #include "dd/ddmodel/ddDatabaseDesign.h"
 #include "dd/ddmodel/ddDrawingView.h"
+#include "dd/wxhotdraw/utilities/wxhdRemoveDeleteDialog.h"
 
 
 ddDrawingEditor::ddDrawingEditor(wxWindow *owner, ddDatabaseDesign *design)
@@ -52,11 +53,13 @@ wxhdDrawing* ddDrawingEditor::createDiagram(wxWindow *owner)
 }
 
 
-void ddDrawingEditor::deleteSelectedFigures(int diagramIndex)
+void ddDrawingEditor::remOrDelSelFigures(int diagramIndex)
 {
 	wxhdIFigure *tmp;
 	ddTableFigure *table;
 	ddRelationshipFigure *relation;
+	wxhdIteratorBase *iterator;
+	wxhdCollection *tmpSelection;
 	int answer;
 	int numbTables = 0;
 	int numbRelationships = 0;
@@ -68,19 +71,21 @@ void ddDrawingEditor::deleteSelectedFigures(int diagramIndex)
 		{
 			numbTables = 1;
 			table = (ddTableFigure *)tmp;
-			answer = wxMessageBox(_("Are you sure you wish to delete table ") + table->getTableName() + wxT("?"), _("Delete table?"), wxYES_NO | wxNO_DEFAULT);
+			wxhdRemoveDeleteDialog dialog(_("Are you sure you wish to delete table ") + table->getTableName() + wxT("?"), _("Delete table?"), getExistingView(diagramIndex));
+			answer = dialog.ShowModal();
 		}
 		if(tmp->getKindId() == DDRELATIONSHIPFIGURE)
 		{
 			numbRelationships = 1;
 			relation = (ddRelationshipFigure *)tmp;
-			answer = wxMessageBox(_("Are you sure you wish to delete relationship ") + relation->getConstraintName() + wxT("?"), _("Delete relationship?"), wxYES_NO | wxNO_DEFAULT);
+			wxhdRemoveDeleteDialog dialog2(_("Are you sure you wish to delete relationship ") + relation->getConstraintName() + wxT("?"), _("Delete relationship?"), getExistingView(diagramIndex));
+			answer = dialog2.ShowModal();
 		}
 	}
 	else if (getExistingDiagram(diagramIndex)->countSelectedFigures() > 1)
 	{
 		numbTables = 0;
-		wxhdIteratorBase *iterator = getExistingDiagram(diagramIndex)->selectionFigures(); //666 selection->createIterator();
+		iterator = getExistingDiagram(diagramIndex)->selectionFigures();
 		while(iterator->HasNext())
 		{
 			tmp = (wxhdIFigure *)iterator->Next();
@@ -89,71 +94,134 @@ void ddDrawingEditor::deleteSelectedFigures(int diagramIndex)
 		}
 		delete iterator;
 
-		answer = wxMessageBox(
+		
+		//666 improve messages to display about relationships and tables and only relationship
+		wxhdRemoveDeleteDialog dialog3(
 		             wxString::Format(_("Are you sure you wish to delete %d tables?"), numbTables),
-		             _("Delete tables?"), wxYES_NO | wxNO_DEFAULT);
-
-		if(numbTables == 0)
-		{
-			iterator = getExistingDiagram(diagramIndex)->selectionFigures(); //666 selection->createIterator();
-			while(iterator->HasNext())
-			{
-				tmp = (wxhdIFigure *)iterator->Next();
-				if(tmp->getKindId() == DDRELATIONSHIPFIGURE)
-					numbRelationships++;
-			}
-			delete iterator;
-		}
+		             _("Delete tables?"), getExistingView(diagramIndex));
+		answer = dialog3.ShowModal();
 	}
 
-	if (answer == wxYES)
+	if (answer == DD_DELETE || answer == DD_REMOVE)
 	{
+		tmpSelection =  new wxhdCollection(new wxhdArrayCollection());
+
+		//Preprocess relationships counting and storing at temporary collection
+		numbRelationships = 0;
+		iterator = getExistingDiagram(diagramIndex)->selectionFigures();
+		while(iterator->HasNext())
+		{
+			tmp = (wxhdIFigure *)iterator->Next();
+			if(tmp->getKindId() == DDRELATIONSHIPFIGURE)
+			{
+				numbRelationships++;
+				tmpSelection->addItem(tmp);
+			}
+		}
+		delete iterator;
+
 		while(numbTables > 0)
 		{
 			tmp = (wxhdIFigure *) getExistingDiagram(diagramIndex)->selectedFigures()->getItemAt(0); //666 (wxhdIFigure *) selection->getItemAt(0);
 			if(tmp->getKindId() == DDTABLEFIGURE)
 			{
 				table = (ddTableFigure *)tmp;
-				getExistingDiagram(diagramIndex)->removeFromSelection(table);  //666 removeFromSelection(table);
-				table->processDeleteAlert(getExistingDiagram(diagramIndex));
-				getExistingDiagram(diagramIndex)->remove(table);
-				if(table)
-					delete table;
+				//getExistingDiagram(diagramIndex)->removeFromSelection(table); 
+				//666 removeFromSelection(table);
+				if(table && answer == DD_REMOVE)
+				{
+					getExistingDiagram(diagramIndex)->removeFromSelection(table); 
+					getExistingDiagram(diagramIndex)->remove(table);
+				}
+				//if table is going to be delete all others diagrams should be alerted about it
+				if(table && answer == DD_DELETE) 
+				{
+					removeFromAllSelections(table);				
+					table->processDeleteAlert(getExistingDiagram(diagramIndex));
+					deleteModelFigure(table);
+					databaseDesign->refreshBrowser();
+					//no refrescar aca sino hacer lo que dice 666
+					//delete table;
+				}
 				numbTables--;
 			}
-			else
+			else if(tmp->getKindId() == DDRELATIONSHIPFIGURE)
 			{
 				getExistingDiagram(diagramIndex)->removeFromSelection(tmp); //isn't a tables is probably a relationship
 			}
+			else
+			{
+					wxMessageBox(_("Invalid figure kind found"),_("Error while deleting tables"),wxCENTRE | wxICON_ERROR, getExistingView(diagramIndex));
+			}
 		}
 
-		if( numbRelationships > 0 && numbTables == 0 )
+		if( numbRelationships > 0 )
 		{
-			while(numbRelationships > 0)
+
+			//check again: Are there relationships selected that wasn't delete (only selected relationship not source/destination table)
+			numbRelationships=0;
+			iterator = tmpSelection->createIterator();  //getExistingDiagram(diagramIndex)->selectionFigures();
+			while(iterator->HasNext())
 			{
-				tmp = (wxhdIFigure *) getExistingDiagram(diagramIndex)->selectedFigures()->getItemAt(0); //666 selection->getItemAt(0);
+				tmp = (wxhdIFigure *)iterator->Next();
+				//only way a relationship don't exists at diagram is 
+				//it had been deleted before by deleting source/destination table that owns it
+				if(getExistingDiagram(diagramIndex)->includes(tmp))
+				{
+					if(tmp->getKindId() == DDRELATIONSHIPFIGURE)
+					{
+						numbRelationships++;
+					}
+					else
+					{
+						wxMessageBox(_("Invalid figure kind found"),_("Error while deleting table"),wxCENTRE | wxICON_ERROR, getExistingView(diagramIndex));
+					}
+				}
+				else
+				{
+					tmpSelection->removeItem(tmp);
+				}
+			}
+			delete iterator;
+
+			while(numbRelationships > 0 && tmpSelection->count()==numbRelationships)
+			{
+				//666tmp = //(wxhdIFigure *) getExistingDiagram(diagramIndex)->selectedFigures()->getItemAt(0); //666 selection->getItemAt(0);
+				tmp = (wxhdIFigure *) tmpSelection->getItemAt(0);
 				if(tmp->getKindId() == DDRELATIONSHIPFIGURE)
 				{
 					relation = (ddRelationshipFigure *)tmp;
-					relation->removeForeignKeys();
-					relation->disconnectEnd();
-					relation->disconnectStart();
-					getExistingDiagram(diagramIndex)->removeFromSelection(relation);
-					getExistingDiagram(diagramIndex)->remove(relation);
-					if(relation)
-						delete relation;
+					//666 
+					if(relation && answer == DD_REMOVE)
+					{
+						getExistingDiagram(diagramIndex)->removeFromSelection(relation);
+						getExistingDiagram(diagramIndex)->remove(relation);
+					}
+					//if relation is going to be delete all others diagrams should be alerted about it
+					if(relation && answer == DD_DELETE)
+					{
+						//666 remover del modelo y de otros diagramas.
+						removeFromAllSelections(relation);
+						relation->removeForeignKeys();
+						relation->disconnectEnd();
+						relation->disconnectStart();
+						deleteModelFigure(relation);
+						databaseDesign->refreshBrowser();
+						//delete relation;
+					}
 					numbRelationships--;
 				}
 				else
 				{
-					getExistingDiagram(diagramIndex)->removeFromSelection(tmp); //isn't neither a table or relationship
+					wxMessageBox(_("Invalid figure kind found"),_("Error while deleting realtionships"),wxCENTRE | wxICON_ERROR, getExistingView(diagramIndex));
+				//	getExistingDiagram(diagramIndex)->removeFromSelection(tmp); //isn't neither a table or relationship
 				}
 			}
 		}
-
 		getExistingDiagram(diagramIndex)->clearSelection();  //after delete all items all relationships remains at selection and should be removed
+		tmpSelection->removeAll();
+		delete tmpSelection;
 	}
-
 }
 
 void ddDrawingEditor::checkRelationshipsConsistency(int diagramIndex)

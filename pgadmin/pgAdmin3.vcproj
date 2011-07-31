@@ -4482,6 +4482,10 @@
 							RelativePath=".\include\dd\wxhotdraw\utilities\wxhdRect.h"
 							>
 						</File>
+						<File
+							RelativePath=".\include\dd\wxhotdraw\utilities\wxhdRemoveDeleteDialog.h"
+							>
+						</File>
 					</Filter>
 				</Filter>
 			</Filter>
@@ -6477,6 +6481,10 @@
 					</File>
 					<File
 						RelativePath=".\dd\wxhotdraw\utilities\wxhdRect.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\dd\wxhotdraw\utilities\wxhdRemoveDeleteDialog.cpp"
 						>
 					</File>
 				</Filter>

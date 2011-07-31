@@ -45,6 +45,7 @@ public:
 	virtual int countSelectedFigures();
 	wxhdCollection* selectedFigures() {return selection;};
 	wxhdCollection* getFiguresCollection() {return figures;};
+	wxhdDrawingEditor* getOwnerEditor() {return ownerEditor;};
 protected:
 
 private:

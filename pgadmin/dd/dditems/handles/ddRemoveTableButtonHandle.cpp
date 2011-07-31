@@ -20,6 +20,7 @@
 #include "dd/dditems/figures/ddRelationshipFigure.h"
 #include "dd/dditems/utilities/ddDataType.h"
 #include "dd/wxhotdraw/main/wxhdDrawingView.h"
+#include "dd/wxhotdraw/utilities/wxhdRemoveDeleteDialog.h"
 
 //Images
 #include "images/ddDeleteTableCursor.pngc"
@@ -45,13 +46,15 @@ void ddRemoveTableButtonHandle::invokeStep(wxhdMouseEvent &event, wxhdDrawingVie
 
 void ddRemoveTableButtonHandle::invokeEnd(wxhdMouseEvent &event, wxhdDrawingView *view)
 {
-
+//666 use here remOrDelSelFigures()
 	if(view && getOwner())
 	{
 		ddTableFigure *table = (ddTableFigure *) getOwner();
-		int answer = wxMessageBox(_("Are you sure you wish to delete table ") + table->getTableName() + wxT("?"), _("Delete table?"), wxYES_NO | wxNO_DEFAULT, view);
-		if (answer == wxYES)
+		wxhdRemoveDeleteDialog dialog(_("Are you sure you wish to delete table ") + table->getTableName() + wxT("?"), _("Delete table?"), view);
+		int answer = dialog.ShowModal();
+		if (answer == DD_DELETE)
 		{
+			/* 666
 			//unselect table
 			if(view->getDrawing()->isFigureSelected(table))
 			{
@@ -65,7 +68,23 @@ void ddRemoveTableButtonHandle::invokeEnd(wxhdMouseEvent &event, wxhdDrawingView
 			{
 				delete table;
 			}
+			*/
+			ddDrawingEditor *editor = (ddDrawingEditor*) view->editor();
+			//Unselect table at all diagrams
+			editor->removeFromAllSelections(table);
+			//Drop foreign keys with this table as origin or destination
+			table->processDeleteAlert(view->getDrawing());
+			//Drop table
+			editor->deleteModelFigure(table);
+			editor->getDesign()->refreshBrowser();
 		}
+		else if(answer == DD_REMOVE)
+		{
+			ddDrawingEditor *editor = (ddDrawingEditor*) view->editor();
+			editor->getExistingDiagram(view->getIdx())->removeFromSelection(table); 
+			editor->getExistingDiagram(view->getIdx())->remove(table);
+		}
+
 	}
 }
 

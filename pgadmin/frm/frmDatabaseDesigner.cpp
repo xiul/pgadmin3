@@ -254,7 +254,6 @@ void frmDatabaseDesigner::OnAddTable(wxCommandEvent &event)
 void frmDatabaseDesigner::OnDeleteTable(wxCommandEvent &event)
 {
 	wxhdDrawingView *view = (wxhdDrawingView *) diagrams->GetPage(diagrams->GetSelection());
-
 	//666 ddDrawingView *v = (ddDrawingView *) design->getEditor()->getExistingView(view->getIdx());
 	view->getDrawing()->deleteSelectedFigures();
 }
@@ -295,7 +294,7 @@ void frmDatabaseDesigner::OnAddColumn(wxCommandEvent &event)
 		}
 		while(again);
 	}
-	this->Refresh();
+	view->Refresh();
 }
 
 
@@ -306,19 +305,18 @@ void frmDatabaseDesigner::OnNewModel(wxCommandEvent &event)
 	sqltext->Clear();
 }
 
-void frmDatabaseDesigner::OnModelGeneration(wxCommandEvent &event)
+void frmDatabaseDesigner::OnDiagramGeneration(wxCommandEvent &event)
 {
+	wxhdDrawingView *view = (wxhdDrawingView *) diagrams->GetPage(diagrams->GetSelection());
 	wxString errors;
-	//666 Fixed at model 0 right now....
-	if(!design->validateModel(errors,0))
+	if(!design->validateModel(errors,view->getIdx()))
 	{
 		wxMessageDialog dialog( this, errors , wxT("Errors detected at database model"), wxOK | wxICON_EXCLAMATION | wxSTAY_ON_TOP );
 		dialog.ShowModal();
 	}
 	else
 	{
-		//666 Fixed at model 0 right now....
-		sqltext->SetValue(design->generateDiagram(0));
+		sqltext->SetValue(design->generateDiagram(view->getIdx()));
 	}
 }
 

@@ -106,20 +106,38 @@ void wxhdDrawingEditor::addModelFigure(wxhdIFigure *figure)
 		_model->addItem(figure);
 }
 
-void wxhdDrawingEditor::removeModelFigure(wxhdIFigure *figure)
+void wxhdDrawingEditor::removeFromAllSelections(wxhdIFigure *figure)
 {
 	if(_model)
 	{
 		if(_diagrams)
 		{
 		int i;
-			for(i=0;i<_model->count();i++)
+			for(i=0;i< _diagrams->count();i++)
 			{
-				getExistingDiagram(i)->remove(figure);
+				if(getExistingDiagram(i)->isFigureSelected(figure))
+					getExistingDiagram(i)->removeFromSelection(figure); 
 			}
 		}
-		delete figure;
+	}
+}
+
+void wxhdDrawingEditor::deleteModelFigure(wxhdIFigure *figure)
+{
+	if(_model)
+	{
+		if(_diagrams)
+		{
+		int i;
+			for(i=0;i< _diagrams->count();i++)
+			{
+				if(getExistingDiagram(i)->includes(figure))
+					getExistingDiagram(i)->remove(figure);
+			}
+		}
 		_model->removeItem(figure);	
+		delete figure;
+		figure=NULL;
 	}
 }
 
@@ -156,9 +174,8 @@ wxhdIteratorBase *wxhdDrawingEditor::modelFiguresEnumerator()
 	return _model->createIterator();
 }
 
-
 //666 right now DELETE always the figure, it should allow to choose between removing or deleting
-void wxhdDrawingEditor::deleteSelectedFigures(int diagramIndex)
+void wxhdDrawingEditor::remOrDelSelFigures(int diagramIndex)
 {
 	int answer;
 	wxhdIFigure *tmp;
@@ -187,9 +204,6 @@ void wxhdDrawingEditor::deleteSelectedFigures(int diagramIndex)
 		getExistingDiagram(diagramIndex)->clearSelection();  //reset selection to zero items
 	}
 }
-
-
-
 
 /* 666 000
 wxhdITool *wxhdDrawingEditor::tool()

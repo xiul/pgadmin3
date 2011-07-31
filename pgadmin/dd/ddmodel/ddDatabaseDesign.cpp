@@ -72,31 +72,22 @@ void ddDatabaseDesign::addTableToView(int diagramIndex, wxhdIFigure *figure)
 	}
 }
 
-/*
-//666 borrar esto tambien
-void ddDatabaseDesign::addTable2(wxhdIFigure *figure)
+void ddDatabaseDesign::refreshBrowser()
 {
-	draw->view2()->add(figure);
+	if(attachedBrowser)
+	{
+		attachedBrowser->refreshFromModel();
+	}
 }
-*/
-
 
 void ddDatabaseDesign::removeTable(int diagramIndex, wxhdIFigure *figure)
 {
 	editor->removeDiagramFigure(diagramIndex, figure);
 }
 
-/* 666 000
-void ddDatabaseDesign::setTool(wxhdITool *tool)
-{
-	editor->setTool(tool);
-}
-*/
-
 void ddDatabaseDesign::refreshDraw(int diagramIndex)
 {
 	editor->getExistingView(diagramIndex)->Refresh();
-//	draw->view2()->Refresh(); //666 borrar
 }
 
 void ddDatabaseDesign::eraseDiagram(int diagramIndex)

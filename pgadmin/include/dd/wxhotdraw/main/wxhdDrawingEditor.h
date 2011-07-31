@@ -26,9 +26,10 @@ public:
 	virtual void addDiagramFigure(int diagramIndex, wxhdIFigure *figure);
 	virtual void removeDiagramFigure(int diagramIndex, wxhdIFigure *figure);
 	virtual void addModelFigure(wxhdIFigure *figure);
-	virtual void removeModelFigure(wxhdIFigure *figure);
+	virtual void deleteModelFigure(wxhdIFigure *figure);
+	virtual void removeFromAllSelections(wxhdIFigure *figure);
 	virtual bool modelIncludes(wxhdIFigure *figure);
-	virtual void deleteSelectedFigures(int diagramIndex);
+	virtual void remOrDelSelFigures(int diagramIndex);
 	int modelCount();
 	wxhdIteratorBase *modelFiguresEnumerator();
 
