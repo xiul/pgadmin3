@@ -28,6 +28,20 @@ wxhdCompositeFigure::wxhdCompositeFigure()
 	figureHandles = new wxhdCollection(new wxhdArrayCollection());
 }
 
+void wxhdCompositeFigure::AddPosForNewDiagram()
+{
+	//Add position for new displaybox at new diagram
+	wxhdAttributeFigure::AddPosForNewDiagram();
+	//Add position to each figure inside this composite figure
+	wxhdIteratorBase *iterator = figuresEnumerator();
+	while(iterator->HasNext())
+	{
+		wxhdIFigure *f = (wxhdIFigure *) iterator->Next();
+		f->AddPosForNewDiagram();
+	}
+	delete iterator;
+}
+
 wxhdCompositeFigure::~wxhdCompositeFigure()
 {
 	wxhdIHandle *tmpH;
@@ -139,6 +153,13 @@ void wxhdCompositeFigure::add(wxhdIFigure *figure)
 
 	//Add figure
 	figureFigures->addItem(figure);
+	//Check figure available positions for diagrams.
+	int i,start;
+	start = figure->displayBox().CountPositions();
+	for(i=start; i < basicDisplayBox.CountPositions(); i++)
+	{
+			figure->AddPosForNewDiagram(); 
+	}
 	//Add figure handles
 	wxhdIteratorBase *handlesIterator = figure->handlesEnumerator()->createIterator();
 	while(handlesIterator->HasNext())

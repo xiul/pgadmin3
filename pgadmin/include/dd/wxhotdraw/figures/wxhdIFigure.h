@@ -32,6 +32,7 @@ public:
 
 	virtual wxhdMultiPosRect &displayBox();
 	virtual wxhdMultiPosRect &getBasicDisplayBox();
+	virtual void AddPosForNewDiagram();
 	virtual void draw (wxBufferedDC &context, wxhdDrawingView *view);
 	virtual void drawSelected (wxBufferedDC &context, wxhdDrawingView *view);
 	virtual wxhdCollection *handlesEnumerator();

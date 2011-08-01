@@ -63,3 +63,33 @@ void ddDrawingView::OnGenericViewPopupClick(wxCommandEvent &event)
 	}
 			*/
 }
+
+ddDropTarget::ddDropTarget(ddDatabaseDesign *sourceDesign, wxhdDrawing *targetDrawing)
+{
+	target = targetDrawing;
+	source = sourceDesign;
+
+}
+
+bool ddDropTarget::OnDropText(wxCoord x, wxCoord y, const wxString &text)
+{
+	ddTableFigure *t = source->getTable(text);
+	if(t!=NULL && !target->includes(t))
+	{
+		target->add(t);
+		t->syncInternalsPosAt(target->getView()->getIdx(),x,y);
+		source->getEditor()->checkRelationshipsConsistency(target->getView()->getIdx());
+		target->getView()->Refresh();
+		return true;
+	}
+	else
+	{
+		if(target->includes(t))
+		{
+			wxMessageBox(_("Table exists already at this diagram"),_("Drag and drop warning"), wxICON_EXCLAMATION);
+			return true;
+		}
+		else
+			return false;
+	}
+}

@@ -32,6 +32,7 @@ public:
 	~ddTableFigure();
 
 	//add remove items
+	virtual void AddPosForNewDiagram();
 	ddColumnFigure* getColByName(wxString name);
 	void addColumn(int posIdx, ddColumnFigure *column);
 	void addColumnFromStorage(ddColumnFigure *column);

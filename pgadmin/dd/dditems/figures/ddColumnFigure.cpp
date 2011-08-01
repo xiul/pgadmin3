@@ -102,6 +102,19 @@ ddColumnFigure::~ddColumnFigure()
 		delete optionImage;
 }
 
+void ddColumnFigure::AddPosForNewDiagram()
+{
+	//Add position for new displaybox at new diagram
+	wxhdAttributeFigure::AddPosForNewDiagram();
+	//Add position to each figure inside this composite figure
+	if(kindImage)
+		kindImage->AddPosForNewDiagram();
+	if(optionImage)
+		optionImage->AddPosForNewDiagram();
+	if(columnText)
+		columnText->AddPosForNewDiagram();
+}
+
 void ddColumnFigure::basicMoveBy(int posIdx, int x, int y)
 {
 	wxhdAbstractFigure::basicMoveBy(posIdx, x, y);

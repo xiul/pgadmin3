@@ -35,6 +35,14 @@ wxhdLineConnection::wxhdLineConnection():
 wxhdLineConnection::wxhdLineConnection(int posIdx, wxhdIFigure *figure1, wxhdIFigure *figure2):
 	wxhdPolyLineFigure()
 {
+	//Check figure available positions for diagrams, add at least needed to allow initialization of the class
+	int i,start;
+	start = basicDisplayBox.CountPositions();
+	for(i=start; i < (posIdx+1); i++)
+	{
+			AddPosForNewDiagram(); 
+	}
+
 	startConnector = NULL;
 	endConnector = NULL;
 

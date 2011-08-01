@@ -30,14 +30,11 @@
 wxhdPolyLineFigure::wxhdPolyLineFigure()
 {
 	unsigned int i;
-	if(points.Count() < MAXPOS)
-	{
-		points.Insert(0,0,MAXPOS);
-	}
+	int cuanto666=points.Count();
 
-	for(i=0; i < points.Count();i++)
+	for(i=0; i < MAXPOS ;i++)
 	{
-		points[i]=new wxhdArrayCollection();
+		points.Add(new wxhdArrayCollection());
 	}
 
 
@@ -70,7 +67,7 @@ wxhdPolyLineFigure::~wxhdPolyLineFigure()
 			points[i]=NULL;
 		}
 	}
-	/*while(pointsCollections->count() > 0)
+	/*while(pointsCollections->count() > 0) 666
 	{
 		points = (wxhdArrayCollection *) points->getItemAt(0);
 		while(points->count() > 0)
@@ -86,6 +83,14 @@ wxhdPolyLineFigure::~wxhdPolyLineFigure()
 		delete startTerminal;
 	if(endTerminal)
 		delete endTerminal;
+}
+
+void wxhdPolyLineFigure::AddPosForNewDiagram()
+{
+	//Add position for new displaybox at new diagram
+	wxhdIFigure::AddPosForNewDiagram();
+	//Add new array of point for polylinefigure
+	points.Add(new wxhdArrayCollection());
 }
 
 int wxhdPolyLineFigure::getMaximunIndex()

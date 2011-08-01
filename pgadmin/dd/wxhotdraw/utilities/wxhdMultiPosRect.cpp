@@ -22,7 +22,7 @@
 
 void wxhdMultiPosRect::init(int valX, int valY)
 {
-	if(x.Count() < MAXPOS)
+	/*if(x.Count() < MAXPOS)
 	{
 		x.Insert(0,0,MAXPOS);
 		y.Insert(0,0,MAXPOS);
@@ -37,6 +37,13 @@ void wxhdMultiPosRect::init(int valX, int valY)
 		{
 			y[i]=valY;
 		}
+	*/
+	int i;
+	for(i=0; i < MAXPOS;i++)
+	{
+		x.Add(valX);
+		y.Add(valY);
+	}
 }
 
 wxhdMultiPosRect::wxhdMultiPosRect(int posIdx, const wxPoint& topLeft, const wxPoint& bottomRight)
@@ -61,6 +68,12 @@ wxhdMultiPosRect::wxhdMultiPosRect(int posIdx, const wxPoint& topLeft, const wxP
     height++;
 }
 
+void wxhdMultiPosRect::addNewXYPosition()
+{
+	x.Add(-1);
+	y.Add(-1);
+
+}
 /*
 bool wxhdMultiPosRect::operator==(const wxhdMultiPosRect& rect) const
 {

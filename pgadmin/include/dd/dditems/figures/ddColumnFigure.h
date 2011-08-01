@@ -27,6 +27,7 @@ public:
 	ddColumnFigure(wxString &columnName, ddTableFigure *owner, ddColumnOptionType option, bool isGenFk, bool isPkColumn, wxString colDataType, int p=-1, int s=-1, int ukIdx=-1, ddRelationshipItem *sourceFk = NULL,ddRelationshipItem *usedAsFkDestFor = NULL );
 	void Init(wxString &columnName, ddTableFigure *owner, ddRelationshipItem *sourceFk = NULL);
 	~ddColumnFigure();
+	virtual void AddPosForNewDiagram();
 	virtual void basicMoveBy(int posIdx, int x, int y);
 	virtual void moveTo(int posIdx, int x, int y);
 	virtual void setOwnerTable(ddTableFigure *table);

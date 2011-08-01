@@ -27,7 +27,7 @@ wxhdIFigure::wxhdIFigure()
 {
 	handles = new wxhdCollection(new wxhdArrayCollection());
 	observers = new wxhdCollection(new wxhdArrayCollection());
-//	selected = false;
+//	selected = false; 666
 	unsigned int i;
 	if(selected.Count() < MAXPOS)
 	{
@@ -54,6 +54,12 @@ wxhdIFigure::~wxhdIFigure()
 	}
 }
 
+void wxhdIFigure::AddPosForNewDiagram()
+{
+	basicDisplayBox.addNewXYPosition();
+	selected.Add(false);
+}
+
 wxhdMultiPosRect &wxhdIFigure::displayBox()
 {
 	return getBasicDisplayBox();
@@ -66,7 +72,7 @@ wxhdMultiPosRect &wxhdIFigure::getBasicDisplayBox()
 
 /*
 bool wxhdIFigure::containsPoint (int posIdx, int x, int y)
-{
+{ 666
 	return false;
 }
 */
@@ -105,11 +111,11 @@ void wxhdIFigure::removeHandle (wxhdIHandle *handle)
 
 /*
 void wxhdIFigure::moveBy (int posIdx, int x, int y)
-{
+{ 666
 }
 
 void wxhdIFigure::moveTo(int posIdx, int x, int y)
-{
+{ 666
 }
 */
 

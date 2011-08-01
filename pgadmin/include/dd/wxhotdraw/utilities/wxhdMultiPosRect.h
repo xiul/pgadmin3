@@ -14,7 +14,7 @@
 #include "dd/wxhotdraw/main/wxhdObject.h"
 //#include "dd/wxhotdraw/utilities/wxhdRect.h"
 
-#define MAXPOS 3
+#define MAXPOS 1
 
 class wxhdMultiPosRect : public wxhdObject
 {
@@ -189,9 +189,9 @@ public:
 	wxhdPoint center(int posIdx);
 	wxhdRect getwxhdRect(int posIdx) {return wxhdRect(x[posIdx],y[posIdx],width,height);}
 	int CountPositions();
-
+	void addNewXYPosition();
     wxArrayInt x,y;
-	int width, height; //x[MAXPOS], y[MAXPOS], 
+	int width, height;
 
 private:
 	void init(int valX=0, int valY=0);

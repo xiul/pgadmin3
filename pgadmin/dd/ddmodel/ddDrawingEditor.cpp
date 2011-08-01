@@ -47,6 +47,15 @@ wxhdDrawing* ddDrawingEditor::createDiagram(wxWindow *owner)
 
 	_viewTmp->SetDropTarget(new ddDropTarget(databaseDesign,_tmpModel));
 
+	//Add a new position inside each figure to allow use of this new diagram existing figures.
+	int i;
+	wxhdIFigure *tmp;
+	for(i=0;i< _model->count();i++)
+	{
+		tmp = (wxhdIFigure *) _model->getItemAt(i);
+		tmp->AddPosForNewDiagram();
+	}
+
 	//Add Diagram
 	_diagrams->addItem((wxhdObject *) _tmpModel);
 	return _tmpModel;

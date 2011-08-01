@@ -74,6 +74,15 @@ wxhdDrawing* wxhdDrawingEditor::createDiagram(wxWindow *owner)
 
 	_tmpModel->registerView(_viewTmp);
 
+	//Add a new position inside each figure to allow use of this new diagram existing figures.
+	int i;
+	wxhdIFigure *tmp;
+	for(i=0;i< _model->count();i++)
+	{
+		tmp = (wxhdIFigure *) _model->getItemAt(i);
+		tmp->AddPosForNewDiagram();
+	}
+
 	//Add Diagram
 	_diagrams->addItem((wxhdObject *) _tmpModel);
 	return _tmpModel;
@@ -143,11 +152,20 @@ void wxhdDrawingEditor::deleteModelFigure(wxhdIFigure *figure)
 
 void wxhdDrawingEditor::addDiagramFigure(int diagramIndex, wxhdIFigure *figure)
 {
-	getExistingDiagram(diagramIndex)->add(figure);
+	//first time figure is used at a diagram then add to it
 	if(!modelIncludes(figure))
 	{
+		//Add figure to model
 		addModelFigure(figure);
+		//Add needed position(s) to figure to allow their use at new diagram(s).
+		int i,start;
+		start = figure->displayBox().CountPositions();
+		for(i=start; i< _diagrams->count(); i++)
+		{
+			figure->AddPosForNewDiagram();
+		}
 	}
+	getExistingDiagram(diagramIndex)->add(figure);
 }
 
 void wxhdDrawingEditor::removeDiagramFigure(int diagramIndex, wxhdIFigure *figure)

@@ -145,6 +145,13 @@ ddTableFigure::ddTableFigure(wxString tableName, int posIdx, int x, int y, wxStr
 	wxhdCompositeFigure()
 {
 	Init(tableName,0,0,shortName);
+	//Check figure available positions for diagrams, add at least needed to allow initialization of the class
+	int i,start;
+	start = basicDisplayBox.CountPositions();
+	for(i=start; i < (posIdx+1); i++)
+	{
+			AddPosForNewDiagram(); 
+	}
 	syncInternalsPosAt(posIdx,x,y);
 }
 
@@ -173,6 +180,22 @@ ddTableFigure::~ddTableFigure()
 			figureHandles->removeItem(scrollbar);
 		delete scrollbar;
 	}
+}
+
+void ddTableFigure::AddPosForNewDiagram()
+{
+	//Add new position to internal calculations figure
+	fullSizeRect.addNewXYPosition();
+	titleRect.addNewXYPosition();
+	titleColsRect.addNewXYPosition();
+	colsRect.addNewXYPosition();
+	titleIndxsRect.addNewXYPosition();
+	indxsRect.addNewXYPosition();
+	unScrolledColsRect.addNewXYPosition();
+	unScrolledFullSizeRect.addNewXYPosition();
+	unScrolledTitleRect.addNewXYPosition();
+	//Add to all figure figures
+	wxhdCompositeFigure::AddPosForNewDiagram();
 }
 
 ddColumnFigure* ddTableFigure::getColByName(wxString name)
@@ -212,8 +235,19 @@ void ddTableFigure::addColumn(int posIdx, ddColumnFigure *column)
 	maxColIndex++;
 	colsWindow++;  //by default add a column increase initial window
 	colsRowsSize++;
-	calcInternalSubAreas(posIdx);
+/*	666
+calcInternalSubAreas(posIdx);
 	recalculateColsPos(posIdx);
+	*/
+
+	updateTableSize(true); //666 NO FALLA????? 
+
+	//Fix column position at all available positions (Diagrams)
+	int i;
+	for(i=0; i < basicDisplayBox.CountPositions(); i++)
+	{
+		syncInternalsPosAt(i, basicDisplayBox.x[i], basicDisplayBox.y[i]);
+	}
 }
 
 //WARNING: Function should be called on a table generated from a storage
