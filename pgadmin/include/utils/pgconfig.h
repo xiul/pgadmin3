@@ -87,6 +87,8 @@ public:
 		PGC_GSS,
 		PGC_SSPI,
 		PGC_CERT,
+		PGC_PEER,
+		PGC_RADIUS,
 		PGC_INVALIDMETHOD
 	};
 
@@ -97,6 +99,7 @@ public:
 
 	long item;
 
+	bool isValid;
 	bool isComment;
 	bool changed;
 };

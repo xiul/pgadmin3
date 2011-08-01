@@ -227,6 +227,7 @@ void dlgForeignTable::CheckChange()
 	if (foreigntable)
 	{
 		EnableOK(txtComment->GetValue() != foreigntable->GetComment()
+		         || cbSchema->GetValue() != foreigntable->GetSchema()->GetName()
 		         || cbOwner->GetValue() != foreigntable->GetOwner()
 		         || GetSqlForTypes() != wxEmptyString
 		         || GetSql().Length() > 0);
@@ -498,26 +499,33 @@ wxString dlgForeignTable::GetOptionsSql()
 
 wxString dlgForeignTable::GetSql()
 {
-	wxString sql, direction;
+	wxString sql;
+	wxString name;
 
 	if (foreigntable)
 	{
 		// Edit Mode
-		AppendOwnerChange(sql, wxT("FOREIGN TABLE ") + foreigntable->GetQuotedFullIdentifier());
+		name = qtIdent(foreigntable->GetSchema()->GetName()) + wxT(".") + qtIdent(GetName());
+
+		AppendNameChange(sql, wxT("FOREIGN TABLE ") + foreigntable->GetQuotedFullIdentifier());
+		AppendOwnerChange(sql, wxT("FOREIGN TABLE ") + name);
 
 		sql += GetSqlForTypes();
 
 		wxString sqloptions = GetOptionsSql();
 		if (sqloptions.Length() > 0)
 		{
-			sql += wxT("ALTER FOREIGN TABLE ") + foreigntable->GetQuotedFullIdentifier()
-			       + wxT(" OPTIONS (") + sqloptions + wxT(");\n");
+			sql += wxT("ALTER FOREIGN TABLE ") + name
+			       + wxT("\n  OPTIONS (") + sqloptions + wxT(");\n");
 		}
+		AppendSchemaChange(sql, wxT("FOREIGN TABLE ") + name);
 	}
 	else
 	{
+		name = qtIdent(cbSchema->GetValue()) + wxT(".") + qtIdent(GetName());
+
 		// Create Mode
-		sql = wxT("CREATE FOREIGN TABLE ") + schema->GetQuotedPrefix() + qtIdent(GetName());
+		sql = wxT("CREATE FOREIGN TABLE " + name);
 		sql += wxT(" (");
 
 		int i;
@@ -548,8 +556,7 @@ wxString dlgForeignTable::GetSql()
 
 		sql += wxT(";\n");
 	}
-	AppendComment(sql, wxT("FOREIGN TABLE"), schema, foreigntable);
-
+	AppendComment(sql, wxT("FOREIGN TABLE ") + qtIdent(cbSchema->GetValue()) + wxT(".") + qtIdent(GetName()), foreigntable);
 	return sql;
 }
 
@@ -595,7 +602,7 @@ wxString dlgForeignTable::GetSqlForTypes()
 		{
 			old_name = elements.Item(i);
 			sql += wxT("ALTER FOREIGN TABLE ") + foreigntable->GetQuotedFullIdentifier()
-			       + wxT(" DROP COLUMN ") + old_name + wxT(";\n");
+			       + wxT("\n  DROP COLUMN ") + old_name + wxT(";\n");
 		}
 
 		// Add all new attributes
@@ -604,7 +611,7 @@ wxString dlgForeignTable::GetSqlForTypes()
 			new_name = lstMembers->GetItemText(i);
 			new_type = GetFullTypeName(i);
 			sql += wxT("ALTER FOREIGN TABLE ") + foreigntable->GetQuotedFullIdentifier()
-			       + wxT(" ADD COLUMN ") + new_name + wxT(" ") + new_type + wxT(";\n");
+			       + wxT("\n  ADD COLUMN ") + new_name + wxT(" ") + new_type + wxT(";\n");
 		}
 	}
 

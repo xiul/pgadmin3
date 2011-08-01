@@ -68,6 +68,7 @@ int dlgDomain::Go(bool modal)
 	if (domain)
 	{
 		// edit mode
+		cbSchema->Enable(connection->BackendMinimumVersion(8, 1));
 		cbDatatype->Append(domain->GetBasetype());
 		AddType(wxT(" "), 0, domain->GetBasetype());
 		cbDatatype->SetSelection(0);
@@ -147,6 +148,7 @@ void dlgDomain::CheckChange()
 	if (domain)
 	{
 		EnableOK(txtDefault->GetValue() != domain->GetDefault()
+		         || cbSchema->GetValue() != domain->GetSchema()->GetName()
 		         || chkNotNull->GetValue() != domain->GetNotNull()
 		         || cbOwner->GetValue() != domain->GetOwner()
 		         || txtComment->GetValue() != domain->GetComment());
@@ -190,33 +192,36 @@ void dlgDomain::OnSelChangeTyp(wxCommandEvent &ev)
 wxString dlgDomain::GetSql()
 {
 	wxString sql, name;
-	name = GetName();
 
 	if (domain)
 	{
 		// edit mode
+		name = GetName();
+
 		if (chkNotNull->GetValue() != domain->GetNotNull())
 		{
 			sql += wxT("ALTER DOMAIN ") + domain->GetQuotedFullIdentifier();
 			if (chkNotNull->GetValue())
-				sql += wxT(" SET NOT NULL;\n");
+				sql += wxT("\n  SET NOT NULL;\n");
 			else
-				sql += wxT(" DROP NOT NULL;\n");
+				sql += wxT("\n  DROP NOT NULL;\n");
 		}
 		if (txtDefault->GetValue() != domain->GetDefault())
 		{
 			sql += wxT("ALTER DOMAIN ") + domain->GetQuotedFullIdentifier();
 			if (txtDefault->GetValue().IsEmpty())
-				sql += wxT(" DROP DEFAULT;\n");
+				sql += wxT("\n  DROP DEFAULT;\n");
 			else
-				sql += wxT(" SET DEFAULT ") + txtDefault->GetValue() + wxT(";\n");
+				sql += wxT("\n  SET DEFAULT ") + txtDefault->GetValue() + wxT(";\n");
 		}
 		AppendOwnerChange(sql, wxT("DOMAIN ") + domain->GetQuotedFullIdentifier());
+		AppendSchemaChange(sql, wxT("DOMAIN ") + domain->GetQuotedFullIdentifier());
 	}
 	else
 	{
 		// create mode
-		sql = wxT("CREATE DOMAIN ") + schema->GetQuotedPrefix() + qtIdent(name)
+		name = qtIdent(cbSchema->GetValue()) + wxT(".") + qtIdent(GetName());
+		sql = wxT("CREATE DOMAIN ") + name
 		      + wxT("\n   AS ") + GetQuotedTypename(cbDatatype->GetGuessedSelection());
 
 		if (!cbCollation->GetValue().IsEmpty() && cbCollation->GetValue() != wxT("pg_catalog.\"default\""))
@@ -229,9 +234,9 @@ wxString dlgDomain::GetSql()
 			sql += wxT("\n   CHECK (") + txtCheck->GetValue() + wxT(")");
 		sql += wxT(";\n");
 
-		AppendOwnerNew(sql, wxT("DOMAIN ") + schema->GetQuotedPrefix() + qtIdent(name));
+		AppendOwnerNew(sql, wxT("DOMAIN ") + name);
 	}
-	AppendComment(sql, wxT("DOMAIN"), schema, domain);
+	AppendComment(sql, wxT("DOMAIN ") + qtIdent(cbSchema->GetValue()) + wxT(".") + qtIdent(GetName()), domain);
 
 	return sql;
 }

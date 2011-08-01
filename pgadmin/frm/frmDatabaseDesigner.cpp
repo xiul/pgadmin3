@@ -346,7 +346,7 @@ void frmDatabaseDesigner::OnModelGeneration(wxCommandEvent &event)
 //Saving/Loading function for testing purpose not real one.
 void frmDatabaseDesigner::OnModelSave(wxCommandEvent &event)
 {
-	wxFileDialog openFileDialog( this, _("Save model"), _(""), _(""), _("*.xml"),
+	wxFileDialog openFileDialog( this, _("Save model"), _(""), _(""), _("*.pgd"),
 		                  wxFD_SAVE | wxFD_OVERWRITE_PROMPT, wxDefaultPosition);
  
 	if ( openFileDialog.ShowModal() == wxID_OK )
@@ -355,6 +355,8 @@ void frmDatabaseDesigner::OnModelSave(wxCommandEvent &event)
 		path.append( openFileDialog.GetDirectory() );
 		path.append( wxFileName::GetPathSeparator() );
 		path.append( openFileDialog.GetFilename() );
+		if(!path.Lower().Matches(_("*.pgd")))
+			path.append(_(".pgd"));
 		design->writeXmlModel(path);
 	}
 }
@@ -362,7 +364,7 @@ void frmDatabaseDesigner::OnModelSave(wxCommandEvent &event)
 
 void frmDatabaseDesigner::OnModelLoad(wxCommandEvent &event)
 {
-	wxFileDialog openFileDialog( this, _("Open model"), _(""), _(""), _("*.xml"),
+	wxFileDialog openFileDialog( this, _("Open model"), _(""), _(""), _("*.pgd"),
 		                  wxOPEN | wxFD_FILE_MUST_EXIST, wxDefaultPosition);
  
 	if ( openFileDialog.ShowModal() == wxID_OK )
@@ -371,13 +373,8 @@ void frmDatabaseDesigner::OnModelLoad(wxCommandEvent &event)
 		path.append( openFileDialog.GetDirectory() );
 		path.append( wxFileName::GetPathSeparator() );
 		path.append( openFileDialog.GetFilename() );
-		//theText->LoadFile(path);
-		//SetStatusText(path, 0);
-		//SetStatusText(openFileDialog->GetDirectory(),1);
-		
-		
-		//666 Fixed at model 0 right now....
-		design->eraseDiagram(0);
+		if(!path.Lower().Matches(_("*.pgd")))
+			path.append(_(".pgd"));		design->eraseModel();
 		design->readXmlModel(path);
 	}
 

@@ -102,7 +102,7 @@
 
 
 BEGIN_EVENT_TABLE(dlgTable, dlgSecurityProperty)
-	EVT_CHECKBOX(XRCID("chkUnlogged"),               dlgProperty::OnChange)
+	EVT_CHECKBOX(XRCID("chkUnlogged"),              dlgProperty::OnChange)
 	EVT_TEXT(XRCID("cbTablespace"),                 dlgProperty::OnChange)
 	EVT_COMBOBOX(XRCID("cbTablespace"),             dlgProperty::OnChange)
 	EVT_TEXT(XRCID("txtFillFactor"),		dlgProperty::OnChange)
@@ -186,6 +186,7 @@ dlgTable::dlgTable(pgaFactory *f, frmMain *frame, pgTable *node, pgSchema *sch)
 	lstColumns->AddColumn(_("Column comment"), 0);
 	lstColumns->AddColumn(_("Column statistics"), 0);
 	lstColumns->AddColumn(_("Column"), 0);
+	lstColumns->AddColumn(_("Column type oid"), 0);
 
 	lstConstraints->CreateColumns(0, _("Constraint name"), _("Definition"), 90);
 }
@@ -249,7 +250,9 @@ int dlgTable::Go(bool modal)
 
 		btnAddTable->Enable(connection->BackendMinimumVersion(8, 2) && cbTables->GetGuessedSelection() >= 0);
 		lbTables->Enable(connection->BackendMinimumVersion(8, 2));
-		chkHasOids->Enable(table->GetHasOids() && connection->BackendMinimumVersion(8, 0));
+		chkHasOids->Enable((connection->BackendMinimumVersion(8, 0) && table->GetHasOids())
+		                   || connection->BackendMinimumVersion(8, 4));
+		cbSchema->Enable(connection->BackendMinimumVersion(8, 1));
 		cbTablespace->Enable(connection->BackendMinimumVersion(7, 5));
 
 		wxCookieType cookie;
@@ -787,7 +790,7 @@ wxString dlgTable::GetSql()
 {
 	int pos;
 	wxString sql;
-	wxString tabname = schema->GetQuotedPrefix() + qtIdent(GetName());
+	wxString tabname;
 
 	if (table)
 	{
@@ -798,6 +801,8 @@ wxString dlgTable::GetSql()
 
 		wxArrayString tmpDef = previousColumns;
 		wxString tmpsql;
+
+		tabname = schema->GetQuotedPrefix() + qtIdent(GetName());
 
 		// Build a temporary list of ADD COLUMNs, and fixup the list to remove
 		for (pos = 0; pos < lstColumns->GetItemCount() ; pos++)
@@ -813,8 +818,7 @@ wxString dlgTable::GetSql()
 					if (index < 0)
 					{
 						tmpsql += wxT("ALTER TABLE ") + table->GetQuotedFullIdentifier()
-						          +  wxT(" ADD COLUMN ") + definition + wxT(";\n");
-						//addcomment
+						          +  wxT("\n  ADD COLUMN ") + definition + wxT(";\n");
 					}
 				}
 				else
@@ -850,7 +854,7 @@ wxString dlgTable::GetSql()
 			else
 				definition = definition.BeforeFirst(' ');
 			sql += wxT("ALTER TABLE ") + table->GetQuotedFullIdentifier()
-			       +  wxT(" DROP COLUMN ") + qtIdent(definition) + wxT(";\n");
+			       +  wxT("\n  DROP COLUMN ") + qtIdent(definition) + wxT(";\n");
 		}
 		// Add the ADD COLUMNs...
 		sql += tmpsql;
@@ -868,7 +872,7 @@ wxString dlgTable::GetSql()
 			index = tmpDef.Index(definition);
 			if (index < 0)
 				tmpsql += wxT("ALTER TABLE ") + table->GetQuotedFullIdentifier()
-				          +  wxT(" INHERIT ") + definition + wxT(";\n");
+				          +  wxT("\n  INHERIT ") + definition + wxT(";\n");
 			else
 				tmpDef.RemoveAt(index);
 		}
@@ -877,7 +881,7 @@ wxString dlgTable::GetSql()
 		{
 			definition = tmpDef.Item(index);
 			sql += wxT("ALTER TABLE ") + table->GetQuotedFullIdentifier()
-			       +  wxT(" NO INHERIT ") + qtIdent(definition) + wxT(";\n");
+			       +  wxT("\n  NO INHERIT ") + qtIdent(definition) + wxT(";\n");
 		}
 		// Add the INHERIT COLUMNs...
 		sql += tmpsql;
@@ -898,7 +902,7 @@ wxString dlgTable::GetSql()
 			else
 			{
 				tmpsql += wxT("ALTER TABLE ") + tabname
-				          +  wxT(" ADD");
+				          +  wxT("\n  ADD");
 				if (!conname.IsEmpty())
 					tmpsql += wxT(" CONSTRAINT ");
 
@@ -914,21 +918,26 @@ wxString dlgTable::GetSql()
 			else
 				definition = definition.BeforeFirst(' ');
 			sql = wxT("ALTER TABLE ") + tabname
-			      + wxT(" DROP CONSTRAINT ") + qtIdent(definition) + wxT(";\n")
+			      + wxT("\n  DROP CONSTRAINT ") + qtIdent(definition) + wxT(";\n")
 			      + sql;
 
 		}
 		// Add the ADD CONSTRAINTs...
 		sql += tmpsql;
 
-		if (chkHasOids->GetValue() != table->GetHasOids())
+		if (!chkHasOids->GetValue() && table->GetHasOids())
 		{
 			sql += wxT("ALTER TABLE ") + tabname
-			       +  wxT(" SET WITHOUT OIDS;\n");
+			       +  wxT("\n  SET WITHOUT OIDS;\n");
+		}
+		if (chkHasOids->GetValue() && !table->GetHasOids())
+		{
+			sql += wxT("ALTER TABLE ") + tabname
+			       +  wxT("\n  SET WITH OIDS;\n");
 		}
 		if (connection->BackendMinimumVersion(8, 0) && cbTablespace->GetOIDKey() != table->GetTablespaceOid())
 			sql += wxT("ALTER TABLE ") + tabname
-			       +  wxT(" SET TABLESPACE ") + qtIdent(cbTablespace->GetValue())
+			       +  wxT("\n  SET TABLESPACE ") + qtIdent(cbTablespace->GetValue())
 			       + wxT(";\n");
 
 		if (txtFillFactor->GetValue().Trim().Length() > 0 && txtFillFactor->GetValue() != table->GetFillFactor())
@@ -1227,10 +1236,18 @@ wxString dlgTable::GetSql()
 					sql += vacStr;
 			}
 		}
+		// This needs to always be last so that other statements use correct schema
+		if (connection->BackendMinimumVersion(8, 1) && cbSchema->GetValue() != table->GetSchema()->GetName())
+		{
+			AppendSchemaChange(sql, wxT("TABLE ") + tabname);
+		}
 	}
 	else
 	{
 		bool typedTable = cbOfType->GetCurrentSelection() > 0 && cbOfType->GetOIDKey() > 0;
+
+		tabname = qtIdent(cbSchema->GetValue()) + wxT(".") + qtIdent(GetName());
+
 		sql = wxT("CREATE ");
 		if (chkUnlogged->GetValue())
 			sql +=  wxT("UNLOGGED ");
@@ -1468,23 +1485,26 @@ wxString dlgTable::GetSql()
 		{
 			if (!lstColumns->GetText(pos, 4).IsEmpty())
 				sql += wxT("ALTER TABLE ") + tabname
-				       + wxT(" ALTER COLUMN ") + qtIdent(lstColumns->GetText(pos, 0))
-				       + wxT(" SET STATISTICS ") + lstColumns->GetText(pos, 4)
+				       + wxT("\n  ALTER COLUMN ") + qtIdent(lstColumns->GetText(pos, 0))
+				       + wxT("\n  SET STATISTICS ") + lstColumns->GetText(pos, 4)
 				       + wxT(";\n");
 		}
 	}
 
 	// Comments
-	for (pos = 0 ; pos < lstColumns->GetItemCount() ; pos++)
+	if (!table)
 	{
-		if (!lstColumns->GetText(pos, 5).IsEmpty())
-			sql += wxT("COMMENT ON COLUMN ") + tabname
-			       + wxT(".") + qtIdent(lstColumns->GetText(pos, 0))
-			       + wxT(" IS ") + qtDbString(lstColumns->GetText(pos, 5))
-			       + wxT(";\n");
+		for (pos = 0 ; pos < lstColumns->GetItemCount() ; pos++)
+		{
+			if (!lstColumns->GetText(pos, 5).IsEmpty())
+				sql += wxT("COMMENT ON COLUMN ") + tabname
+					   + wxT(".") + qtIdent(lstColumns->GetText(pos, 0))
+					   + wxT(" IS ") + qtDbString(lstColumns->GetText(pos, 5))
+					   + wxT(";\n");
+		}
 	}
 
-	AppendComment(sql, wxT("TABLE"), schema, table);
+	AppendComment(sql, wxT("TABLE ") + qtIdent(cbSchema->GetValue()) + wxT(".") + qtIdent(GetName()), table);
 
 	if (connection->BackendMinimumVersion(8, 2))
 		sql += GetGrant(wxT("arwdxt"), wxT("TABLE ") + tabname);
@@ -1895,7 +1915,7 @@ void dlgTable::OnAddCol(wxCommandEvent &ev)
 			lstColumns->SetItem(pos, 3, col.GetSql());
 		lstColumns->SetItem(pos, 4, col.GetStatistics());
 		lstColumns->SetItem(pos, 5, col.GetComment());
-
+		lstColumns->SetItem(pos, 7, col.GetTypeOid());
 	}
 
 	CheckChange();
