@@ -300,7 +300,7 @@ void ddTableFigure::removeColumn(int posIdx, ddColumnFigure *column)
 			figureHandles->removeItem(scrollbar);
 	}
 	//hack to update relationship position when table size change
-	manuallyNotifyChange();
+	manuallyNotifyChange(posIdx);
 /*	moveBy(posIdx, -1, 0);  //666 el 0 basta o debo colocar el indice que es???
 	moveBy(posIdx, 1, 0);  //666 el 0 basta o debo colocar el indice que es???
 	*/
@@ -627,7 +627,7 @@ void ddTableFigure::updateTableSize(bool notifyChange)
 	if(notifyChange)
 	{
 		//hack to update relationship position when table size change
-		manuallyNotifyChange();
+		manuallyNotifyChange(0);  //666 first position is enough here or I should put right position
 	}
 /*	moveBy(0,-1, 0); //  666 el cero hace lo que debe o busco el indice???
 	moveBy(0,1, 0);  //  666 el cero hace lo que debe o busco el indice???

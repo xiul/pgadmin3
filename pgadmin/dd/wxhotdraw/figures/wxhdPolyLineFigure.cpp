@@ -144,12 +144,8 @@ wxhdMultiPosRect &wxhdPolyLineFigure::getBasicDisplayBox()
 			basicDisplayBox.add(posIdx, r);
 		}
 
-		iterator->ResetIterator();
+		delete iterator;
 	}
-
-	delete iterator;
-
-
 	return basicDisplayBox;
 }
 
@@ -177,7 +173,7 @@ void wxhdPolyLineFigure::setStartPoint(int posIdx, wxhdPoint point)
 		p->x = point.x;
 		p->y = point.y;
 	}
-	changed();
+	changed(posIdx);
 }
 
 wxhdPoint &wxhdPolyLineFigure::getEndPoint(int posIdx)
@@ -199,7 +195,7 @@ void wxhdPolyLineFigure::setEndPoint(int posIdx, wxhdPoint point)
 		p->x = point.x;
 		p->y = point.y;
 	}
-	changed();
+	changed(posIdx);
 }
 
 void wxhdPolyLineFigure::setStartTerminal(wxhdLineTerminal *terminal)
@@ -238,10 +234,10 @@ void wxhdPolyLineFigure::addPoint (int posIdx, int x, int y)
 		handles->addItem(new wxhdPolyLineHandle(this, new wxhdPolyLineLocator(0), 0));
 		updateHandlesIndexes();
 	}
-	changed();
+	changed(posIdx);
 }
 
-void wxhdPolyLineFigure::changed()
+void wxhdPolyLineFigure::changed(int posIdx)
 {
 	handlesChanged = true;
 }
@@ -258,7 +254,7 @@ void wxhdPolyLineFigure::removePointAt (int posIdx, int index)
 		handles->removeItemAt(index);
 		updateHandlesIndexes();
 	}
-	changed();
+	changed(posIdx);
 }
 
 void wxhdPolyLineFigure::basicDrawSelected(wxBufferedDC &context, wxhdDrawingView *view)
@@ -397,7 +393,7 @@ void wxhdPolyLineFigure::insertPointAt (int posIdx, int index, int x, int y)
 		updateHandlesIndexes();
 	}
 
-	changed();
+	changed(posIdx);
 }
 
 void wxhdPolyLineFigure::setPointAt (int posIdx, int index, int x, int y)
@@ -406,7 +402,7 @@ void wxhdPolyLineFigure::setPointAt (int posIdx, int index, int x, int y)
 	wxhdPoint *p = (wxhdPoint *) points[posIdx]->getItemAt(index);
 	p->x = x;
 	p->y = y;
-	changed();
+	changed(posIdx);
 }
 
 void wxhdPolyLineFigure::splitSegment(int posIdx, int x, int y)

@@ -146,14 +146,14 @@ bool wxhdIFigure::includes(wxhdIFigure *figure)
 	return (this == figure);
 }
 
-void wxhdIFigure::onFigureChanged(wxhdIFigure *figure)
+void wxhdIFigure::onFigureChanged(int posIdx, wxhdIFigure *figure)
 {
 
 	wxhdIteratorBase *iterator = observers->createIterator();
 	while(iterator->HasNext())
 	{
 		wxhdIFigure *o = (wxhdIFigure *) iterator->Next();
-		o->onFigureChanged(this);
+		o->onFigureChanged(posIdx, this);
 	}
 	delete iterator;
 }

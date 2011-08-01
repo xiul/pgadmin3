@@ -40,7 +40,7 @@ public:
 	wxhdCollection *handlesEnumerator();
 	virtual int findSegment (int posIdx, int x, int y);
 	virtual void splitSegment(int posIdx, int x, int y);
-	virtual void changed();
+	virtual void changed(int posIdx);
 
 	virtual void addPoint (int posIdx, int x, int y);
 	virtual void clearPoints (int posIdx);

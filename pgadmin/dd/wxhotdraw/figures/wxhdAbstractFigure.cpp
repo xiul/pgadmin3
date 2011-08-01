@@ -86,7 +86,7 @@ void wxhdAbstractFigure::moveBy(int posIdx, int x, int y)
 {
 	willChange();
 	basicMoveBy(posIdx, x, y);
-	changed();
+	changed(posIdx);
 }
 
 void wxhdAbstractFigure::basicMoveBy(int posIdx, int x, int y)
@@ -119,10 +119,10 @@ void wxhdAbstractFigure::willChange()
 	invalidate();
 }
 
-void wxhdAbstractFigure::changed()
+void wxhdAbstractFigure::changed(int posIdx)
 {
 	invalidate();
-	onFigureChanged(this);
+	onFigureChanged(posIdx, this);
 }
 
 void wxhdAbstractFigure::invalidate()
@@ -135,8 +135,8 @@ bool wxhdAbstractFigure::containsPoint(int posIdx, int x, int y)
 	return basicDisplayBox.Contains(posIdx, x, y);
 }
 
-void wxhdAbstractFigure::onFigureChanged(wxhdIFigure *figure)
+void wxhdAbstractFigure::onFigureChanged(int posIdx, wxhdIFigure *figure)
 {
 	//go to figure procedure to alert observers of changes on this figure
-	wxhdIFigure::onFigureChanged(figure);
+	wxhdIFigure::onFigureChanged(posIdx, figure);
 }

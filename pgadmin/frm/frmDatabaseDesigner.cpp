@@ -192,6 +192,12 @@ frmDatabaseDesigner::~frmDatabaseDesigner()
 
 	if(browserPanel)
 		delete browserPanel;
+	
+	if(diagrams)
+		delete diagrams;
+
+	if(design)
+		delete design;
 
 	if (connection)
 	{

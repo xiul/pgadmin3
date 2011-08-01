@@ -177,8 +177,7 @@ wxString ddDatabaseDesign::getNewTableName()
 				}
 			}
 		}
-	}
-	while(repeat);
+	}while(repeat);
 	delete iterator;
 	out = wxString::Format(_("NewTable%d"), indx);
 	return out;

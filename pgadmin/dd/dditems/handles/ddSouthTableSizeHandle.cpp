@@ -79,7 +79,7 @@ void ddSouthTableSizeHandle::invokeStep(wxhdMouseEvent &event, wxhdDrawingView *
 	}
 
 	//hack to update relationship position when table size change
-	table->manuallyNotifyChange();
+	table->manuallyNotifyChange(view->getIdx());
 /*	table->moveBy(view->getIdx(), -1, 0);
 	table->moveBy(view->getIdx(), 1, 0);
 	*/

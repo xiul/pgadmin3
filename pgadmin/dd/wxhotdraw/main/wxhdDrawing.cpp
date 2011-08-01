@@ -48,8 +48,8 @@ wxhdDrawing::~wxhdDrawing()
 
 	if(figures)
 		delete figures;
-	if(usedView)
-		delete usedView;
+/* it dont belong to it...	if(usedView)
+		delete usedView;*/
 }
 
 void wxhdDrawing::add(wxhdIFigure *figure)

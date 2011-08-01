@@ -35,7 +35,7 @@ public:
 	virtual wxhdCollection *handlesEnumerator();
 	virtual void basicMoveBy(int posIdx, int x, int y);
 
-	virtual void onFigureChanged(wxhdIFigure *figure);
+	virtual void onFigureChanged(int posIdx, wxhdIFigure *figure);
 
 	virtual wxhdIConnector *getStartConnector();
 	virtual wxhdIConnector *getEndConnector();

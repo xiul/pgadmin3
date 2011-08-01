@@ -40,7 +40,7 @@ public:
 	void removeColumn(int posIdx, ddColumnFigure *column);
 
 	//movement
-	void manuallyNotifyChange(){ changed(); };
+	void manuallyNotifyChange(int posIdx){ changed(posIdx); };
 	virtual void basicMoveBy(int posIdx, int x, int y);
 
 	//show messages to set fk destination

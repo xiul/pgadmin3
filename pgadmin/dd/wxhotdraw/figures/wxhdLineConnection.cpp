@@ -216,10 +216,10 @@ void wxhdLineConnection::disconnectFigure (wxhdIConnector *connector)
 	}
 }
 
-void wxhdLineConnection::onFigureChanged(wxhdIFigure *figure)
+void wxhdLineConnection::onFigureChanged(int posIdx, wxhdIFigure *figure)
 {
-	 updateConnection(0); //666 disable  this is needed????  BUG BUG BUG
-	 updateConnection(1); //666 disable  this is needed????  BUG BUG BUG
+	 updateConnection(posIdx); //666 disable  this is needed????  BUG BUG BUG
+	 //updateConnection(1); //666 disable  this is needed????  BUG BUG BUG
 }
 
 void wxhdLineConnection::addPoint (int posIdx, int x, int y)
@@ -249,7 +249,7 @@ void wxhdLineConnection::addPoint (int posIdx, int x, int y)
 		}
 	}
 	updateHandlesIndexes();
-	changed();
+	changed(posIdx);
 }
 
 void wxhdLineConnection::insertPointAt (int posIdx, int index, int x, int y)
@@ -274,7 +274,7 @@ void wxhdLineConnection::insertPointAt (int posIdx, int index, int x, int y)
 		handles->insertAtIndex(new wxhdPolyLineHandle(this, new wxhdPolyLineLocator(index), index), index);
 	}
 	updateHandlesIndexes();
-	changed();
+	changed(posIdx);
 }
 
 

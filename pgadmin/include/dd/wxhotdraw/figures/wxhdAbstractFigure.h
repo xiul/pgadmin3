@@ -32,13 +32,13 @@ public:
 	virtual void basicMoveBy(int posIdx, int x, int y);
 	virtual void moveTo(int posIdx, int x, int y);
 	virtual bool containsPoint(int posIdx, int x, int y);
-	virtual void onFigureChanged(wxhdIFigure *figure);
+	virtual void onFigureChanged(int posIdx, wxhdIFigure *figure);
 
 protected:
 	virtual void basicDraw(wxBufferedDC &context, wxhdDrawingView *view);
 	virtual void basicDrawSelected(wxBufferedDC &context, wxhdDrawingView *view);
 	void willChange();
-	void changed();
+	void changed(int posIdx);
 	void invalidate();
 	wxColour fillColor, lineColor;
 	double lineWidth;

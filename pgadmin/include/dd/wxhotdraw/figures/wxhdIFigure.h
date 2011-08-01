@@ -46,7 +46,7 @@ public:
 	virtual void setSelected(int posIdx, bool value);
 	virtual bool includes(wxhdIFigure *figure);
 	virtual bool canConnect() = 0;
-	virtual void onFigureChanged(wxhdIFigure *figure) = 0;
+	virtual void onFigureChanged(int posIdx, wxhdIFigure *figure) = 0;
 	virtual void addObserver (wxhdIFigure *observer);
 	virtual void removeObserver (wxhdIFigure *observer);
 	virtual wxhdIteratorBase *observersEnumerator();
