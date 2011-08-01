@@ -103,12 +103,16 @@ void wxhdConnectionCreationTool::mouseUp(wxhdMouseEvent &event)
 
 		if((toolConnection->getEndConnector() == NULL && numClicks > 1) || (toolConnection->getEndConnector() == NULL && dragged)) //Delete connection only if a second click a connection figures isn't found
 		{
+			//check if exists at drawing because automatically integrity check
+			if(event.getView()->getDrawing()->includes(toolConnection))
+				event.getView()->getDrawing()->remove(toolConnection);
+			event.getView()->getDrawing()->clearSelection();
 			toolConnection->disconnectStart();
 			toolConnection->disconnectEnd();
+			event.getView()->editor()->deleteModelFigure(toolConnection);
 			//666 000 getDrawingEditor()->view()->remove(toolConnection);
-			event.getView()->getDrawing()->remove(toolConnection);
 			//666 000 getDrawingEditor()->view()->clearSelection();
-			event.getView()->getDrawing()->clearSelection();
+
 		}
 	}
 	if(dragged || numClicks > 1) //if drag to select a figure or is second or higher click (to select end figure) then this tool ends.
