@@ -374,7 +374,8 @@ void frmDatabaseDesigner::OnModelLoad(wxCommandEvent &event)
 		path.append( wxFileName::GetPathSeparator() );
 		path.append( openFileDialog.GetFilename() );
 		if(!path.Lower().Matches(_("*.pgd")))
-			path.append(_(".pgd"));		design->eraseModel();
+			path.append(_(".pgd"));		
+		//FIX THIS 666 design->eraseModel();
 		design->readXmlModel(path);
 	}
 
