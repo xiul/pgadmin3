@@ -73,8 +73,16 @@ void wxhdMultiPosRect::addNewXYPosition()
 	x.Add(-1);
 	y.Add(-1);
 
+	//777 666 Change to use this... and simplify everything SetCount()
 }
-/*
+
+void wxhdMultiPosRect::removeXYPosition(int posIdx)
+{
+	x.RemoveAt(posIdx);
+	y.RemoveAt(posIdx);
+}
+
+/* 666
 bool wxhdMultiPosRect::operator==(const wxhdMultiPosRect& rect) const
 {
     return ((x == rect.x) &&

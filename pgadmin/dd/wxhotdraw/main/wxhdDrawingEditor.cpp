@@ -88,6 +88,33 @@ wxhdDrawing* wxhdDrawingEditor::createDiagram(wxWindow *owner)
 	return _tmpModel;
 }
 
+void wxhdDrawingEditor::deleteDiagram(int diagramIndex)
+{
+	wxhdDrawing *_tmpModel = (wxhdDrawing *) _diagrams->getItemAt(diagramIndex);
+	_diagrams->removeItemAt(diagramIndex);
+	wxhdDrawingView *_viewTmp = _tmpModel->getView();
+	_tmpModel->registerView(NULL);
+	if(_tmpModel)
+		delete _tmpModel;
+	if(_viewTmp)
+		delete _viewTmp;
+
+	// Fix other diagrams positions
+	int i;
+	for(i=diagramIndex; i < _diagrams->count(); i++)
+	{
+		getExistingDiagram(i)->getView()->syncIdx(i);
+	}
+	
+	//Remove this position inside each figure to allow delete that diagram related info from figures.
+	wxhdIFigure *tmp;
+	for(i=0;i< _model->count();i++)
+	{
+		tmp = (wxhdIFigure *) _model->getItemAt(i);
+		tmp->RemovePosOfDiagram(diagramIndex);
+	}
+}
+
 wxhdDrawingView *wxhdDrawingEditor::getExistingView(int diagramIndex)
 {
 	if(diagramIndex >= _diagrams->count() || diagramIndex < 0)

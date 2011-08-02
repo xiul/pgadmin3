@@ -19,6 +19,7 @@ public:
 	wxhdCompositeFigure();
 	~wxhdCompositeFigure();
 	virtual void AddPosForNewDiagram();
+	virtual void RemovePosOfDiagram(int posIdx);
 	virtual void basicMoveBy(int posIdx, int x, int y);
 	virtual bool containsPoint(int posIdx, int x, int y);
 	virtual wxhdIteratorBase *figuresEnumerator();

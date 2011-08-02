@@ -29,6 +29,7 @@ public:
 	virtual wxhdMultiPosRect &getBasicDisplayBox();
 	virtual int pointCount(int posIdx);
 	virtual void AddPosForNewDiagram();
+	virtual void RemovePosOfDiagram(int posIdx);
 	virtual wxhdPoint &getStartPoint(int posIdx);
 	virtual void setStartPoint(int posIdx, wxhdPoint point);
 	virtual wxhdPoint &getEndPoint(int posIdx);

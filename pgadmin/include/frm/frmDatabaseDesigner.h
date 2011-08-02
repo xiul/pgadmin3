@@ -40,6 +40,8 @@ private:
 	ctlAuiNotebook *diagrams;
 	wxTextCtrl *sqltext;
 	void OnClose(wxCloseEvent &event);
+	void OnAddDiagram(wxCommandEvent &event);
+	void OnDeleteDiagram(wxCommandEvent &event);
 	void OnAddTable(wxCommandEvent &event);
 	void OnDeleteTable(wxCommandEvent &event);
 	void OnAddColumn(wxCommandEvent &event);

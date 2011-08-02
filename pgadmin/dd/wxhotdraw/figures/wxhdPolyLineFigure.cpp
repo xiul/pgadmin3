@@ -51,6 +51,7 @@ wxhdPolyLineFigure::wxhdPolyLineFigure()
 wxhdPolyLineFigure::~wxhdPolyLineFigure()
 {
 	wxhdPoint *tmp; //Hack: If just delete points collection an error is raised.
+	wxhdArrayCollection *tmpCollection;
 
 	unsigned int i;
 	for(i=0; i < points.Count();i++)
@@ -63,8 +64,9 @@ wxhdPolyLineFigure::~wxhdPolyLineFigure()
 		}
 		if(points[i])
 		{
-			delete points[i];
-			points[i]=NULL;
+			tmpCollection = points[i];
+			points.RemoveAt(i);
+			delete tmpCollection;
 		}
 	}
 	/*while(pointsCollections->count() > 0) 666
@@ -91,6 +93,29 @@ void wxhdPolyLineFigure::AddPosForNewDiagram()
 	wxhdIFigure::AddPosForNewDiagram();
 	//Add new array of point for polylinefigure
 	points.Add(new wxhdArrayCollection());
+}
+
+void wxhdPolyLineFigure::RemovePosOfDiagram(int posIdx)
+{
+	wxhdIFigure::RemovePosOfDiagram(posIdx);
+
+	//Hack: If just delete points collection an error is raised.
+	wxhdPoint *tmp;
+	wxhdArrayCollection *tmpCollection;
+	while(points[posIdx]->count() > 0)
+		{
+			tmp = (wxhdPoint *) points[posIdx]->getItemAt(0);
+			points[posIdx]->removeItemAt(0);
+			delete tmp;
+		}
+		
+		if(points[posIdx])
+		{
+			tmpCollection = points[posIdx];
+			points.RemoveAt(posIdx);
+			delete tmpCollection;
+			//666 points[posIdx]=NULL;
+		}
 }
 
 int wxhdPolyLineFigure::getMaximunIndex()

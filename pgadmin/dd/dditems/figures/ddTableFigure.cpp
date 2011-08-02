@@ -198,6 +198,22 @@ void ddTableFigure::AddPosForNewDiagram()
 	wxhdCompositeFigure::AddPosForNewDiagram();
 }
 
+void ddTableFigure::RemovePosOfDiagram(int posIdx)
+{
+	//Remove position for internal calculations figure
+	fullSizeRect.removeXYPosition(posIdx);
+	titleRect.removeXYPosition(posIdx);
+	titleColsRect.removeXYPosition(posIdx);
+	colsRect.removeXYPosition(posIdx);
+	titleIndxsRect.removeXYPosition(posIdx);
+	indxsRect.removeXYPosition(posIdx);
+	unScrolledColsRect.removeXYPosition(posIdx);
+	unScrolledFullSizeRect.removeXYPosition(posIdx);
+	unScrolledTitleRect.removeXYPosition(posIdx);
+	//remove position at all figure figures
+	wxhdCompositeFigure::RemovePosOfDiagram(posIdx);
+}
+
 ddColumnFigure* ddTableFigure::getColByName(wxString name)
 {
 	ddColumnFigure *out = NULL;

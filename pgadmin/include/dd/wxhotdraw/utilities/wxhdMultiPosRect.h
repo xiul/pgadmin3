@@ -190,6 +190,7 @@ public:
 	wxhdRect getwxhdRect(int posIdx) {return wxhdRect(x[posIdx],y[posIdx],width,height);}
 	int CountPositions();
 	void addNewXYPosition();
+	void removeXYPosition(int posIdx);
     wxArrayInt x,y;
 	int width, height;
 

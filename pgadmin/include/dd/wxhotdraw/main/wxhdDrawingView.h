@@ -78,6 +78,7 @@ public:
 	void setCanvasMenuTool(wxhdCanvasMenuTool *menuTool);
 	//Hack to allow use of a figure into multiple diagrams.
 	int getIdx() {return diagramIndex;}
+	void syncIdx(int newDiagramIndex) {diagramIndex = newDiagramIndex; };
 protected:
 	int diagramIndex;
 private:

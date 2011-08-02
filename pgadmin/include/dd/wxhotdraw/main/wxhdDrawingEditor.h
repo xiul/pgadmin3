@@ -23,6 +23,7 @@ public:
 	wxhdDrawingView *getExistingView(int diagramIndex);
 	wxhdDrawing *getExistingDiagram(int diagramIndex);
 	virtual wxhdDrawing* createDiagram(wxWindow *owner);
+	virtual void deleteDiagram(int diagramIndex);
 	virtual void addDiagramFigure(int diagramIndex, wxhdIFigure *figure);
 	virtual void removeDiagramFigure(int diagramIndex, wxhdIFigure *figure);
 	virtual void addModelFigure(wxhdIFigure *figure);

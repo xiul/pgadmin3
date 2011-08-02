@@ -28,6 +28,7 @@ public:
 	void Init(wxString &columnName, ddTableFigure *owner, ddRelationshipItem *sourceFk = NULL);
 	~ddColumnFigure();
 	virtual void AddPosForNewDiagram();
+	virtual void RemovePosOfDiagram(int posIdx);
 	virtual void basicMoveBy(int posIdx, int x, int y);
 	virtual void moveTo(int posIdx, int x, int y);
 	virtual void setOwnerTable(ddTableFigure *table);

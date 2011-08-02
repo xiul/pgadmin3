@@ -42,6 +42,18 @@ void wxhdCompositeFigure::AddPosForNewDiagram()
 	delete iterator;
 }
 
+void wxhdCompositeFigure::RemovePosOfDiagram(int posIdx)
+{
+	wxhdAttributeFigure::RemovePosOfDiagram(posIdx);
+	wxhdIteratorBase *iterator = figuresEnumerator();
+	while(iterator->HasNext())
+	{
+		wxhdIFigure *f = (wxhdIFigure *) iterator->Next();
+		f->RemovePosOfDiagram(posIdx);
+	}
+	delete iterator;
+}
+
 wxhdCompositeFigure::~wxhdCompositeFigure()
 {
 	wxhdIHandle *tmpH;

@@ -64,6 +64,8 @@ BEGIN_EVENT_TABLE(frmDatabaseDesigner, pgFrame)
 	EVT_MENU(MNU_GENERATEMODEL,     frmDatabaseDesigner::OnModelGeneration)
 	EVT_MENU(MNU_SAVEMODEL,			frmDatabaseDesigner::OnModelSave)
 	EVT_MENU(MNU_LOADMODEL,			frmDatabaseDesigner::OnModelLoad)
+	EVT_MENU(MNU_NEWDIAGRAM,			frmDatabaseDesigner::OnAddDiagram)
+	EVT_MENU(MNU_DELDIAGRAM,			frmDatabaseDesigner::OnDeleteDiagram)
 	EVT_CLOSE(                      frmDatabaseDesigner::OnClose)
 END_EVENT_TABLE()
 
@@ -89,6 +91,9 @@ frmDatabaseDesigner::frmDatabaseDesigner(frmMain *form, const wxString &_title, 
 	// Set File menu
 	wxMenu *fileMenu = new wxMenu();
 	fileMenu->Append(MNU_NEW, _("&New database design\tCtrl-N"), _("Create a new database design"));
+	fileMenu->AppendSeparator();
+	fileMenu->Append(MNU_NEWDIAGRAM, _("&New diagram\tCtrl-D"), _("Create a new diagram for open database design"));
+	fileMenu->Append(MNU_DELDIAGRAM, _("&Delete Diagram"), _("Delete selected diagram from design"));
 	fileMenu->AppendSeparator();
 	fileMenu->Append(MNU_EXIT, _("E&xit\tCtrl-W"), _("Exit database designer window"));
 
@@ -120,6 +125,9 @@ frmDatabaseDesigner::frmDatabaseDesigner(frmMain *form, const wxString &_title, 
 	toolBar->AddTool(MNU_SAVEMODEL, _("Save Model"), *file_save_png_bmp, _("Save current database designer model"), wxITEM_NORMAL);
 	toolBar->AddTool(MNU_LOADMODEL, _("Load Model"), *file_open_png_bmp, _("Load database designer model from a file"), wxITEM_NORMAL);
 	toolBar->AddSeparator();
+	toolBar->AddTool(MNU_NEWDIAGRAM, _("New Diagram"), *file_new_png_bmp, _("Create a new diagram for open database design [Testing purpose]"), wxITEM_NORMAL);
+	toolBar->AddTool(MNU_DELDIAGRAM, _("Delete Diagram"), *file_new_png_bmp, _("Delete selected diagram from design [Testing purpose]"), wxITEM_NORMAL);
+	toolBar->AddSeparator();
 	toolBar->AddTool(MNU_HELP, _("Help"), *help_png_bmp, _("Display help"), wxITEM_NORMAL);
 	toolBar->Realize();
 
@@ -142,7 +150,6 @@ frmDatabaseDesigner::frmDatabaseDesigner(frmMain *form, const wxString &_title, 
 
 	// Add view to notebook
 	diagrams->AddPage(design->createDiagram(diagrams)->getView(), _("Diagrama Test"));
-	diagrams->AddPage(design->createDiagram(diagrams)->getView(), _("Diagrama Test #2"));
 	diagrams->AddPage(design->createDiagram(diagrams)->getView(), _("Diagrama Test #3"));
 
 	// Add the panes
@@ -266,7 +273,7 @@ void frmDatabaseDesigner::OnDeleteTable(wxCommandEvent &event)
 
 void frmDatabaseDesigner::OnAddColumn(wxCommandEvent &event)
 {
-	wxhdDrawingView *view = (wxhdDrawingView *) diagrams->GetPage(diagrams->GetSelection());
+    wxhdDrawingView *view = (wxhdDrawingView *) diagrams->GetPage(diagrams->GetSelection());
 	ddTableFigure *table = design->getSelectedTable(view->getIdx());
 	wxTextEntryDialog nameDialog (this, wxT("New column name"), wxT("Add a column"), wxT("NewColumn"));
 	int answer;
@@ -380,6 +387,21 @@ void frmDatabaseDesigner::OnModelLoad(wxCommandEvent &event)
 	}
 
 
+}
+
+void frmDatabaseDesigner::OnAddDiagram(wxCommandEvent &event)
+{
+	wxString newName = wxGetTextFromUser(_("New Diagram Name"),_("Diagram Name"),wxEmptyString,this);
+	if(!newName.IsEmpty())
+		diagrams->AddPage(design->createDiagram(diagrams)->getView(), newName);
+}
+
+void frmDatabaseDesigner::OnDeleteDiagram(wxCommandEvent &event)
+{
+	wxhdDrawingView *view = (wxhdDrawingView *) diagrams->GetPage(diagrams->GetSelection());
+	int diagramIndex=view->getIdx();
+	diagrams->RemovePage(diagrams->GetSelection());
+	design->deleteDiagram(diagramIndex);
 }
 
 ///////////////////////////////////////////////////////

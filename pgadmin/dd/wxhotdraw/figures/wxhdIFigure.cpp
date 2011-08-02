@@ -60,6 +60,11 @@ void wxhdIFigure::AddPosForNewDiagram()
 	selected.Add(false);
 }
 
+void wxhdIFigure::RemovePosOfDiagram(int posIdx)
+{
+	basicDisplayBox.removeXYPosition(posIdx);
+}
+
 wxhdMultiPosRect &wxhdIFigure::displayBox()
 {
 	return getBasicDisplayBox();

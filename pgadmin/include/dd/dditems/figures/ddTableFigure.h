@@ -31,8 +31,11 @@ public:
 	wxhdMultiPosRect& getBasicDisplayBox();
 	~ddTableFigure();
 
-	//add remove items
+	//Diagrams related functions
 	virtual void AddPosForNewDiagram();
+	virtual void RemovePosOfDiagram(int posIdx);
+
+	//add remove items
 	ddColumnFigure* getColByName(wxString name);
 	void addColumn(int posIdx, ddColumnFigure *column);
 	void addColumnFromStorage(ddColumnFigure *column);

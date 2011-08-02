@@ -357,3 +357,8 @@ wxhdDrawing* ddDatabaseDesign::createDiagram(wxWindow *owner)
 {
 	return editor->createDiagram(owner);
 }
+
+void ddDatabaseDesign::deleteDiagram(int diagramIndex)
+{
+	editor->deleteDiagram(diagramIndex);
+}

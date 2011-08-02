@@ -32,6 +32,7 @@ public:
 	void addTableToView(int diagramIndex, wxhdIFigure *figure);
 	void removeTable(int diagramIndex, wxhdIFigure *figure);
 	wxhdDrawing* createDiagram(wxWindow *owner);
+	void deleteDiagram(int diagramIndex);
 //666 000	void setTool(wxhdITool *tool);
 	void refreshDraw(int diagramIndex);
 	void eraseDiagram(int diagramIndex);

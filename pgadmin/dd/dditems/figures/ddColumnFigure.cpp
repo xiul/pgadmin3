@@ -115,6 +115,20 @@ void ddColumnFigure::AddPosForNewDiagram()
 		columnText->AddPosForNewDiagram();
 }
 
+void ddColumnFigure::RemovePosOfDiagram(int posIdx)
+{
+	//Remove this position at displaybox of this figure
+	wxhdAttributeFigure::RemovePosOfDiagram(posIdx);
+	//Remove this position at each figure inside this composite figure
+	if(kindImage)
+		kindImage->RemovePosOfDiagram(posIdx);
+	if(optionImage)
+		optionImage->RemovePosOfDiagram(posIdx);
+	if(columnText)
+		columnText->RemovePosOfDiagram(posIdx);
+
+}
+
 void ddColumnFigure::basicMoveBy(int posIdx, int x, int y)
 {
 	wxhdAbstractFigure::basicMoveBy(posIdx, x, y);
