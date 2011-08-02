@@ -12,6 +12,11 @@
 #ifndef DDMODELBROWSER_H
 #define DDMODELBROWSER_H
 
+enum ddBrowser
+{
+	DD_BROWSER = 13000
+};
+
 enum ddBrowserImages
 {
 	DD_IMG_FIG_DATABASE = 0,

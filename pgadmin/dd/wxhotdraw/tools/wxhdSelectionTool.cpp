@@ -44,7 +44,6 @@ void wxhdSelectionTool::mouseDown(wxhdMouseEvent &event)
 {
 	wxhdITool::mouseDown(event);
 
-	//666 000 wxhdDrawingView *view = getDrawingEditor()->view();
 	wxhdDrawingView *view = event.getView();
 	int x = event.GetPosition().x, y = event.GetPosition().y;
 
@@ -83,7 +82,6 @@ void wxhdSelectionTool::mouseUp(wxhdMouseEvent &event)
 void wxhdSelectionTool::mouseMove(wxhdMouseEvent &event)
 {
 	wxhdAbstractTool::mouseMove(event);
-	//666 000 wxhdDrawingView *view = getDrawingEditor()->view();
 	wxhdDrawingView *view = event.getView();
 	int x = event.GetPosition().x, y = event.GetPosition().y;
 	wxhdIHandle *handle = view->findHandle(view->getIdx(), x, y);

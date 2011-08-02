@@ -30,14 +30,8 @@ wxhdSimpleTextTool::wxhdSimpleTextTool(wxhdDrawingView *view, wxhdIFigure *fig, 
 	withoutDialog = fastEdit;
 	showEdit = false;
 	txtFigure = ((wxhdSimpleTextFigure *)this->getFigure());
-//666 000		edit = getDrawingEditor()->view()->getSimpleTextToolEdit();
-//666 000		okButton = getDrawingEditor()->view()->getOkTxt();
-//666 000		cancelButton = getDrawingEditor()->view()->getCancelTxt();
-	
-//666 000	editor->view()->setSimpleTextToolFigure(NULL);
 	ownerView->setSimpleTextToolFigure(NULL);
 	
-//666 000 calculateSizeEntry(editor->view());
 	calculateSizeEntry(ownerView);
 }
 
@@ -67,14 +61,11 @@ void wxhdSimpleTextTool::mouseDown(wxhdMouseEvent &event)
 	if(txtFigure->menuEnabled() && event.RightDown())
 	{
 		wxMenu menu;
-		//666 000 getDrawingEditor()->view()->setSimpleTextToolFigure(txtFigure, true);
 		event.getView()->setSimpleTextToolFigure(txtFigure, true);
 		txtFigure->createMenu(menu);
-		//666 000 getDrawingEditor()->view()->connectPopUpMenu(menu);
 		event.getView()->connectPopUpMenu(menu);
 		wxhdPoint p = event.GetPosition();
 		event.getView()->CalcScrolledPosition(p.x, p.y, &p.x, &p.y);
-		//666 000 getDrawingEditor()->view()->PopupMenu(&menu, p);
 		event.getView()->PopupMenu(&menu, p);
 		return;
 	}
@@ -84,7 +75,6 @@ void wxhdSimpleTextTool::mouseDown(wxhdMouseEvent &event)
 	{
 		if(withoutDialog)
 		{
-			//666 000 getDrawingEditor()->view()->setSimpleTextToolFigure(txtFigure);
 			event.getView()->setSimpleTextToolFigure(txtFigure);
 			showEdit = true;
 			event.getView()->getSimpleTextToolEdit()->ChangeValue(txtFigure->getText()); //Same as SetValue but don't generated wxEVT_COMMAND_TEXT_UPDATED event
@@ -117,7 +107,6 @@ void wxhdSimpleTextTool::deactivate(wxhdDrawingView *view)
 		view->getSimpleTextToolEdit()->Hide();
 		view->getOkTxt()->Hide();
 		view->getCancelTxt()->Hide();
-		//666 000 getDrawingEditor()->view()->setSimpleTextToolFigure(NULL);
 		view->setSimpleTextToolFigure(NULL);
 	}
 	wxhdFigureTool::deactivate(view);

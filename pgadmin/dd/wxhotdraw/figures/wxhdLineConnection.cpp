@@ -218,8 +218,7 @@ void wxhdLineConnection::disconnectFigure (wxhdIConnector *connector)
 
 void wxhdLineConnection::onFigureChanged(int posIdx, wxhdIFigure *figure)
 {
-	 updateConnection(posIdx); //666 disable  this is needed????  BUG BUG BUG
-	 //updateConnection(1); //666 disable  this is needed????  BUG BUG BUG
+	 updateConnection(posIdx);
 }
 
 void wxhdLineConnection::addPoint (int posIdx, int x, int y)
@@ -276,16 +275,6 @@ void wxhdLineConnection::insertPointAt (int posIdx, int index, int x, int y)
 	updateHandlesIndexes();
 	changed(posIdx);
 }
-
-
-
-//DD-TODO: simplify this in the future, probably implementing locator in other way
-/*Arreglar este peo para poder compartir los handles entre todos...
-
-RECORDAR [handle de INICIO]  [hanlde(s) de puntos 0 o mas]  [handle de FIN]
-
-666 666 
-*/
 
 //Update points between start and end, because start and end don't have index (is other kind of handle)
 void wxhdLineConnection::updateHandlesIndexes()

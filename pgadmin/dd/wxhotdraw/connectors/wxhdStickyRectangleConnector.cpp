@@ -30,7 +30,7 @@ wxhdStickyRectangleConnector::wxhdStickyRectangleConnector(wxhdIFigure *owner, w
 	wxhdChopBoxConnector(owner)
 {
 	wxhdGeometry g;
-	updateAnchor(0, p);  //666 pq necesitaria usar aqui el indice??? pq no solo sirve el cero???
+	updateAnchor(0, p);
 }
 
 wxhdStickyRectangleConnector::~wxhdStickyRectangleConnector()

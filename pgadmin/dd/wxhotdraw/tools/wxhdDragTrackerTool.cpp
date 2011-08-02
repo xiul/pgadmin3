@@ -22,7 +22,6 @@ wxhdDragTrackerTool::wxhdDragTrackerTool(wxhdDrawingView *view, wxhdIFigure *anc
 	: wxhdAbstractTool(view)
 {
 	hasMovedValue = false;
-	//666 000 view = editor->view();
 	anchorFigure = anchor;
 }
 

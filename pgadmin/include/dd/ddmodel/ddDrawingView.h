@@ -17,7 +17,7 @@
 class ddDrawingView : public wxhdDrawingView
 {
 public:
-	ddDrawingView(int diagram, wxWindow *ddParent, wxhdDrawingEditor *editor , wxSize size, wxhdDrawing *drawing);
+	ddDrawingView(int diagram, wxWindow *ddParent, ddDrawingEditor *editor , wxSize size, wxhdDrawing *drawing);
 	//Hack To allow right click menu at canvas without a figure
 	virtual void createViewMenu(wxMenu &mnu);
 	virtual void OnGenericViewPopupClick(wxCommandEvent &event);

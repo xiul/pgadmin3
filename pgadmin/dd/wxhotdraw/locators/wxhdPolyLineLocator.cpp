@@ -24,6 +24,7 @@ wxhdPolyLineLocator::~wxhdPolyLineLocator()
 {
 }
 
+//This index refers to point index inside collection not the diagram index
 wxhdPolyLineLocator::wxhdPolyLineLocator(int index)
 {
 	indx = index;

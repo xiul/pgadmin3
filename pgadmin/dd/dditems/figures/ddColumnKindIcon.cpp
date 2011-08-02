@@ -40,7 +40,7 @@ ddColumnKindIcon::ddColumnKindIcon(ddColumnFigure *owner)
 	// Initialize with an image to allow initial size calculations
 	icon = wxBitmap(*ddprimarykey_png_img);
 	iconToDraw = NULL;
-	getBasicDisplayBox().SetSize(wxSize(getWidth(), getHeight()));   //666 importa el indice para el tamaño????
+	getBasicDisplayBox().SetSize(wxSize(getWidth(), getHeight()));
 	isPk = false;
 	ukIndex = -1;
 
@@ -105,7 +105,7 @@ void ddColumnKindIcon::toggleColumnKind(ddColumnType type, wxhdDrawingView *view
 			}
 			break;
 	}
-	getBasicDisplayBox().SetSize(wxSize(getWidth(), getHeight()));   //666 really need index or zero works because affects only size????
+	getBasicDisplayBox().SetSize(wxSize(getWidth(), getHeight()));
 }
 
 void ddColumnKindIcon::basicDraw(wxBufferedDC &context, wxhdDrawingView *view)

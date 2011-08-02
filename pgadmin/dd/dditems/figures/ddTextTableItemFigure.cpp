@@ -277,24 +277,6 @@ void ddTextTableItemFigure::OnGenericPopupClick(wxCommandEvent &event, wxhdDrawi
 			ddTableFigure *table = getOwnerColumn()->getOwnerTable();
 			if (answer == DD_DELETE)
 			{
-
-		
-				/* 666
-				//Unselect table
-				if(view->getDrawing()->isFigureSelected(table))
-				{
-					view->getDrawing()->removeFromSelection(table);
-				}
-				//Drop foreign keys with this table as origin or destination
-				table->processDeleteAlert(view->getDrawing());
-				//Drop table
-				view->getDrawing()->remove(table);
-				if(table)
-				{
-					delete table;
-				}
-				*/
-				
 				ddDrawingEditor *editor = (ddDrawingEditor*) view->editor();					
 				//Unselect table at all diagrams
 				editor->removeFromAllSelections(table);

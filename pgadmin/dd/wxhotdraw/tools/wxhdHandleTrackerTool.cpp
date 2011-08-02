@@ -21,7 +21,6 @@
 wxhdHandleTrackerTool::wxhdHandleTrackerTool(wxhdDrawingView *view, wxhdIHandle *anchor)
 	: wxhdAbstractTool(view)
 {
-	//666 000 view = editor->view();
 	anchorHandle = anchor;
 }
 

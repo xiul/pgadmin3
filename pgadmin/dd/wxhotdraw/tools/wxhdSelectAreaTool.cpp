@@ -26,7 +26,6 @@
 wxhdSelectAreaTool::wxhdSelectAreaTool(wxhdDrawingView *view)
 	: wxhdAbstractTool(view)
 {
-	//666 000 view = editor->view();
 }
 
 wxhdSelectAreaTool::~wxhdSelectAreaTool()
@@ -98,7 +97,6 @@ void wxhdSelectAreaTool::mouseDrag(wxhdMouseEvent &event)
 void wxhdSelectAreaTool::selectFiguresOnRect(bool shiftPressed, wxhdDrawingView *view)
 {
 	wxhdIFigure *figure;
-	//666 000 wxhdIteratorBase *iterator = getDrawingEditor()->model()->figuresInverseEnumerator();
 	wxhdIteratorBase *iterator = view->getDrawing()->figuresInverseEnumerator();
 	while(iterator->HasNext())
 	{

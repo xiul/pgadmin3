@@ -41,11 +41,11 @@ void wxhdPolyLineHandle::draw(wxBufferedDC &context, wxhdDrawingView *view)
 		wxhdRect copy = getDisplayBox(view->getIdx());
 		view->CalcScrolledPosition(copy.x, copy.y, &copy.x, &copy.y);
 
-		//666 delete this
+		/* Uncomment this for testing purposes of handles in a polyline figure
 		wxString pos = wxString::Format(_("%d"),indx);
 		double middle2 = copy.width / 2;
-		context.DrawText(pos,copy.x + middle2+3, copy.y + middle2); //666 delete this
-
+		context.DrawText(pos,copy.x + middle2+3, copy.y + middle2);
+		*/
 
 		double middle = copy.width / 2;
 		context.DrawCircle(

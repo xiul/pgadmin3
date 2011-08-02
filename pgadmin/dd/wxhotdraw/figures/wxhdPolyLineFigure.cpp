@@ -30,15 +30,12 @@
 wxhdPolyLineFigure::wxhdPolyLineFigure()
 {
 	unsigned int i;
-	int cuanto666=points.Count();
 
 	for(i=0; i < MAXPOS ;i++)
 	{
 		points.Add(new wxhdArrayCollection());
 	}
 
-
-//		points = new wxhdArrayCollection();
 	startTerminal = NULL;
 	endTerminal = NULL;
 	handlesChanged = false;
@@ -69,18 +66,6 @@ wxhdPolyLineFigure::~wxhdPolyLineFigure()
 			delete tmpCollection;
 		}
 	}
-	/*while(pointsCollections->count() > 0) 666
-	{
-		points = (wxhdArrayCollection *) points->getItemAt(0);
-		while(points->count() > 0)
-		{
-			tmp = (wxhdPoint *) points->getItemAt(0);
-			points->removeItemAt(0);
-			delete tmp;
-		}
-		if(points)
-			delete points;
-	}*/
 	if(startTerminal)
 		delete startTerminal;
 	if(endTerminal)
@@ -114,7 +99,6 @@ void wxhdPolyLineFigure::RemovePosOfDiagram(int posIdx)
 			tmpCollection = points[posIdx];
 			points.RemoveAt(posIdx);
 			delete tmpCollection;
-			//666 points[posIdx]=NULL;
 		}
 }
 
@@ -134,21 +118,14 @@ int wxhdPolyLineFigure::getMaximunIndex()
 	return max;
 }
 
-//666 now with a terrible overhead of calculating for each position, SOLUTION should be tell what display should I refresh not alll....
+
 wxhdMultiPosRect &wxhdPolyLineFigure::getBasicDisplayBox()
 {
 	basicDisplayBox.height = 0;
 	basicDisplayBox.width = 0;
 
-//666 que hago con esto????? es necesrio?'????
-/*	if(points->count() < 2)
-	{
-		return basicDisplayBox;
-	}
-*/
-
 	int posIdx;
-	//666 optimize this, because right now calculate displaybox for all posIdx
+	//optimize this if needed in a future, because right now calculate displaybox for all posIdx
 	wxhdIteratorBase *iterator;
 	for(posIdx=0; posIdx < basicDisplayBox.CountPositions(); posIdx++)
 	{
@@ -165,7 +142,7 @@ wxhdMultiPosRect &wxhdPolyLineFigure::getBasicDisplayBox()
 		while(iterator->HasNext())
 		{
 			wxhdPoint *p = (wxhdPoint *) iterator->Next();
-			wxhdRect r = wxhdRect(p->x, p->y, 0, 0);   //666 rect o multiposrect ?????
+			wxhdRect r = wxhdRect(p->x, p->y, 0, 0);
 			basicDisplayBox.add(posIdx, r);
 		}
 
@@ -189,7 +166,6 @@ wxhdPoint &wxhdPolyLineFigure::getStartPoint(int posIdx)
 void wxhdPolyLineFigure::setStartPoint(int posIdx, wxhdPoint point)
 {
 	willChange();
-	int CANTIDAD666 = points[posIdx]->count();
 	if(points[posIdx]->count() == 0)
 		addPoint(posIdx, point.x, point.y);
 	else
@@ -211,7 +187,6 @@ wxhdPoint &wxhdPolyLineFigure::getEndPoint(int posIdx)
 void wxhdPolyLineFigure::setEndPoint(int posIdx, wxhdPoint point)
 {
 	willChange();
-	int CANTIDAD666 = points[posIdx]->count();
 	if(points[posIdx]->count() < 2)
 		addPoint(posIdx, point.x, point.y);
 	else

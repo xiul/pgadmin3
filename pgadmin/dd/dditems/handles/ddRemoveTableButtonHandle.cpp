@@ -46,7 +46,6 @@ void ddRemoveTableButtonHandle::invokeStep(wxhdMouseEvent &event, wxhdDrawingVie
 
 void ddRemoveTableButtonHandle::invokeEnd(wxhdMouseEvent &event, wxhdDrawingView *view)
 {
-//666 use here remOrDelSelFigures()
 	if(view && getOwner())
 	{
 		ddTableFigure *table = (ddTableFigure *) getOwner();
@@ -54,21 +53,6 @@ void ddRemoveTableButtonHandle::invokeEnd(wxhdMouseEvent &event, wxhdDrawingView
 		int answer = dialog.ShowModal();
 		if (answer == DD_DELETE)
 		{
-			/* 666
-			//unselect table
-			if(view->getDrawing()->isFigureSelected(table))
-			{
-				view->getDrawing()->removeFromSelection(table);
-			}
-			//drop foreign keys with this table as origin or destination
-			table->processDeleteAlert(view->getDrawing());
-			//drop table
-			view->getDrawing()->remove(table);
-			if(table)
-			{
-				delete table;
-			}
-			*/
 			ddDrawingEditor *editor = (ddDrawingEditor*) view->editor();
 			//Unselect table at all diagrams
 			editor->removeFromAllSelections(table);

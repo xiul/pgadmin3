@@ -68,12 +68,11 @@ wxhdMultiPosRect::wxhdMultiPosRect(int posIdx, const wxPoint& topLeft, const wxP
     height++;
 }
 
+//simplify this function with SetCount() in a future
 void wxhdMultiPosRect::addNewXYPosition()
 {
 	x.Add(-1);
 	y.Add(-1);
-
-	//777 666 Change to use this... and simplify everything SetCount()
 }
 
 void wxhdMultiPosRect::removeXYPosition(int posIdx)
@@ -81,26 +80,6 @@ void wxhdMultiPosRect::removeXYPosition(int posIdx)
 	x.RemoveAt(posIdx);
 	y.RemoveAt(posIdx);
 }
-
-/* 666
-bool wxhdMultiPosRect::operator==(const wxhdMultiPosRect& rect) const
-{
-    return ((x == rect.x) &&
-            (y == rect.y) &&
-            (width == rect.width) &&
-            (height == rect.height));
-}
-
-/* 666 delete
-wxhdMultiPosRect wxhdMultiPosRect::operator+(const wxhdMultiPosRect& rect) const
-{
-    int x1 = wxMin(this->x, rect.x);
-    int y1 = wxMin(this->y, rect.y);
-    int y2 = wxMax(y+height, rect.height+rect.y);
-    int x2 = wxMax(x+width, rect.width+rect.x);
-    return wxhdMultiPosRect(x1, y1, x2-x1, y2-y1);
-}
-*/
 
 wxhdMultiPosRect& wxhdMultiPosRect::Union(int posIdx, const wxhdMultiPosRect& rect)
 {

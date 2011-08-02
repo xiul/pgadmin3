@@ -32,7 +32,7 @@ ddColumnOptionIcon::ddColumnOptionIcon(ddColumnFigure *owner)
 	colOption = null;
 	icon = wxBitmap(*ddnull_png_img);
 	iconToDraw = &icon;
-	getBasicDisplayBox().SetSize(wxSize(getWidth(), getHeight()));  //666 really need index or zero works because affects only size????
+	getBasicDisplayBox().SetSize(wxSize(getWidth(), getHeight()));
 
 	//Set Value default Attributes
 	fontAttribute->font().SetPointSize(owner->fontAttribute->font().GetPointSize());
@@ -83,7 +83,7 @@ void ddColumnOptionIcon::changeIcon(ddColumnOptionType type)
 			icon = wxBitmap(*ddnotnull_png_img);
 			break;
 	}
-	getBasicDisplayBox().SetSize(wxSize(getWidth(), getHeight()));   //666 really need index or zero works because affects only size????
+	getBasicDisplayBox().SetSize(wxSize(getWidth(), getHeight()));
 }
 
 void ddColumnOptionIcon::basicDraw(wxBufferedDC &context, wxhdDrawingView *view)

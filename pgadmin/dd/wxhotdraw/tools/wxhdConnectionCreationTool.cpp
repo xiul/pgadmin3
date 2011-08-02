@@ -39,7 +39,6 @@ void wxhdConnectionCreationTool::mouseDrag(wxhdMouseEvent &event)
 	if(handle && event.LeftIsDown())
 	{
 		dragged = true;
-		//666 000 handle->invokeStep(event, getDrawingEditor()->view());
 		handle->invokeStep(event, event.getView());
 	}
 }
@@ -62,7 +61,6 @@ void wxhdConnectionCreationTool::mouseDown(wxhdMouseEvent &event)
 				toolConnection->setStartPoint(view->getIdx(), wxhdPoint(x, y));
 				toolConnection->connectStart(figure->connectorAt(view->getIdx(), x, y));
 				toolConnection->updateConnection(view->getIdx());
-				//666 view->getDrawing()->add(toolConnection);
 				view->editor()->addDiagramFigure(view->getIdx(), toolConnection); 
 				view->getDrawing()->clearSelection();
 				view->getDrawing()->addToSelection(toolConnection);
@@ -76,7 +74,6 @@ void wxhdConnectionCreationTool::mouseDown(wxhdMouseEvent &event)
 		}
 		else
 		{
-			//666 000 getDrawingEditor()->setTool(new wxhdSelectionTool(getDrawingEditor()));
 			event.getView()->setTool(new wxhdSelectionTool(event.getView()));
 		}
 	}
@@ -96,7 +93,6 @@ void wxhdConnectionCreationTool::mouseUp(wxhdMouseEvent &event)
 			}
 			else
 			{
-				//666 000 handle->invokeEnd(event, getDrawingEditor()->view());
 				handle->invokeEnd(event, event.getView());
 			}
 		}
@@ -110,14 +106,10 @@ void wxhdConnectionCreationTool::mouseUp(wxhdMouseEvent &event)
 			toolConnection->disconnectStart();
 			toolConnection->disconnectEnd();
 			event.getView()->editor()->deleteModelFigure(toolConnection);
-			//666 000 getDrawingEditor()->view()->remove(toolConnection);
-			//666 000 getDrawingEditor()->view()->clearSelection();
-
 		}
 	}
 	if(dragged || numClicks > 1) //if drag to select a figure or is second or higher click (to select end figure) then this tool ends.
 	{
-		//666 000 getDrawingEditor()->setTool(new wxhdSelectionTool(getDrawingEditor()));
 		event.getView()->setTool(new wxhdSelectionTool(event.getView()));
 	}
 	else if(!dragged && numClicks == 1) //if not dragged before and is first click then allow to select end, disconnecting it
@@ -130,24 +122,19 @@ void wxhdConnectionCreationTool::mouseUp(wxhdMouseEvent &event)
 void wxhdConnectionCreationTool::mouseMove(wxhdMouseEvent &event)
 {
 	int x = event.GetPosition().x, y = event.GetPosition().y;
-	//666 000 wxhdDrawingView *view = getDrawingEditor()->view();   //666 eliminar estas expresiones por ahi
-	wxhdDrawingView *view = event.getView();   //666 eliminar estas expresiones por ahi
-	//666 000 wxhdIFigure *figure = view->getDrawing()->findFigure(view->getIdx(), x, y);
+	wxhdDrawingView *view = event.getView();
 	wxhdIFigure *figure = view->getDrawing()->findFigure(view->getIdx(), x, y);
 	if(figure)
 	{
-		//666 000 getDrawingEditor()->view()->SetCursor(wxCursor(wxCURSOR_PENCIL));
 		view->SetCursor(wxCursor(wxCURSOR_PENCIL));
 	}
 	else
 	{
-		//666 000 getDrawingEditor()->view()->SetCursor(wxCursor(wxCURSOR_CROSS));
 		view->SetCursor(wxCursor(wxCURSOR_CROSS));
 	}
 
 	if(handle && numClicks > 0)
 	{
-		//666 000 handle->invokeStep(event, getDrawingEditor()->view());
 		handle->invokeStep(event, view);
 	}
 }

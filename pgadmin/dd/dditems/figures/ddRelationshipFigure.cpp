@@ -147,8 +147,8 @@ void ddRelationshipFigure::updateForeignKey()
 				{
 					fkColumnRelItem = new ddRelationshipItem(this, col, endTable, (fkMandatory ? notnull : null), (fkIdentifying ? pk : none) );
 					chm[col->getColumnName()] = fkColumnRelItem; //hashmap key will be original table name always
-					endTable->addColumn(0, fkColumnRelItem->fkColumn);   //666 0 index at addcolumn is enough or really need real one?????
-					updateConnection(0);  //666 pq necesitaria usar aqui el indice??? pq no lo hago para todos lo indices??
+					endTable->addColumn(0, fkColumnRelItem->fkColumn);
+					updateConnection(0);
 				}
 
 				//STEP 1.2a: Delete old Fk columns not pk now or deleted from source fk table.
@@ -165,7 +165,7 @@ void ddRelationshipFigure::updateForeignKey()
 						{
 							if(fkColumnRelItem->isAutomaticallyGenerated()) //don't remove from fk_dest table fk column created from existing column, just mark now as not foreign key
 							{
-								fkColumnRelItem->getDestinationTable()->removeColumn(0, fkColumnRelItem->fkColumn);  //666 pq necesitaria usar aqui el indice??? pq no lo hago para todos lo indices??
+								fkColumnRelItem->getDestinationTable()->removeColumn(0, fkColumnRelItem->fkColumn);  
 							}
 							else
 							{
@@ -174,7 +174,7 @@ void ddRelationshipFigure::updateForeignKey()
 							chm.erase(it);
 							delete fkColumnRelItem;
 							repeat = true;
-							updateConnection(0);  //666 pq necesitaria usar aqui el indice??? pq no lo hago para todos lo indices??
+							updateConnection(0);
 						}
 						if (repeat)
 							break;
@@ -192,8 +192,8 @@ void ddRelationshipFigure::updateForeignKey()
 				{
 					fkColumnRelItem = new ddRelationshipItem(this, col, endTable, (fkMandatory ? notnull : null), (fkIdentifying ? pk : none) );
 					chm[col->getColumnName()] = fkColumnRelItem; //hashmap key will be original table name always
-					endTable->addColumn(0, fkColumnRelItem->fkColumn);  //666 0 index at addcolumn is enough or really need real one?????
-					updateConnection(0);  //666 pq necesitaria usar aqui el indice??? pq no lo hago para todos lo indices??
+					endTable->addColumn(0, fkColumnRelItem->fkColumn);
+					updateConnection(0);
 				}
 
 				//STEP 1.2b: Delete old Fk columns not pk now or deleted from source fk table.
@@ -210,7 +210,7 @@ void ddRelationshipFigure::updateForeignKey()
 						{
 							if(fkColumnRelItem->isAutomaticallyGenerated()) //don't remove from fk_dest table fk column created from existing column, just mark now as not foreign key
 							{
-								fkColumnRelItem->getDestinationTable()->removeColumn(0, fkColumnRelItem->fkColumn); // //666 pq necesitaria usar aqui el indice??? pq no lo hago para todos lo indices??
+								fkColumnRelItem->getDestinationTable()->removeColumn(0, fkColumnRelItem->fkColumn);
 							}
 							else
 							{
@@ -219,7 +219,7 @@ void ddRelationshipFigure::updateForeignKey()
 							chm.erase(it);
 							delete fkColumnRelItem;
 							repeat = true;
-							updateConnection(0);  //666 pq necesitaria usar aqui el indice??? pq no lo hago para todos lo indices??
+							updateConnection(0);
 						}
 						if (repeat)
 							break;
@@ -455,16 +455,6 @@ void ddRelationshipFigure::OnGenericPopupClick(wxCommandEvent &event, wxhdDrawin
 				ddDrawingEditor *editor = (ddDrawingEditor*) view->editor();					
 				if (answer == DD_DELETE)
 				{
-					/*666 if(view->getDrawing()->isFigureSelected(this))
-						view->getDrawing()->removeFromSelection(this);
-					disconnectStart();
-					disconnectEnd();
-					//Hack to autodelete relationship
-					ddRelationshipFigure *r = this;
-					view->getDrawing()->remove(this);
-					if(r)
-						delete r;
-						*/
 					editor->removeFromAllSelections(this);
 					removeForeignKeys();
 					disconnectStart();
@@ -611,7 +601,7 @@ void ddRelationshipFigure::addExistingColumnFk(ddColumnFigure *startTablesourceC
 		//Mark it as Custom Fk (fk from existing column not an automatic generated)
 		endTablesourceCol->setAsUserCreatedFk(fkColumnRelItem);
 		chm[startTablesourceCol->getColumnName()] = fkColumnRelItem; //hashmap key will be original table name always
-		updateConnection(0);  //666 pq necesitaria usar aqui el indice??? pq no lo hago para todos lo indices??
+		updateConnection(0);
 	}
 }
 
@@ -636,7 +626,7 @@ void ddRelationshipFigure::removeForeignKeys()
 					//Remove fk column only if that column is automatically generated
 					if(fkColumnRelItem->isAutomaticallyGenerated())
 					{
-						fkColumnRelItem->getDestinationTable()->removeColumn(0, fkColumnRelItem->fkColumn);  //666 pq necesitaria usar aqui el indice??? pq no lo hago para todos lo indices??
+						fkColumnRelItem->getDestinationTable()->removeColumn(0, fkColumnRelItem->fkColumn);
 					} //is an existing column use as fk
 					else
 					{
@@ -890,6 +880,6 @@ void ddRelationshipFigure::initRelationValues( ddTableFigure *source, ddTableFig
 	onDeleteAction=onDelete;
 	constraintName = constraint;
 
-	wxhdLineConnection::connectStart(source->connectorAt(0, getStartPoint(0).x, getStartPoint(0).y));   //666 el posIdx esta fijo en 0 debo arreglarolo cuando arregle el xml
-	wxhdLineConnection::connectEnd(destination->connectorAt(0, getEndPoint(0).x, getEndPoint(0).y)); //666 el posIdx esta fijo en 0 debo arreglarolo cuando arregle el xml
+	wxhdLineConnection::connectStart(source->connectorAt(0, getStartPoint(0).x, getStartPoint(0).y));
+	wxhdLineConnection::connectEnd(destination->connectorAt(0, getEndPoint(0).x, getEndPoint(0).y));
 }

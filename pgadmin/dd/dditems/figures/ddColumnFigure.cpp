@@ -39,19 +39,19 @@ void ddColumnFigure::Init(wxString &columnName, ddTableFigure *owner, ddRelation
 
 
 	//Initialize displaybox and image coords
-	basicDisplayBox.SetPosition(0, wxPoint(0, 0));    //666 really need idx or 0 is enough
-	basicDisplayBox.SetSize( columnText->displayBox().GetSize()); //666 really need idx or 0 is enough
+	basicDisplayBox.SetPosition(0, wxPoint(0, 0));    
+	basicDisplayBox.SetSize( columnText->displayBox().GetSize());
 	if(kindImage && optionImage)
 	{
-		basicDisplayBox.width += kindImage->displayBox().GetSize().GetWidth() + 3; //666 really need idx or 0 is enough
-		basicDisplayBox.width += optionImage->displayBox().GetSize().GetWidth() + 3;//666 really need idx or 0 is enough
-		columnText->displayBox().x[0] += kindImage->displayBox().GetSize().GetWidth() + 2;//666 really need idx or 0 is enough
-		columnText->displayBox().x[0] += optionImage->displayBox().GetSize().GetWidth() + 3;//666 really need idx or 0 is enough
+		basicDisplayBox.width += kindImage->displayBox().GetSize().GetWidth() + 3;
+		basicDisplayBox.width += optionImage->displayBox().GetSize().GetWidth() + 3;
+		columnText->displayBox().x[0] += kindImage->displayBox().GetSize().GetWidth() + 2;
+		columnText->displayBox().x[0] += optionImage->displayBox().GetSize().GetWidth() + 3;
 	}
 	else
 	{
 		basicDisplayBox.width += 22; //default value = 1 + 8 + 3 + 8 + 2
-		columnText->displayBox().x[0] += 22; //666 really need idx or 0 is enough
+		columnText->displayBox().x[0] += 22;
 	}
 
 	//Set Value default Attributes
@@ -250,7 +250,7 @@ void ddColumnFigure::setOwnerTable(ddTableFigure *table)
 	ownerTable = table;
 }
 
-void ddColumnFigure::displayBoxUpdate()  //666 importa el indice en esta funcion????
+void ddColumnFigure::displayBoxUpdate()
 {
 	if(kindImage && optionImage)
 	{

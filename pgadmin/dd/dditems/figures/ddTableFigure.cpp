@@ -77,21 +77,18 @@ void ddTableFigure::Init(wxString tableName, int x, int y, wxString shortName)
 
 	//Set table size, width and position
 	rectangleFigure = new wxhdRectangleFigure();
-	rectangleFigure->moveTo(0, x, y);  //666 at position 0 only???
+	rectangleFigure->moveTo(0, x, y);
 	add(rectangleFigure);
 
 	tableTitle = new ddTextTableItemFigure(tableName, dt_null, NULL);
 	tableTitle->setOwnerTable(this);
 	tableTitle->setEditable(true);
-//777?????	tableTitle->moveTo(0, x, y);     //666 at position 0 only???
+	tableTitle->moveTo(0, x, y); 
 	tableTitle->disablePopUp();
 	tableTitle->setShowDataType(false);
 	add(tableTitle);
 	tableTitle->setAlias(shortName);  //Should be here to avoid a null pointer bug
 	tableTitle->moveTo(0, rectangleFigure->getBasicDisplayBox().x[0] + internalPadding * 2, rectangleFigure->getBasicDisplayBox().y[0] + internalPadding / 2);
-//666 use index 0 at displaybox and mvoTo or other at above line
-
-//666 locators at 0???
 
 	//Intialize handles
 	wxBitmap image = wxBitmap(*ddAddColumn_png_img);
@@ -132,7 +129,7 @@ void ddTableFigure::Init(wxString tableName, int x, int y, wxString shortName)
 	updateTableSize();
 
 	basicDisplayBox.x[0]=x;
-	basicDisplayBox.y[0]=y;   //666 init with all xs values
+	basicDisplayBox.y[0]=y;
 }
 
 ddTableFigure::ddTableFigure(wxString tableName, int x, int y, wxString shortName):
@@ -251,12 +248,8 @@ void ddTableFigure::addColumn(int posIdx, ddColumnFigure *column)
 	maxColIndex++;
 	colsWindow++;  //by default add a column increase initial window
 	colsRowsSize++;
-/*	666
-calcInternalSubAreas(posIdx);
-	recalculateColsPos(posIdx);
-	*/
 
-	updateTableSize(true); //666 NO FALLA????? 
+	updateTableSize(true);
 
 	//Fix column position at all available positions (Diagrams)
 	int i;
@@ -271,7 +264,7 @@ void ddTableFigure::syncInternalsPosAt(int posIdx, int x, int y)
 {
 	basicDisplayBox.x[posIdx]=x;
 	basicDisplayBox.y[posIdx]=y;
-	rectangleFigure->moveTo(posIdx, x, y);  //666 at position 0 only???
+	rectangleFigure->moveTo(posIdx, x, y);
 	tableTitle->moveTo(posIdx, rectangleFigure->getBasicDisplayBox().x[posIdx] + internalPadding * 2, rectangleFigure->getBasicDisplayBox().y[posIdx] + internalPadding / 2);
 	calcInternalSubAreas(posIdx);
 	recalculateColsPos(posIdx);
@@ -317,10 +310,6 @@ void ddTableFigure::removeColumn(int posIdx, ddColumnFigure *column)
 	}
 	//hack to update relationship position when table size change
 	manuallyNotifyChange(posIdx);
-/*	moveBy(posIdx, -1, 0);  //666 el 0 basta o debo colocar el indice que es???
-	moveBy(posIdx, 1, 0);  //666 el 0 basta o debo colocar el indice que es???
-	*/
-	
 	column = NULL;
 }
 
@@ -484,10 +473,6 @@ void ddTableFigure::basicDrawSelected(wxBufferedDC &context, wxhdDrawingView *vi
 
 wxhdMultiPosRect& ddTableFigure::getBasicDisplayBox()
 {
-	//Only recalculate
-/*	calcInternalSubAreas(0);
-	basicDisplayBox.SetSize(fullSizeRect.GetSize());
-	*/
 	return basicDisplayBox;
 }
 
@@ -528,7 +513,7 @@ int ddTableFigure::getColDefaultHeight(wxFont font)
 	else
 	{
 		wxhdIFigure *f = (wxhdIFigure *) figureFigures->getItemAt(1); //table title
-		return f->displayBox().height; //666 con el indice 0 esta bien o necesito un displaybox en especifico???
+		return f->displayBox().height;
 	}
 }
 
@@ -547,11 +532,11 @@ int ddTableFigure::getFiguresMaxWidth()
 	iterator->Next(); //First figure is main rect
 	int maxWidth = 0;
 	cf = (ddColumnFigure *) iterator->Next(); //Second figure is main title
-	maxWidth = g.max(maxWidth, cf->displayBox().width + 20); //666 con el indice 0 esta bien o necesito un displaybox en especifico???
+	maxWidth = g.max(maxWidth, cf->displayBox().width + 20);
 	while(iterator->HasNext())
 	{
 		cf = (ddColumnFigure *) iterator->Next();
-		maxWidth = g.max(maxWidth, cf->displayBox().width);   //666 con el indice 0 esta bien o necesito un displaybox en especifico???
+		maxWidth = g.max(maxWidth, cf->displayBox().width);
 	}
 	delete iterator;
 	if(figureHandles->existsObject(scrollbar))
@@ -567,12 +552,10 @@ void ddTableFigure::calcInternalSubAreas(int posIdx)
 	int maxWidth = getFiguresMaxWidth() + externalPadding;
 	if(maxWidth < 100)
 		maxWidth = 100;
-	wxFont font = settings->GetSystemFont(); //666 get attribute font here
+	wxFont font = fontAttribute->font();
 	int defaultHeight = getColDefaultHeight(font);
 
-	//cache displayBox()    666 necesito realmente un displaybox en especifico o con el 0 esta bien???   777 claro que si
 	wxhdRect db = basicDisplayBox.getwxhdRect(posIdx);
-		//displayBox().getwxhdRect(posIdx);  
 
 	//*** titleRect
 	font.SetPointSize(7);
@@ -638,16 +621,13 @@ void ddTableFigure::updateTableSize(bool notifyChange)
 	delete iterator;
 
 	//Step 1: Update table size
-	calcInternalSubAreas(0);   //666 first position is enough here or I should put right position
+	calcInternalSubAreas(0);
 	basicDisplayBox.SetSize(fullSizeRect.GetSize());
 	if(notifyChange)
 	{
-		//hack to update relationship position when table size change
-		manuallyNotifyChange(0);  //666 first position is enough here or I should put right position
+		//hack to update relationship position when table size change, but need to be notified to all views only doing it right now for first view
+		manuallyNotifyChange(0);
 	}
-/*	moveBy(0,-1, 0); //  666 el cero hace lo que debe o busco el indice???
-	moveBy(0,1, 0);  //  666 el cero hace lo que debe o busco el indice???
-	*/
 }
 
 wxhdMultiPosRect &ddTableFigure::getColsSpace()
@@ -1015,15 +995,10 @@ void ddTableFigure::processDeleteAlert(wxhdDrawing *drawing)
 			ddRelationshipFigure *rel = (ddRelationshipFigure *) iterator->Next();
 			rel->disconnectStart();
 			rel->disconnectEnd();
-/*			if(drawing->isFigureSelected(rel))
-				drawing->removeFromSelection(rel);
-				*/
-			//drawing->remove(rel);
-			//666 debe borrarse del modelo tambien .....
+
 			drawing->getOwnerEditor()->removeFromAllSelections(rel);
 			drawing->getOwnerEditor()->deleteModelFigure(rel);
 			repeatFlag = true;
-			//delete rel;
 			break;
 		}
 	}

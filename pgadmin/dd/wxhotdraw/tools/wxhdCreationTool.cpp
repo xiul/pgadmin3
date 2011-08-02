@@ -33,13 +33,10 @@ void wxhdCreationTool::mouseDown(wxhdMouseEvent &event)
 	wxhdAbstractTool::mouseDown(event);
 	if(event.LeftDown())
 	{
-		//666 000 getDrawingEditor()->view()->getDrawing()->add(figurePrototype);
 		event.getView()->getDrawing()->add(figurePrototype);
 		int x = event.GetPosition().x, y = event.GetPosition().y;
 		figurePrototype->moveTo(event.getView()->getIdx(), x, y);
-		//666 000 getDrawingEditor()->view()->clearSelection();
 		event.getView()->getDrawing()->clearSelection();
-		//666 000 getDrawingEditor()->view()->addToSelection(figurePrototype);
 		event.getView()->getDrawing()->addToSelection(figurePrototype);
 	}
 }
@@ -47,21 +44,18 @@ void wxhdCreationTool::mouseDown(wxhdMouseEvent &event)
 void wxhdCreationTool::mouseUp(wxhdMouseEvent &event)
 {
 	wxhdAbstractTool::mouseUp(event);
-	//getDrawingEditor()->setTool(new wxhdSelectionTool(getDrawingEditor()));
 	event.getView()->setTool(new wxhdSelectionTool(event.getView()));
 }
 
 void wxhdCreationTool::activate(wxhdDrawingView *view)
 {
 	wxhdAbstractTool::activate(view);
-	//666 000 getDrawingEditor()->view()->SetCursor(wxCursor(wxCURSOR_CROSS));
 	view->SetCursor(wxCursor(wxCURSOR_CROSS));
 }
 
 void wxhdCreationTool::deactivate(wxhdDrawingView *view)
 {
 	wxhdAbstractTool::deactivate(view);
-	//666 000 getDrawingEditor()->view()->SetCursor(wxCursor(wxCURSOR_ARROW));
 	view->SetCursor(wxCursor(wxCURSOR_ARROW));
 }
 

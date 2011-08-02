@@ -21,8 +21,7 @@
 
 enum
 {
-	CTL_DDNOTEBOOK = 1001,
-	CTL_DDSPLITTER
+	CTL_DDNOTEBOOK = 1001
 };
 
 class frmDatabaseDesigner : public pgFrame

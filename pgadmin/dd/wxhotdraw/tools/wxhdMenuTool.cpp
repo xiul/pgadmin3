@@ -42,14 +42,11 @@ void wxhdMenuTool::mouseDown(wxhdMouseEvent &event)
 	if(menuFigure->menuEnabled() && event.RightDown())
 	{
 		wxMenu menu;
-		//666 000 getDrawingEditor()->view()->setMenuToolFigure(menuFigure);
 		event.getView()->setMenuToolFigure(menuFigure);
 		menuFigure->createMenu(menu);
-		//666 000 getDrawingEditor()->view()->connectPopUpMenu(menu);
 		event.getView()->connectPopUpMenu(menu);
 		wxhdPoint p = event.GetPosition();
 		event.getView()->CalcScrolledPosition(p.x, p.y, &p.x, &p.y);
-		//666 000 getDrawingEditor()->view()->PopupMenu(&menu, p);
 		event.getView()->PopupMenu(&menu, p);
 		return;
 	}

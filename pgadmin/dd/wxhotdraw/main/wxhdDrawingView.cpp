@@ -101,9 +101,6 @@ void wxhdDrawingView::onPaint(wxPaintEvent &event)
 
 	delete iterator;
 
-	int Estoyen666 = this->getIdx(); ///666 delete
-	int Estoyen6662 = drawing->selectedFigures()->count(); ///666 delete
-	
 	wxhdIHandle *tmpHandle = NULL;
 	wxhdIteratorBase *selectionIterator = drawing->selectionFigures();//selection->createIterator();
 	while(selectionIterator->HasNext())
@@ -241,13 +238,11 @@ void wxhdDrawingView::onMotion(wxMouseEvent &event)
 		wxhdMouseEvent ddEvent = wxhdMouseEvent(event, this);
 		if(event.Dragging())
 		{
-			//666 000 drawingEditor->tool()->mouseDrag(ddEvent);
 			_tool->mouseDrag(ddEvent);
 			this->Refresh();			//only a dragging event on montion will change model
 		}
 		else
 		{
-			//666 000 drawingEditor->tool()->mouseMove(ddEvent);
 			_tool->mouseMove(ddEvent);
 		}
 	}
@@ -259,7 +254,6 @@ void wxhdDrawingView::onMouseDown(wxMouseEvent &event)
 	this->SetFocus();
 	startDrag = event.GetPosition();
 	wxhdMouseEvent ddEvent = wxhdMouseEvent(event, this);
-	//666 000 drawingEditor->tool()->mouseDown(ddEvent);
 	_tool->mouseDown(ddEvent);
 	this->Refresh();
 }
@@ -269,7 +263,6 @@ void wxhdDrawingView::onMouseUp(wxMouseEvent &event)
 	this->AcceptsFocus();
 	this->SetFocus();
 	wxhdMouseEvent ddEvent = wxhdMouseEvent(event, this);
-	//666 000 drawingEditor->tool()->mouseUp(ddEvent);
 	_tool->mouseUp(ddEvent);
 	this->Refresh();
 }
@@ -277,7 +270,6 @@ void wxhdDrawingView::onMouseUp(wxMouseEvent &event)
 void wxhdDrawingView::onKeyDown(wxKeyEvent &event)
 {
 	wxhdKeyEvent ddEvent = wxhdKeyEvent(event, this);
-	//666 000 drawingEditor->tool()->keyDown(ddEvent);
 	_tool->keyDown(ddEvent);
 	this->Refresh();
 }
@@ -285,7 +277,6 @@ void wxhdDrawingView::onKeyDown(wxKeyEvent &event)
 void wxhdDrawingView::onKeyUp(wxKeyEvent &event)
 {
 	wxhdKeyEvent ddEvent = wxhdKeyEvent(event, this);
-	//666 000 drawingEditor->tool()->keyUp(ddEvent);
 	_tool->keyUp(ddEvent);
 	this->Refresh();
 }
@@ -313,7 +304,6 @@ void wxhdDrawingView::setMenuToolFigure(wxhdAbstractMenuFigure *figure)
 //Hack to avoid event problem with simpleTextTool wxTextCrtl at EVT_TEXT event
 void wxhdDrawingView::OnOkTxtButton(wxCommandEvent &event)
 {
-	//666 000 drawingEditor->tool()->deactivate(this);
 	_tool->deactivate(this);
 	simpleTextToolEdit->Hide();
 	okTxtButton->Hide();
@@ -325,7 +315,6 @@ void wxhdDrawingView::OnOkTxtButton(wxCommandEvent &event)
 void wxhdDrawingView::OnCancelTxtButton(wxCommandEvent &event)
 {
 	simpleTextToolEdit->SetValue(oldText);
-	//666 000 drawingEditor->tool()->deactivate(this);
 	_tool->deactivate(this);
 	simpleTextToolEdit->Hide();
 	okTxtButton->Hide();

@@ -22,7 +22,7 @@
 #include "dd/dditems/figures/ddRelationshipFigure.h"
 #include "dd/dditems/utilities/ddDataType.h"
 
-ddDrawingView::ddDrawingView(int diagram, wxWindow *ddParent, wxhdDrawingEditor *editor , wxSize size, wxhdDrawing *drawing)
+ddDrawingView::ddDrawingView(int diagram, wxWindow *ddParent, ddDrawingEditor *editor , wxSize size, wxhdDrawing *drawing)
 	: wxhdDrawingView(diagram, ddParent, editor, size, drawing)
 {
 }
@@ -37,13 +37,13 @@ void ddDrawingView::createViewMenu(wxMenu &mnu)
 
 void ddDrawingView::OnGenericViewPopupClick(wxCommandEvent &event)
 {
-/*777 666
+	 ddDrawingEditor *ed = (ddDrawingEditor*) editor();	
 	switch(event.GetId())
 	{
- 		case MNU_NEWTABLE:
+	case MNU_NEWTABLE:
 			ddTableNameDialog *newTableDialog = new ddTableNameDialog(
-			    view,
-			    databaseDesign->getNewTableName(),
+			    this,
+			    ed->getDesign()->getNewTableName(),
 			    wxEmptyString,
 			    NULL
 			);
@@ -55,13 +55,12 @@ void ddDrawingView::OnGenericViewPopupClick(wxCommandEvent &event)
 				        rand() % 90 + 140,
 				        newTableDialog->GetValue2()
 				                                           );
-				databaseDesign->addTable(newTable);
-				databaseDesign->refreshDraw();
+				ed->getDesign()->addTableToView(this->getIdx(), newTable);
+				ed->getDesign()->refreshDraw(this->getIdx());
 			}
 			delete newTableDialog;
 			break;
 	}
-			*/
 }
 
 ddDropTarget::ddDropTarget(ddDatabaseDesign *sourceDesign, wxhdDrawing *targetDrawing)

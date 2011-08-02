@@ -22,10 +22,8 @@
 
 wxhdDrawingEditor::wxhdDrawingEditor(wxWindow *owner, bool defaultView)
 {
-	//666 index = 0;
 	_diagrams = new wxhdArrayCollection();
 	_model = new wxhdArrayCollection();
-//666 000	_tool = NULL;
 }
 
 wxhdDrawingEditor::~wxhdDrawingEditor()
@@ -53,8 +51,6 @@ wxhdDrawingEditor::~wxhdDrawingEditor()
 
 	if(_diagrams)
 		delete _diagrams;
-/* 666 000	if(_tool)
-		delete _tool; */
 }
 
 //Hack to allow create different kind of custom _views inside custom editor
@@ -219,7 +215,6 @@ wxhdIteratorBase *wxhdDrawingEditor::modelFiguresEnumerator()
 	return _model->createIterator();
 }
 
-//666 right now DELETE always the figure, it should allow to choose between removing or deleting
 void wxhdDrawingEditor::remOrDelSelFigures(int diagramIndex)
 {
 	int answer;
@@ -249,35 +244,3 @@ void wxhdDrawingEditor::remOrDelSelFigures(int diagramIndex)
 		getExistingDiagram(diagramIndex)->clearSelection();  //reset selection to zero items
 	}
 }
-
-/* 666 000
-wxhdITool *wxhdDrawingEditor::tool()
-{
-	return _tool;
-}
-
-void wxhdDrawingEditor::setTool(wxhdITool *tool)
-{
-	if(_tool)
-		delete _tool;
-	_tool = tool;
-}
-*/
-
-/* 666 000
-void wxhdDrawingEditor::createMenu(wxMenu &mnu)
-{
-	wxMenuItem *item;
-	item = mnu.AppendCheckItem(1000, _("Sample Item"));
-	item->Check(true);
-}
-
-void wxhdDrawingEditor::OnGenericPopupClick(wxCommandEvent &event, wxhdDrawingView *view)
-{
-	switch(event.GetId())
-	{
-		case 1000:
-			wxMessageBox(_("Sample menu item"), _("Sample"), wxOK, view);
-	}
-}
-*/

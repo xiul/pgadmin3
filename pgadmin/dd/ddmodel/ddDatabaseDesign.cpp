@@ -32,8 +32,6 @@ ddDatabaseDesign::ddDatabaseDesign(wxWindow *parent)
 {
 	editor = new ddDrawingEditor(parent, this);
 	attachedBrowser = NULL;
-//666 000	tool = new wxhdSelectionTool(draw);
-//666 000	draw->setTool(tool);
 }
 
 ddDatabaseDesign::~ddDatabaseDesign()
@@ -52,12 +50,6 @@ wxhdDrawingView *ddDatabaseDesign::getView(int diagramIndex)
 	return editor->getExistingView(diagramIndex);
 }
 
-/*//666 borrar esto cuando se borre la segunda vista...
-wxhdDrawingView *ddDatabaseDesign::getView2()
-{
-	return draw->view2();
-}
-*/
 void ddDatabaseDesign::registerBrowser(ddModelBrowser *browser)
 {
 	attachedBrowser=browser;

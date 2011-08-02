@@ -50,7 +50,7 @@ wxhdMultiPosRect &wxhdIConnector::getDisplayBox()
 	return figureOwner->displayBox();
 }
 
-bool wxhdIConnector::containsPoint(int posIdx, int x, int y)   //666 esto no lleva indice acaso???
+bool wxhdIConnector::containsPoint(int posIdx, int x, int y)
 {
 	return figureOwner->containsPoint(posIdx, x, y);
 }

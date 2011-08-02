@@ -36,7 +36,7 @@ wxhdDrawing* ddDrawingEditor::createDiagram(wxWindow *owner)
 
 	wxhdDrawing *_tmpModel = new wxhdDrawing(this);
 
-	wxhdDrawingView *_viewTmp = new ddDrawingView(_diagrams->count(), owner, this, wxSize(1200, 1200), _tmpModel);
+	ddDrawingView *_viewTmp = new ddDrawingView(_diagrams->count(), owner, this, wxSize(1200, 1200), _tmpModel);
 	
 	// Set Scroll Bar & split
 	_viewTmp->SetScrollbars( 10, 10, 127, 80 );
@@ -104,7 +104,7 @@ void ddDrawingEditor::remOrDelSelFigures(int diagramIndex)
 		delete iterator;
 
 		
-		//666 improve messages to display about relationships and tables and only relationship
+		//Improve messages to display about relationships and tables and only relationship
 		wxhdRemoveDeleteDialog dialog3(
 		             wxString::Format(_("Are you sure you wish to delete %d tables?"), numbTables),
 		             _("Delete tables?"), getExistingView(diagramIndex));
@@ -131,12 +131,10 @@ void ddDrawingEditor::remOrDelSelFigures(int diagramIndex)
 
 		while(numbTables > 0)
 		{
-			tmp = (wxhdIFigure *) getExistingDiagram(diagramIndex)->selectedFigures()->getItemAt(0); //666 (wxhdIFigure *) selection->getItemAt(0);
+			tmp = (wxhdIFigure *) getExistingDiagram(diagramIndex)->selectedFigures()->getItemAt(0);
 			if(tmp->getKindId() == DDTABLEFIGURE)
 			{
 				table = (ddTableFigure *)tmp;
-				//getExistingDiagram(diagramIndex)->removeFromSelection(table); 
-				//666 removeFromSelection(table);
 				if(table && answer == DD_REMOVE)
 				{
 					getExistingDiagram(diagramIndex)->removeFromSelection(table); 
@@ -149,8 +147,6 @@ void ddDrawingEditor::remOrDelSelFigures(int diagramIndex)
 					table->processDeleteAlert(getExistingDiagram(diagramIndex));
 					deleteModelFigure(table);
 					databaseDesign->refreshBrowser();
-					//no refrescar aca sino hacer lo que dice 666
-					//delete table;
 				}
 				numbTables--;
 			}
@@ -195,12 +191,10 @@ void ddDrawingEditor::remOrDelSelFigures(int diagramIndex)
 
 			while(numbRelationships > 0 && tmpSelection->count()==numbRelationships)
 			{
-				//666tmp = //(wxhdIFigure *) getExistingDiagram(diagramIndex)->selectedFigures()->getItemAt(0); //666 selection->getItemAt(0);
 				tmp = (wxhdIFigure *) tmpSelection->getItemAt(0);
 				if(tmp->getKindId() == DDRELATIONSHIPFIGURE)
 				{
 					relation = (ddRelationshipFigure *)tmp;
-					//666 
 					if(relation && answer == DD_REMOVE)
 					{
 						getExistingDiagram(diagramIndex)->removeFromSelection(relation);
@@ -209,14 +203,12 @@ void ddDrawingEditor::remOrDelSelFigures(int diagramIndex)
 					//if relation is going to be delete all others diagrams should be alerted about it
 					if(relation && answer == DD_DELETE)
 					{
-						//666 remover del modelo y de otros diagramas.
 						removeFromAllSelections(relation);
 						relation->removeForeignKeys();
 						relation->disconnectEnd();
 						relation->disconnectStart();
 						deleteModelFigure(relation);
 						databaseDesign->refreshBrowser();
-						//delete relation;
 					}
 					numbRelationships--;
 				}
@@ -293,57 +285,3 @@ void ddDrawingEditor::checkAllDigramsRelConsistency()
 		checkRelationshipsConsistency(i);
 	}
 }
-
-
-
-/*
-void ddDrawingEditor::createView(int diagramIndex, wxWindow *owner)
-{
-	wxhdDrawing *_tmpModel = new wxhdDrawing();
-
-	ddDrawingView *_viewTmp = new ddDrawingView(diagramIndex, owner, this, wxSize(1200, 1200), _tmpModel);  //666 change view index to right one
-	
-	_viewTmp->SetScrollbars( 10, 10, 127, 80 );
-	_viewTmp->EnableScrolling(true, true);
-	_viewTmp->AdjustScrollbars();
-
-	_tmpModel->registerView(_viewTmp);
-
-	//Add Diagram
-	_diagrams->addItem((wxhdObject *) _tmpModel);
-}
-*/
-
-/* 666 000
-void ddDrawingEditor::createMenu(wxMenu &mnu)
-{
-	mnu.Append(MNU_NEWTABLE, _("Add new Table"));
-}
-
-void ddDrawingEditor::OnGenericPopupClick(wxCommandEvent &event, wxhdDrawingView *view)
-{
-	switch(event.GetId())
-	{
-		case MNU_NEWTABLE:
-			ddTableNameDialog *newTableDialog = new ddTableNameDialog(
-			    view,
-			    databaseDesign->getNewTableName(),
-			    wxEmptyString,
-			    NULL
-			);
-			int answer = newTableDialog->ShowModal();
-			if (answer == wxID_OK && !newTableDialog->GetValue1().IsEmpty())
-			{
-				ddTableFigure *newTable = new ddTableFigure(newTableDialog->GetValue1(),
-				        rand() % 90 + 200,
-				        rand() % 90 + 140,
-				        newTableDialog->GetValue2()
-				                                           );
-				databaseDesign->addTable(newTable);
-				databaseDesign->refreshDraw();
-			}
-			delete newTableDialog;
-			break;
-	}
-}
-*/

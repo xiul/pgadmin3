@@ -91,12 +91,6 @@ void wxhdAbstractFigure::moveBy(int posIdx, int x, int y)
 
 void wxhdAbstractFigure::basicMoveBy(int posIdx, int x, int y)
 {
-	//666 avoid used of r if possible
-/*	wxhdMultiPosRect r = basicDisplayBox;
-	r.x[posIdx] += x;
-	r.y[posIdx] += y;
-	basicDisplayBox = r;
-	*/
 	basicDisplayBox.x[posIdx] += x;
 	basicDisplayBox.y[posIdx] += y;
 }
@@ -104,12 +98,6 @@ void wxhdAbstractFigure::basicMoveBy(int posIdx, int x, int y)
 
 void wxhdAbstractFigure::moveTo(int posIdx, int x, int y)
 {
-	//666 avoid used of r if possible
-/*	wxhdMultiPosRect r = basicDisplayBox;
-	r.x[posIdx] = x;
-	r.y[posIdx] = y;
-	basicDisplayBox = r;
-*/
 	basicDisplayBox.x[posIdx] = x;
 	basicDisplayBox.y[posIdx] = y;
 }

@@ -27,15 +27,10 @@ wxhdIFigure::wxhdIFigure()
 {
 	handles = new wxhdCollection(new wxhdArrayCollection());
 	observers = new wxhdCollection(new wxhdArrayCollection());
-//	selected = false; 666
 	unsigned int i;
-	if(selected.Count() < MAXPOS)
+	for(i=0; i < MAXPOS;i++)
 	{
-		selected.Insert(0,0,MAXPOS);
-	}
-	for(i=0; i < selected.Count();i++)
-	{
-		selected[i]=false;
+		selected.Add(false);
 	}
 	connector = NULL;
 	basicDisplayBox.SetSize(wxSize(0, 0));
@@ -75,13 +70,6 @@ wxhdMultiPosRect &wxhdIFigure::getBasicDisplayBox()
 	return basicDisplayBox;
 }
 
-/*
-bool wxhdIFigure::containsPoint (int posIdx, int x, int y)
-{ 666
-	return false;
-}
-*/
-
 void wxhdIFigure::draw (wxBufferedDC &context, wxhdDrawingView *view)
 {
 
@@ -113,16 +101,6 @@ void wxhdIFigure::removeHandle (wxhdIHandle *handle)
 		handles->removeItem(handle);
 	}
 }
-
-/*
-void wxhdIFigure::moveBy (int posIdx, int x, int y)
-{ 666
-}
-
-void wxhdIFigure::moveTo(int posIdx, int x, int y)
-{ 666
-}
-*/
 
 wxhdITool *wxhdIFigure::CreateFigureTool(wxhdDrawingView *view, wxhdITool *defaultTool)
 {

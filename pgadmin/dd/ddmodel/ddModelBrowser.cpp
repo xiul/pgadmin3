@@ -33,12 +33,9 @@
 #include "images/exttable-sm.pngc"	// Greenplum external tables
 
 BEGIN_EVENT_TABLE(ddModelBrowser, wxTreeCtrl)
-	EVT_TREE_ITEM_ACTIVATED(9969, ddModelBrowser::OnItemActivated) 
-	EVT_TREE_BEGIN_DRAG(9969, ddModelBrowser::OnBeginDrag)
+	EVT_TREE_ITEM_ACTIVATED(DD_BROWSER, ddModelBrowser::OnItemActivated) 
+	EVT_TREE_BEGIN_DRAG(DD_BROWSER, ddModelBrowser::OnBeginDrag)
 END_EVENT_TABLE()
-
-
-//666 cambiar el 9969 por el correcto
 
 ddModelBrowser::ddModelBrowser(wxWindow *parent, wxWindowID id, const wxPoint &pos, const wxSize &size, long style, ddDatabaseDesign *design)
 	: wxTreeCtrl(parent, id, pos, size, style)
@@ -115,7 +112,7 @@ void ddModelBrowser::refreshFromModel()
 		{
 			table = (ddTableFigure *)tmpFigure;
 			this->AppendItem(rootNode,table->getTableName(),DD_IMG_FIG_TABLE, DD_IMG_FIG_TABLE, new ddBrowserDataContainer(table));
-		//666 add table info
+			//666 add table info
 		}
 	}
 	delete iterator;

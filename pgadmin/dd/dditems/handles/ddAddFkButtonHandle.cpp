@@ -37,7 +37,7 @@ ddAddFkButtonHandle::~ddAddFkButtonHandle()
 {
 }
 
-void ddAddFkButtonHandle::invokeStart(wxhdMouseEvent &event, wxhdDrawingView *view)  //666 si la vista es el parametro se necesita aparte????
+void ddAddFkButtonHandle::invokeStart(wxhdMouseEvent &event, wxhdDrawingView *view)
 {
 	if(getOwner()->ms_classInfo.IsKindOf(&ddTableFigure::ms_classInfo))
 	{
@@ -51,9 +51,7 @@ void ddAddFkButtonHandle::invokeStart(wxhdMouseEvent &event, wxhdDrawingView *vi
 		}
 		fkConnection->setStartTerminal(new ddRelationshipTerminal(fkConnection, false));
 		fkConnection->setEndTerminal(new ddRelationshipTerminal(fkConnection, true));
-		//666 000 wxhdConnectionCreationTool *conn = new wxhdConnectionCreationTool(view->editor(), fkConnection);
 		wxhdConnectionCreationTool *conn = new wxhdConnectionCreationTool(view, fkConnection);
-		//666 000 view->editor()->setTool(conn);
 		view->setTool(conn);
 		// Simulate button down to start connection of foreign key
 		wxMouseEvent e(wxEVT_LEFT_DOWN);

@@ -25,14 +25,11 @@ wxhdCanvasMenuTool::wxhdCanvasMenuTool(wxhdDrawingView *view, wxhdITool *dt):
 	wxhdAbstractTool(view)
 {
 	defaultTool = dt;
-	//666 000 canvasView = editor;
-	//666 000 canvasEditor->view()->setCanvasMenuTool(NULL);
 	ownerView->setCanvasMenuTool(NULL);
 }
 
 wxhdCanvasMenuTool::~wxhdCanvasMenuTool()
 {
-	//666 000 canvasEditor->view()->setCanvasMenuTool(NULL);
 	ownerView->setCanvasMenuTool(NULL);
 	if(defaultTool)
 		delete defaultTool;
@@ -48,14 +45,10 @@ void wxhdCanvasMenuTool::mouseDown(wxhdMouseEvent &event)
 	{
 		wxMenu menu;
 		event.getView()->setCanvasMenuTool(this);
-		//666 000 getDrawingEditor()->view()->setCanvasMenuTool(this);
 		createViewMenu(event.getView(),menu);
-		//666 000 getDrawingEditor()->view()->connectPopUpMenu(menu);
 		event.getView()->connectPopUpMenu(menu);
 		wxhdPoint p = event.GetPosition();
-		//666 000 event.getView()->CalcScrolledPosition(p.x, p.y, &p.x, &p.y);
 		event.getView()->CalcScrolledPosition(p.x, p.y, &p.x, &p.y);
-		//666 000 getDrawingEditor()->view()->PopupMenu(&menu, p);
 		event.getView()->PopupMenu(&menu, p);
 		return;
 	}

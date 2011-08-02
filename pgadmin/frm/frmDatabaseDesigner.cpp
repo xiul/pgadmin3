@@ -132,7 +132,7 @@ frmDatabaseDesigner::frmDatabaseDesigner(frmMain *form, const wxString &_title, 
 	toolBar->Realize();
 
 	// Create notebook for diagrams
-	diagrams = new ctlAuiNotebook(this, 666, wxDefaultPosition, wxDefaultSize, wxAUI_NB_TOP | wxAUI_NB_TAB_SPLIT | wxAUI_NB_TAB_MOVE | wxAUI_NB_SCROLL_BUTTONS | wxAUI_NB_WINDOWLIST_BUTTON);
+	diagrams = new ctlAuiNotebook(this, CTL_DDNOTEBOOK, wxDefaultPosition, wxDefaultSize, wxAUI_NB_TOP | wxAUI_NB_TAB_SPLIT | wxAUI_NB_TAB_MOVE | wxAUI_NB_SCROLL_BUTTONS | wxAUI_NB_WINDOWLIST_BUTTON);
 
 	// Now, the scratchpad
 	sqltext = new wxTextCtrl(this, -1, wxT(""), wxDefaultPosition, wxDefaultSize, wxTE_MULTILINE | wxHSCROLL);
@@ -144,8 +144,7 @@ frmDatabaseDesigner::frmDatabaseDesigner(frmMain *form, const wxString &_title, 
 	design = new ddDatabaseDesign(diagrams);
 
 	// Create database model browser
-	//666 change 9969 pro el numero real
-	modelBrowser = new ddModelBrowser(browserPanel, 9969, wxDefaultPosition, wxDefaultSize, wxTR_HAS_BUTTONS | wxSIMPLE_BORDER, design);
+	modelBrowser = new ddModelBrowser(browserPanel, DD_BROWSER, wxDefaultPosition, wxDefaultSize, wxTR_HAS_BUTTONS | wxSIMPLE_BORDER, design);
 	design->registerBrowser(modelBrowser);
 
 	// Add view to notebook
@@ -183,8 +182,6 @@ frmDatabaseDesigner::frmDatabaseDesigner(frmMain *form, const wxString &_title, 
 
 frmDatabaseDesigner::~frmDatabaseDesigner()
 {
-	//666 delete all other objects
-
 	// Save form's position
 	SavePosition();
 
@@ -267,7 +264,6 @@ void frmDatabaseDesigner::OnAddTable(wxCommandEvent &event)
 void frmDatabaseDesigner::OnDeleteTable(wxCommandEvent &event)
 {
 	wxhdDrawingView *view = (wxhdDrawingView *) diagrams->GetPage(diagrams->GetSelection());
-	//666 ddDrawingView *v = (ddDrawingView *) design->getEditor()->getExistingView(view->getIdx());
 	view->getDrawing()->deleteSelectedFigures();
 }
 
@@ -290,7 +286,7 @@ void frmDatabaseDesigner::OnAddColumn(wxCommandEvent &event)
 			{
 				tmpString = nameDialog.GetValue();
 				if(table->getColByName(tmpString)==NULL)
-					table->addColumn(view->getIdx(), new ddColumnFigure(tmpString, table)); //666 pq debo colocarle indice a estoo??
+					table->addColumn(view->getIdx(), new ddColumnFigure(tmpString, table));
 				else
 				{
 					wxString msg(wxT("Error trying to add new column '"));
