@@ -22,17 +22,20 @@ public:
 	~wxhdDrawingEditor();
 	wxhdDrawingView *getExistingView(int diagramIndex);
 	wxhdDrawing *getExistingDiagram(int diagramIndex);
-	virtual wxhdDrawing* createDiagram(wxWindow *owner);
+	virtual wxhdDrawing* createDiagram(wxWindow *owner, bool fromXml);
 	virtual void deleteDiagram(int diagramIndex);
 	virtual void addDiagramFigure(int diagramIndex, wxhdIFigure *figure);
 	virtual void removeDiagramFigure(int diagramIndex, wxhdIFigure *figure);
 	virtual void addModelFigure(wxhdIFigure *figure);
 	virtual void deleteModelFigure(wxhdIFigure *figure);
 	virtual void removeFromAllSelections(wxhdIFigure *figure);
+	virtual void removeAllDiagramsFigures();
+	virtual void deleteAllModelFigures();
 	virtual bool modelIncludes(wxhdIFigure *figure);
 	virtual void remOrDelSelFigures(int diagramIndex);
 	int modelCount();
 	wxhdIteratorBase *modelFiguresEnumerator();
+	wxhdIteratorBase *diagramsEnumerator();
 
 
 

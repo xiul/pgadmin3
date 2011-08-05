@@ -25,9 +25,9 @@ class ddDrawingEditor : public wxhdDrawingEditor
 {
 public:
 	ddDrawingEditor(wxWindow *owner, ddDatabaseDesign *design);
-	virtual wxhdDrawing* createDiagram(wxWindow *owner);
+	virtual wxhdDrawing* createDiagram(wxWindow *owner, bool fromXml);
 	virtual void remOrDelSelFigures(int diagramIndex);
-/*	//Hack To allow right click menu at canvas without a figure
+/*	//Hack To allow right click menu at canvas without a figure 666
 	virtual void createMenu(wxMenu &mnu);
 	virtual void OnGenericPopupClick(wxCommandEvent &event, wxhdDrawingView *view);
 	*/

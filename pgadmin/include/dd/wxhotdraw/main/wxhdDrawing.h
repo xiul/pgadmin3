@@ -46,6 +46,8 @@ public:
 	wxhdCollection* selectedFigures() {return selection;};
 	wxhdCollection* getFiguresCollection() {return figures;};
 	wxhdDrawingEditor* getOwnerEditor() {return ownerEditor;};
+	void setName(wxString name) {drawingName = name;};
+	wxString getName() {return drawingName;};
 protected:
 
 private:
@@ -55,5 +57,6 @@ private:
 	wxhdCollection *figures;
 	wxhdCollection *handles;
 	wxhdRect displayBox;
+	wxString drawingName;
 };
 #endif

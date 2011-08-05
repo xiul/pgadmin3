@@ -151,6 +151,10 @@ wxhdMultiPosRect &wxhdPolyLineFigure::getBasicDisplayBox()
 	return basicDisplayBox;
 }
 
+int wxhdPolyLineFigure::pointLinesCount()
+{
+	return points.Count();
+}
 int wxhdPolyLineFigure::pointCount(int posIdx)
 {
 	return points[posIdx]->count();

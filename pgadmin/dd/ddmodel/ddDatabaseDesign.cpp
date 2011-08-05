@@ -55,6 +55,15 @@ void ddDatabaseDesign::registerBrowser(ddModelBrowser *browser)
 	attachedBrowser=browser;
 }
 
+void ddDatabaseDesign::addTableToModel(wxhdIFigure *figure)
+{
+	editor->addModelFigure(figure);
+	if(attachedBrowser)
+	{
+		attachedBrowser->refreshFromModel();
+	}
+}
+
 void ddDatabaseDesign::addTableToView(int diagramIndex, wxhdIFigure *figure)
 {
 	editor->addDiagramFigure(diagramIndex, figure);
@@ -87,11 +96,16 @@ void ddDatabaseDesign::eraseDiagram(int diagramIndex)
 	editor->getExistingDiagram(diagramIndex)->removeAllFigures();
 }
 
-bool ddDatabaseDesign::validateModel(wxString &errors, int diagramIndex)
+void ddDatabaseDesign::emptyModel()
+{
+	editor->deleteAllModelFigures();
+}
+
+bool ddDatabaseDesign::validateModel(wxString &errors)
 {
 	bool out = true;
 
-	wxhdIteratorBase *iterator = editor->getExistingDiagram(diagramIndex)->figuresEnumerator();
+	wxhdIteratorBase *iterator = editor->modelFiguresEnumerator();
 	wxhdIFigure *tmpFigure;
 	ddTableFigure *table;
 
@@ -109,6 +123,32 @@ bool ddDatabaseDesign::validateModel(wxString &errors, int diagramIndex)
 	}
 	delete iterator;
 
+	return out;
+}
+
+wxString ddDatabaseDesign::generateModel()
+{
+	wxString out;
+	wxhdIteratorBase *iterator = editor->modelFiguresEnumerator();
+	wxhdIFigure *tmp;
+	ddTableFigure *table;
+	while(iterator->HasNext())
+	{
+		tmp = (wxhdIFigure *)iterator->Next();
+		if(tmp->getKindId() == DDTABLEFIGURE)
+		{
+			out += wxT(" \n");
+			table = (ddTableFigure *)tmp;
+			out += wxT("--\n-- ");
+			out += _("Generating SQL for table: ");
+			out += table->getTableName();
+			out += wxT(" \n--\n");
+			out += table->generateSQL();
+			out += wxT(" \n");
+			out += wxT(" \n");
+		}
+	}
+	delete iterator;
 	return out;
 }
 
@@ -235,8 +275,7 @@ bool ddDatabaseDesign::writeXmlModel(wxString file)
 			ddXmlStorage::StartModel(xmlWriter,this);
 			//initialize IDs of tables
 			mappingNameToId.clear();
-			//666 change this to look at all tables no just from one model fixed in 0 right now
-			wxhdIteratorBase *iterator = editor->getExistingDiagram(0)->figuresEnumerator();
+			wxhdIteratorBase *iterator = editor->modelFiguresEnumerator(); 
 			wxhdIFigure *tmp;
 			ddTableFigure *table;
 			int nextID=10;
@@ -255,8 +294,7 @@ bool ddDatabaseDesign::writeXmlModel(wxString file)
 			
 
 			//Create table xml info
-			//666 change this to look at all tables no just from one model fixed in 0 right now
-			iterator = editor->getExistingDiagram(0)->figuresEnumerator();
+			iterator = editor->modelFiguresEnumerator(); 
 			while(iterator->HasNext())
 			{
 				tmp = (wxhdIFigure *)iterator->Next();
@@ -271,8 +309,7 @@ bool ddDatabaseDesign::writeXmlModel(wxString file)
 
 			//Create relationships xml info
 			ddRelationshipFigure *relationship;
-			//666 change this to look at all tables no just from one model fixed in 0 right now
-			iterator = editor->getExistingDiagram(0)->figuresEnumerator();
+			iterator = editor->modelFiguresEnumerator(); 
 			while(iterator->HasNext())
 			{
 				tmp = (wxhdIFigure *)iterator->Next();
@@ -284,6 +321,23 @@ bool ddDatabaseDesign::writeXmlModel(wxString file)
 			}
 			delete iterator;
 
+			//Create Diagrams xml info
+			
+			ddXmlStorage::StarDiagrams(xmlWriter);
+
+			iterator = editor->diagramsEnumerator();
+			wxhdDrawing *tmpDiagram;
+
+			while(iterator->HasNext())
+			{
+				tmpDiagram = (wxhdDrawing *)iterator->Next();
+				ddXmlStorage::WriteLocal(xmlWriter,tmpDiagram);
+			}
+			delete iterator;
+			
+			ddXmlStorage::EndDiagrams(xmlWriter);
+
+			//End model xml info
 			ddXmlStorage::EndModel(xmlWriter);
 			xmlTextWriterEndDocument(xmlWriter);
 			xmlFreeTextWriter(xmlWriter);
@@ -292,24 +346,22 @@ bool ddDatabaseDesign::writeXmlModel(wxString file)
 	return false;
 }
 
-bool ddDatabaseDesign::readXmlModel(wxString file)
+bool ddDatabaseDesign::readXmlModel(wxString file, ctlAuiNotebook *notebook)
 {
-	
-	//666 esto deberia BORRAR todo el modelo no solamente un diagrama asi que debe ser arreglado luego
-	eraseDiagram(0);
-
-
-
+	emptyModel();
 
 	mappingIdToName.clear();
 	//Initial Parse Model
 	xmlTextReaderPtr reader = xmlReaderForFile(file.mb_str(wxConvUTF8), NULL, 0);
+	ddXmlStorage::setModel(this);
 	ddXmlStorage::setModel(this);
 	ddXmlStorage::initialModelParse(reader);
 	
 	//Parse Model
 	xmlReaderNewFile(reader,file.mb_str(wxConvUTF8),NULL,0);
 	ddXmlStorage::setModel(this);
+	ddXmlStorage::setNotebook(notebook);
+
 	if(!ddXmlStorage::Read(reader))
 	{
 		return false;
@@ -345,9 +397,11 @@ wxString ddDatabaseDesign::getTableName(wxString Id)
 	return tableName;
 }
 
-wxhdDrawing* ddDatabaseDesign::createDiagram(wxWindow *owner)
+wxhdDrawing* ddDatabaseDesign::createDiagram(wxWindow *owner, wxString name, bool fromXml)
 {
-	return editor->createDiagram(owner);
+	wxhdDrawing* drawing = editor->createDiagram(owner, fromXml);
+	drawing->setName(name);
+	return drawing;
 }
 
 void ddDatabaseDesign::deleteDiagram(int diagramIndex)

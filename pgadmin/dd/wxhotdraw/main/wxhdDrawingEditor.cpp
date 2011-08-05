@@ -54,7 +54,7 @@ wxhdDrawingEditor::~wxhdDrawingEditor()
 }
 
 //Hack to allow create different kind of custom _views inside custom editor
-wxhdDrawing* wxhdDrawingEditor::createDiagram(wxWindow *owner)
+wxhdDrawing* wxhdDrawingEditor::createDiagram(wxWindow *owner, bool fromXml)
 {
 
 	//quede aqui arreglando el problema del huevo o la gallina debo crear el modelo y luego añadirlo a la vista que lo debe hacer suyo y registrarse
@@ -73,10 +73,13 @@ wxhdDrawing* wxhdDrawingEditor::createDiagram(wxWindow *owner)
 	//Add a new position inside each figure to allow use of this new diagram existing figures.
 	int i;
 	wxhdIFigure *tmp;
-	for(i=0;i< _model->count();i++)
+	if(!fromXml)
 	{
-		tmp = (wxhdIFigure *) _model->getItemAt(i);
-		tmp->AddPosForNewDiagram();
+		for(i=0;i< _model->count();i++)
+		{
+			tmp = (wxhdIFigure *) _model->getItemAt(i);
+			tmp->AddPosForNewDiagram();
+		}
 	}
 
 	//Add Diagram
@@ -215,6 +218,34 @@ wxhdIteratorBase *wxhdDrawingEditor::modelFiguresEnumerator()
 	return _model->createIterator();
 }
 
+wxhdIteratorBase *wxhdDrawingEditor::diagramsEnumerator()
+{
+	return _diagrams->createIterator();
+}
+
+void wxhdDrawingEditor::removeAllDiagramsFigures()
+{
+	int i, size = modelCount();
+
+	for(i=0; i < size ; i++)
+	{
+		getExistingDiagram(i)->removeAllFigures();
+	}
+}
+
+void wxhdDrawingEditor::deleteAllModelFigures()
+{
+	removeAllDiagramsFigures();
+	wxhdIFigure *tmp;
+	while(_model->count() > 0)
+	{
+		tmp = (wxhdIFigure *) _model->getItemAt(0);
+		_model->removeItemAt(0);
+		delete tmp;
+	}
+}
+
+//666 put here remove too
 void wxhdDrawingEditor::remOrDelSelFigures(int diagramIndex)
 {
 	int answer;

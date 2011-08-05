@@ -29,7 +29,7 @@ ddDrawingEditor::ddDrawingEditor(wxWindow *owner, ddDatabaseDesign *design)
 	databaseDesign = design;
 }
 
-wxhdDrawing* ddDrawingEditor::createDiagram(wxWindow *owner)
+wxhdDrawing* ddDrawingEditor::createDiagram(wxWindow *owner, bool fromXml)
 {
 
 	//quede aqui arreglando el problema del huevo o la gallina debo crear el modelo y luego añadirlo a la vista que lo debe hacer suyo y registrarse
@@ -47,15 +47,17 @@ wxhdDrawing* ddDrawingEditor::createDiagram(wxWindow *owner)
 
 	_viewTmp->SetDropTarget(new ddDropTarget(databaseDesign,_tmpModel));
 
-	//Add a new position inside each figure to allow use of this new diagram existing figures.
-	int i;
-	wxhdIFigure *tmp;
-	for(i=0;i< _model->count();i++)
+	if(!fromXml)
 	{
-		tmp = (wxhdIFigure *) _model->getItemAt(i);
-		tmp->AddPosForNewDiagram();
+		//Add a new position inside each figure to allow use of this new diagram existing figures.
+		int i;
+		wxhdIFigure *tmp;
+		for(i=0;i< _model->count();i++)
+		{
+			tmp = (wxhdIFigure *) _model->getItemAt(i);
+			tmp->AddPosForNewDiagram();
+		}
 	}
-
 	//Add Diagram
 	_diagrams->addItem((wxhdObject *) _tmpModel);
 	return _tmpModel;
@@ -278,7 +280,7 @@ void ddDrawingEditor::checkRelationshipsConsistency(int diagramIndex)
 
 void ddDrawingEditor::checkAllDigramsRelConsistency()
 {
-	int i, size = _diagrams->count();
+	int i, size = modelCount();
 
 	for(i=0; i < size ; i++)
 	{

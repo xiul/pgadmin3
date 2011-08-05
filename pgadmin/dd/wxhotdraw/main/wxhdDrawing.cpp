@@ -27,6 +27,7 @@ wxhdDrawing::wxhdDrawing(wxhdDrawingEditor *owner)
 	selection =  new wxhdCollection(new wxhdArrayCollection());
 	usedView = NULL;
 	ownerEditor = owner;
+	drawingName = wxEmptyString;
 }
 
 wxhdDrawing::~wxhdDrawing()
@@ -48,8 +49,6 @@ wxhdDrawing::~wxhdDrawing()
 
 	if(figures)
 		delete figures;
-/* it dont belong to it...	if(usedView)
-		delete usedView;*/
 }
 
 void wxhdDrawing::add(wxhdIFigure *figure)
@@ -60,8 +59,11 @@ void wxhdDrawing::add(wxhdIFigure *figure)
 
 void wxhdDrawing::remove(wxhdIFigure *figure)
 {
-	if(figures)
+	if(figures){
 		figures->removeItem(figure);
+		if(usedView)
+			figure->moveTo(usedView->getIdx(),-1,-1);
+	}
 }
 
 bool wxhdDrawing::includes(wxhdIFigure *figure)
@@ -165,7 +167,9 @@ void wxhdDrawing::removeAllFigures()
 	{
 		tmp = (wxhdIFigure *) figures->getItemAt(0);
 		figures->removeItemAt(0);
-		delete tmp;
+		if(usedView)
+			tmp->moveTo(usedView->getIdx(),-1,-1);
+		//666 delete tmp;
 	}
 }
 

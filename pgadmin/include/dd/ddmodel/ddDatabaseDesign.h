@@ -31,18 +31,20 @@ public:
 	void addTableToModel(wxhdIFigure *figure);
 	void addTableToView(int diagramIndex, wxhdIFigure *figure);
 	void removeTable(int diagramIndex, wxhdIFigure *figure);
-	wxhdDrawing* createDiagram(wxWindow *owner);
+	wxhdDrawing* createDiagram(wxWindow *owner, wxString name, bool fromXml);
 	void deleteDiagram(int diagramIndex);
 //666 000	void setTool(wxhdITool *tool);
 	void refreshDraw(int diagramIndex);
 	void eraseDiagram(int diagramIndex);
+	void emptyModel();
 	wxString generateDiagram(int diagramIndex);
-	bool validateModel(wxString &errors, int diagramIndex);
+	wxString generateModel();
+	bool validateModel(wxString &errors);
 	wxString getNewTableName();
 	ddTableFigure *getSelectedTable(int diagramIndex);
 	ddTableFigure *getTable(wxString tableName);
 	bool writeXmlModel(wxString file);
-	bool readXmlModel(wxString file);
+	bool readXmlModel(wxString file, ctlAuiNotebook *notebook);
 
 	wxString getTableId(wxString tableName);
 	void addTableToMapping(wxString IdKey, wxString tableName);

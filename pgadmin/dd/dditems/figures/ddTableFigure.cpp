@@ -259,7 +259,7 @@ void ddTableFigure::addColumn(int posIdx, ddColumnFigure *column)
 	}
 }
 
-//WARNING: Function should be called on a table generated from a storage
+//WARNING: Function should be called on a table generated from a storage or to sync values after a big change at model (not derived from hotdraw events)
 void ddTableFigure::syncInternalsPosAt(int posIdx, int x, int y)
 {
 	basicDisplayBox.x[posIdx]=x;
@@ -268,6 +268,30 @@ void ddTableFigure::syncInternalsPosAt(int posIdx, int x, int y)
 	tableTitle->moveTo(posIdx, rectangleFigure->getBasicDisplayBox().x[posIdx] + internalPadding * 2, rectangleFigure->getBasicDisplayBox().y[posIdx] + internalPadding / 2);
 	calcInternalSubAreas(posIdx);
 	recalculateColsPos(posIdx);
+}
+
+//WARNING: Function should be called on a table generated from a storage or to sync values after a big change at model (not derived from hotdraw events)
+void ddTableFigure::syncInternalsPosAt(wxArrayInt &x, wxArrayInt &y)
+{
+	unsigned int posIdx, pointsCount=tableTitle->getBasicDisplayBox().CountPositions(), finalValue=x.Count();
+	//I need to check that figures inside figure have all points too
+	while(pointsCount < finalValue)
+	{
+		AddPosForNewDiagram();
+		pointsCount=tableTitle->getBasicDisplayBox().CountPositions();
+	}
+
+	//optimize this, because this is hack right now to avoid some weird problem when recreating figure status
+	basicDisplayBox.x=x;
+	basicDisplayBox.y=y;
+
+	for(posIdx=0; posIdx < finalValue; posIdx++)
+	{
+		rectangleFigure->moveTo(posIdx, x[posIdx], y[posIdx]);
+		tableTitle->moveTo(posIdx, rectangleFigure->getBasicDisplayBox().x[posIdx] + internalPadding * 2, rectangleFigure->getBasicDisplayBox().y[posIdx] + internalPadding / 2);
+		calcInternalSubAreas(posIdx);
+		recalculateColsPos(posIdx);
+	}
 }
 
 //WARNING: Columns SHOULD BE ADDED only using this columns if was created as an image from storage one

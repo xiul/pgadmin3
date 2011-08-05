@@ -61,6 +61,7 @@ BEGIN_EVENT_TABLE(frmDatabaseDesigner, pgFrame)
 	EVT_MENU(MNU_ADDTABLE,          frmDatabaseDesigner::OnAddTable)
 	EVT_MENU(MNU_DELETETABLE,       frmDatabaseDesigner::OnDeleteTable)
 	EVT_MENU(MNU_ADDCOLUMN,         frmDatabaseDesigner::OnAddColumn)
+	EVT_MENU(MNU_GENERATEDIAGRAM,     frmDatabaseDesigner::OnModelGeneration)
 	EVT_MENU(MNU_GENERATEMODEL,     frmDatabaseDesigner::OnModelGeneration)
 	EVT_MENU(MNU_SAVEMODEL,			frmDatabaseDesigner::OnModelSave)
 	EVT_MENU(MNU_LOADMODEL,			frmDatabaseDesigner::OnModelLoad)
@@ -122,6 +123,7 @@ frmDatabaseDesigner::frmDatabaseDesigner(frmMain *form, const wxString &_title, 
 	toolBar->AddTool(MNU_DELETETABLE, _("Delete Table"), wxBitmap(*ddRemoveTable2_png_img), _("Delete selected table"), wxITEM_NORMAL);
 	toolBar->AddTool(MNU_ADDCOLUMN, _("Add Column"), *table_png_bmp, _("Add new column to the selected table"), wxITEM_NORMAL);
 	toolBar->AddTool(MNU_GENERATEMODEL, _("Generate Model"), *continue_png_bmp, _("Generate SQL for the current model"), wxITEM_NORMAL);
+	toolBar->AddTool(MNU_GENERATEDIAGRAM, _("Generate Selected Diagram"), *continue_png_bmp, _("Generate SQL for the current diagram"), wxITEM_NORMAL);
 	toolBar->AddTool(MNU_SAVEMODEL, _("Save Model"), *file_save_png_bmp, _("Save current database designer model"), wxITEM_NORMAL);
 	toolBar->AddTool(MNU_LOADMODEL, _("Load Model"), *file_open_png_bmp, _("Load database designer model from a file"), wxITEM_NORMAL);
 	toolBar->AddSeparator();
@@ -148,8 +150,8 @@ frmDatabaseDesigner::frmDatabaseDesigner(frmMain *form, const wxString &_title, 
 	design->registerBrowser(modelBrowser);
 
 	// Add view to notebook
-	diagrams->AddPage(design->createDiagram(diagrams)->getView(), _("Diagrama Test"));
-	diagrams->AddPage(design->createDiagram(diagrams)->getView(), _("Diagrama Test #3"));
+	diagrams->AddPage(design->createDiagram(diagrams,_("Diagrama Test"),false)->getView(), _("Diagrama Test"));
+	diagrams->AddPage(design->createDiagram(diagrams,_("Diagrama Test #3"),false)->getView(), _("Diagrama Test #3"));
 
 	// Add the panes
 	manager.AddPane(diagrams,
@@ -318,7 +320,7 @@ void frmDatabaseDesigner::OnDiagramGeneration(wxCommandEvent &event)
 {
 	wxhdDrawingView *view = (wxhdDrawingView *) diagrams->GetPage(diagrams->GetSelection());
 	wxString errors;
-	if(!design->validateModel(errors,view->getIdx()))
+	if(!design->validateModel(errors))
 	{
 		wxMessageDialog dialog( this, errors , wxT("Errors detected at database model"), wxOK | wxICON_EXCLAMATION | wxSTAY_ON_TOP );
 		dialog.ShowModal();
@@ -333,16 +335,14 @@ void frmDatabaseDesigner::OnDiagramGeneration(wxCommandEvent &event)
 void frmDatabaseDesigner::OnModelGeneration(wxCommandEvent &event)
 {
 	wxString errors;
-	//666 Fixed at model 0 right now....
-	if(!design->validateModel(errors,0))
+	if(!design->validateModel(errors))
 	{
 		wxMessageDialog dialog( this, errors , wxT("Errors detected at database model"), wxOK | wxICON_EXCLAMATION | wxSTAY_ON_TOP );
 		dialog.ShowModal();
 	}
 	else
 	{
-		//666 Fixed at model 0 right now....
-		sqltext->SetValue(design->generateDiagram(0));
+		sqltext->SetValue(design->generateModel());
 	}
 }
 
@@ -378,8 +378,16 @@ void frmDatabaseDesigner::OnModelLoad(wxCommandEvent &event)
 		path.append( openFileDialog.GetFilename() );
 		if(!path.Lower().Matches(_("*.pgd")))
 			path.append(_(".pgd"));		
-		//FIX THIS 666 design->eraseModel();
-		design->readXmlModel(path);
+		
+		//Clean diagrams notebook	
+		do{
+			diagrams->RemovePage(0); //666 hacerlo dinamico
+			design->deleteDiagram(0);			
+		}while(diagrams->GetPageCount()>0);
+		design->emptyModel();
+		
+		//Read model from xml file
+		design->readXmlModel(path,diagrams);
 	}
 
 
@@ -389,7 +397,7 @@ void frmDatabaseDesigner::OnAddDiagram(wxCommandEvent &event)
 {
 	wxString newName = wxGetTextFromUser(_("New Diagram Name"),_("Diagram Name"),wxEmptyString,this);
 	if(!newName.IsEmpty())
-		diagrams->AddPage(design->createDiagram(diagrams)->getView(), newName);
+		diagrams->AddPage(design->createDiagram(diagrams,newName,false)->getView(), newName);
 }
 
 void frmDatabaseDesigner::OnDeleteDiagram(wxCommandEvent &event)

@@ -40,6 +40,7 @@ public:
 	void addColumn(int posIdx, ddColumnFigure *column);
 	void addColumnFromStorage(ddColumnFigure *column);
 	void syncInternalsPosAt(int posIdx, int x, int y);
+	void syncInternalsPosAt(wxArrayInt &x, wxArrayInt &y);
 	void removeColumn(int posIdx, ddColumnFigure *column);
 
 	//movement
