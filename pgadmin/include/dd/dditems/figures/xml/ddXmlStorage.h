@@ -50,6 +50,7 @@ public:
 	
 	//Read xml info Database Designer Related
 	static void selectReader(xmlTextReaderPtr reader);
+	static void checkVersion(xmlTextReaderPtr reader);
 	static ddTableFigure* getTable(xmlTextReaderPtr reader);
 	static ddColumnFigure* getColumn(xmlTextReaderPtr reader, ddTableFigure *colOwner);
 	static ddRelationshipFigure* getRelationship(xmlTextReaderPtr reader);

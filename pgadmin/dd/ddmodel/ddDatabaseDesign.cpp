@@ -408,3 +408,8 @@ void ddDatabaseDesign::deleteDiagram(int diagramIndex)
 {
 	editor->deleteDiagram(diagramIndex);
 }
+
+wxString ddDatabaseDesign::getVersionXML()
+{
+	return wxString(_("1.0"));
+}

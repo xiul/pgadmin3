@@ -31,6 +31,8 @@ public:
 	~frmDatabaseDesigner();
 	void Go();
 private:
+	bool changed;
+	wxString lastFile;
 	frmMain *mainForm;
 	pgConn *connection;
 	ddDatabaseDesign *design;
@@ -38,6 +40,7 @@ private:
 	ddModelBrowser *modelBrowser;
 	ctlAuiNotebook *diagrams;
 	wxTextCtrl *sqltext;
+	void setExtendedTitle();
 	void OnClose(wxCloseEvent &event);
 	void OnAddDiagram(wxCommandEvent &event);
 	void OnDeleteDiagram(wxCommandEvent &event);
@@ -46,6 +49,7 @@ private:
 	void OnAddColumn(wxCommandEvent &event);
 	void OnNewModel(wxCommandEvent &event);
 	void OnModelGeneration(wxCommandEvent &event);
+	void OnModelSaveAs(wxCommandEvent &event);
 	void OnDiagramGeneration(wxCommandEvent &event);
 	void OnModelSave(wxCommandEvent &event);
 	void OnModelLoad(wxCommandEvent &event);

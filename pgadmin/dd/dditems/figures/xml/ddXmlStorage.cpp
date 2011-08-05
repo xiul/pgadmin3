@@ -65,6 +65,16 @@ void ddXmlStorage::StartModel(xmlTextWriterPtr writer, ddDatabaseDesign *sourceD
 	//<!ELEMENT MODEL (TABLE+)>
 	tmp = xmlTextWriterStartElement(writer, BAD_CAST "MODEL");
 	processResult(tmp);
+
+	//<!ELEMENT VERSION EMPTY>
+	tmp = xmlTextWriterStartElement(writer, BAD_CAST "VERSION");
+	processResult(tmp);
+	// <!ATTLIST VERSION VERIXLU CDATA #REQUIRED>
+	wxString version = sourceDesign->getVersionXML();
+	tmp = xmlTextWriterWriteAttribute(writer, BAD_CAST "VERIXLU", XML_FROM_WXSTRING(version) );
+	processResult(tmp);
+	//Close VERSION Element
+	xmlTextWriterEndElement(writer);
 }
 
 void ddXmlStorage::EndModel( xmlTextWriterPtr writer)
@@ -698,6 +708,10 @@ void ddXmlStorage::selectReader(xmlTextReaderPtr reader)
 {
 	if(getNodeType(reader)==1) //libxml 1 for start element
 	{
+		if(getNodeName(reader).IsSameAs(_("VERSION"),false))
+		{
+			checkVersion(reader);
+		}
 		if(getNodeName(reader).IsSameAs(_("MODEL"),false))
 		{
 			//<!ELEMENT MODEL (TABLE+)>
@@ -723,6 +737,36 @@ void ddXmlStorage::selectReader(xmlTextReaderPtr reader)
 		{
 			initDiagrams(reader);
 		}
+	}
+}
+
+//Check if version of modeler with xml input is compatible
+void ddXmlStorage::checkVersion(xmlTextReaderPtr reader)
+{
+/*
+<!--Version Element-->
+<!ELEMENT VERSIONXL EMPTY>
+<!ATTLIST VERSION VERIXLU CDATA #REQUIRED>
+*/
+int tmp;
+wxString Number;
+xmlChar *value;
+	//<!ATTLIST  VERSIONXL NUMBER CDATA #REQUIRED>
+	tmp = xmlTextReaderHasAttributes(reader);
+	Number=_("VERIXLU");
+	if(tmp)
+	{
+		value = xmlTextReaderGetAttribute(reader,XML_FROM_WXSTRING(Number));
+	}
+	
+	if(value)
+	{
+			Number = WXSTRING_FROM_XML(value);
+			xmlFree(value);
+	}
+	if(!Number.IsSameAs(_("1.0")))
+	{
+			wxMessageBox(_("Invalid version of XML file for pgAdmin database designer found"),_("Invalid XML"),wxOK | wxICON_ERROR);
 	}
 }
 
@@ -1659,7 +1703,11 @@ void ddXmlStorage::initDiagrams(xmlTextReaderPtr reader)
 wxString ddXmlStorage::getModelDTD()
 {
 	wxString dtd = wxEmptyString;
-dtd += _("<!ELEMENT MODEL (TABLE+,RELATIONSHIP*,DIAGRAMS)>");
+dtd += _("<!ELEMENT MODEL (VERSION,TABLE+,RELATIONSHIP*,DIAGRAMS)>");
+dtd += _("<!--Version Element-->");
+dtd += _("<!ELEMENT VERSION EMPTY>");
+dtd += _("<!ATTLIST VERSION VERIXLU CDATA #REQUIRED>");
+dtd += _(" ");
 dtd += _("<!--Atribute Element-->");
 dtd += _("<!ELEMENT Attribute (#PCDATA)>");
 dtd += _(" ");

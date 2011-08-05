@@ -51,9 +51,9 @@ public:
 	wxString getTableName(wxString Id);
 	void registerBrowser(ddModelBrowser *browser);
 	void refreshBrowser();
-	void checkRelationshipsConsistency(int diagramIndex);
-	void checkAllDigramsRelConsistency();
-
+//666	void checkRelationshipsConsistency(int diagramIndex);
+//666	void checkAllDigramsRelConsistency();
+	static wxString getVersionXML();
 protected:
 	tablesMappingHashMap mappingNameToId;
 	tablesMappingHashMap mappingIdToName;

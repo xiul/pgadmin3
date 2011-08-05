@@ -61,12 +61,14 @@ void ddRemoveTableButtonHandle::invokeEnd(wxhdMouseEvent &event, wxhdDrawingView
 			//Drop table
 			editor->deleteModelFigure(table);
 			editor->getDesign()->refreshBrowser();
+			editor->checkRelationshipsConsistency(view->getIdx());
 		}
 		else if(answer == DD_REMOVE)
 		{
 			ddDrawingEditor *editor = (ddDrawingEditor*) view->editor();
 			editor->getExistingDiagram(view->getIdx())->removeFromSelection(table); 
 			editor->getExistingDiagram(view->getIdx())->remove(table);
+			editor->checkRelationshipsConsistency(view->getIdx());
 		}
 
 	}
