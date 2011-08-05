@@ -68,6 +68,7 @@ BEGIN_EVENT_TABLE(frmDatabaseDesigner, pgFrame)
 	EVT_MENU(MNU_LOADMODEL,			frmDatabaseDesigner::OnModelLoad)
 	EVT_MENU(MNU_NEWDIAGRAM,			frmDatabaseDesigner::OnAddDiagram)
 	EVT_MENU(MNU_DELDIAGRAM,			frmDatabaseDesigner::OnDeleteDiagram)
+	EVT_AUINOTEBOOK_PAGE_CLOSE(CTL_DDNOTEBOOK, frmDatabaseDesigner::OnDeleteDiagramTab)
 	EVT_CLOSE(                      frmDatabaseDesigner::OnClose)
 END_EVENT_TABLE()
 
@@ -100,7 +101,7 @@ frmDatabaseDesigner::frmDatabaseDesigner(frmMain *form, const wxString &_title, 
 	fileMenu->Append(MNU_SAVEMODELAS, _("&Save Model As..."), _("Save database design at new file"));
 	fileMenu->AppendSeparator();
 	fileMenu->Append(MNU_NEWDIAGRAM, _("&New model diagram"), _("Create a new diagram for open database design"));
-	fileMenu->Append(MNU_DELDIAGRAM, _("&Delete model diagram..."), _("Delete selected diagram from design"));
+	fileMenu->Append(MNU_DELDIAGRAM, _("&Delete selected model diagram..."), _("Delete selected diagram from design"));
 	fileMenu->AppendSeparator();
 	fileMenu->Append(MNU_EXIT, _("E&xit\tCtrl-W"), _("Exit database designer window"));
 
@@ -125,15 +126,16 @@ frmDatabaseDesigner::frmDatabaseDesigner(frmMain *form, const wxString &_title, 
 	toolBar = new ctlMenuToolbar(this, -1, wxDefaultPosition, wxDefaultSize, wxTB_FLAT | wxTB_NODIVIDER);
 	toolBar->SetToolBitmapSize(wxSize(16, 16));
 	toolBar->AddTool(MNU_NEW, _("New"), *file_new_png_bmp, _("New database design"), wxITEM_NORMAL);
+	toolBar->AddTool(MNU_NEWDIAGRAM, _("New Diagram"), *file_new_png_bmp, _("Create a new diagram for open database design [Testing purpose]"), wxITEM_NORMAL);
 	toolBar->AddSeparator();
 	toolBar->AddTool(MNU_LOADMODEL, _("Open Model"), *file_open_png_bmp, _("Load database designer model from a file"), wxITEM_NORMAL);
 	toolBar->AddTool(MNU_SAVEMODEL, _("Save Model"), *file_save_png_bmp, _("Save current database designer model"), wxITEM_NORMAL);
-	toolBar->AddTool(MNU_NEWDIAGRAM, _("New Diagram"), *file_new_png_bmp, _("Create a new diagram for open database design [Testing purpose]"), wxITEM_NORMAL);
-	toolBar->AddTool(MNU_DELDIAGRAM, _("Delete Diagram"), *file_new_png_bmp, _("Delete selected diagram from design [Testing purpose]"), wxITEM_NORMAL);
+//666	toolBar->AddTool(MNU_DELDIAGRAM, _("Delete Diagram"), *file_new_png_bmp, _("Delete selected diagram from design [Testing purpose]"), wxITEM_NORMAL);
 	toolBar->AddSeparator();
 	toolBar->AddTool(MNU_ADDTABLE, _("Add Table"), *table_png_bmp, _("Add empty table to the current model"), wxITEM_NORMAL);
 	toolBar->AddTool(MNU_DELETETABLE, _("Delete Table"), wxBitmap(*ddRemoveTable2_png_img), _("Delete selected table"), wxITEM_NORMAL);
 	toolBar->AddTool(MNU_ADDCOLUMN, _("Add Column"), *table_png_bmp, _("Add new column to the selected table"), wxITEM_NORMAL);
+	toolBar->AddSeparator();
 	toolBar->AddTool(MNU_GENERATEMODEL, _("Generate Model"), *continue_png_bmp, _("Generate SQL for the current model"), wxITEM_NORMAL);
 	toolBar->AddTool(MNU_GENERATEDIAGRAM, _("Generate Selected Diagram"), *continue_png_bmp, _("Generate SQL for the current diagram"), wxITEM_NORMAL);
 //666	toolBar->AddTool(MNU_SAVEMODEL, _("Save Model"), *file_save_png_bmp, _("Save current database designer model"), wxITEM_NORMAL);
@@ -143,7 +145,7 @@ frmDatabaseDesigner::frmDatabaseDesigner(frmMain *form, const wxString &_title, 
 	toolBar->Realize();
 
 	// Create notebook for diagrams
-	diagrams = new ctlAuiNotebook(this, CTL_DDNOTEBOOK, wxDefaultPosition, wxDefaultSize, wxAUI_NB_TOP | wxAUI_NB_TAB_SPLIT | wxAUI_NB_TAB_MOVE | wxAUI_NB_SCROLL_BUTTONS | wxAUI_NB_WINDOWLIST_BUTTON);
+	diagrams = new ctlAuiNotebook(this, CTL_DDNOTEBOOK, wxDefaultPosition, wxDefaultSize, wxAUI_NB_TOP | wxAUI_NB_TAB_SPLIT | wxAUI_NB_TAB_MOVE | wxAUI_NB_SCROLL_BUTTONS | wxAUI_NB_WINDOWLIST_BUTTON | wxAUI_NB_CLOSE_ON_ALL_TABS);
 
 	// Now, the scratchpad
 	sqltext = new wxTextCtrl(this, -1, wxT(""), wxDefaultPosition, wxDefaultSize, wxTE_MULTILINE | wxHSCROLL);
@@ -159,9 +161,8 @@ frmDatabaseDesigner::frmDatabaseDesigner(frmMain *form, const wxString &_title, 
 	design->registerBrowser(modelBrowser);
 
 	// Add view to notebook
-	diagrams->AddPage(design->createDiagram(diagrams,_("Diagrama Test"),false)->getView(), _("Diagrama Test"));
-	diagrams->AddPage(design->createDiagram(diagrams,_("Diagrama Test #3"),false)->getView(), _("Diagrama Test #3"));
-
+diagrams->AddPage(design->createDiagram(diagrams,_("New Diagram"),false)->getView(), _("New Diagram"));
+//666	diagrams->AddPage(design->createDiagram(diagrams,_("Diagrama Test #3"),false)->getView(), _("Diagrama Test #3"));
 	// Add the panes
 	manager.AddPane(diagrams,
 	                wxAuiPaneInfo().Center().
@@ -343,7 +344,16 @@ void frmDatabaseDesigner::OnAddColumn(wxCommandEvent &event)
 void frmDatabaseDesigner::OnNewModel(wxCommandEvent &event)
 {
 	wxhdDrawingView *view = (wxhdDrawingView *) diagrams->GetPage(diagrams->GetSelection());
-	design->eraseDiagram(view->getIdx());
+	//Clean diagrams notebook	
+	while(diagrams->GetPageCount()>0)
+	{
+		diagrams->RemovePage(0); //666 hacerlo dinamico
+		design->deleteDiagram(0);			
+	};
+	design->emptyModel();
+	
+	OnAddDiagram(event);
+	
 	sqltext->Clear();
 	changed=false;
 	setExtendedTitle();
@@ -429,10 +439,11 @@ void frmDatabaseDesigner::OnModelLoad(wxCommandEvent &event)
 			path.append(_(".pgd"));		
 		
 		//Clean diagrams notebook	
-		do{
+		while(diagrams->GetPageCount()>0)
+		{
 			diagrams->RemovePage(0); //666 hacerlo dinamico
 			design->deleteDiagram(0);			
-		}while(diagrams->GetPageCount()>0);
+		}
 		design->emptyModel();
 		lastFile = path;
 		
@@ -456,6 +467,19 @@ void frmDatabaseDesigner::OnDeleteDiagram(wxCommandEvent &event)
 	int diagramIndex=view->getIdx();
 	diagrams->RemovePage(diagrams->GetSelection());
 	design->deleteDiagram(diagramIndex);
+}
+
+void frmDatabaseDesigner::OnDeleteDiagramTab(wxAuiNotebookEvent &event)
+{
+    wxAuiNotebook* ctrl = (wxAuiNotebook*)event.GetEventObject();
+	wxhdDrawingView *view = (wxhdDrawingView *) ctrl->GetPage(event.GetSelection());
+	
+	int res = wxMessageBox(wxT("Are you sure you want to delete diagram \"") + view->getDrawing()->getName() + _("\" from model?"),
+                       wxT("Delete diagram?"),
+                       wxYES_NO,
+                       this);
+    if (res != wxYES)
+        event.Veto();	
 }
 
 ///////////////////////////////////////////////////////
