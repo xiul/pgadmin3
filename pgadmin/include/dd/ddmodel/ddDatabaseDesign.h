@@ -13,6 +13,7 @@
 #define DDDATABASEDESIGN_H
 
 #include <libxml/xmlwriter.h>
+#include <ctl/ctlAuiNotebook.h>
 
 #include "dd/ddmodel/ddDrawingEditor.h"
 #include "dd/wxhotdraw/tools/wxhdITool.h"
