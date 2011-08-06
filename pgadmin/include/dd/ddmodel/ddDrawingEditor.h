@@ -16,7 +16,7 @@
 
 enum
 {
-	MNU_NEWTABLE = 0
+	MNU_NEWTABLE = 321
 };
 
 class ddDatabaseDesign;
@@ -25,10 +25,16 @@ class ddDrawingEditor : public wxhdDrawingEditor
 {
 public:
 	ddDrawingEditor(wxWindow *owner, ddDatabaseDesign *design);
-	virtual void createView(wxWindow *owner);
-	//Hack To allow right click menu at canvas without a figure
+	virtual wxhdDrawing* createDiagram(wxWindow *owner, bool fromXml);
+	virtual void remOrDelSelFigures(int diagramIndex);
+/*	//Hack To allow right click menu at canvas without a figure 666
 	virtual void createMenu(wxMenu &mnu);
 	virtual void OnGenericPopupClick(wxCommandEvent &event, wxhdDrawingView *view);
+	*/
+	void checkRelationshipsConsistency(int diagramIndex);
+	void checkAllDigramsRelConsistency();
+	ddDatabaseDesign* getDesign() {return databaseDesign;};
+
 protected:
 private:
 	ddDatabaseDesign *databaseDesign;

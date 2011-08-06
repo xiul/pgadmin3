@@ -4148,6 +4148,10 @@
 					Name="ddmodel"
 					>
 					<File
+						RelativePath=".\include\dd\ddmodel\ddBrowserDataContainer.h"
+						>
+					</File>
+					<File
 						RelativePath=".\include\dd\ddmodel\ddDatabaseDesign.h"
 						>
 					</File>
@@ -4157,6 +4161,10 @@
 					</File>
 					<File
 						RelativePath=".\include\dd\ddmodel\ddDrawingView.h"
+						>
+					</File>
+					<File
+						RelativePath=".\include\dd\ddmodel\ddModelBrowser.h"
 						>
 					</File>
 					<File
@@ -4471,11 +4479,19 @@
 							>
 						</File>
 						<File
+							RelativePath=".\include\dd\wxhotdraw\utilities\wxhdMultiPosRect.h"
+							>
+						</File>
+						<File
 							RelativePath=".\include\dd\wxhotdraw\utilities\wxhdPoint.h"
 							>
 						</File>
 						<File
 							RelativePath=".\include\dd\wxhotdraw\utilities\wxhdRect.h"
+							>
+						</File>
+						<File
+							RelativePath=".\include\dd\wxhotdraw\utilities\wxhdRemoveDeleteDialog.h"
 							>
 						</File>
 					</Filter>
@@ -6145,6 +6161,10 @@
 				Name="ddmodel"
 				>
 				<File
+					RelativePath=".\dd\ddmodel\ddBrowserDataContainer.cpp"
+					>
+				</File>
+				<File
 					RelativePath=".\dd\ddmodel\ddDatabaseDesign.cpp"
 					>
 				</File>
@@ -6154,6 +6174,10 @@
 				</File>
 				<File
 					RelativePath=".\dd\ddmodel\ddDrawingView.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\dd\ddmodel\ddModelBrowser.cpp"
 					>
 				</File>
 				<File
@@ -6460,11 +6484,19 @@
 						>
 					</File>
 					<File
+						RelativePath=".\dd\wxhotdraw\utilities\wxhdMultiPosRect.cpp"
+						>
+					</File>
+					<File
 						RelativePath=".\dd\wxhotdraw\utilities\wxhdPoint.cpp"
 						>
 					</File>
 					<File
 						RelativePath=".\dd\wxhotdraw\utilities\wxhdRect.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\dd\wxhotdraw\utilities\wxhdRemoveDeleteDialog.cpp"
 						>
 					</File>
 				</Filter>
