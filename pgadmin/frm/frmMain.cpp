@@ -79,6 +79,8 @@
 #include "slony/slCluster.h"
 #include "slony/slSet.h"
 #include "schema/pgForeignKey.h"
+#include "schema/pgCheck.h"
+#include "schema/pgDomain.h"
 
 
 #if wxDIALOG_UNIT_COMPATIBILITY
@@ -291,6 +293,8 @@ void frmMain::CreateMenus()
 	new disableAllTriggersFactory(menuFactories, toolsMenu, 0);
 	new enableAllTriggersFactory(menuFactories, toolsMenu, 0);
 	new validateForeignKeyFactory(menuFactories, toolsMenu, 0);
+	new validateCheckFactory(menuFactories, toolsMenu, 0);
+	new validateDomainCheckFactory(menuFactories, toolsMenu, 0);
 	toolsMenu->AppendSeparator();
 
 	//--------------------------
@@ -1349,9 +1353,9 @@ pgsqlHelpFactory::pgsqlHelpFactory(menuFactoryList *list, wxMenu *mnu, ctlMenuTo
 	if (toolbar)
 	{
 		if (bigIcon)
-			toolbar->AddTool(id, _("SQL Help"), *help2_png_bmp, _("Display help on SQL commands."));
+			toolbar->AddTool(id, wxEmptyString, *help2_png_bmp, _("Display help on SQL commands."));
 		else
-			toolbar->AddTool(id, _("SQL Help"), *help_png_bmp, _("Display help on SQL commands."));
+			toolbar->AddTool(id, wxEmptyString, *help_png_bmp, _("Display help on SQL commands."));
 	}
 }
 

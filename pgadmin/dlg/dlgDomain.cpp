@@ -21,6 +21,7 @@
 #include "schema/pgSchema.h"
 #include "schema/pgDomain.h"
 #include "schema/pgDatatype.h"
+#include "ctl/ctlSeclabelPanel.h"
 
 
 // pointer to controls
@@ -28,6 +29,7 @@
 #define txtDefault          CTRL_TEXT("txtDefault")
 #define txtCheck            CTRL_TEXT("txtCheck")
 #define cbCollation         CTRL_COMBOBOX("cbCollation")
+#define chkDontValidate     CTRL_CHECKBOX("chkDontValidate")
 
 BEGIN_EVENT_TABLE(dlgDomain, dlgTypeProperty)
 	EVT_TEXT(XRCID("txtLength"),                    dlgProperty::OnChange)
@@ -37,6 +39,8 @@ BEGIN_EVENT_TABLE(dlgDomain, dlgTypeProperty)
 	EVT_TEXT(XRCID("txLength"),                     dlgProperty::OnChange)
 	EVT_TEXT(XRCID("txtDefault"),                   dlgProperty::OnChange)
 	EVT_CHECKBOX(XRCID("chkNotNull"),               dlgProperty::OnChange)
+	EVT_CHECKBOX(XRCID("chkDontValidate"),          dlgDomain::OnChangeValidate)
+	EVT_TEXT(XRCID("txtCheck"),                     dlgProperty::OnChange)
 END_EVENT_TABLE();
 
 
@@ -52,6 +56,8 @@ dlgDomain::dlgDomain(pgaFactory *f, frmMain *frame, pgDomain *node, pgSchema *sc
 	schema = sch;
 	domain = node;
 
+	seclabelPage = new ctlSeclabelPanel(nbNotebook);
+
 	txtLength->Disable();
 	txtPrecision->Disable();
 }
@@ -65,6 +71,15 @@ pgObject *dlgDomain::GetObject()
 
 int dlgDomain::Go(bool modal)
 {
+	if (connection->BackendMinimumVersion(9, 1))
+	{
+		seclabelPage->SetConnection(connection);
+		seclabelPage->SetObject(domain);
+		this->Connect(EVT_SECLABELPANEL_CHANGE, wxCommandEventHandler(dlgDomain::OnChange));
+	}
+	else
+		seclabelPage->Disable();
+
 	if (domain)
 	{
 		// edit mode
@@ -84,7 +99,6 @@ int dlgDomain::Go(bool modal)
 
 		txtName->Disable();
 		cbDatatype->Disable();
-		txtCheck->Disable();
 
 		cbCollation->SetValue(domain->GetQuotedCollation());
 		cbCollation->Disable();
@@ -95,6 +109,9 @@ int dlgDomain::Go(bool modal)
 			txtDefault->Disable();
 			chkNotNull->Disable();
 		}
+
+		if (connection->BackendMinimumVersion(9, 2))
+			chkDontValidate->SetValue(!domain->GetValid());
 	}
 	else
 	{
@@ -127,6 +144,11 @@ int dlgDomain::Go(bool modal)
 		}
 	}
 
+	if (connection->BackendMinimumVersion(9, 2))
+		chkDontValidate->Enable(!domain || (domain && !domain->GetValid()));
+	else
+		chkDontValidate->Enable(false);
+
 	return dlgProperty::Go(modal);
 }
 
@@ -145,13 +167,20 @@ pgObject *dlgDomain::CreateObject(pgCollection *collection)
 
 void dlgDomain::CheckChange()
 {
+	bool enable = true;
+
 	if (domain)
 	{
-		EnableOK(txtDefault->GetValue() != domain->GetDefault()
+		enable = txtDefault->GetValue() != domain->GetDefault()
 		         || cbSchema->GetValue() != domain->GetSchema()->GetName()
 		         || chkNotNull->GetValue() != domain->GetNotNull()
+		         || txtCheck->GetValue() != domain->GetCheck()
 		         || cbOwner->GetValue() != domain->GetOwner()
-		         || txtComment->GetValue() != domain->GetComment());
+		         || txtComment->GetValue() != domain->GetComment();
+		if (connection->BackendMinimumVersion(9, 2) && !domain->GetValid() && !chkDontValidate->GetValue())
+			enable = true;
+		if (seclabelPage && connection->BackendMinimumVersion(9, 1))
+			enable = enable || !(seclabelPage->GetSqlForSecLabels().IsEmpty());
 	}
 	else
 	{
@@ -161,7 +190,6 @@ void dlgDomain::CheckChange()
 
 		txtPrecision->Enable(isVarPrec && varlen > 0);
 
-		bool enable = true;
 		CheckValid(enable, !name.IsEmpty(), _("Please specify name."));
 		CheckValid(enable, cbDatatype->GetGuessedSelection() >= 0, _("Please select a datatype."));
 		CheckValid(enable, !isVarLen || txtLength->GetValue().IsEmpty()
@@ -170,9 +198,8 @@ void dlgDomain::CheckChange()
 		CheckValid(enable, !txtPrecision->IsEnabled()
 		           || (varprec >= 0 && varprec <= varlen && NumToStr(varprec) == txtPrecision->GetValue()),
 		           _("Please specify valid numeric precision (0..") + NumToStr(varlen) + wxT(")."));
-
-		EnableOK(enable);
 	}
+	EnableOK(enable);
 }
 
 
@@ -186,6 +213,12 @@ void dlgDomain::OnSelChangeTyp(wxCommandEvent &ev)
 		txtLength->Enable(isVarLen);
 		CheckChange();
 	}
+}
+
+
+void dlgDomain::OnChangeValidate(wxCommandEvent &ev)
+{
+	CheckChange();
 }
 
 
@@ -214,6 +247,28 @@ wxString dlgDomain::GetSql()
 			else
 				sql += wxT("\n  SET DEFAULT ") + txtDefault->GetValue() + wxT(";\n");
 		}
+		if (txtCheck->GetValue() != domain->GetCheck())
+		{
+			if (!domain->GetCheck().IsEmpty())
+				sql += wxT("ALTER DOMAIN ") + schema->GetQuotedPrefix() + qtIdent(name)
+				       + wxT(" DROP CONSTRAINT ") + qtIdent(domain->GetCheckConstraintName());
+
+			if (!txtCheck->GetValue().IsEmpty())
+			{
+				sql += wxT("ALTER DOMAIN ") + schema->GetQuotedPrefix() + qtIdent(name)
+				       + wxT(" ADD ");
+				if (!domain->GetCheck().IsEmpty())
+					sql += wxT("CONSTRAINT ") + qtIdent(domain->GetCheckConstraintName());
+				sql += wxT("\n   CHECK (") + txtCheck->GetValue() + wxT(")");
+				if (chkDontValidate->GetValue())
+					sql += wxT(" NOT VALID");
+			}
+		}
+		if (chkDontValidate->IsEnabled() && !domain->GetValid() && !chkDontValidate->GetValue())
+		{
+			sql += wxT("ALTER DOMAIN ") + schema->GetQuotedPrefix() + qtIdent(name)
+			       + wxT(" VALIDATE CONSTRAINT ") + qtIdent(domain->GetCheckConstraintName()) + wxT(";\n");
+		}
 		AppendOwnerChange(sql, wxT("DOMAIN ") + domain->GetQuotedFullIdentifier());
 		AppendSchemaChange(sql, wxT("DOMAIN ") + domain->GetQuotedFullIdentifier());
 	}
@@ -227,17 +282,32 @@ wxString dlgDomain::GetSql()
 		if (!cbCollation->GetValue().IsEmpty() && cbCollation->GetValue() != wxT("pg_catalog.\"default\""))
 			sql += wxT("\n   COLLATE ") + cbCollation->GetValue();
 
+		if (chkDontValidate->GetValue())
+			sql += wxT(";\nALTER DOMAIN ") + schema->GetQuotedPrefix() + qtIdent(name) + wxT(" ADD ");
+
 		AppendIfFilled(sql, wxT("\n   DEFAULT "), txtDefault->GetValue());
 		if (chkNotNull->GetValue())
 			sql += wxT("\n   NOT NULL");
 		if (!txtCheck->GetValue().IsEmpty())
 			sql += wxT("\n   CHECK (") + txtCheck->GetValue() + wxT(")");
+
+		if (chkDontValidate->GetValue())
+			sql += wxT(" NOT VALID");
+
 		sql += wxT(";\n");
 
 		AppendOwnerNew(sql, wxT("DOMAIN ") + name);
 	}
+
 	AppendComment(sql, wxT("DOMAIN ") + qtIdent(cbSchema->GetValue()) + wxT(".") + qtIdent(GetName()), domain);
+
+	if (seclabelPage && connection->BackendMinimumVersion(9, 1))
+		sql += seclabelPage->GetSqlForSecLabels(wxT("DOMAIN"), name);
 
 	return sql;
 }
 
+void dlgDomain::OnChange(wxCommandEvent &event)
+{
+	CheckChange();
+}

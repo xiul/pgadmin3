@@ -30,14 +30,13 @@ EXTRA_DIST = \
 	$(top_srcdir)/stringextract \
 	$(top_srcdir)/stringmerge \
         $(top_srcdir)/docs/Docs.vcproj \
-        $(top_srcdir)/docs/builddocs.bat
+        $(top_srcdir)/docs/builddocs.bat \
+        $(top_srcdir)/docs/en_US/*.rst \
+        $(top_srcdir)/docs/en_US/conf.py.in \
+	$(top_srcdir)/docs/en_US/images/*.png 
 
 TMP_docs = \
-	$(top_srcdir)/docs/en_US/*.css \
-	$(top_srcdir)/docs/en_US/*.html \
-	$(top_srcdir)/docs/en_US/pgadmin3.hh* \
 	$(top_srcdir)/docs/en_US/hints/*.html \
-	$(top_srcdir)/docs/en_US/images/*.png \
 	$(top_srcdir)/docs/cs_CZ/*.css \
 	$(top_srcdir)/docs/cs_CZ/*.html \
 	$(top_srcdir)/docs/cs_CZ/pgadmin3.hh* \
@@ -77,3 +76,10 @@ install-data-hook:
 # Also add the -n to make it not save .orig files (we have git for that)
 style:
 	astyle -n -p -b -S -t4 -k3 -z2 `find . -name "*.cpp" -o -name "*.h" | egrep -v "(wx-build|xrcDialogs|pgscript/test)"`
+
+# Create HTML docs
+doc:
+if SPHINX_BUILD
+	cd $(top_srcdir)/docs/en_US && make -f Makefile.sphinx SPHINXBUILD=${SPHINX_BUILD} html
+endif
+

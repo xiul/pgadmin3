@@ -444,6 +444,8 @@ wxString pgTable::GetSql(ctlTree *browser)
 						break;
 					case PGM_CHECK:
 						cols_sql += wxT("(") + ((pgCheck *)data)->GetDefinition() + wxT(")");
+						if (GetDatabase()->BackendMinimumVersion(9, 2) && !((pgCheck *)data)->GetValid())
+							cols_sql += wxT(" NOT VALID");
 						break;
 				}
 			}
@@ -651,6 +653,9 @@ wxString pgTable::GetSql(ctlTree *browser)
 			sql += GetGrant(wxT("arwdRxt"));
 
 		sql += GetCommentSql();
+
+		if (GetConnection()->BackendMinimumVersion(9, 1))
+			sql += GetSeqLabelsSql();
 
 		// Column/constraint comments
 		if (!colDetails.IsEmpty())
@@ -1057,6 +1062,17 @@ void pgTable::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *prope
 		}
 		properties->AppendItem(_("Comment"), firstLineOnly(GetComment()));
 
+		if (!GetLabels().IsEmpty())
+		{
+			wxArrayString seclabels = GetProviderLabelArray();
+			if (seclabels.GetCount() > 0)
+			{
+				for (unsigned int index = 0 ; index < seclabels.GetCount() - 1 ; index += 2)
+				{
+					properties->AppendItem(seclabels.Item(index), seclabels.Item(index + 1));
+				}
+			}
+		}
 	}
 	if (form && GetVacuumHint() && !hintShown)
 	{
@@ -1444,6 +1460,11 @@ pgObject *pgTableFactory::CreateObjects(pgCollection *collection, ctlTree *brows
 		}
 		if (collection->GetConnection()->BackendMinimumVersion(9, 0))
 			query += wxT(", reloftype, typname\n");
+		if (collection->GetDatabase()->BackendMinimumVersion(9, 1))
+		{
+			query += wxT(",\n(SELECT array_agg(label) FROM pg_seclabels sl1 WHERE sl1.objoid=rel.oid AND sl1.objsubid=0) AS labels");
+			query += wxT(",\n(SELECT array_agg(provider) FROM pg_seclabels sl2 WHERE sl2.objoid=rel.oid AND sl2.objsubid=0) AS providers");
+		}
 
 		query += wxT("  FROM pg_class rel\n")
 		         wxT("  LEFT OUTER JOIN pg_tablespace ta on ta.oid=rel.reltablespace\n")
@@ -1627,6 +1648,12 @@ pgObject *pgTableFactory::CreateObjects(pgCollection *collection, ctlTree *brows
 					table->iSetIsPartitioned(tables->GetBool(wxT("ispartitioned")));
 				}
 
+			}
+
+			if (collection->GetConnection()->BackendMinimumVersion(9, 1))
+			{
+				table->iSetProviders(tables->GetVal(wxT("providers")));
+				table->iSetLabels(tables->GetVal(wxT("labels")));
 			}
 
 			if (browser)

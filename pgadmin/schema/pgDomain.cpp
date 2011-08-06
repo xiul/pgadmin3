@@ -14,6 +14,7 @@
 
 // App headers
 #include "pgAdmin3.h"
+#include "frm/frmMain.h"
 #include "utils/misc.h"
 #include "schema/pgDomain.h"
 #include "schema/pgDatatype.h"
@@ -117,6 +118,9 @@ wxString pgDomain::GetSql(ctlTree *browser)
 		sql += wxT(";\n")
 		       + GetOwnerSql(7, 4)
 		       + GetCommentSql();
+
+		if (GetConnection()->BackendMinimumVersion(9, 1))
+			sql += GetSeqLabelsSql();
 	}
 
 	return sql;
@@ -132,7 +136,8 @@ void pgDomain::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *prop
 		if (GetConnection()->BackendMinimumVersion(7, 4))
 		{
 			pgSet *set = ExecuteSet(
-			                 wxT("SELECT conname, pg_get_constraintdef(oid) AS consrc FROM pg_constraint WHERE contypid=") + GetOidStr());
+			                 wxT("SELECT conname, convalidated, pg_get_constraintdef(oid) AS consrc FROM pg_constraint WHERE contypid=") + GetOidStr());
+			check = wxEmptyString;
 			if (set)
 			{
 				while (!set->Eof())
@@ -145,6 +150,14 @@ void pgDomain::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *prop
 					if (!conname.StartsWith(wxT("$")))
 						check += wxT("CONSTRAINT ") + qtIdent(conname) + wxT(" ");
 					check += set->GetVal(wxT("consrc"));
+
+					// there may be more than one constraint
+					// but there is only one check constraint
+					if (!set->GetBool(wxT("convalidated")))
+					{
+						iSetCheckConstraintName(set->GetVal(wxT("conname")));
+						iSetValid(false);
+					}
 
 					set->MoveNext();
 				}
@@ -169,6 +182,18 @@ void pgDomain::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *prop
 		properties->AppendYesNoItem(_("Not NULL?"), GetNotNull());
 		properties->AppendYesNoItem(_("System domain?"), GetSystemObject());
 		properties->AppendItem(_("Comment"), firstLineOnly(GetComment()));
+
+		if (!GetLabels().IsEmpty())
+		{
+			wxArrayString seclabels = GetProviderLabelArray();
+			if (seclabels.GetCount() > 0)
+			{
+				for (unsigned int index = 0 ; index < seclabels.GetCount() - 1 ; index += 2)
+				{
+					properties->AppendItem(seclabels.Item(index), seclabels.Item(index + 1));
+				}
+			}
+		}
 	}
 }
 
@@ -183,6 +208,17 @@ pgObject *pgDomain::Refresh(ctlTree *browser, const wxTreeItemId item)
 		domain = domainFactory.CreateObjects(coll, 0, wxT("   AND d.oid=") + GetOidStr() + wxT("\n"));
 
 	return domain;
+}
+
+
+void pgDomain::Validate(frmMain *form)
+{
+	wxString sql = wxT("ALTER DOMAIN ") + GetQuotedFullIdentifier()
+	               + wxT("\n  VALIDATE CONSTRAINT ") + GetCheckConstraintName();
+	GetDatabase()->ExecuteVoid(sql);
+
+	iSetValid(true);
+	UpdateIcon(form->GetBrowser());
 }
 
 
@@ -202,8 +238,13 @@ pgObject *pgDomainFactory::CreateObjects(pgCollection *collection, ctlTree *brow
 		sql += wxT("c.oid AS colloid, c.collname, cn.nspname as collnspname, \n");
 	sql += wxT("       d.typlen, d.typtypmod, d.typnotnull, d.typdefault, d.typndims, d.typdelim, bn.nspname as basensp,\n")
 	       wxT("       description, (SELECT COUNT(1) FROM pg_type t2 WHERE t2.typname=d.typname) > 1 AS domisdup,\n")
-	       wxT("       (SELECT COUNT(1) FROM pg_type t3 WHERE t3.typname=b.typname) > 1 AS baseisdup\n")
-	       wxT("  FROM pg_type d\n")
+	       wxT("       (SELECT COUNT(1) FROM pg_type t3 WHERE t3.typname=b.typname) > 1 AS baseisdup");
+	if (collection->GetDatabase()->BackendMinimumVersion(9, 1))
+	{
+		sql += wxT(",\n(SELECT array_agg(label) FROM pg_seclabels sl1 WHERE sl1.objoid=d.oid) AS labels");
+		sql += wxT(",\n(SELECT array_agg(provider) FROM pg_seclabels sl2 WHERE sl2.objoid=d.oid) AS providers");
+	}
+	sql += wxT("\n   FROM pg_type d\n")
 	       wxT("  JOIN pg_type b ON b.oid = CASE WHEN d.typndims>0 then d.typelem ELSE d.typbasetype END\n")
 	       wxT("  JOIN pg_namespace bn ON bn.oid=b.typnamespace\n")
 	       wxT("  LEFT OUTER JOIN pg_description des ON des.objoid=d.oid\n");
@@ -250,6 +291,16 @@ pgObject *pgDomainFactory::CreateObjects(pgCollection *collection, ctlTree *brow
 			}
 			else
 				domain->iSetCollationOid(0);
+
+			if (collection->GetDatabase()->BackendMinimumVersion(9, 1))
+			{
+				domain->iSetProviders(domains->GetVal(wxT("providers")));
+				domain->iSetLabels(domains->GetVal(wxT("labels")));
+			}
+
+			// we suppose the constraint valid now
+			// this is checked in ShowTreeDetail for each domain
+			domain->iSetValid(true);
 
 			if (browser)
 			{
@@ -312,3 +363,36 @@ pgCollection *pgDomainFactory::CreateCollection(pgObject *obj)
 
 pgDomainFactory domainFactory;
 static pgaCollectionFactory cf(&domainFactory, __("Domains"), domains_png_img);
+
+validateDomainCheckFactory::validateDomainCheckFactory(menuFactoryList *list, wxMenu *mnu, ctlMenuToolbar *toolbar) : contextActionFactory(list)
+{
+	mnu->Append(id, _("Validate domain check constraint"), _("Validate the selected domain check constraint."));
+}
+
+
+wxWindow *validateDomainCheckFactory::StartDialog(frmMain *form, pgObject *obj)
+{
+	((pgDomain *)obj)->Validate(form);
+	((pgDomain *)obj)->SetDirty();
+
+	wxTreeItemId item = form->GetBrowser()->GetSelection();
+	if (obj == form->GetBrowser()->GetObject(item))
+	{
+		obj->ShowTreeDetail(form->GetBrowser(), 0, form->GetProperties());
+		form->GetSqlPane()->SetReadOnly(false);
+		form->GetSqlPane()->SetText(((pgDomain *)obj)->GetSql(form->GetBrowser()));
+		form->GetSqlPane()->SetReadOnly(true);
+	}
+	form->GetMenuFactories()->CheckMenu(obj, form->GetMenuBar(), (ctlMenuToolbar *)form->GetToolBar());
+
+	return 0;
+}
+
+
+bool validateDomainCheckFactory::CheckEnable(pgObject *obj)
+{
+	return obj && obj->IsCreatedBy(domainFactory) && obj->CanEdit()
+	       && ((pgDomain *)obj)->GetConnection()->BackendMinimumVersion(9, 2)
+	       && !((pgDomain *)obj)->GetValid();
+}
+
