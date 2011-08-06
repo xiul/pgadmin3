@@ -22,6 +22,7 @@
 #include "dd/wxhotdraw/utilities/wxhdGeometry.h"
 #include "dd/wxhotdraw/utilities/wxhdMouseEvent.h"
 #include "dd/wxhotdraw/tools/wxhdCanvasMenuTool.h"
+#include "dd/wxhotdraw/figures/defaultAttributes/wxhdFontAttribute.h"
 
 // Images
 #include "images/check.pngc"
@@ -331,7 +332,7 @@ void wxhdDrawingView::simpleTextToolChangeHandler(wxCommandEvent &event)
 		//getFontMetrics
 		int width, height;
 		wxWindowDC dc(this);
-		dc.SetFont(GetFont());
+		dc.SetFont(wxhdFontAttribute::defaultFont);
 		if(simpleTextFigure->getText(true).length() > 5)
 			dc.GetTextExtent(simpleTextFigure->getText(true), &width, &height);
 		else

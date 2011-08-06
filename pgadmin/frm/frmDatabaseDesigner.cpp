@@ -68,7 +68,9 @@ BEGIN_EVENT_TABLE(frmDatabaseDesigner, pgFrame)
 	EVT_MENU(MNU_LOADMODEL,			frmDatabaseDesigner::OnModelLoad)
 	EVT_MENU(MNU_NEWDIAGRAM,			frmDatabaseDesigner::OnAddDiagram)
 	EVT_MENU(MNU_DELDIAGRAM,			frmDatabaseDesigner::OnDeleteDiagram)
+	EVT_MENU(MNU_CHGFONT,			frmDatabaseDesigner::OnChangeDefaultFont)
 	EVT_AUINOTEBOOK_PAGE_CLOSE(CTL_DDNOTEBOOK, frmDatabaseDesigner::OnDeleteDiagramTab)
+	EVT_AUINOTEBOOK_PAGE_CLOSED(CTL_DDNOTEBOOK, frmDatabaseDesigner::OnDeletedDiagramTab)
 	EVT_CLOSE(                      frmDatabaseDesigner::OnClose)
 END_EVENT_TABLE()
 
@@ -103,6 +105,7 @@ frmDatabaseDesigner::frmDatabaseDesigner(frmMain *form, const wxString &_title, 
 	fileMenu->Append(MNU_NEWDIAGRAM, _("&New model diagram"), _("Create a new diagram for open database design"));
 	fileMenu->Append(MNU_DELDIAGRAM, _("&Delete selected model diagram..."), _("Delete selected diagram from design"));
 	fileMenu->AppendSeparator();
+	fileMenu->Append(MNU_CHGFONT, _("&Change default font for figures..."), _("Change default font for figures"));
 	fileMenu->Append(MNU_EXIT, _("E&xit\tCtrl-W"), _("Exit database designer window"));
 
 	// Set Help menu
@@ -162,12 +165,12 @@ frmDatabaseDesigner::frmDatabaseDesigner(frmMain *form, const wxString &_title, 
 
 	// Add view to notebook
 diagrams->AddPage(design->createDiagram(diagrams,_("New Diagram"),false)->getView(), _("New Diagram"));
-//666	diagrams->AddPage(design->createDiagram(diagrams,_("Diagrama Test #3"),false)->getView(), _("Diagrama Test #3"));
-	// Add the panes
+
+// Add the panes
 	manager.AddPane(diagrams,
 	                wxAuiPaneInfo().Center().
 	                Name(wxT("sqlQuery")).Caption(_("Database Designer")).
-	                CaptionVisible(true).CloseButton(true).MaximizeButton(true).
+	                CaptionVisible(true).CloseButton(false).MaximizeButton(true).
 	                Dockable(true).Movable(true));
 	manager.AddPane(browserPanel,
 	                wxAuiPaneInfo().Left().
@@ -471,6 +474,7 @@ void frmDatabaseDesigner::OnDeleteDiagram(wxCommandEvent &event)
 
 void frmDatabaseDesigner::OnDeleteDiagramTab(wxAuiNotebookEvent &event)
 {
+	deletedTab = event.GetSelection();
     wxAuiNotebook* ctrl = (wxAuiNotebook*)event.GetEventObject();
 	wxhdDrawingView *view = (wxhdDrawingView *) ctrl->GetPage(event.GetSelection());
 	
@@ -479,7 +483,22 @@ void frmDatabaseDesigner::OnDeleteDiagramTab(wxAuiNotebookEvent &event)
                        wxYES_NO,
                        this);
     if (res != wxYES)
-        event.Veto();	
+	{
+        event.Veto();
+	}
+}
+
+void frmDatabaseDesigner::OnDeletedDiagramTab(wxAuiNotebookEvent &event)
+{
+	//don't delete view when deleting diagram because it was deleted before by EVT_AUINOTEBOOK_PAGE_CLOSE event
+	//option possible will be wxAuiPaneInfo().DestroyOnClose(false) but should be tried in a future
+	design->deleteDiagram(deletedTab,false);
+}
+
+
+void frmDatabaseDesigner::OnChangeDefaultFont(wxCommandEvent &event)
+{
+	design->getEditor()->changeDefaultFiguresFont();
 }
 
 ///////////////////////////////////////////////////////

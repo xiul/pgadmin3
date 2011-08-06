@@ -404,9 +404,9 @@ wxhdDrawing* ddDatabaseDesign::createDiagram(wxWindow *owner, wxString name, boo
 	return drawing;
 }
 
-void ddDatabaseDesign::deleteDiagram(int diagramIndex)
+void ddDatabaseDesign::deleteDiagram(int diagramIndex, bool deleteView)
 {
-	editor->deleteDiagram(diagramIndex);
+	editor->deleteDiagram(diagramIndex,deleteView);
 }
 
 wxString ddDatabaseDesign::getVersionXML()

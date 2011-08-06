@@ -65,7 +65,7 @@ void ddTableFigure::Init(wxString tableName, int x, int y, wxString shortName)
 	selectingFkDestination = false;
 
 	//Set Value default Attributes
-	fontAttribute->font().SetPointSize(8);
+	//666 fontAttribute->font().SetPointSize(8);
 	fontColorAttribute->fontColor = wxColour(49, 79, 79);
 	//Set Value default selected Attributes
 	lineSelAttribute->pen().SetColour(wxColour(204, 0, 0));
@@ -339,7 +339,7 @@ void ddTableFigure::removeColumn(int posIdx, ddColumnFigure *column)
 
 void ddTableFigure::recalculateColsPos(int posIdx)
 {
-	wxFont font = settings->GetSystemFont();
+	wxFont font = fontAttribute->font();
 	int defaultHeight = getColDefaultHeight(font);
 
 	wxhdIFigure *f = (wxhdIFigure *) figureFigures->getItemAt(0); //first figure is always Rect
@@ -394,8 +394,9 @@ void ddTableFigure::basicDraw(wxBufferedDC &context, wxhdDrawingView *view)
 	reapplyAttributes(context, view); //reset attributes to default of figure because can be modified at Draw functions.
 
 	//Set Font for title "Columns"
-	wxFont font = settings->GetSystemFont();
-	font.SetPointSize(7);
+	wxFont font = fontAttribute->font();
+	int newSize = font.GetPointSize()*0.7;
+	font.SetPointSize(newSize);
 	context.SetFont(font);
 
 	//Draw Columns Title Line 1
@@ -474,8 +475,10 @@ void ddTableFigure::basicDrawSelected(wxBufferedDC &context, wxhdDrawingView *vi
 	}
 
 	reapplySelAttributes(context, view); //reset attributes to default of figure because can be modified at Draw functions.
-	wxFont font = settings->GetSystemFont();
-	font.SetPointSize(7);
+	wxFont font = fontAttribute->font();
+	float t = font.GetPointSize();
+	int newSize = font.GetPointSize()*0.7;
+	font.SetPointSize(newSize);
 	context.SetFont(font);
 
 	//Draw Columns Title Line 1
@@ -505,7 +508,7 @@ void ddTableFigure::setColsRowsWindow(int num)
 	if(num > 0)
 	{
 		colsWindow = num;
-		wxFont font = settings->GetSystemFont();
+		wxFont font = fontAttribute->font();
 		colsRect.height = getColDefaultHeight(font) * colsWindow;
 		colsRect.width = getFiguresMaxWidth();
 	}
@@ -582,7 +585,9 @@ void ddTableFigure::calcInternalSubAreas(int posIdx)
 	wxhdRect db = basicDisplayBox.getwxhdRect(posIdx);
 
 	//*** titleRect
-	font.SetPointSize(7);
+	float t = font.GetPointSize();
+	int newSize = font.GetPointSize()*0.7;
+	font.SetPointSize(newSize);
 	int colsTitleHeight = getHeightFontMetric(wxT("Columns"), font);
 
 	titleRect.x[posIdx] = db.x;
@@ -843,10 +848,10 @@ Rules to auto generate short names:
 0. Table name delimiters are white space (quoted names) or _
 1. if last char in a word is "s" is ignored, ex: employees -> last char will be e not s.
 2. for quoted table names, quotes are ignored for short name purposes.
-4. first word of a syllabe will be defined as first letter before vowels (a,e,i,o,u).
+4. first char of a syllabe will be defined as first letter before vowels (a,e,i,o,u).
 3. Tables with only one word:
-		1st char of first syllabe + 2nd char of second syllabe + last char.
-		ex: EMPLOYEES will be EPE
+		1st char first char of word + 1 char second/third or four syllabe + last char.
+		ex: EMPLOYEES will be EME
 			PRODUCT	will be PDT
 4. Tables with more than one words:
 		1st char of first word, first char of second word, last char of last word.
@@ -889,25 +894,27 @@ wxString ddTableFigure::generateShortName(wxString longName)
 		//Look for vowels
 		wxStringTokenizer vowelsTokens(nameT, wxT("aeiou"), wxTOKEN_DEFAULT);
 		int numVowels = vowelsTokens.CountTokens();
-		c = 0;
 		if(numVowels >= 3)
 		{
 			//word have at least 3 vowels tokens
-			while( vowelsTokens.HasMoreTokens() )
+			f = nameT.GetChar(0);
+			wxString token;
+			token = vowelsTokens.GetNextToken();
+			token = vowelsTokens.GetNextToken();
+			s=token.GetChar(0);
+			if(s==0)
 			{
-				wxString token = vowelsTokens.GetNextToken();
-				if(c == 0)
-					f = token.GetChar(0);
-				if(c == 1)
-					s = token.GetChar(0);
-				if(((c + 1) - numVowels) == 0)
-				{
-					l = token.GetChar(token.length() - 1);
-					if(l == 's')
-						l = token.GetChar(token.length() - 2);
-				}
-				c++;
+				token = vowelsTokens.GetNextToken();
+				s=token.GetChar(0);
 			}
+			if(s==0)
+			{
+				token = vowelsTokens.GetNextToken();
+				s=token.GetChar(0);
+			}
+			l=nameT.Last();
+			if(l=='s')
+				l=nameT.GetChar(nameT.length()-2);
 		}
 		else
 		{

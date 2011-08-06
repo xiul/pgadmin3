@@ -1356,7 +1356,10 @@ ddRelationshipFigure* ddXmlStorage::getRelationship(xmlTextReaderPtr reader)
 			}
 			else
 			{
-				processResult(-1);
+				if(! (getNodeName(reader).IsSameAs(_("POINTS")) && xmlTextReaderIsEmptyElement(reader))  )
+				{
+					processResult(-1);
+				}
 			}
 			posIdx++;  //change of points array then change view position index
 			tmp = xmlTextReaderRead(reader);	//go POINTS or /POINTSRELATION?
@@ -1626,7 +1629,7 @@ void ddXmlStorage::initDiagrams(xmlTextReaderPtr reader)
 */
 
 	//At DIAGRAMS Element
-	xmlChar *value;	
+	xmlChar *value=NULL;	
 	wxString diagramName;
 	wxhdDrawing *newDiagram;
 	int tmp;
@@ -1658,29 +1661,41 @@ void ddXmlStorage::initDiagrams(xmlTextReaderPtr reader)
 			}
 			//<!-- TABLEREF Element -->
 			//<!ELEMENT TABLEREF EMPTY> 
-			wxString TableID, tableName;
 			tmp = xmlTextReaderRead(reader);	//go to TABLEREF
-			do
+			bool firstTime=true;
+			if(getNodeName(reader).IsSameAs(_("TABLEREF")) && xmlTextReaderIsEmptyElement(reader))
 			{
-				//<!ATTLIST TABLEREF TableID IDREF #REQUIRED >
-				tmp = xmlTextReaderHasAttributes(reader);
-				TableID=_("TableID");
-				if(tmp)
+				wxString TableID, tableName;
+				if(firstTime)
 				{
-					value = xmlTextReaderGetAttribute(reader,XML_FROM_WXSTRING(TableID));
+					firstTime=false;
 				}
-				
-				if(value)
+				else
 				{
-						TableID = WXSTRING_FROM_XML(value);
-						xmlFree(value);
+					tmp = xmlTextReaderRead(reader);	//go to TABLEREF
 				}
+				do
+				{
+					//<!ATTLIST TABLEREF TableID IDREF #REQUIRED >
+					tmp = xmlTextReaderHasAttributes(reader);
+					TableID=_("TableID");
+					if(tmp)
+					{
+						value = xmlTextReaderGetAttribute(reader,XML_FROM_WXSTRING(TableID));
+					}
+					
+					if(value)
+					{
+							TableID = WXSTRING_FROM_XML(value);
+							xmlFree(value);
+					}
 
-				tableName=design->getTableName(TableID);
-				//Add table to diagram
-				newDiagram->add(design->getTable(tableName));
-			tmp = xmlTextReaderRead(reader);	//go to TABLEREF or /DIAGRAM?
-			}while(getNodeName(reader).IsSameAs(_("TABLEREF"),false));
+					tableName=design->getTableName(TableID);
+					//Add table to diagram
+					newDiagram->add(design->getTable(tableName));
+				tmp = xmlTextReaderRead(reader);	//go to TABLEREF or /DIAGRAM?
+				}while(getNodeName(reader).IsSameAs(_("TABLEREF"),false));
+			}
 			//After adding a new diagram check for all needed relationships at diagram and add it.
 			if(design)
 			{

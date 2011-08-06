@@ -23,7 +23,7 @@ public:
 	wxhdDrawingView *getExistingView(int diagramIndex);
 	wxhdDrawing *getExistingDiagram(int diagramIndex);
 	virtual wxhdDrawing* createDiagram(wxWindow *owner, bool fromXml);
-	virtual void deleteDiagram(int diagramIndex);
+	virtual void deleteDiagram(int diagramIndex, bool deleteView=true);
 	virtual void addDiagramFigure(int diagramIndex, wxhdIFigure *figure);
 	virtual void removeDiagramFigure(int diagramIndex, wxhdIFigure *figure);
 	virtual void addModelFigure(wxhdIFigure *figure);
@@ -33,6 +33,7 @@ public:
 	virtual void deleteAllModelFigures();
 	virtual bool modelIncludes(wxhdIFigure *figure);
 	virtual void remOrDelSelFigures(int diagramIndex);
+	virtual void changeDefaultFiguresFont();
 	int modelCount();
 	wxhdIteratorBase *modelFiguresEnumerator();
 	wxhdIteratorBase *diagramsEnumerator();
@@ -51,6 +52,7 @@ protected:
 	//int index;
 	wxhdArrayCollection *_diagrams;
 	wxhdArrayCollection *_model;
+	wxWindow *editorOwner;
 //666 000	wxhdITool *_tool;
 private:
 };

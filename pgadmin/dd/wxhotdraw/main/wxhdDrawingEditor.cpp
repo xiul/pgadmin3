@@ -14,16 +14,19 @@
 // wxWindows headers
 #include <wx/wx.h>
 #include <wx/dcbuffer.h>
+#include <wx/fontdlg.h>
 
 // App headers
 #include "dd/wxhotdraw/main/wxhdDrawingEditor.h"
 #include "dd/wxhotdraw/main/wxhdDrawingView.h"
 #include "dd/wxhotdraw/tools/wxhdITool.h"
+#include "dd/wxhotdraw/figures/defaultAttributes/wxhdFontAttribute.h"
 
 wxhdDrawingEditor::wxhdDrawingEditor(wxWindow *owner, bool defaultView)
 {
 	_diagrams = new wxhdArrayCollection();
 	_model = new wxhdArrayCollection();
+	editorOwner = owner;
 }
 
 wxhdDrawingEditor::~wxhdDrawingEditor()
@@ -87,7 +90,7 @@ wxhdDrawing* wxhdDrawingEditor::createDiagram(wxWindow *owner, bool fromXml)
 	return _tmpModel;
 }
 
-void wxhdDrawingEditor::deleteDiagram(int diagramIndex)
+void wxhdDrawingEditor::deleteDiagram(int diagramIndex, bool deleteView)
 {
 	wxhdDrawing *_tmpModel = (wxhdDrawing *) _diagrams->getItemAt(diagramIndex);
 	_diagrams->removeItemAt(diagramIndex);
@@ -95,7 +98,7 @@ void wxhdDrawingEditor::deleteDiagram(int diagramIndex)
 	_tmpModel->registerView(NULL);
 	if(_tmpModel)
 		delete _tmpModel;
-	if(_viewTmp)
+	if(_viewTmp && deleteView)
 		delete _viewTmp;
 
 	// Fix other diagrams positions
@@ -274,4 +277,9 @@ void wxhdDrawingEditor::remOrDelSelFigures(int diagramIndex)
 		}
 		getExistingDiagram(diagramIndex)->clearSelection();  //reset selection to zero items
 	}
+}
+
+void wxhdDrawingEditor::changeDefaultFiguresFont()
+{
+	wxhdFontAttribute::defaultFont = wxGetFontFromUser(editorOwner, wxhdFontAttribute::defaultFont, wxT("Select a default font for figures..."));
 }

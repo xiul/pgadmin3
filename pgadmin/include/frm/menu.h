@@ -117,6 +117,7 @@ enum
 	MNU_LOADMODEL,
 	MNU_NEWDIAGRAM,
 	MNU_DELDIAGRAM,
+	MNU_CHGFONT,
 
 	MNU_RECENT,
 	MNU_NEW = MNU_RECENT + 15, // leave space for recent file entries

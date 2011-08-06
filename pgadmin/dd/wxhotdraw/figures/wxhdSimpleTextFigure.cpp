@@ -19,6 +19,7 @@
 #include "dd/wxhotdraw/figures/wxhdSimpleTextFigure.h"
 #include "dd/wxhotdraw/tools/wxhdSimpleTextTool.h"
 #include "dd/wxhotdraw/utilities/wxhdGeometry.h"
+#include "dd/wxhotdraw/figures/defaultAttributes/wxhdFontAttribute.h"
 
 // dummy image
 #include "images/ddnull.pngc"
@@ -26,7 +27,7 @@
 wxhdSimpleTextFigure::wxhdSimpleTextFigure(wxString textString)
 {
 	textEditable = false;
-	font = settings->GetSystemFont();
+	font = wxhdFontAttribute::defaultFont;
 	padding = 2;
 	setText(textString);
 	showMenu = false;

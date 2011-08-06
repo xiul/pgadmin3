@@ -18,6 +18,7 @@
 #include "dd/dditems/handles/ddSouthTableSizeHandle.h"
 #include "dd/dditems/figures/ddTableFigure.h"
 #include "dd/wxhotdraw/utilities/wxhdGeometry.h"
+#include "dd/wxhotdraw/figures/defaultAttributes/wxhdFontAttribute.h"
 
 ddSouthTableSizeHandle::ddSouthTableSizeHandle(ddTableFigure *owner, wxhdILocator *locator):
 	wxhdLocatorHandle(owner, locator)
@@ -57,7 +58,7 @@ void ddSouthTableSizeHandle::invokeStep(wxhdMouseEvent &event, wxhdDrawingView *
 {
 	int y = event.GetPosition().y;
 	ddTableFigure *table = (ddTableFigure *) getOwner();
-	wxFont font = settings->GetSystemFont();
+	wxFont font = wxhdFontAttribute::defaultFont;
 	int colOffset = table->getColDefaultHeight(font);
 
 	int divBy = (table->getTotalColumns() - table->getColumnsWindow());
