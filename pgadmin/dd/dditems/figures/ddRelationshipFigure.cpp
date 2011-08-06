@@ -880,6 +880,14 @@ void ddRelationshipFigure::initRelationValues( ddTableFigure *source, ddTableFig
 	onDeleteAction=onDelete;
 	constraintName = constraint;
 
+	//I need to add two points to relationship if there aren't any points for it a first position	
+	int i, start = pointCount(0);
+	for(i=start; i < 2 ; i++)
+	{
+			addPoint(0, -100, -100);
+	}
+
+	//reestablish connections between figures
 	wxhdLineConnection::connectStart(source->connectorAt(0, getStartPoint(0).x, getStartPoint(0).y));
 	wxhdLineConnection::connectEnd(destination->connectorAt(0, getEndPoint(0).x, getEndPoint(0).y));
 }

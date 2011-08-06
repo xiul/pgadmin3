@@ -429,31 +429,50 @@ void frmDatabaseDesigner::OnModelSave(wxCommandEvent &event)
 
 void frmDatabaseDesigner::OnModelLoad(wxCommandEvent &event)
 {
-	wxFileDialog openFileDialog( this, _("Open model"), _(""), _(""), _("*.pgd"),
-		                  wxOPEN | wxFD_FILE_MUST_EXIST, wxDefaultPosition);
- 
-	if ( openFileDialog.ShowModal() == wxID_OK )
+	//Ask what to do with old model
+	int answer = wxNO;
+	if ( lastFile != wxEmptyString )
 	{
-		wxString path;
-		path.append( openFileDialog.GetDirectory() );
-		path.append( wxFileName::GetPathSeparator() );
-		path.append( openFileDialog.GetFilename() );
-		if(!path.Lower().Matches(_("*.pgd")))
-			path.append(_(".pgd"));		
-		
-		//Clean diagrams notebook	
-		while(diagrams->GetPageCount()>0)
+		answer = wxMessageBox(_("Save: ")+ lastFile + _(" model changes?"), _("Confirm"), wxYES_NO | wxCANCEL);
+		if (answer == wxYES)
+			OnModelSave(event);
+	}
+	else if (changed)
+	{
+		answer = wxMessageBox(_("Save new model changes?"), _("Confirm"), wxYES_NO | wxCANCEL);
+		if (answer == wxYES)		
+		OnModelSaveAs(event);
+	}
+
+	if(answer != wxCANCEL)
+	{
+		//Open Model
+		wxFileDialog openFileDialog( this, _("Open model"), _(""), _(""), _("*.pgd"),
+							  wxOPEN | wxFD_FILE_MUST_EXIST, wxDefaultPosition);
+	 
+		if ( openFileDialog.ShowModal() == wxID_OK )
 		{
-			diagrams->RemovePage(0); //666 hacerlo dinamico
-			design->deleteDiagram(0);			
+			wxString path;
+			path.append( openFileDialog.GetDirectory() );
+			path.append( wxFileName::GetPathSeparator() );
+			path.append( openFileDialog.GetFilename() );
+			if(!path.Lower().Matches(_("*.pgd")))
+				path.append(_(".pgd"));		
+			
+			//Clean diagrams notebook	
+			while(diagrams->GetPageCount()>0)
+			{
+				diagrams->RemovePage(0); //666 hacerlo dinamico
+				design->deleteDiagram(0);			
+			}
+			design->emptyModel();
+			lastFile = path;
+			
+			//Read model from xml file
+			design->readXmlModel(path,diagrams);
+			changed=false;
+			setExtendedTitle();
 		}
-		design->emptyModel();
-		lastFile = path;
-		
-		//Read model from xml file
-		design->readXmlModel(path,diagrams);
-		changed=false;
-		setExtendedTitle();
 	}
 }
 
