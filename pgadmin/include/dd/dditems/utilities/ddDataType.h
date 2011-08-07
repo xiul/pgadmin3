@@ -14,7 +14,7 @@
 
 enum ddMenuColumn
 {
-	add_column = 0,
+	add_column = 321,
 	del_column,
 	ren_column,
 	change_datatype
@@ -24,10 +24,10 @@ enum ddHiddenTypes
 {
 	DDTABLEFIGURE = 100,
 	DDRELATIONSHIPFIGURE = 200,
-	DDCOLUMNFIGURE = 300,
-	DDCOLUMNOPTIONICON = 400,
-	DDCOLUMNKINDICON = 500,
-	DDTEXTTABLEITEMFIGURE = 600
+	DDCOLUMNFIGURE=300,
+	DDCOLUMNOPTIONICON=400,
+	DDCOLUMNKINDICON=500,
+	DDTEXTTABLEITEMFIGURE=600
 };
 
 enum ddDataType
