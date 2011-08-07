@@ -11,7 +11,7 @@
 
 pgadmin3_SOURCES += \
 	$(srcdir)/include/hotdraw/tools/hdAbstractTool.h \
-	$(srcdir)/include/hotdraw/tools/hdCanvasMenuTool.h \	
+	$(srcdir)/include/hotdraw/tools/hdCanvasMenuTool.h \
 	$(srcdir)/include/hotdraw/tools/hdCompositeFigureTool.h \
 	$(srcdir)/include/hotdraw/tools/hdConnectionCreationTool.h \
 	$(srcdir)/include/hotdraw/tools/hdCreationTool.h \
