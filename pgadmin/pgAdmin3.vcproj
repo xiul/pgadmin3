@@ -4180,10 +4180,6 @@
 						>
 					</File>
 					<File
-						RelativePath=".\include\dd\ddmodel\ddTextEditor.h"
-						>
-					</File>
-					<File
 						RelativePath=".\include\dd\ddmodel\module.mk"
 						>
 					</File>
@@ -6190,10 +6186,6 @@
 				</File>
 				<File
 					RelativePath=".\dd\ddmodel\ddModelBrowser.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\dd\ddmodel\ddTextEditor.cpp"
 					>
 				</File>
 				<File
