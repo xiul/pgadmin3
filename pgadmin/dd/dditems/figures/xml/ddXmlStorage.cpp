@@ -854,6 +854,9 @@ xmlChar *value;
 		}while(getNodeName(reader).IsSameAs(_("POINT"),false));
 	}
 
+	if(!getNodeName(reader).IsSameAs(_("POINTS"),false))
+		processResult(-1);
+
 	// --> TITLE
 	//<!ELEMENT TITLE (NAME,ALIAS?)>
 	//<!ELEMENT NAME (#PCDATA)>
@@ -913,14 +916,17 @@ xmlChar *value;
 	wxString pkName;
 	if(getNodeName(reader).IsSameAs(_("PKNAME")))
 	{
-		tmp = xmlTextReaderRead(reader);	//go to PKNAME Value
-		value = xmlTextReaderValue(reader);  //Value of PKNAME
-			if(value)
-			{
-				pkName = WXSTRING_FROM_XML(value);
-				xmlFree(value);
-			}
-		tmp = xmlTextReaderRead(reader);	//go to /PKNAME
+		tmp = xmlTextReaderRead(reader);	//go to PKNAME Value or PKNAME node?
+		if(!getNodeName(reader).IsSameAs(_("PKNAME")))
+		{
+			value = xmlTextReaderValue(reader);  //Value of PKNAME
+				if(value)
+				{
+					pkName = WXSTRING_FROM_XML(value);
+					xmlFree(value);
+				}
+			tmp = xmlTextReaderRead(reader);	//go to /PKNAME
+		}
 	}
 	
 	int beginDrawCols, beginDrawIdxs, maxColIndex, minIdxIndex, maxIdxIndex, colsRowsSize, colsWindow, idxsRowsSize, idxsWindow;
