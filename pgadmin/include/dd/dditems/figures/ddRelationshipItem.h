@@ -26,15 +26,12 @@ public:
 	wxString originalShortName;
 	ddColumnFigure *original;
 	ddColumnFigure *fkColumn;
-
+	
 
 	wxString autoGenerateNameForFk();
 	void syncAutoFkName();
 
-	ddTableFigure *getDestinationTable()
-	{
-		return destinationTable;
-	};
+	ddTableFigure *getDestinationTable() {return destinationTable;};
 	bool isAutomaticallyGenerated();
 	bool relationIsIdentifying();
 	bool relationIsMandatory();

@@ -17,12 +17,12 @@
 #include "dd/wxhotdraw/figures/wxhdPolyLineFigure.h"
 #include "dd/wxhotdraw/figures/wxhdLineConnection.h"
 #include "dd/ddmodel/ddDatabaseDesign.h"
+#include "ctl/ctlSQLBox.h"
 
 
 enum
 {
-	CTL_DDNOTEBOOK = 1001,
-	CTL_DDSPLITTER
+	CTL_DDNOTEBOOK = 1001
 };
 
 class frmDatabaseDesigner : public pgFrame
@@ -32,22 +32,32 @@ public:
 	~frmDatabaseDesigner();
 	void Go();
 private:
+	int deletedTab;
 	bool changed;
 	wxString lastFile;
 	frmMain *mainForm;
 	pgConn *connection;
 	ddDatabaseDesign *design;
-	wxTextCtrl *sqltext;
+	wxPanel *browserPanel;
+	ddModelBrowser *modelBrowser;
+	ctlAuiNotebook *diagrams;
+	ctlSQLBox *sqltext;
 	void setExtendedTitle();
 	void OnClose(wxCloseEvent &event);
+	void OnAddDiagram(wxCommandEvent &event);
+	void OnDeleteDiagram(wxCommandEvent &event);
+	void OnDeleteDiagramTab(wxAuiNotebookEvent &event);
+	void OnDeletedDiagramTab(wxAuiNotebookEvent &event);
 	void OnAddTable(wxCommandEvent &event);
 	void OnDeleteTable(wxCommandEvent &event);
 	void OnAddColumn(wxCommandEvent &event);
 	void OnNewModel(wxCommandEvent &event);
 	void OnModelGeneration(wxCommandEvent &event);
 	void OnModelSaveAs(wxCommandEvent &event);
+	void OnDiagramGeneration(wxCommandEvent &event);
 	void OnModelSave(wxCommandEvent &event);
 	void OnModelLoad(wxCommandEvent &event);
+	void OnChangeDefaultFont(wxCommandEvent &event);
 	wxAuiManager manager;
 	DECLARE_EVENT_TABLE()
 };

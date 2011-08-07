@@ -25,8 +25,8 @@
 class wxhdDrawingEditor;
 
 
-ddColumnTextTool::ddColumnTextTool(wxhdDrawingEditor *editor, wxhdIFigure *fig, wxhdITool *dt, bool fastEdit , wxString dialogCaption, wxString dialogMessage):
-	wxhdSimpleTextTool(editor, fig, dt, fastEdit, dialogCaption, dialogMessage)
+ddColumnTextTool::ddColumnTextTool(wxhdDrawingView *view, wxhdIFigure *fig, wxhdITool *dt, bool fastEdit , wxString dialogCaption, wxString dialogMessage):
+	wxhdSimpleTextTool(view, fig, dt, fastEdit, dialogCaption, dialogMessage)
 {
 	if(colTextFigure->ms_classInfo.IsKindOf(&ddTextTableItemFigure::ms_classInfo))
 		colTextFigure = (ddTextTableItemFigure *) fig;
@@ -43,14 +43,14 @@ void ddColumnTextTool::mouseDown(wxhdMouseEvent &event)
 	wxhdSimpleTextTool::mouseDown(event);
 }
 
-bool ddColumnTextTool::callDialog()
+bool ddColumnTextTool::callDialog(wxhdDrawingView *view)
 {
 	if(colTextFigure->getOwnerColumn() == NULL)
 	{
 		wxString colName = colTextFigure->getText();
 		wxString colShortName = colTextFigure->getAlias();
 		ddTableNameDialog *nameAliasDialog = new ddTableNameDialog(
-		    getDrawingEditor()->view(),
+		    view,
 		    colName,
 		    colShortName,
 		    colTextFigure
@@ -69,7 +69,7 @@ bool ddColumnTextTool::callDialog()
 	}
 	else
 	{
-		bool change = wxhdSimpleTextTool::callDialog();
+		bool change = wxhdSimpleTextTool::callDialog(view);
 		if(  change && colTextFigure->getOwnerColumn()->isGeneratedForeignKey()) //after a manual user column rename, deactivated automatic generation of fk name.
 			colTextFigure->getOwnerColumn()->deactivateGenFkName();
 		return change;
