@@ -5,15 +5,15 @@
 # Copyright (C) 2002 - 2011, The pgAdmin Development Team
 # This software is released under the PostgreSQL Licence
 #
-# module.mk - pgadmin/include/dd/wxhotdraw/connectors/ Makefile fragment
+# module.mk - pgadmin/include/hotdraw/connectors/ Makefile fragment
 #
 #######################################################################
 
 pgadmin3_SOURCES += \
-	$(srcdir)/include/dd/wxhotdraw/connectors/wxhdChopBoxConnector.h \
-	$(srcdir)/include/dd/wxhotdraw/connectors/wxhdIConnector.h \
-	$(srcdir)/include/dd/wxhotdraw/connectors/wxhdLocatorConnector.h \
-	$(srcdir)/include/dd/wxhotdraw/connectors/wxhdStickyRectangleConnector.h
+	$(srcdir)/include/hotdraw/connectors/hdChopBoxConnector.h \
+	$(srcdir)/include/hotdraw/connectors/hdIConnector.h \
+	$(srcdir)/include/hotdraw/connectors/hdLocatorConnector.h \
+	$(srcdir)/include/hotdraw/connectors/hdStickyRectangleConnector.h
 
 EXTRA_DIST += \
-	$(srcdir)/include/dd/wxhotdraw/connectors/module.mk
+	$(srcdir)/include/hotdraw/connectors/module.mk

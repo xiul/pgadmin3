@@ -5,19 +5,19 @@
 # Copyright (C) 2002 - 2011, The pgAdmin Development Team
 # This software is released under the PostgreSQL Licence
 #
-# module.mk - pgadmin/include/dd/wxhotdraw/handles/ Makefile fragment
+# module.mk - pgadmin/include/hotdraw/handles/ Makefile fragment
 #
 #######################################################################
 
 pgadmin3_SOURCES += \
-	$(srcdir)/include/dd/wxhotdraw/handles/wxhdButtonHandle.h \
-	$(srcdir)/include/dd/wxhotdraw/handles/wxhdChangeConnectionEndHandle.h \
-	$(srcdir)/include/dd/wxhotdraw/handles/wxhdChangeConnectionHandle.h \
-	$(srcdir)/include/dd/wxhotdraw/handles/wxhdChangeConnectionStartHandle.h \
-	$(srcdir)/include/dd/wxhotdraw/handles/wxhdIHandle.h \
-	$(srcdir)/include/dd/wxhotdraw/handles/wxhdLineConnectionHandle.h \
-	$(srcdir)/include/dd/wxhotdraw/handles/wxhdLocatorHandle.h \
-	$(srcdir)/include/dd/wxhotdraw/handles/wxhdPolyLineHandle.h
+	$(srcdir)/include/hotdraw/handles/hdButtonHandle.h \
+	$(srcdir)/include/hotdraw/handles/hdChangeConnectionEndHandle.h \
+	$(srcdir)/include/hotdraw/handles/hdChangeConnectionHandle.h \
+	$(srcdir)/include/hotdraw/handles/hdChangeConnectionStartHandle.h \
+	$(srcdir)/include/hotdraw/handles/hdIHandle.h \
+	$(srcdir)/include/hotdraw/handles/hdLineConnectionHandle.h \
+	$(srcdir)/include/hotdraw/handles/hdLocatorHandle.h \
+	$(srcdir)/include/hotdraw/handles/hdPolyLineHandle.h
 
 EXTRA_DIST += \
-	$(srcdir)/include/dd/wxhotdraw/handles/module.mk
+	$(srcdir)/include/hotdraw/handles/module.mk

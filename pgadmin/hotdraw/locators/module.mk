@@ -5,13 +5,13 @@
 # Copyright (C) 2002 - 2011, The pgAdmin Development Team
 # This software is released under the PostgreSQL Licence
 #
-# module.mk - pgadmin/dd/wxhotdraw/locator/ Makefile fragment
+# module.mk - pgadmin/hotdraw/locator/ Makefile fragment
 #
 #######################################################################
 
 pgadmin3_SOURCES += \
-	$(srcdir)/dd/wxhotdraw/locators/wxhdILocator.cpp \
-	$(srcdir)/dd/wxhotdraw/locators/wxhdPolyLineLocator.cpp
+	$(srcdir)/hotdraw/locators/hdILocator.cpp \
+	$(srcdir)/hotdraw/locators/hdPolyLineLocator.cpp
 
 EXTRA_DIST += \
-	$(srcdir)/dd/wxhotdraw/locators/module.mk
+	$(srcdir)/hotdraw/locators/module.mk

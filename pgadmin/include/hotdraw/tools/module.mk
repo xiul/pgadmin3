@@ -5,26 +5,26 @@
 # Copyright (C) 2002 - 2011, The pgAdmin Development Team
 # This software is released under the PostgreSQL Licence
 #
-# module.mk - pgadmin/include/dd/wxhotdraw/tools/ Makefile fragment
+# module.mk - pgadmin/include/hotdraw/tools/ Makefile fragment
 #
 #######################################################################
 
 pgadmin3_SOURCES += \
-	$(srcdir)/include/dd/wxhotdraw/tools/wxhdAbstractTool.h \
-	$(srcdir)/include/dd/wxhotdraw/tools/wxhdCanvasMenuTool.h \	
-	$(srcdir)/include/dd/wxhotdraw/tools/wxhdCompositeFigureTool.h \
-	$(srcdir)/include/dd/wxhotdraw/tools/wxhdConnectionCreationTool.h \
-	$(srcdir)/include/dd/wxhotdraw/tools/wxhdCreationTool.h \
-	$(srcdir)/include/dd/wxhotdraw/tools/wxhdDragCreationTool.h \
-	$(srcdir)/include/dd/wxhotdraw/tools/wxhdDragTrackerTool.h \
-	$(srcdir)/include/dd/wxhotdraw/tools/wxhdFigureTool.h \
-	$(srcdir)/include/dd/wxhotdraw/tools/wxhdHandleTrackerTool.h \
-	$(srcdir)/include/dd/wxhotdraw/tools/wxhdITool.h \
-	$(srcdir)/include/dd/wxhotdraw/tools/wxhdMenuTool.h \
-	$(srcdir)/include/dd/wxhotdraw/tools/wxhdPolyLineFigureTool.h \
-	$(srcdir)/include/dd/wxhotdraw/tools/wxhdSelectAreaTool.h \
-	$(srcdir)/include/dd/wxhotdraw/tools/wxhdSelectionTool.h \
-	$(srcdir)/include/dd/wxhotdraw/tools/wxhdSimpleTextTool.h
+	$(srcdir)/include/hotdraw/tools/hdAbstractTool.h \
+	$(srcdir)/include/hotdraw/tools/hdCanvasMenuTool.h \	
+	$(srcdir)/include/hotdraw/tools/hdCompositeFigureTool.h \
+	$(srcdir)/include/hotdraw/tools/hdConnectionCreationTool.h \
+	$(srcdir)/include/hotdraw/tools/hdCreationTool.h \
+	$(srcdir)/include/hotdraw/tools/hdDragCreationTool.h \
+	$(srcdir)/include/hotdraw/tools/hdDragTrackerTool.h \
+	$(srcdir)/include/hotdraw/tools/hdFigureTool.h \
+	$(srcdir)/include/hotdraw/tools/hdHandleTrackerTool.h \
+	$(srcdir)/include/hotdraw/tools/hdITool.h \
+	$(srcdir)/include/hotdraw/tools/hdMenuTool.h \
+	$(srcdir)/include/hotdraw/tools/hdPolyLineFigureTool.h \
+	$(srcdir)/include/hotdraw/tools/hdSelectAreaTool.h \
+	$(srcdir)/include/hotdraw/tools/hdSelectionTool.h \
+	$(srcdir)/include/hotdraw/tools/hdSimpleTextTool.h
 
 EXTRA_DIST += \
-	$(srcdir)/include/dd/wxhotdraw/tools/module.mk
+	$(srcdir)/include/hotdraw/tools/module.mk

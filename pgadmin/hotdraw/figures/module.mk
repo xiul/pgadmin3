@@ -5,27 +5,27 @@
 # Copyright (C) 2002 - 2011, The pgAdmin Development Team
 # This software is released under the PostgreSQL Licence
 #
-# module.mk - pgadmin/dd/wxhotdraw/figures/ Makefile fragment
+# module.mk - pgadmin/hotdraw/figures/ Makefile fragment
 #
 #######################################################################
 
 pgadmin3_SOURCES += \
-	$(srcdir)/dd/wxhotdraw/figures/wxhdAbstractFigure.cpp \
-	$(srcdir)/dd/wxhotdraw/figures/wxhdAbstractMenuFigure.cpp \
-	$(srcdir)/dd/wxhotdraw/figures/wxhdAttribute.cpp \
-	$(srcdir)/dd/wxhotdraw/figures/wxhdAttributeFigure.cpp \
-	$(srcdir)/dd/wxhotdraw/figures/wxhdBitmapFigure.cpp \
-	$(srcdir)/dd/wxhotdraw/figures/wxhdCompositeFigure.cpp \
-	$(srcdir)/dd/wxhotdraw/figures/wxhdIConnectionFigure.cpp \
-	$(srcdir)/dd/wxhotdraw/figures/wxhdIFigure.cpp \
-	$(srcdir)/dd/wxhotdraw/figures/wxhdLineConnection.cpp \
-	$(srcdir)/dd/wxhotdraw/figures/wxhdLineTerminal.cpp \
-	$(srcdir)/dd/wxhotdraw/figures/wxhdPolyLineFigure.cpp \
-	$(srcdir)/dd/wxhotdraw/figures/wxhdRectangleFigure.cpp \
-	$(srcdir)/dd/wxhotdraw/figures/wxhdSimpleTextFigure.cpp
+	$(srcdir)/hotdraw/figures/hdAbstractFigure.cpp \
+	$(srcdir)/hotdraw/figures/hdAbstractMenuFigure.cpp \
+	$(srcdir)/hotdraw/figures/hdAttribute.cpp \
+	$(srcdir)/hotdraw/figures/hdAttributeFigure.cpp \
+	$(srcdir)/hotdraw/figures/hdBitmapFigure.cpp \
+	$(srcdir)/hotdraw/figures/hdCompositeFigure.cpp \
+	$(srcdir)/hotdraw/figures/hdIConnectionFigure.cpp \
+	$(srcdir)/hotdraw/figures/hdIFigure.cpp \
+	$(srcdir)/hotdraw/figures/hdLineConnection.cpp \
+	$(srcdir)/hotdraw/figures/hdLineTerminal.cpp \
+	$(srcdir)/hotdraw/figures/hdPolyLineFigure.cpp \
+	$(srcdir)/hotdraw/figures/hdRectangleFigure.cpp \
+	$(srcdir)/hotdraw/figures/hdSimpleTextFigure.cpp
 
 EXTRA_DIST += \
-	$(srcdir)/dd/wxhotdraw/figures/module.mk
+	$(srcdir)/hotdraw/figures/module.mk
 
-include $(srcdir)/dd/wxhotdraw/figures/defaultAttributes/module.mk
-include $(srcdir)/dd/wxhotdraw/figures/xml/module.mk
+include $(srcdir)/hotdraw/figures/defaultAttributes/module.mk
+include $(srcdir)/hotdraw/figures/xml/module.mk

@@ -22,6 +22,7 @@ EXTRA_DIST += \
 
 include $(srcdir)/include/agent/module.mk
 include $(srcdir)/include/db/module.mk
+include $(srcdir)/include/dd/module.mk
 include $(srcdir)/include/dlg/module.mk
 include $(srcdir)/include/debugger/module.mk
 include $(srcdir)/include/ctl/module.mk
@@ -32,6 +33,7 @@ include $(srcdir)/include/pgscript/module.mk
 include $(srcdir)/include/schema/module.mk
 include $(srcdir)/include/slony/module.mk
 include $(srcdir)/include/gqb/module.mk
+include $(srcdir)/include/hotdraw/module.mk
 include $(srcdir)/include/utils/module.mk
 include $(srcdir)/include/ogl/module.mk
 

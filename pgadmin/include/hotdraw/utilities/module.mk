@@ -5,21 +5,21 @@
 # Copyright (C) 2002 - 2011, The pgAdmin Development Team
 # This software is released under the PostgreSQL Licence
 #
-# module.mk - pgadmin/include/dd/wxhotdraw/utilities/ Makefile fragment
+# module.mk - pgadmin/include/hotdraw/utilities/ Makefile fragment
 #
 #######################################################################
 
 pgadmin3_SOURCES += \
-	$(srcdir)/include/dd/wxhotdraw/utilities/wxhdArrayCollection.h \
-	$(srcdir)/include/dd/wxhotdraw/utilities/wxhdCollection.h \
-	$(srcdir)/include/dd/wxhotdraw/utilities/wxhdCollectionBase.h \
-	$(srcdir)/include/dd/wxhotdraw/utilities/wxhdGeometry.h \
-	$(srcdir)/include/dd/wxhotdraw/utilities/wxhdKeyEvent.h \
-	$(srcdir)/include/dd/wxhotdraw/utilities/wxhdMultiPosRect.h \
-	$(srcdir)/include/dd/wxhotdraw/utilities/wxhdMouseEvent.h \
-	$(srcdir)/include/dd/wxhotdraw/utilities/wxhdPoint.h \
-	$(srcdir)/include/dd/wxhotdraw/utilities/wxhdRect.h \
-	$(srcdir)/include/dd/wxhotdraw/utilities/wxhdRemoveDeleteDialog.h
+	$(srcdir)/include/hotdraw/utilities/hdArrayCollection.h \
+	$(srcdir)/include/hotdraw/utilities/hdCollection.h \
+	$(srcdir)/include/hotdraw/utilities/hdCollectionBase.h \
+	$(srcdir)/include/hotdraw/utilities/hdGeometry.h \
+	$(srcdir)/include/hotdraw/utilities/hdKeyEvent.h \
+	$(srcdir)/include/hotdraw/utilities/hdMultiPosRect.h \
+	$(srcdir)/include/hotdraw/utilities/hdMouseEvent.h \
+	$(srcdir)/include/hotdraw/utilities/hdPoint.h \
+	$(srcdir)/include/hotdraw/utilities/hdRect.h \
+	$(srcdir)/include/hotdraw/utilities/hdRemoveDeleteDialog.h
 
 EXTRA_DIST += \
-	$(srcdir)/include/dd/wxhotdraw/utilities/module.mk
+	$(srcdir)/include/hotdraw/utilities/module.mk

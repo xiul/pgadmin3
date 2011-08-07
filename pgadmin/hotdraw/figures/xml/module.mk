@@ -5,12 +5,12 @@
 # Copyright (C) 2002 - 2011, The pgAdmin Development Team
 # This software is released under the PostgreSQL Licence
 #
-# module.mk - pgadmin/dd/wxhotdraw/figures/xml/ Makefile fragment
+# module.mk - pgadmin/hotdraw/figures/xml/ Makefile fragment
 #
 #######################################################################
 
 pgadmin3_SOURCES += \
-	$(srcdir)/dd/wxhotdraw/figures/xml/wxhdStorage.cpp
+	$(srcdir)/hotdraw/figures/xml/hdStorage.cpp
 
 EXTRA_DIST += \
-	$(srcdir)/dd/wxhotdraw/figures/xml/module.mk
+	$(srcdir)/hotdraw/figures/xml/module.mk

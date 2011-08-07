@@ -5,15 +5,15 @@
 # Copyright (C) 2002 - 2011, The pgAdmin Development Team
 # This software is released under the PostgreSQL Licence
 #
-# module.mk - pgadmin/dd/wxhotdraw/figures/defaultAttributes/ Makefile fragment
+# module.mk - pgadmin/hotdraw/figures/defaultAttributes/ Makefile fragment
 #
 #######################################################################
 
 pgadmin3_SOURCES += \
-	$(srcdir)/dd/wxhotdraw/figures/defaultAttributes/wxhdFillAttribute.cpp \
-	$(srcdir)/dd/wxhotdraw/figures/defaultAttributes/wxhdFontAttribute.cpp \
-	$(srcdir)/dd/wxhotdraw/figures/defaultAttributes/wxhdFontColorAttribute.cpp \
-	$(srcdir)/dd/wxhotdraw/figures/defaultAttributes/wxhdLineAttribute.cpp
+	$(srcdir)/hotdraw/figures/defaultAttributes/hdFillAttribute.cpp \
+	$(srcdir)/hotdraw/figures/defaultAttributes/hdFontAttribute.cpp \
+	$(srcdir)/hotdraw/figures/defaultAttributes/hdFontColorAttribute.cpp \
+	$(srcdir)/hotdraw/figures/defaultAttributes/hdLineAttribute.cpp
 
 EXTRA_DIST += \
-	$(srcdir)/dd/wxhotdraw/figures/defaultAttributes/module.mk
+	$(srcdir)/hotdraw/figures/defaultAttributes/module.mk
