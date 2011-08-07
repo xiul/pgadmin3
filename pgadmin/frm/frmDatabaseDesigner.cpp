@@ -24,6 +24,7 @@
 #include "ctl/ctlMenuToolbar.h"
 #include "schema/pgObject.h"
 #include "schema/pgDatabase.h"
+#include "ctl/ctlSQLBox.h"
 
 // Designer headers
 #include "dd/dditems/figures/ddColumnKindIcon.h"
@@ -61,7 +62,7 @@ BEGIN_EVENT_TABLE(frmDatabaseDesigner, pgFrame)
 	EVT_MENU(MNU_ADDTABLE,          frmDatabaseDesigner::OnAddTable)
 	EVT_MENU(MNU_DELETETABLE,       frmDatabaseDesigner::OnDeleteTable)
 	EVT_MENU(MNU_ADDCOLUMN,         frmDatabaseDesigner::OnAddColumn)
-	EVT_MENU(MNU_GENERATEDIAGRAM,     frmDatabaseDesigner::OnModelGeneration)
+	EVT_MENU(MNU_GENERATEDIAGRAM,     frmDatabaseDesigner::OnDiagramGeneration)
 	EVT_MENU(MNU_GENERATEMODEL,     frmDatabaseDesigner::OnModelGeneration)
 	EVT_MENU(MNU_SAVEMODEL,			frmDatabaseDesigner::OnModelSave)
 	EVT_MENU(MNU_SAVEMODELAS,    frmDatabaseDesigner::OnModelSaveAs)
@@ -133,7 +134,6 @@ frmDatabaseDesigner::frmDatabaseDesigner(frmMain *form, const wxString &_title, 
 	toolBar->AddSeparator();
 	toolBar->AddTool(MNU_LOADMODEL, _("Open Model"), *file_open_png_bmp, _("Load database designer model from a file"), wxITEM_NORMAL);
 	toolBar->AddTool(MNU_SAVEMODEL, _("Save Model"), *file_save_png_bmp, _("Save current database designer model"), wxITEM_NORMAL);
-//666	toolBar->AddTool(MNU_DELDIAGRAM, _("Delete Diagram"), *file_new_png_bmp, _("Delete selected diagram from design [Testing purpose]"), wxITEM_NORMAL);
 	toolBar->AddSeparator();
 	toolBar->AddTool(MNU_ADDTABLE, _("Add Table"), *table_png_bmp, _("Add empty table to the current model"), wxITEM_NORMAL);
 	toolBar->AddTool(MNU_DELETETABLE, _("Delete Table"), wxBitmap(*ddRemoveTable2_png_img), _("Delete selected table"), wxITEM_NORMAL);
@@ -141,8 +141,6 @@ frmDatabaseDesigner::frmDatabaseDesigner(frmMain *form, const wxString &_title, 
 	toolBar->AddSeparator();
 	toolBar->AddTool(MNU_GENERATEMODEL, _("Generate Model"), *continue_png_bmp, _("Generate SQL for the current model"), wxITEM_NORMAL);
 	toolBar->AddTool(MNU_GENERATEDIAGRAM, _("Generate Selected Diagram"), *continue_png_bmp, _("Generate SQL for the current diagram"), wxITEM_NORMAL);
-//666	toolBar->AddTool(MNU_SAVEMODEL, _("Save Model"), *file_save_png_bmp, _("Save current database designer model"), wxITEM_NORMAL);
-//666	toolBar->AddTool(MNU_LOADMODEL, _("Load Model"), *file_open_png_bmp, _("Load database designer model from a file"), wxITEM_NORMAL);
 	toolBar->AddSeparator();
 	toolBar->AddTool(MNU_HELP, _("Help"), *help_png_bmp, _("Display help"), wxITEM_NORMAL);
 	toolBar->Realize();
@@ -151,7 +149,7 @@ frmDatabaseDesigner::frmDatabaseDesigner(frmMain *form, const wxString &_title, 
 	diagrams = new ctlAuiNotebook(this, CTL_DDNOTEBOOK, wxDefaultPosition, wxDefaultSize, wxAUI_NB_TOP | wxAUI_NB_TAB_SPLIT | wxAUI_NB_TAB_MOVE | wxAUI_NB_SCROLL_BUTTONS | wxAUI_NB_WINDOWLIST_BUTTON | wxAUI_NB_CLOSE_ON_ALL_TABS);
 
 	// Now, the scratchpad
-	sqltext = new wxTextCtrl(this, -1, wxT(""), wxDefaultPosition, wxDefaultSize, wxTE_MULTILINE | wxHSCROLL);
+	sqltext = new ctlSQLBox(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTE_MULTILINE | wxSIMPLE_BORDER | wxTE_RICH2);
 
 	//Now, the Objects Browser
 	browserPanel = new wxPanel(this, wxID_ANY, wxDefaultPosition, wxDefaultSize); 
@@ -234,8 +232,48 @@ void frmDatabaseDesigner::Go()
 
 void frmDatabaseDesigner::OnClose(wxCloseEvent &event)
 {
-	Hide();
-	Destroy();
+	//Ask what to do with old model
+	int answer = wxNO;
+	if ( lastFile != wxEmptyString )
+	{
+		answer = wxMessageBox(_("Save: ")+ lastFile + _(" model changes?"), _("Confirm"), wxYES_NO | wxCANCEL);
+		if (answer == wxYES)
+		{
+			design->writeXmlModel(lastFile);
+			changed=false;
+			setExtendedTitle();
+		}
+	}
+	else if (changed)
+	{
+		answer = wxMessageBox(_("Save unnamed model changes?"), _("Confirm"), wxYES_NO | wxCANCEL);
+		if (answer == wxYES)		
+		{
+			wxFileDialog openFileDialog( this, _("Save model"), _(""), _(""), _("*.pgd"),
+								  wxFD_SAVE | wxFD_OVERWRITE_PROMPT, wxDefaultPosition);
+		 
+			if ( openFileDialog.ShowModal() == wxID_OK )
+			{
+				wxString path;
+				path.append( openFileDialog.GetDirectory() );
+				path.append( wxFileName::GetPathSeparator() );
+				path.append( openFileDialog.GetFilename() );
+				if(!path.Lower().Matches(_("*.pgd")))
+					path.append(_(".pgd"));
+				lastFile = path;
+				changed=false;
+				setExtendedTitle();
+				design->writeXmlModel(path);
+			}
+		}
+	}
+	if(answer!=wxCANCEL)
+	{
+		Hide();
+		Destroy();
+	}
+	else
+		event.Veto();
 }
 
 void frmDatabaseDesigner::setExtendedTitle()
@@ -347,19 +385,39 @@ void frmDatabaseDesigner::OnAddColumn(wxCommandEvent &event)
 void frmDatabaseDesigner::OnNewModel(wxCommandEvent &event)
 {
 	wxhdDrawingView *view = (wxhdDrawingView *) diagrams->GetPage(diagrams->GetSelection());
-	//Clean diagrams notebook	
-	while(diagrams->GetPageCount()>0)
+
+	//Ask what to do with old model
+	int answer = wxNO;
+	if ( lastFile != wxEmptyString )
 	{
-		diagrams->RemovePage(0); //666 hacerlo dinamico
-		design->deleteDiagram(0);			
-	};
-	design->emptyModel();
-	
-	OnAddDiagram(event);
-	
-	sqltext->Clear();
-	changed=false;
-	setExtendedTitle();
+		answer = wxMessageBox(_("Save: ")+ lastFile + _(" model changes?"), _("Confirm"), wxYES_NO | wxCANCEL);
+		if (answer == wxYES)
+			OnModelSave(event);
+	}
+	else if (changed)
+	{
+		answer = wxMessageBox(_("Save unnamed model changes?"), _("Confirm"), wxYES_NO | wxCANCEL);
+		if (answer == wxYES)		
+		OnModelSaveAs(event);
+	}
+
+	if(answer != wxCANCEL)
+	{
+		//Clean diagrams notebook	
+		while(diagrams->GetPageCount()>0)
+		{
+			diagrams->RemovePage(0);
+			design->deleteDiagram(0);			
+		};
+		design->emptyModel();
+		
+		OnAddDiagram(event);
+		
+		sqltext->Clear();
+		lastFile = wxEmptyString;
+		changed=false;
+		setExtendedTitle();
+	}
 }
 
 void frmDatabaseDesigner::OnDiagramGeneration(wxCommandEvent &event)
@@ -373,7 +431,7 @@ void frmDatabaseDesigner::OnDiagramGeneration(wxCommandEvent &event)
 	}
 	else
 	{
-		sqltext->SetValue(design->generateDiagram(view->getIdx()));
+		sqltext->SetText(design->generateDiagram(view->getIdx()));
 	}
 }
 
@@ -388,7 +446,7 @@ void frmDatabaseDesigner::OnModelGeneration(wxCommandEvent &event)
 	}
 	else
 	{
-		sqltext->SetValue(design->generateModel());
+		sqltext->SetText(design->generateModel());
 	}
 }
 
@@ -439,7 +497,7 @@ void frmDatabaseDesigner::OnModelLoad(wxCommandEvent &event)
 	}
 	else if (changed)
 	{
-		answer = wxMessageBox(_("Save new model changes?"), _("Confirm"), wxYES_NO | wxCANCEL);
+		answer = wxMessageBox(_("Save unnamed model changes?"), _("Confirm"), wxYES_NO | wxCANCEL);
 		if (answer == wxYES)		
 		OnModelSaveAs(event);
 	}
@@ -462,7 +520,7 @@ void frmDatabaseDesigner::OnModelLoad(wxCommandEvent &event)
 			//Clean diagrams notebook	
 			while(diagrams->GetPageCount()>0)
 			{
-				diagrams->RemovePage(0); //666 hacerlo dinamico
+				diagrams->RemovePage(0);
 				design->deleteDiagram(0);			
 			}
 			design->emptyModel();

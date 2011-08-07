@@ -63,7 +63,6 @@ protected:
 
 	int getMaximunIndex();
 	virtual void updateHandlesIndexes();
-	//666 wxhdArrayCollection *points;
 	pointsCollections points;
 	wxhdPoint endPoint, startPoint, pointAtPos;
 

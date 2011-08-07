@@ -11,7 +11,7 @@
 
 #ifndef DDTEXTEDITOR_H
 #define DDTEXTEDITOR_H
-
+#include "ctl/ctlSQLBox.h"
 
 class ddTextEditor : public wxFrame
 {
@@ -21,7 +21,7 @@ public:
 private:
 	wxMenuBar *menu;
 	wxMenu *file;
-	wxTextCtrl *text;
+	ctlSQLBox *text;
 	void OnSave(wxCommandEvent &event);
 	void OnOpen(wxCommandEvent &event);
 	void OnExit(wxCommandEvent &event);

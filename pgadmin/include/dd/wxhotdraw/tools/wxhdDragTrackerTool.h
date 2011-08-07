@@ -37,7 +37,6 @@ protected:
 
 private:
 	int lastX, lastY;
-	//666 000 wxhdDrawingView *view;
 
 };
 #endif

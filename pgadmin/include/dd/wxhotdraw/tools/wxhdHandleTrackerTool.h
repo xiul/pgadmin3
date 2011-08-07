@@ -34,7 +34,5 @@ protected:
 
 private:
 
-	//666 000 wxhdDrawingView *view;
-
 };
 #endif

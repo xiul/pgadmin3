@@ -66,7 +66,6 @@ void ddTableFigure::Init(wxString tableName, int x, int y, wxString shortName)
 	selectingFkDestination = false;
 
 	//Set Value default Attributes
-	//666 fontAttribute->font().SetPointSize(8);
 	fontColorAttribute->fontColor = wxColour(49, 79, 79);
 	//Set Value default selected Attributes
 	lineSelAttribute->pen().SetColour(wxColour(204, 0, 0));
@@ -124,7 +123,7 @@ void ddTableFigure::Init(wxString tableName, int x, int y, wxString shortName)
 	beginDrawIdxs = 2;
 
 	//Initialize
-	pkName = wxT("NewTable_pk");
+	pkName = wxEmptyString;
 	ukNames.clear();
 
 	updateTableSize();
@@ -1090,11 +1089,11 @@ bool ddTableFigure::validateTable(wxString &errors)
 }
 
 //Using some options from http://www.postgresql.org/docs/8.1/static/sql-createtable.html, but new options can be added in a future.
-wxString ddTableFigure::generateSQL()
+wxString ddTableFigure::generateSQLCreate()
 {
 	//Columns and table
 	wxString tmp(wxT("CREATE TABLE "));
-	tmp += getTableName() + wxT(" (\n");
+	tmp += +wxT("\"")+getTableName() + wxT("\" (\n");
 	wxhdIteratorBase *iterator = figuresEnumerator();
 	iterator->Next(); //Fixed Position for table rectangle
 	iterator->Next(); //Fixed Position for table name
@@ -1111,8 +1110,16 @@ wxString ddTableFigure::generateSQL()
 			tmp += wxT(" , \n");
 		}
 	}
+	tmp += wxT("\n ); ");
+
+	return tmp;
+}
+
+wxString ddTableFigure::generateSQLAlterPks()
+{
+	wxString tmp;
+	wxhdIteratorBase *iterator = figuresEnumerator();
 	//Pk, Uk Constraints
-	iterator->ResetIterator();
 	iterator->Next(); //Fixed Position for table rectangle
 	iterator->Next(); //Fixed Position for table name
 	int contPk = 0;
@@ -1124,7 +1131,7 @@ wxString ddTableFigure::generateSQL()
 	}
 	if(contPk > 0)
 	{
-		tmp += wxT(", \nPRIMARY KEY ( ");
+		tmp += wxT("\n ALTER TABLE ADD CONSTRAINT ") + pkName + _(" PRIMARY KEY ( ");
 		iterator->ResetIterator();
 		iterator->Next(); //Fixed Position for table rectangle
 		iterator->Next(); //Fixed Position for table name
@@ -1134,7 +1141,7 @@ wxString ddTableFigure::generateSQL()
 			ddColumnFigure *column = (ddColumnFigure *) iterator->Next();
 			if(column->isPrimaryKey())
 			{
-				tmp += column->getColumnName();
+				tmp += wxT("\"")+ column->getColumnName() +wxT("\"");
 				contPk--;
 				if(contPk > 0)
 				{
@@ -1142,17 +1149,25 @@ wxString ddTableFigure::generateSQL()
 				}
 				else
 				{
-					tmp += wxT(" ) ");
+					tmp += wxT(" ); ");
 				}
 			}
 		}
 	}
 	delete iterator;
+	
+	return tmp;
+}
+
+wxString ddTableFigure::generateSQLAlterFks()
+{
+	wxString tmp;
+	wxhdIteratorBase *iterator = figuresEnumerator();
 	//Fk Constraint
 	iterator = observersEnumerator();
 	if(!iterator->HasNext())
 	{
-		tmp += wxT("\n ); ");
+		tmp = wxEmptyString;
 	}
 	else
 	{
@@ -1161,15 +1176,9 @@ wxString ddTableFigure::generateSQL()
 			ddRelationshipFigure *rel = (ddRelationshipFigure *) iterator->Next();
 			if(rel->getStartFigure() != this)
 			{
-				wxString tmp2 = rel->generateSQL();
-				if(tmp2.length() > 0)
-				{
-					tmp += wxT(" , \n");
-					tmp += tmp2;
-				}
+				tmp += rel->generateSQL();
 			}
 		}
-		tmp += wxT("\n ); ");
 	}
 	delete iterator;
 	return tmp;

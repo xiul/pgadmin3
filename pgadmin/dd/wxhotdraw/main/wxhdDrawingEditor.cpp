@@ -248,7 +248,6 @@ void wxhdDrawingEditor::deleteAllModelFigures()
 	}
 }
 
-//666 put here remove too
 void wxhdDrawingEditor::remOrDelSelFigures(int diagramIndex)
 {
 	int answer;

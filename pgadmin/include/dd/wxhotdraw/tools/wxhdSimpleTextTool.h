@@ -35,8 +35,6 @@ private:
 	wxhdSimpleTextFigure *txtFigure;
 	void calculateSizeEntry(wxhdDrawingView *view);
 	bool showEdit;
-//666 000	wxTextCtrl *edit;
-//666 000	wxBitmapButton *okButton, *cancelButton;
 	//Because a bug in the way wxwidgets connect events I can't declare it here, wxTextCtrl *edit, instead I do it on the view instance.
 };
 

@@ -32,7 +32,6 @@ public:
 protected:
 	void drawSelectionRect(wxhdDrawingView *view);
 private:
-	//666 000 wxhdDrawingView *view;
 	wxhdRect selectionRect;
 };
 #endif

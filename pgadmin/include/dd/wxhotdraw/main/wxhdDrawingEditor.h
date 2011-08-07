@@ -39,22 +39,11 @@ public:
 	wxhdIteratorBase *modelFiguresEnumerator();
 	wxhdIteratorBase *diagramsEnumerator();
 
-
-
-//666 000	wxhdITool *tool();
-//666 000	void setTool(wxhdITool *tool);
-
-/*
-	//Hack To allow right click menu at canvas without a figure
-	virtual void createMenu(wxMenu &mnu); 666 000
-	virtual void OnGenericPopupClick(wxCommandEvent &event, wxhdDrawingView *view); 666 000
-*/
 protected:
-	//int index;
 	wxhdArrayCollection *_diagrams;
 	wxhdArrayCollection *_model;
 	wxWindow *editorOwner;
-//666 000	wxhdITool *_tool;
+
 private:
 };
 #endif

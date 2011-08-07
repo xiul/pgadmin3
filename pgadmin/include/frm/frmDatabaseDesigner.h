@@ -17,6 +17,7 @@
 #include "dd/wxhotdraw/figures/wxhdPolyLineFigure.h"
 #include "dd/wxhotdraw/figures/wxhdLineConnection.h"
 #include "dd/ddmodel/ddDatabaseDesign.h"
+#include "ctl/ctlSQLBox.h"
 
 
 enum
@@ -40,7 +41,7 @@ private:
 	wxPanel *browserPanel;
 	ddModelBrowser *modelBrowser;
 	ctlAuiNotebook *diagrams;
-	wxTextCtrl *sqltext;
+	ctlSQLBox *sqltext;
 	void setExtendedTitle();
 	void OnClose(wxCloseEvent &event);
 	void OnAddDiagram(wxCommandEvent &event);

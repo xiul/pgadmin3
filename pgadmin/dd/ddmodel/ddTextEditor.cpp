@@ -34,8 +34,8 @@ ddTextEditor::ddTextEditor(wxString initialText) : wxFrame(NULL, wxID_ANY, wxT("
 	menu->Append(file, wxT("&File"));
 	SetMenuBar(menu);
 
-	text = new wxTextCtrl(this, wxID_ANY, wxT(""), wxDefaultPosition, wxDefaultSize, wxTE_PROCESS_ENTER | wxTE_MULTILINE);
-	text->SetValue(initialText);
+	text = new ctlSQLBox(this, CTL_SQLQUERY, wxDefaultPosition, wxDefaultSize, wxTE_MULTILINE | wxSIMPLE_BORDER | wxTE_RICH2);
+	text->SetText(initialText);
 }
 
 void ddTextEditor::OnSave(wxCommandEvent &event)

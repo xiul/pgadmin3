@@ -695,12 +695,9 @@ wxString ddRelationshipFigure::generateSQL()
 	wxString tmp;
 	if(chm.size() > 0)
 	{
-		if(!constraintName.IsEmpty())
-		{
-			tmp = _("CONSTRAINT ");
-			tmp += constraintName;
-			tmp += _(" ");
-		}
+		tmp = _("ALTER TABLE \"") + ((ddTableFigure *)getEndFigure())->getTableName() + _("\" ADD CONSTRAINT ");
+		tmp += constraintName;
+		tmp += _(" ");
 		tmp += wxT("FOREIGN KEY ( ");
 		columnsHashMap::iterator it, end;
 		ddRelationshipItem *item;
@@ -708,7 +705,7 @@ wxString ddRelationshipFigure::generateSQL()
 		{
 			wxString key = it->first;
 			item = it->second;
-			tmp += item->fkColumn->getColumnName();
+			tmp += wxT("\"") + item->fkColumn->getColumnName() + wxT("\"");
 			end = it;
 			end++;
 			if(end != chm.end())
@@ -721,12 +718,12 @@ wxString ddRelationshipFigure::generateSQL()
 			}
 		}
 
-		tmp += wxT(" REFERENCES ") + ((ddTableFigure *)getStartFigure())->getTableName() + wxT(" ( ");
+		tmp += wxT(" REFERENCES \"") + ((ddTableFigure *)getStartFigure())->getTableName() + wxT("\" ( ");
 		for( it = chm.begin(); it != chm.end(); ++it )
 		{
 			wxString key = it->first;
 			item = it->second;
-			tmp += item->original->getColumnName();
+			tmp += wxT("\"") + item->original->getColumnName() + wxT("\"");
 			end = it;
 			end++;
 			if(end != chm.end())
@@ -784,6 +781,7 @@ wxString ddRelationshipFigure::generateSQL()
 				break;
 		}
 
+	tmp+=_(";\n");
 	}
 	return tmp;
 }

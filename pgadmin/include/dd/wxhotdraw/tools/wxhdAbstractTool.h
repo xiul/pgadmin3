@@ -37,8 +37,6 @@ protected:
 	int anchorX, anchorY;
 	wxhdDrawingView *ownerView;
 private:
-	//666 wxhdDrawingEditor *ownerEditor;
-
 
 };
 #endif

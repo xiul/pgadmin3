@@ -171,7 +171,6 @@ void wxhdDrawing::removeAllFigures()
 		figures->removeItemAt(0);
 		if(usedView)
 			tmp->moveTo(usedView->getIdx(),-1,-1);
-		//666 delete tmp;
 	}
 }
 

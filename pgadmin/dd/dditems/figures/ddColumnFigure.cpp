@@ -441,7 +441,7 @@ void ddColumnFigure::deactivateGenFkName()
 wxString ddColumnFigure::generateSQL()
 {
 	wxString tmp;
-	tmp = getColumnName();
+	tmp = wxT("\"") + getColumnName() + wxT("\"");
 	tmp += wxT(" ");
 	tmp += columnText->getType();
 	return tmp;

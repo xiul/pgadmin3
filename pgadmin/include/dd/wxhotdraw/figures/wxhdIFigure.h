@@ -57,7 +57,6 @@ public:
 
 protected:
 	wxhdMultiPosRect basicDisplayBox;
-	//666 borrado wxhdRect basicDisplayBoxRect;
 	wxhdCollection *handles;
 	wxhdCollection *observers;
 	wxhdIConnector *connector;

@@ -143,11 +143,6 @@ public:
         return r;
     }
 
-
-    // compare rectangles
-/*    bool operator==(const wxhdMultiPosRect& rect) const;
-    bool operator!=(const wxhdMultiPosRect& rect) const { return !(*this == rect); }
-*/
     // return true if the point is (not strcitly) inside the rect
     bool Contains(int posIdx, int x, int y) const;
     bool Contains(int posIdx, const wxPoint& pt) const { return Contains(posIdx, pt.x, pt.y); }
@@ -156,18 +151,6 @@ public:
 
    // return true if the rectangles have a non empty intersection
     bool Intersects(int posIdx, const wxhdMultiPosRect& rect) const;
-
-
-/*666 delete    // these are like Union() but don't ignore empty rectangles
-//    wxhdMultiPosRect operator+(const wxhdMultiPosRect& rect) const;
-
-/	wxhdMultiPosRect& operator+=(const wxhdMultiPosRect& rect)
-    {
-        *this = *this + rect;
-        return *this;
-    }
-*/
-
 
     // centre this rectangle in the given (usually, but not necessarily,
     // larger) one

@@ -720,17 +720,12 @@ void ddXmlStorage::selectReader(xmlTextReaderPtr reader)
 		if(getNodeName(reader).IsSameAs(_("TABLE"),false))
 		{
 			getTable(reader);
-			//666 000 fixed at model 0 right now fix it
-			//666 design->refreshDraw(0);
 		}
 
 		if(getNodeName(reader).IsSameAs(_("RELATIONSHIP"),false))
 		{
 			ddRelationshipFigure *r = getRelationship(reader);
-			//666 000 fixed at model 0 right now fix it
 			design->addTableToModel(r);
-			//666 000 fixed at model 0 right now fix it
-			//666 design->refreshDraw(0);
 		}
 
 		if(getNodeName(reader).IsSameAs(_("DIAGRAMS"),false))
@@ -1296,7 +1291,7 @@ ddRelationshipFigure* ddXmlStorage::getRelationship(xmlTextReaderPtr reader)
 	ddRelationshipFigure *relation = new ddRelationshipFigure();
 	relation->setStartTerminal(new ddRelationshipTerminal(relation, false));
 	relation->setEndTerminal(new ddRelationshipTerminal(relation, true));
-	relation->clearPoints(0); //666 fixed at 0 because right now I don't have index of line
+	relation->clearPoints(0);
 	bool firstPoint=true;
 	// --> ATTRIBUTE*
 	//Element(s) Attribute*
@@ -1523,7 +1518,7 @@ ddRelationshipFigure* ddXmlStorage::getRelationship(xmlTextReaderPtr reader)
 
 	tmp = xmlTextReaderRead(reader);	//go to /RELATIONSHIP	
 
-	relation->updateConnection(0);  //666 solo lo hago indice 0 por ahora
+	relation->updateConnection(0);
 	return relation;
 }
 

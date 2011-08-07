@@ -85,6 +85,10 @@ wxString &ddTextTableItemFigure::getText(bool extended)
 			else
 				ddType += wxString::Format(wxT("(%d,%d)"), getPrecision(), getScale());
 		}
+		//Fix to serial is integer at automatically generated foreign key
+		if(getDataType() == dt_serial && getOwnerColumn()->isGeneratedForeignKey())
+			ddType = dataTypes()[dt_integer];
+
 		out = wxString( wxhdSimpleTextFigure::getText() + wxString(wxT(" : ")) + ddType );
 		return  out;
 	}
@@ -113,6 +117,11 @@ wxString ddTextTableItemFigure::getType()
 		ddType.Truncate(ddType.Find(wxT("(")));
 		ddType += wxString::Format(wxT("(%d)"), getPrecision());
 	}
+
+	//Fix to serial is integer at automatically generated foreign key
+	if(columnType == dt_serial && getOwnerColumn()->isGeneratedForeignKey())
+		ddType = dataTypes()[dt_integer];
+
 	return ddType;
 }
 

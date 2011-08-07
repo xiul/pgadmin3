@@ -72,7 +72,9 @@ public:
 	wxString getTableName();
 	void setShortTableName(wxString shortName);
 	wxString getShortTableName();
-	wxString generateSQL();
+	wxString generateSQLCreate();
+	wxString generateSQLAlterPks();
+	wxString generateSQLAlterFks();
 	static wxString generateShortName(wxString longName);
 	wxArrayString getAllColumnsNames();
 	wxArrayString getAllFkSourceColsNames(bool pk, int ukIndex = -1);

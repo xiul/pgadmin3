@@ -106,7 +106,6 @@ void ddModelBrowser::refreshFromModel()
 		{
 			table = (ddTableFigure *)tmpFigure;
 			this->AppendItem(rootNode,table->getTableName(),DD_IMG_FIG_TABLE, DD_IMG_FIG_TABLE, new ddBrowserDataContainer(table));
-			//666 add table info
 		}
 	}
 	delete iterator;

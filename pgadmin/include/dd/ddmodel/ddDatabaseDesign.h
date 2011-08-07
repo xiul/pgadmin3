@@ -35,7 +35,6 @@ public:
 	void removeTable(int diagramIndex, wxhdIFigure *figure);
 	wxhdDrawing* createDiagram(wxWindow *owner, wxString name, bool fromXml);
 	void deleteDiagram(int diagramIndex, bool deleteView=true);
-//666 000	void setTool(wxhdITool *tool);
 	void refreshDraw(int diagramIndex);
 	void eraseDiagram(int diagramIndex);
 	void emptyModel();
@@ -53,8 +52,6 @@ public:
 	wxString getTableName(wxString Id);
 	void registerBrowser(ddModelBrowser *browser);
 	void refreshBrowser();
-//666	void checkRelationshipsConsistency(int diagramIndex);
-//666	void checkAllDigramsRelConsistency();
 	static wxString getVersionXML();
 protected:
 	tablesMappingHashMap mappingNameToId;

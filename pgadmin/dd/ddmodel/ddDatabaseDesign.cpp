@@ -133,6 +133,11 @@ wxString ddDatabaseDesign::generateModel()
 	wxhdIteratorBase *iterator = editor->modelFiguresEnumerator();
 	wxhdIFigure *tmp;
 	ddTableFigure *table;
+	out += wxT(" \n");
+	out += wxT("--\n-- ");
+	out += _("Generating Create sentence(s) for table(s) ");
+	out += wxT(" \n--\n");
+	out += wxT(" \n");
 	while(iterator->HasNext())
 	{
 		tmp = (wxhdIFigure *)iterator->Next();
@@ -140,15 +145,49 @@ wxString ddDatabaseDesign::generateModel()
 		{
 			out += wxT(" \n");
 			table = (ddTableFigure *)tmp;
-			out += wxT("--\n-- ");
-			out += _("Generating SQL for table: ");
-			out += table->getTableName();
-			out += wxT(" \n--\n");
-			out += table->generateSQL();
-			out += wxT(" \n");
+			out += table->generateSQLCreate();
 			out += wxT(" \n");
 		}
 	}
+	
+	out += wxT(" \n");
+	out += wxT(" \n");
+	out += wxT(" \n");
+	out += wxT("--\n-- ");
+	out += _("Generating Pk sentence for table(s) ");
+	out += wxT(" \n--\n");
+	out += wxT(" \n");
+	out += wxT(" \n");
+	iterator->ResetIterator();
+	while(iterator->HasNext())
+	{
+		tmp = (wxhdIFigure *)iterator->Next();
+		if(tmp->getKindId() == DDTABLEFIGURE)
+		{
+			table = (ddTableFigure *)tmp;
+			out += table->generateSQLAlterPks();
+		}
+	}
+
+	out += wxT(" \n");
+	out += wxT(" \n");
+	out += wxT(" \n");
+	out += wxT("--\n-- ");
+	out += _("Generating Fk sentence(s) for table(s) ");
+	out += wxT(" \n--\n");
+	out += wxT(" \n");
+	out += wxT(" \n");
+	iterator->ResetIterator();
+	while(iterator->HasNext())
+	{
+		tmp = (wxhdIFigure *)iterator->Next();
+		if(tmp->getKindId() == DDTABLEFIGURE)
+		{
+			table = (ddTableFigure *)tmp;
+			out += table->generateSQLAlterFks();
+		}
+	}
+
 	delete iterator;
 	return out;
 }
@@ -156,6 +195,67 @@ wxString ddDatabaseDesign::generateModel()
 wxString ddDatabaseDesign::generateDiagram(int diagramIndex)
 {
 	wxString out;
+	wxhdIteratorBase *iterator = editor->getExistingDiagram(diagramIndex)->figuresEnumerator();
+	wxhdIFigure *tmp;
+	ddTableFigure *table;
+	out += wxT(" \n");
+	out += wxT("--\n-- ");
+	out += _("Generating Create sentence(s) for table(s) ");
+	out += wxT(" \n--\n");
+	out += wxT(" \n");
+	while(iterator->HasNext())
+	{
+		tmp = (wxhdIFigure *)iterator->Next();
+		if(tmp->getKindId() == DDTABLEFIGURE)
+		{
+			out += wxT(" \n");
+			table = (ddTableFigure *)tmp;
+			out += table->generateSQLCreate();
+			out += wxT(" \n");
+		}
+	}
+	
+	out += wxT(" \n");
+	out += wxT(" \n");
+	out += wxT(" \n");
+	out += wxT("--\n-- ");
+	out += _("Generating Pk sentence for table(s) ");
+	out += wxT(" \n--\n");
+	out += wxT(" \n");
+	out += wxT(" \n");
+	iterator->ResetIterator();
+	while(iterator->HasNext())
+	{
+		tmp = (wxhdIFigure *)iterator->Next();
+		if(tmp->getKindId() == DDTABLEFIGURE)
+		{
+			table = (ddTableFigure *)tmp;
+			out += table->generateSQLAlterPks();
+		}
+	}
+
+	out += wxT(" \n");
+	out += wxT(" \n");
+	out += wxT(" \n");
+	out += wxT("--\n-- ");
+	out += _("Generating Fk sentence(s) for table(s) ");
+	out += wxT(" \n--\n");
+	out += wxT(" \n");
+	out += wxT(" \n");
+	iterator->ResetIterator();
+	while(iterator->HasNext())
+	{
+		tmp = (wxhdIFigure *)iterator->Next();
+		if(tmp->getKindId() == DDTABLEFIGURE)
+		{
+			table = (ddTableFigure *)tmp;
+			out += table->generateSQLAlterFks();
+		}
+	}
+
+	delete iterator;
+	return out;
+/*	wxString out;
 	wxhdIteratorBase *iterator = editor->getExistingDiagram(diagramIndex)->figuresEnumerator();
 	wxhdIFigure *tmp;
 	ddTableFigure *table;
@@ -177,6 +277,7 @@ wxString ddDatabaseDesign::generateDiagram(int diagramIndex)
 	}
 	delete iterator;
 	return out;
+	*/
 }
 
 wxString ddDatabaseDesign::getNewTableName()
