@@ -14,7 +14,7 @@
 
 #include <wx/arrstr.h>
 
-#include "dd/wxhotdraw/figures/hdSimpleTextFigure.h"
+#include "hotdraw/figures/hdSimpleTextFigure.h"
 #include "dd/dditems/utilities/ddDataType.h"
 
 enum

@@ -12,7 +12,7 @@
 #ifndef DDXMLSTORAGE_H
 #define DDXMLSTORAGE_H
 
-#include "dd/wxhotdraw/figures/xml/hdStorage.h"
+#include "hotdraw/figures/xml/hdStorage.h"
 #include "dd/ddmodel/ddDatabaseDesign.h"
 #include <ctl/ctlAuiNotebook.h>
 

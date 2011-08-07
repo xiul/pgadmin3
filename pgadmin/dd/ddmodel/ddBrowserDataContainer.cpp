@@ -16,7 +16,7 @@
 
 // App headers
 #include "dd/ddmodel/ddBrowserDataContainer.h"
-#include "dd/wxhotdraw/figures/hdIFigure.h"
+#include "hotdraw/figures/hdIFigure.h"
 
 
 ddBrowserDataContainer::ddBrowserDataContainer(hdIFigure *data)

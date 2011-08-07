@@ -12,7 +12,7 @@
 #ifndef DDDRAWINGEDITOR_H
 #define DDDRAWINGEDITOR_H
 
-#include "dd/wxhotdraw/main/hdDrawingEditor.h"
+#include "hotdraw/main/hdDrawingEditor.h"
 
 enum
 {

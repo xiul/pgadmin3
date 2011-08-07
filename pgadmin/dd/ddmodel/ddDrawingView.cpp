@@ -17,7 +17,7 @@
 
 // App headers
 #include "dd/ddmodel/ddDrawingView.h"
-#include "dd/wxhotdraw/utilities/hdArrayCollection.h"
+#include "hotdraw/utilities/hdArrayCollection.h"
 #include "dd/dditems/figures/ddTableFigure.h"
 #include "dd/dditems/figures/ddRelationshipFigure.h"
 #include "dd/dditems/utilities/ddDataType.h"

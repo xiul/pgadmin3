@@ -12,7 +12,7 @@
 #ifndef DDCOLUMNOPTIONICON_H
 #define DDCOLUMNOPTIONICON_H
 
-#include "dd/wxhotdraw/figures/hdAbstractMenuFigure.h"
+#include "hotdraw/figures/hdAbstractMenuFigure.h"
 
 class ddColumnFigure;
 

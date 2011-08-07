@@ -20,7 +20,7 @@
 #include "dd/dditems/utilities/ddTableNameDialog.h"
 #include "dd/ddmodel/ddDatabaseDesign.h"
 #include "dd/ddmodel/ddDrawingView.h"
-#include "dd/wxhotdraw/utilities/hdRemoveDeleteDialog.h"
+#include "hotdraw/utilities/hdRemoveDeleteDialog.h"
 #include "dd/dditems/figures/ddRelationshipFigure.h"
 
 

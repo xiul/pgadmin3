@@ -16,7 +16,7 @@
 #include <ctl/ctlAuiNotebook.h>
 
 #include "dd/ddmodel/ddDrawingEditor.h"
-#include "dd/wxhotdraw/tools/hdITool.h"
+#include "hotdraw/tools/hdITool.h"
 #include "dd/dditems/figures/ddTableFigure.h"
 
 class ddModelBrowser;

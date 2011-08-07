@@ -11,7 +11,7 @@
 
 #ifndef DDCOLUMNFIGURE_H
 #define DDCOLUMNFIGURE_H
-#include "dd/wxhotdraw/figures/hdAttributeFigure.h"
+#include "hotdraw/figures/hdAttributeFigure.h"
 #include "dd/dditems/figures/ddColumnKindIcon.h"
 #include "dd/dditems/figures/ddColumnOptionIcon.h"
 #include "dd/dditems/figures/ddTextTableItemFigure.h"

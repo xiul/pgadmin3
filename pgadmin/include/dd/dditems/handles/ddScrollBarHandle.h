@@ -12,10 +12,10 @@
 #ifndef DDSCROLLBARHANDLE_H
 #define DDSCROLLBARHANDLE_H
 
-#include "dd/wxhotdraw/handles/hdIHandle.h"
-#include "dd/wxhotdraw/handles/hdLocatorHandle.h"
-#include "dd/wxhotdraw/utilities/hdRect.h"
-#include "dd/wxhotdraw/utilities/hdPoint.h"
+#include "hotdraw/handles/hdIHandle.h"
+#include "hotdraw/handles/hdLocatorHandle.h"
+#include "hotdraw/utilities/hdRect.h"
+#include "hotdraw/utilities/hdPoint.h"
 #include "dd/dditems/figures/ddTableFigure.h"
 
 

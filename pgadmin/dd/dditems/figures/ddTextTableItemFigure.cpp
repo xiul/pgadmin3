@@ -21,13 +21,13 @@
 #include "dd/dditems/figures/ddRelationshipItem.h"
 #include "dd/dditems/tools/ddColumnTextTool.h"
 #include "dd/dditems/utilities/ddDataType.h"
-#include "dd/wxhotdraw/figures/hdSimpleTextFigure.h"
-#include "dd/wxhotdraw/main/hdDrawingView.h"
+#include "hotdraw/figures/hdSimpleTextFigure.h"
+#include "hotdraw/main/hdDrawingView.h"
 #include "dd/ddmodel/ddDrawingEditor.h"
 #include "dd/ddmodel/ddDatabaseDesign.h"
 #include "dd/dditems/figures/ddTableFigure.h"
 #include "dd/dditems/utilities/ddPrecisionScaleDialog.h"
-#include "dd/wxhotdraw/utilities/hdRemoveDeleteDialog.h"
+#include "hotdraw/utilities/hdRemoveDeleteDialog.h"
 
 ddTextTableItemFigure::ddTextTableItemFigure(wxString &columnName, ddDataType dataType, ddColumnFigure *owner):
 	hdSimpleTextFigure(columnName)

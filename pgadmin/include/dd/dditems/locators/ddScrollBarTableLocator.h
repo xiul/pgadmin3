@@ -12,8 +12,8 @@
 #ifndef DDSCROLLBARTABLELOCATOR_H
 #define DDSCROLLBARTABLELOCATOR_H
 
-#include "dd/wxhotdraw/locators/hdILocator.h"
-#include "dd/wxhotdraw/figures/hdIFigure.h"
+#include "hotdraw/locators/hdILocator.h"
+#include "hotdraw/figures/hdIFigure.h"
 
 class ddScrollBarTableLocator : public hdILocator
 {

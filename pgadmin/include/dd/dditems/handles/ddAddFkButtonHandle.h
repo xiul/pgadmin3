@@ -12,7 +12,7 @@
 #ifndef DDADDFKBUTTONHANDLE_H
 #define DDADDFKBUTTONHANDLE_H
 
-#include "dd/wxhotdraw/handles/hdButtonHandle.h"
+#include "hotdraw/handles/hdButtonHandle.h"
 
 class ddAddFkButtonHandle : public hdButtonHandle
 {

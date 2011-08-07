@@ -11,9 +11,9 @@
 
 #ifndef DDTABLEFIGURE_H
 #define DDTABLEFIGURE_H
-#include "dd/wxhotdraw/figures/hdCompositeFigure.h"
-#include "dd/wxhotdraw/figures/hdRectangleFigure.h"
-#include "dd/wxhotdraw/figures/hdSimpleTextFigure.h"
+#include "hotdraw/figures/hdCompositeFigure.h"
+#include "hotdraw/figures/hdRectangleFigure.h"
+#include "hotdraw/figures/hdSimpleTextFigure.h"
 #include "dd/dditems/figures/ddTextTableItemFigure.h"
 #include "dd/dditems/figures/ddColumnFigure.h"
 

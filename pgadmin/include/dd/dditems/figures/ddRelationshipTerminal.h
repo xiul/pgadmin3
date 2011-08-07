@@ -11,8 +11,8 @@
 
 #ifndef DDRELATIONSHIPTERMINAL_H
 #define DDRELATIONSHIPTERMINAL_H
-#include "dd/wxhotdraw/figures/hdLineTerminal.h"
-#include "dd/wxhotdraw/utilities/hdPoint.h"
+#include "hotdraw/figures/hdLineTerminal.h"
+#include "hotdraw/utilities/hdPoint.h"
 #include "dd/dditems/figures/ddRelationshipFigure.h"
 
 

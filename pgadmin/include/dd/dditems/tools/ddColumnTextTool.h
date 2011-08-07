@@ -12,7 +12,7 @@
 #ifndef DDCOLUMNTEXTTOOL_H
 #define DDCOLUMNTEXTTOOL_H
 
-#include "dd/wxhotdraw/tools/hdSimpleTextTool.h"
+#include "hotdraw/tools/hdSimpleTextTool.h"
 #include "dd/dditems/figures/ddTextTableItemFigure.h"
 
 

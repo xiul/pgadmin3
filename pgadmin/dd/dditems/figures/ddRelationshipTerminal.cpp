@@ -17,10 +17,10 @@
 
 // App headers
 #include "dd/dditems/figures/ddRelationshipTerminal.h"
-#include "dd/wxhotdraw/utilities/hdPoint.h"
-#include "dd/wxhotdraw/utilities/hdRect.h"
-#include "dd/wxhotdraw/main/hdDrawingView.h"
-#include "dd/wxhotdraw/utilities/hdGeometry.h"
+#include "hotdraw/utilities/hdPoint.h"
+#include "hotdraw/utilities/hdRect.h"
+#include "hotdraw/main/hdDrawingView.h"
+#include "hotdraw/utilities/hdGeometry.h"
 
 ddRelationshipTerminal::ddRelationshipTerminal(ddRelationshipFigure *owner, bool endFigureTerminal)
 {

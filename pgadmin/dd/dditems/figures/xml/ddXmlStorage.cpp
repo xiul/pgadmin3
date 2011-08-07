@@ -19,7 +19,7 @@
 // App headers
 #include "dd/dditems/figures/xml/ddXmlStorage.h"
 #include "dd/dditems/utilities/ddDataType.h"
-#include "dd/wxhotdraw/figures/hdIFigure.h"
+#include "hotdraw/figures/hdIFigure.h"
 #include "dd/dditems/figures/ddTableFigure.h"
 #include "dd/dditems/figures/ddColumnFigure.h"
 #include "dd/dditems/figures/ddRelationshipFigure.h"

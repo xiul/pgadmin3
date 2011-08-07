@@ -12,7 +12,7 @@
 #ifndef DDDRAWINGVIEW_H
 #define DDDRAWINGVIEW_H
 
-#include "dd/wxhotdraw/main/hdDrawingView.h"
+#include "hotdraw/main/hdDrawingView.h"
 #include "dd/ddmodel/ddDrawingEditor.h"
 #include "dd/ddmodel/ddDatabaseDesign.h"
 

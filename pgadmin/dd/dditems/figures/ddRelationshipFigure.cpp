@@ -22,7 +22,7 @@
 #include "dd/ddmodel/ddDatabaseDesign.h"
 #include "dd/dditems/utilities/ddDataType.h"
 #include "dd/dditems/utilities/ddSelectKindFksDialog.h"
-#include "dd/wxhotdraw/utilities/hdRemoveDeleteDialog.h"
+#include "hotdraw/utilities/hdRemoveDeleteDialog.h"
 
 
 ddRelationshipFigure::ddRelationshipFigure():

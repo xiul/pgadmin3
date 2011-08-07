@@ -12,7 +12,7 @@
 #ifndef DDBROWSERDATACONTAINER_H
 #define DDBROWSERDATACONTAINER_H
 
-#include "dd/wxhotdraw/figures/hdIFigure.h"
+#include "hotdraw/figures/hdIFigure.h"
 
 class ddBrowserDataContainer : public wxTreeItemData
 {

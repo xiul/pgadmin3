@@ -19,8 +19,8 @@
 #include "dd/dditems/figures/ddTableFigure.h"
 #include "dd/dditems/figures/ddRelationshipFigure.h"
 #include "dd/dditems/utilities/ddDataType.h"
-#include "dd/wxhotdraw/main/hdDrawingView.h"
-#include "dd/wxhotdraw/utilities/hdRemoveDeleteDialog.h"
+#include "hotdraw/main/hdDrawingView.h"
+#include "hotdraw/utilities/hdRemoveDeleteDialog.h"
 #include "dd/ddmodel/ddDrawingEditor.h"
 #include "dd/ddmodel/ddDatabaseDesign.h"
 

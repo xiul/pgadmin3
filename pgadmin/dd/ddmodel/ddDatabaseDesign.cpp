@@ -20,7 +20,7 @@
 
 // App headers
 #include "dd/ddmodel/ddDatabaseDesign.h"
-#include "dd/wxhotdraw/tools/hdSelectionTool.h"
+#include "hotdraw/tools/hdSelectionTool.h"
 #include "dd/dditems/figures/ddTableFigure.h"
 #include "dd/dditems/figures/ddRelationshipFigure.h"
 #include "dd/dditems/utilities/ddDataType.h"

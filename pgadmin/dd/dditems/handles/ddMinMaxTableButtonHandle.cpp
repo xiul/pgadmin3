@@ -18,7 +18,7 @@
 #include "dd/dditems/handles/ddMinMaxTableButtonHandle.h"
 #include "dd/dditems/figures/ddTableFigure.h"
 #include "dd/dditems/utilities/ddDataType.h"
-#include "dd/wxhotdraw/main/hdDrawingView.h"
+#include "hotdraw/main/hdDrawingView.h"
 
 //Images
 #include "images/ddMinMaxCursor.pngc"
