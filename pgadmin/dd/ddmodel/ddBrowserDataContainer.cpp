@@ -16,10 +16,10 @@
 
 // App headers
 #include "dd/ddmodel/ddBrowserDataContainer.h"
-#include "dd/wxhotdraw/figures/wxhdIFigure.h"
+#include "dd/wxhotdraw/figures/hdIFigure.h"
 
 
-ddBrowserDataContainer::ddBrowserDataContainer(wxhdIFigure *data)
+ddBrowserDataContainer::ddBrowserDataContainer(hdIFigure *data)
 {
 	figure = data;
 }
@@ -36,7 +36,7 @@ int ddBrowserDataContainer::getFigureKindId()
 	return figure->getKindId();
 }
 
-wxhdIFigure* ddBrowserDataContainer::getFigure()
+hdIFigure* ddBrowserDataContainer::getFigure()
 {
 	return figure;
 }

@@ -4199,19 +4199,19 @@
 							>
 						</File>
 						<File
-							RelativePath=".\include\dd\wxhotdraw\connectors\wxhdChopBoxConnector.h"
+							RelativePath=".\include\dd\wxhotdraw\connectors\hdChopBoxConnector.h"
 							>
 						</File>
 						<File
-							RelativePath=".\include\dd\wxhotdraw\connectors\wxhdIConnector.h"
+							RelativePath=".\include\dd\wxhotdraw\connectors\hdIConnector.h"
 							>
 						</File>
 						<File
-							RelativePath=".\include\dd\wxhotdraw\connectors\wxhdLocatorConnector.h"
+							RelativePath=".\include\dd\wxhotdraw\connectors\hdLocatorConnector.h"
 							>
 						</File>
 						<File
-							RelativePath=".\include\dd\wxhotdraw\connectors\wxhdStickyRectangleConnector.h"
+							RelativePath=".\include\dd\wxhotdraw\connectors\hdStickyRectangleConnector.h"
 							>
 						</File>
 					</Filter>
@@ -4223,55 +4223,55 @@
 							>
 						</File>
 						<File
-							RelativePath=".\include\dd\wxhotdraw\figures\wxhdAbstractFigure.h"
+							RelativePath=".\include\dd\wxhotdraw\figures\hdAbstractFigure.h"
 							>
 						</File>
 						<File
-							RelativePath=".\include\dd\wxhotdraw\figures\wxhdAbstractMenuFigure.h"
+							RelativePath=".\include\dd\wxhotdraw\figures\hdAbstractMenuFigure.h"
 							>
 						</File>
 						<File
-							RelativePath=".\include\dd\wxhotdraw\figures\wxhdAttribute.h"
+							RelativePath=".\include\dd\wxhotdraw\figures\hdAttribute.h"
 							>
 						</File>
 						<File
-							RelativePath=".\include\dd\wxhotdraw\figures\wxhdAttributeFigure.h"
+							RelativePath=".\include\dd\wxhotdraw\figures\hdAttributeFigure.h"
 							>
 						</File>
 						<File
-							RelativePath=".\include\dd\wxhotdraw\figures\wxhdBitmapFigure.h"
+							RelativePath=".\include\dd\wxhotdraw\figures\hdBitmapFigure.h"
 							>
 						</File>
 						<File
-							RelativePath=".\include\dd\wxhotdraw\figures\wxhdCompositeFigure.h"
+							RelativePath=".\include\dd\wxhotdraw\figures\hdCompositeFigure.h"
 							>
 						</File>
 						<File
-							RelativePath=".\include\dd\wxhotdraw\figures\wxhdIConnectionFigure.h"
+							RelativePath=".\include\dd\wxhotdraw\figures\hdIConnectionFigure.h"
 							>
 						</File>
 						<File
-							RelativePath=".\include\dd\wxhotdraw\figures\wxhdIFigure.h"
+							RelativePath=".\include\dd\wxhotdraw\figures\hdIFigure.h"
 							>
 						</File>
 						<File
-							RelativePath=".\include\dd\wxhotdraw\figures\wxhdLineConnection.h"
+							RelativePath=".\include\dd\wxhotdraw\figures\hdLineConnection.h"
 							>
 						</File>
 						<File
-							RelativePath=".\include\dd\wxhotdraw\figures\wxhdLineTerminal.h"
+							RelativePath=".\include\dd\wxhotdraw\figures\hdLineTerminal.h"
 							>
 						</File>
 						<File
-							RelativePath=".\include\dd\wxhotdraw\figures\wxhdPolyLineFigure.h"
+							RelativePath=".\include\dd\wxhotdraw\figures\hdPolyLineFigure.h"
 							>
 						</File>
 						<File
-							RelativePath=".\include\dd\wxhotdraw\figures\wxhdRectangleFigure.h"
+							RelativePath=".\include\dd\wxhotdraw\figures\hdRectangleFigure.h"
 							>
 						</File>
 						<File
-							RelativePath=".\include\dd\wxhotdraw\figures\wxhdSimpleTextFigure.h"
+							RelativePath=".\include\dd\wxhotdraw\figures\hdSimpleTextFigure.h"
 							>
 						</File>
 						<Filter
@@ -4282,19 +4282,19 @@
 								>
 							</File>
 							<File
-								RelativePath=".\include\dd\wxhotdraw\figures\defaultAttributes\wxhdFillAttribute.h"
+								RelativePath=".\include\dd\wxhotdraw\figures\defaultAttributes\hdFillAttribute.h"
 								>
 							</File>
 							<File
-								RelativePath=".\include\dd\wxhotdraw\figures\defaultAttributes\wxhdFontAttribute.h"
+								RelativePath=".\include\dd\wxhotdraw\figures\defaultAttributes\hdFontAttribute.h"
 								>
 							</File>
 							<File
-								RelativePath=".\include\dd\wxhotdraw\figures\defaultAttributes\wxhdFontColorAttribute.h"
+								RelativePath=".\include\dd\wxhotdraw\figures\defaultAttributes\hdFontColorAttribute.h"
 								>
 							</File>
 							<File
-								RelativePath=".\include\dd\wxhotdraw\figures\defaultAttributes\wxhdLineAttribute.h"
+								RelativePath=".\include\dd\wxhotdraw\figures\defaultAttributes\hdLineAttribute.h"
 								>
 							</File>
 						</Filter>
@@ -4302,7 +4302,7 @@
 							Name="xml"
 							>
 							<File
-								RelativePath=".\include\dd\wxhotdraw\figures\xml\wxhdStorage.h"
+								RelativePath=".\include\dd\wxhotdraw\figures\xml\hdStorage.h"
 								>
 							</File>
 						</Filter>
@@ -4315,35 +4315,35 @@
 							>
 						</File>
 						<File
-							RelativePath=".\include\dd\wxhotdraw\handles\wxhdButtonHandle.h"
+							RelativePath=".\include\dd\wxhotdraw\handles\hdButtonHandle.h"
 							>
 						</File>
 						<File
-							RelativePath=".\include\dd\wxhotdraw\handles\wxhdChangeConnectionEndHandle.h"
+							RelativePath=".\include\dd\wxhotdraw\handles\hdChangeConnectionEndHandle.h"
 							>
 						</File>
 						<File
-							RelativePath=".\include\dd\wxhotdraw\handles\wxhdChangeConnectionHandle.h"
+							RelativePath=".\include\dd\wxhotdraw\handles\hdChangeConnectionHandle.h"
 							>
 						</File>
 						<File
-							RelativePath=".\include\dd\wxhotdraw\handles\wxhdChangeConnectionStartHandle.h"
+							RelativePath=".\include\dd\wxhotdraw\handles\hdChangeConnectionStartHandle.h"
 							>
 						</File>
 						<File
-							RelativePath=".\include\dd\wxhotdraw\handles\wxhdIHandle.h"
+							RelativePath=".\include\dd\wxhotdraw\handles\hdIHandle.h"
 							>
 						</File>
 						<File
-							RelativePath=".\include\dd\wxhotdraw\handles\wxhdLineConnectionHandle.h"
+							RelativePath=".\include\dd\wxhotdraw\handles\hdLineConnectionHandle.h"
 							>
 						</File>
 						<File
-							RelativePath=".\include\dd\wxhotdraw\handles\wxhdLocatorHandle.h"
+							RelativePath=".\include\dd\wxhotdraw\handles\hdLocatorHandle.h"
 							>
 						</File>
 						<File
-							RelativePath=".\include\dd\wxhotdraw\handles\wxhdPolyLineHandle.h"
+							RelativePath=".\include\dd\wxhotdraw\handles\hdPolyLineHandle.h"
 							>
 						</File>
 					</Filter>
@@ -4355,11 +4355,11 @@
 							>
 						</File>
 						<File
-							RelativePath=".\include\dd\wxhotdraw\locators\wxhdILocator.h"
+							RelativePath=".\include\dd\wxhotdraw\locators\hdILocator.h"
 							>
 						</File>
 						<File
-							RelativePath=".\include\dd\wxhotdraw\locators\wxhdPolyLineLocator.h"
+							RelativePath=".\include\dd\wxhotdraw\locators\hdPolyLineLocator.h"
 							>
 						</File>
 					</Filter>
@@ -4371,19 +4371,19 @@
 							>
 						</File>
 						<File
-							RelativePath=".\include\dd\wxhotdraw\main\wxhdDrawing.h"
+							RelativePath=".\include\dd\wxhotdraw\main\hdDrawing.h"
 							>
 						</File>
 						<File
-							RelativePath=".\include\dd\wxhotdraw\main\wxhdDrawingEditor.h"
+							RelativePath=".\include\dd\wxhotdraw\main\hdDrawingEditor.h"
 							>
 						</File>
 						<File
-							RelativePath=".\include\dd\wxhotdraw\main\wxhdDrawingView.h"
+							RelativePath=".\include\dd\wxhotdraw\main\hdDrawingView.h"
 							>
 						</File>
 						<File
-							RelativePath=".\include\dd\wxhotdraw\main\wxhdObject.h"
+							RelativePath=".\include\dd\wxhotdraw\main\hdObject.h"
 							>
 						</File>
 					</Filter>
@@ -4395,63 +4395,63 @@
 							>
 						</File>
 						<File
-							RelativePath=".\include\dd\wxhotdraw\tools\wxhdAbstractTool.h"
+							RelativePath=".\include\dd\wxhotdraw\tools\hdAbstractTool.h"
 							>
 						</File>
 						<File
-							RelativePath=".\include\dd\wxhotdraw\tools\wxhdCanvasMenuTool.h"
+							RelativePath=".\include\dd\wxhotdraw\tools\hdCanvasMenuTool.h"
 							>
 						</File>
 						<File
-							RelativePath=".\include\dd\wxhotdraw\tools\wxhdCompositeFigureTool.h"
+							RelativePath=".\include\dd\wxhotdraw\tools\hdCompositeFigureTool.h"
 							>
 						</File>
 						<File
-							RelativePath=".\include\dd\wxhotdraw\tools\wxhdConnectionCreationTool.h"
+							RelativePath=".\include\dd\wxhotdraw\tools\hdConnectionCreationTool.h"
 							>
 						</File>
 						<File
-							RelativePath=".\include\dd\wxhotdraw\tools\wxhdCreationTool.h"
+							RelativePath=".\include\dd\wxhotdraw\tools\hdCreationTool.h"
 							>
 						</File>
 						<File
-							RelativePath=".\include\dd\wxhotdraw\tools\wxhdDragCreationTool.h"
+							RelativePath=".\include\dd\wxhotdraw\tools\hdDragCreationTool.h"
 							>
 						</File>
 						<File
-							RelativePath=".\include\dd\wxhotdraw\tools\wxhdDragTrackerTool.h"
+							RelativePath=".\include\dd\wxhotdraw\tools\hdDragTrackerTool.h"
 							>
 						</File>
 						<File
-							RelativePath=".\include\dd\wxhotdraw\tools\wxhdFigureTool.h"
+							RelativePath=".\include\dd\wxhotdraw\tools\hdFigureTool.h"
 							>
 						</File>
 						<File
-							RelativePath=".\include\dd\wxhotdraw\tools\wxhdHandleTrackerTool.h"
+							RelativePath=".\include\dd\wxhotdraw\tools\hdHandleTrackerTool.h"
 							>
 						</File>
 						<File
-							RelativePath=".\include\dd\wxhotdraw\tools\wxhdITool.h"
+							RelativePath=".\include\dd\wxhotdraw\tools\hdITool.h"
 							>
 						</File>
 						<File
-							RelativePath=".\include\dd\wxhotdraw\tools\wxhdMenuTool.h"
+							RelativePath=".\include\dd\wxhotdraw\tools\hdMenuTool.h"
 							>
 						</File>
 						<File
-							RelativePath=".\include\dd\wxhotdraw\tools\wxhdPolyLineFigureTool.h"
+							RelativePath=".\include\dd\wxhotdraw\tools\hdPolyLineFigureTool.h"
 							>
 						</File>
 						<File
-							RelativePath=".\include\dd\wxhotdraw\tools\wxhdSelectAreaTool.h"
+							RelativePath=".\include\dd\wxhotdraw\tools\hdSelectAreaTool.h"
 							>
 						</File>
 						<File
-							RelativePath=".\include\dd\wxhotdraw\tools\wxhdSelectionTool.h"
+							RelativePath=".\include\dd\wxhotdraw\tools\hdSelectionTool.h"
 							>
 						</File>
 						<File
-							RelativePath=".\include\dd\wxhotdraw\tools\wxhdSimpleTextTool.h"
+							RelativePath=".\include\dd\wxhotdraw\tools\hdSimpleTextTool.h"
 							>
 						</File>
 					</Filter>
@@ -4463,43 +4463,43 @@
 							>
 						</File>
 						<File
-							RelativePath=".\include\dd\wxhotdraw\utilities\wxhdArrayCollection.h"
+							RelativePath=".\include\dd\wxhotdraw\utilities\hdArrayCollection.h"
 							>
 						</File>
 						<File
-							RelativePath=".\include\dd\wxhotdraw\utilities\wxhdCollection.h"
+							RelativePath=".\include\dd\wxhotdraw\utilities\hdCollection.h"
 							>
 						</File>
 						<File
-							RelativePath=".\include\dd\wxhotdraw\utilities\wxhdCollectionBase.h"
+							RelativePath=".\include\dd\wxhotdraw\utilities\hdCollectionBase.h"
 							>
 						</File>
 						<File
-							RelativePath=".\include\dd\wxhotdraw\utilities\wxhdGeometry.h"
+							RelativePath=".\include\dd\wxhotdraw\utilities\hdGeometry.h"
 							>
 						</File>
 						<File
-							RelativePath=".\include\dd\wxhotdraw\utilities\wxhdKeyEvent.h"
+							RelativePath=".\include\dd\wxhotdraw\utilities\hdKeyEvent.h"
 							>
 						</File>
 						<File
-							RelativePath=".\include\dd\wxhotdraw\utilities\wxhdMouseEvent.h"
+							RelativePath=".\include\dd\wxhotdraw\utilities\hdMouseEvent.h"
 							>
 						</File>
 						<File
-							RelativePath=".\include\dd\wxhotdraw\utilities\wxhdMultiPosRect.h"
+							RelativePath=".\include\dd\wxhotdraw\utilities\hdMultiPosRect.h"
 							>
 						</File>
 						<File
-							RelativePath=".\include\dd\wxhotdraw\utilities\wxhdPoint.h"
+							RelativePath=".\include\dd\wxhotdraw\utilities\hdPoint.h"
 							>
 						</File>
 						<File
-							RelativePath=".\include\dd\wxhotdraw\utilities\wxhdRect.h"
+							RelativePath=".\include\dd\wxhotdraw\utilities\hdRect.h"
 							>
 						</File>
 						<File
-							RelativePath=".\include\dd\wxhotdraw\utilities\wxhdRemoveDeleteDialog.h"
+							RelativePath=".\include\dd\wxhotdraw\utilities\hdRemoveDeleteDialog.h"
 							>
 						</File>
 					</Filter>
@@ -6208,19 +6208,19 @@
 						>
 					</File>
 					<File
-						RelativePath=".\dd\wxhotdraw\connectors\wxhdChopBoxConnector.cpp"
+						RelativePath=".\dd\wxhotdraw\connectors\hdChopBoxConnector.cpp"
 						>
 					</File>
 					<File
-						RelativePath=".\dd\wxhotdraw\connectors\wxhdIConnector.cpp"
+						RelativePath=".\dd\wxhotdraw\connectors\hdIConnector.cpp"
 						>
 					</File>
 					<File
-						RelativePath=".\dd\wxhotdraw\connectors\wxhdLocatorConnector.cpp"
+						RelativePath=".\dd\wxhotdraw\connectors\hdLocatorConnector.cpp"
 						>
 					</File>
 					<File
-						RelativePath=".\dd\wxhotdraw\connectors\wxhdStickyRectangleConnector.cpp"
+						RelativePath=".\dd\wxhotdraw\connectors\hdStickyRectangleConnector.cpp"
 						>
 					</File>
 				</Filter>
@@ -6232,55 +6232,55 @@
 						>
 					</File>
 					<File
-						RelativePath=".\dd\wxhotdraw\figures\wxhdAbstractFigure.cpp"
+						RelativePath=".\dd\wxhotdraw\figures\hdAbstractFigure.cpp"
 						>
 					</File>
 					<File
-						RelativePath=".\dd\wxhotdraw\figures\wxhdAbstractMenuFigure.cpp"
+						RelativePath=".\dd\wxhotdraw\figures\hdAbstractMenuFigure.cpp"
 						>
 					</File>
 					<File
-						RelativePath=".\dd\wxhotdraw\figures\wxhdAttribute.cpp"
+						RelativePath=".\dd\wxhotdraw\figures\hdAttribute.cpp"
 						>
 					</File>
 					<File
-						RelativePath=".\dd\wxhotdraw\figures\wxhdAttributeFigure.cpp"
+						RelativePath=".\dd\wxhotdraw\figures\hdAttributeFigure.cpp"
 						>
 					</File>
 					<File
-						RelativePath=".\dd\wxhotdraw\figures\wxhdBitmapFigure.cpp"
+						RelativePath=".\dd\wxhotdraw\figures\hdBitmapFigure.cpp"
 						>
 					</File>
 					<File
-						RelativePath=".\dd\wxhotdraw\figures\wxhdCompositeFigure.cpp"
+						RelativePath=".\dd\wxhotdraw\figures\hdCompositeFigure.cpp"
 						>
 					</File>
 					<File
-						RelativePath=".\dd\wxhotdraw\figures\wxhdIConnectionFigure.cpp"
+						RelativePath=".\dd\wxhotdraw\figures\hdIConnectionFigure.cpp"
 						>
 					</File>
 					<File
-						RelativePath=".\dd\wxhotdraw\figures\wxhdIFigure.cpp"
+						RelativePath=".\dd\wxhotdraw\figures\hdIFigure.cpp"
 						>
 					</File>
 					<File
-						RelativePath=".\dd\wxhotdraw\figures\wxhdLineConnection.cpp"
+						RelativePath=".\dd\wxhotdraw\figures\hdLineConnection.cpp"
 						>
 					</File>
 					<File
-						RelativePath=".\dd\wxhotdraw\figures\wxhdLineTerminal.cpp"
+						RelativePath=".\dd\wxhotdraw\figures\hdLineTerminal.cpp"
 						>
 					</File>
 					<File
-						RelativePath=".\dd\wxhotdraw\figures\wxhdPolyLineFigure.cpp"
+						RelativePath=".\dd\wxhotdraw\figures\hdPolyLineFigure.cpp"
 						>
 					</File>
 					<File
-						RelativePath=".\dd\wxhotdraw\figures\wxhdRectangleFigure.cpp"
+						RelativePath=".\dd\wxhotdraw\figures\hdRectangleFigure.cpp"
 						>
 					</File>
 					<File
-						RelativePath=".\dd\wxhotdraw\figures\wxhdSimpleTextFigure.cpp"
+						RelativePath=".\dd\wxhotdraw\figures\hdSimpleTextFigure.cpp"
 						>
 					</File>
 					<Filter
@@ -6291,19 +6291,19 @@
 							>
 						</File>
 						<File
-							RelativePath=".\dd\wxhotdraw\figures\defaultAttributes\wxhdFillAttribute.cpp"
+							RelativePath=".\dd\wxhotdraw\figures\defaultAttributes\hdFillAttribute.cpp"
 							>
 						</File>
 						<File
-							RelativePath=".\dd\wxhotdraw\figures\defaultAttributes\wxhdFontAttribute.cpp"
+							RelativePath=".\dd\wxhotdraw\figures\defaultAttributes\hdFontAttribute.cpp"
 							>
 						</File>
 						<File
-							RelativePath=".\dd\wxhotdraw\figures\defaultAttributes\wxhdFontColorAttribute.cpp"
+							RelativePath=".\dd\wxhotdraw\figures\defaultAttributes\hdFontColorAttribute.cpp"
 							>
 						</File>
 						<File
-							RelativePath=".\dd\wxhotdraw\figures\defaultAttributes\wxhdLineAttribute.cpp"
+							RelativePath=".\dd\wxhotdraw\figures\defaultAttributes\hdLineAttribute.cpp"
 							>
 						</File>
 					</Filter>
@@ -6311,7 +6311,7 @@
 						Name="xml"
 						>
 						<File
-							RelativePath=".\dd\wxhotdraw\figures\xml\wxhdStorage.cpp"
+							RelativePath=".\dd\wxhotdraw\figures\xml\hdStorage.cpp"
 							>
 						</File>
 					</Filter>
@@ -6324,35 +6324,35 @@
 						>
 					</File>
 					<File
-						RelativePath=".\dd\wxhotdraw\handles\wxhdButtonHandle.cpp"
+						RelativePath=".\dd\wxhotdraw\handles\hdButtonHandle.cpp"
 						>
 					</File>
 					<File
-						RelativePath=".\dd\wxhotdraw\handles\wxhdChangeConnectionEndHandle.cpp"
+						RelativePath=".\dd\wxhotdraw\handles\hdChangeConnectionEndHandle.cpp"
 						>
 					</File>
 					<File
-						RelativePath=".\dd\wxhotdraw\handles\wxhdChangeConnectionHandle.cpp"
+						RelativePath=".\dd\wxhotdraw\handles\hdChangeConnectionHandle.cpp"
 						>
 					</File>
 					<File
-						RelativePath=".\dd\wxhotdraw\handles\wxhdChangeConnectionStartHandle.cpp"
+						RelativePath=".\dd\wxhotdraw\handles\hdChangeConnectionStartHandle.cpp"
 						>
 					</File>
 					<File
-						RelativePath=".\dd\wxhotdraw\handles\wxhdIHandle.cpp"
+						RelativePath=".\dd\wxhotdraw\handles\hdIHandle.cpp"
 						>
 					</File>
 					<File
-						RelativePath=".\dd\wxhotdraw\handles\wxhdLineConnectionHandle.cpp"
+						RelativePath=".\dd\wxhotdraw\handles\hdLineConnectionHandle.cpp"
 						>
 					</File>
 					<File
-						RelativePath=".\dd\wxhotdraw\handles\wxhdLocatorHandle.cpp"
+						RelativePath=".\dd\wxhotdraw\handles\hdLocatorHandle.cpp"
 						>
 					</File>
 					<File
-						RelativePath=".\dd\wxhotdraw\handles\wxhdPolyLineHandle.cpp"
+						RelativePath=".\dd\wxhotdraw\handles\hdPolyLineHandle.cpp"
 						>
 					</File>
 				</Filter>
@@ -6364,11 +6364,11 @@
 						>
 					</File>
 					<File
-						RelativePath=".\dd\wxhotdraw\locators\wxhdILocator.cpp"
+						RelativePath=".\dd\wxhotdraw\locators\hdILocator.cpp"
 						>
 					</File>
 					<File
-						RelativePath=".\dd\wxhotdraw\locators\wxhdPolyLineLocator.cpp"
+						RelativePath=".\dd\wxhotdraw\locators\hdPolyLineLocator.cpp"
 						>
 					</File>
 				</Filter>
@@ -6380,15 +6380,15 @@
 						>
 					</File>
 					<File
-						RelativePath=".\dd\wxhotdraw\main\wxhdDrawing.cpp"
+						RelativePath=".\dd\wxhotdraw\main\hdDrawing.cpp"
 						>
 					</File>
 					<File
-						RelativePath=".\dd\wxhotdraw\main\wxhdDrawingEditor.cpp"
+						RelativePath=".\dd\wxhotdraw\main\hdDrawingEditor.cpp"
 						>
 					</File>
 					<File
-						RelativePath=".\dd\wxhotdraw\main\wxhdDrawingView.cpp"
+						RelativePath=".\dd\wxhotdraw\main\hdDrawingView.cpp"
 						>
 					</File>
 				</Filter>
@@ -6400,63 +6400,63 @@
 						>
 					</File>
 					<File
-						RelativePath=".\dd\wxhotdraw\tools\wxhdAbstractTool.cpp"
+						RelativePath=".\dd\wxhotdraw\tools\hdAbstractTool.cpp"
 						>
 					</File>
 					<File
-						RelativePath=".\dd\wxhotdraw\tools\wxhdCanvasMenuTool.cpp"
+						RelativePath=".\dd\wxhotdraw\tools\hdCanvasMenuTool.cpp"
 						>
 					</File>
 					<File
-						RelativePath=".\dd\wxhotdraw\tools\wxhdCompositeFigureTool.cpp"
+						RelativePath=".\dd\wxhotdraw\tools\hdCompositeFigureTool.cpp"
 						>
 					</File>
 					<File
-						RelativePath=".\dd\wxhotdraw\tools\wxhdConnectionCreationTool.cpp"
+						RelativePath=".\dd\wxhotdraw\tools\hdConnectionCreationTool.cpp"
 						>
 					</File>
 					<File
-						RelativePath=".\dd\wxhotdraw\tools\wxhdCreationTool.cpp"
+						RelativePath=".\dd\wxhotdraw\tools\hdCreationTool.cpp"
 						>
 					</File>
 					<File
-						RelativePath=".\dd\wxhotdraw\tools\wxhdDragCreationTool.cpp"
+						RelativePath=".\dd\wxhotdraw\tools\hdDragCreationTool.cpp"
 						>
 					</File>
 					<File
-						RelativePath=".\dd\wxhotdraw\tools\wxhdDragTrackerTool.cpp"
+						RelativePath=".\dd\wxhotdraw\tools\hdDragTrackerTool.cpp"
 						>
 					</File>
 					<File
-						RelativePath=".\dd\wxhotdraw\tools\wxhdFigureTool.cpp"
+						RelativePath=".\dd\wxhotdraw\tools\hdFigureTool.cpp"
 						>
 					</File>
 					<File
-						RelativePath=".\dd\wxhotdraw\tools\wxhdHandleTrackerTool.cpp"
+						RelativePath=".\dd\wxhotdraw\tools\hdHandleTrackerTool.cpp"
 						>
 					</File>
 					<File
-						RelativePath=".\dd\wxhotdraw\tools\wxhdITool.cpp"
+						RelativePath=".\dd\wxhotdraw\tools\hdITool.cpp"
 						>
 					</File>
 					<File
-						RelativePath=".\dd\wxhotdraw\tools\wxhdMenuTool.cpp"
+						RelativePath=".\dd\wxhotdraw\tools\hdMenuTool.cpp"
 						>
 					</File>
 					<File
-						RelativePath=".\dd\wxhotdraw\tools\wxhdPolyLineFigureTool.cpp"
+						RelativePath=".\dd\wxhotdraw\tools\hdPolyLineFigureTool.cpp"
 						>
 					</File>
 					<File
-						RelativePath=".\dd\wxhotdraw\tools\wxhdSelectAreaTool.cpp"
+						RelativePath=".\dd\wxhotdraw\tools\hdSelectAreaTool.cpp"
 						>
 					</File>
 					<File
-						RelativePath=".\dd\wxhotdraw\tools\wxhdSelectionTool.cpp"
+						RelativePath=".\dd\wxhotdraw\tools\hdSelectionTool.cpp"
 						>
 					</File>
 					<File
-						RelativePath=".\dd\wxhotdraw\tools\wxhdSimpleTextTool.cpp"
+						RelativePath=".\dd\wxhotdraw\tools\hdSimpleTextTool.cpp"
 						>
 					</File>
 				</Filter>
@@ -6468,39 +6468,39 @@
 						>
 					</File>
 					<File
-						RelativePath=".\dd\wxhotdraw\utilities\wxhdArrayCollection.cpp"
+						RelativePath=".\dd\wxhotdraw\utilities\hdArrayCollection.cpp"
 						>
 					</File>
 					<File
-						RelativePath=".\dd\wxhotdraw\utilities\wxhdCollection.cpp"
+						RelativePath=".\dd\wxhotdraw\utilities\hdCollection.cpp"
 						>
 					</File>
 					<File
-						RelativePath=".\dd\wxhotdraw\utilities\wxhdGeometry.cpp"
+						RelativePath=".\dd\wxhotdraw\utilities\hdGeometry.cpp"
 						>
 					</File>
 					<File
-						RelativePath=".\dd\wxhotdraw\utilities\wxhdKeyEvent.cpp"
+						RelativePath=".\dd\wxhotdraw\utilities\hdKeyEvent.cpp"
 						>
 					</File>
 					<File
-						RelativePath=".\dd\wxhotdraw\utilities\wxhdMouseEvent.cpp"
+						RelativePath=".\dd\wxhotdraw\utilities\hdMouseEvent.cpp"
 						>
 					</File>
 					<File
-						RelativePath=".\dd\wxhotdraw\utilities\wxhdMultiPosRect.cpp"
+						RelativePath=".\dd\wxhotdraw\utilities\hdMultiPosRect.cpp"
 						>
 					</File>
 					<File
-						RelativePath=".\dd\wxhotdraw\utilities\wxhdPoint.cpp"
+						RelativePath=".\dd\wxhotdraw\utilities\hdPoint.cpp"
 						>
 					</File>
 					<File
-						RelativePath=".\dd\wxhotdraw\utilities\wxhdRect.cpp"
+						RelativePath=".\dd\wxhotdraw\utilities\hdRect.cpp"
 						>
 					</File>
 					<File
-						RelativePath=".\dd\wxhotdraw\utilities\wxhdRemoveDeleteDialog.cpp"
+						RelativePath=".\dd\wxhotdraw\utilities\hdRemoveDeleteDialog.cpp"
 						>
 					</File>
 				</Filter>

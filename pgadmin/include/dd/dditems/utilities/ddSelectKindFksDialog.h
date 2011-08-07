@@ -22,7 +22,7 @@ enum
 	DDCHOICESELECTBASE = 30000
 };
 
-class ddSelectFkKindLine : public wxhdObject
+class ddSelectFkKindLine : public hdObject
 {
 public:
 	wxStaticText *sourceCtrl;

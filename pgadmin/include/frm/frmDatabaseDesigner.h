@@ -13,9 +13,9 @@
 #define __FRM_DATABASEDESIGNER_H
 
 // Designer headers
-#include "dd/wxhotdraw/figures/wxhdAbstractFigure.h"
-#include "dd/wxhotdraw/figures/wxhdPolyLineFigure.h"
-#include "dd/wxhotdraw/figures/wxhdLineConnection.h"
+#include "dd/wxhotdraw/figures/hdAbstractFigure.h"
+#include "dd/wxhotdraw/figures/hdPolyLineFigure.h"
+#include "dd/wxhotdraw/figures/hdLineConnection.h"
 #include "dd/ddmodel/ddDatabaseDesign.h"
 #include "ctl/ctlSQLBox.h"
 
