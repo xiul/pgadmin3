@@ -46,8 +46,11 @@ void ddAddColButtonHandle::invokeStart(wxhdMouseEvent &event, wxhdDrawingView *v
 		if (answer == wxID_OK)
 		{
 			wxString name = nameDialog.GetValue();
-			if(table->getColByName(name) == NULL)
-				table->addColumn(new ddColumnFigure(name, table));
+			if(table->getColByName(name)==NULL)
+			{
+				table->addColumn(view->getIdx(), new ddColumnFigure(name, table));
+				view->notifyChanged();
+			}
 			else
 			{
 				wxString msg(wxT("Error trying to add new column '"));
@@ -63,6 +66,7 @@ void ddAddColButtonHandle::invokeStart(wxhdMouseEvent &event, wxhdDrawingView *v
 
 	}
 	while(again);
+	view->Refresh();
 }
 
 void ddAddColButtonHandle::invokeStep(wxhdMouseEvent &event, wxhdDrawingView *view)

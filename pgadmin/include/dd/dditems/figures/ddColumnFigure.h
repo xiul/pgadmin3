@@ -24,19 +24,21 @@ class ddColumnFigure : public wxhdAttributeFigure
 {
 public:
 	ddColumnFigure(wxString &columnName, ddTableFigure *owner, ddRelationshipItem *sourceFk = NULL);
-	ddColumnFigure(wxString &columnName, ddTableFigure *owner, ddColumnOptionType option, bool isGenFk, bool isPkColumn, wxString colDataType, int p = -1, int s = -1, int ukIdx = -1, ddRelationshipItem *sourceFk = NULL, ddRelationshipItem *usedAsFkDestFor = NULL );
+	ddColumnFigure(wxString &columnName, ddTableFigure *owner, ddColumnOptionType option, bool isGenFk, bool isPkColumn, wxString colDataType, int p=-1, int s=-1, int ukIdx=-1, ddRelationshipItem *sourceFk = NULL,ddRelationshipItem *usedAsFkDestFor = NULL );
 	void Init(wxString &columnName, ddTableFigure *owner, ddRelationshipItem *sourceFk = NULL);
 	~ddColumnFigure();
-	virtual void basicMoveBy(int x, int y);
-	virtual void moveTo(int x, int y);
+	virtual void AddPosForNewDiagram();
+	virtual void RemovePosOfDiagram(int posIdx);
+	virtual void basicMoveBy(int posIdx, int x, int y);
+	virtual void moveTo(int posIdx, int x, int y);
 	virtual void setOwnerTable(ddTableFigure *table);
-	virtual bool containsPoint(int x, int y);
-	virtual wxhdRect &getBasicDisplayBox();
+	virtual bool containsPoint(int posIdx, int x, int y);
+	virtual wxhdMultiPosRect &getBasicDisplayBox();
 	virtual void basicDraw(wxBufferedDC &context, wxhdDrawingView *view);
 	virtual void basicDrawSelected(wxBufferedDC &context, wxhdDrawingView *view);
-	virtual wxhdIFigure *findFigure(int x, int y);
+	virtual wxhdIFigure *findFigure(int posIdx, int x, int y);
 	virtual wxhdIFigure *getFigureAt(int pos);
-	virtual wxhdITool *CreateFigureTool(wxhdDrawingEditor *editor, wxhdITool *defaultTool);
+	virtual wxhdITool *CreateFigureTool(wxhdDrawingView *view, wxhdITool *defaultTool);
 	virtual ddTableFigure *getOwnerTable();
 	void displayBoxUpdate();
 	bool isNull();
@@ -75,18 +77,9 @@ public:
 	ddRelationshipItem *getRelatedFkItem();
 	bool validateColumn(wxString &errors);
 	void setTextColour(wxColour colour);
-	ddColumnKindIcon *getKindImage()
-	{
-		return kindImage;
-	};
-	ddColumnOptionIcon *getOptionImage()
-	{
-		return optionImage;
-	};
-	ddTextTableItemFigure *getColumnText()
-	{
-		return columnText;
-	};
+	ddColumnKindIcon* getKindImage() {return kindImage;};
+	ddColumnOptionIcon* getOptionImage() {return optionImage;};
+	ddTextTableItemFigure* getColumnText() {return columnText;};
 
 protected:
 	ddColumnKindIcon *kindImage;
