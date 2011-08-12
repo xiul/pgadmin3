@@ -15,23 +15,30 @@
 #include <wx/statline.h>
 #include <wx/stattext.h>
 
-enum ddRemoveDeleteButtons
+enum ddSelectSchemaDialogCtrls
 {
-	DD_REMOVE = 31000,
-	DD_DELETE = 32000
+	DD_SCHEMASTREE = 31000
 };
 
-class hdRemoveDeleteDialog : public wxDialog
+enum ddSchemeBrowserImages
+{
+	DD_IMG_FIG_SCHEMES = 0,
+	DD_IMG_FIG_SCHEMA = 1
+};
+
+class ddSchemaBrowser;
+
+class ddSelectSchemaDialog : public wxDialog
 {
 	DECLARE_CLASS( hdRemoveDeleteDialog )
 	DECLARE_EVENT_TABLE()
 public:
-	hdRemoveDeleteDialog();
-	hdRemoveDeleteDialog(	const wxString& message, 
+	ddSelectSchemaDialog();
+	ddSelectSchemaDialog(	const wxString& message, 
 							const wxString& caption = _("Title"), 
-							wxWindow *parent = NULL, bool allowRemove = true
+							wxWindow *parent = NULL
 	                      );
-	~hdRemoveDeleteDialog();
+	~ddSelectSchemaDialog();
 
 	// Member initialization
 	void Init();
@@ -52,12 +59,27 @@ public:
 	void OnCancel(wxCommandEvent& WXUNUSED(event));
 
 private:
-	bool allowRemoveButton;
-	wxBoxSizer *topSizer, *messageSizer, *buttonsSizer;
-	wxStaticText *staticText, *staticText2, *staticText3;
+	wxBoxSizer *topSizer;
 	wxStaticLine *line;
-	wxButton *removeButton, *deleteButton, *cancelButton;
-
+	ddSchemaBrowser *schemaBrowser;
+	wxButton *okButton, *cancelButton;
 };
+
+class ddSchemaBrowser : public wxTreeCtrl
+{
+public:
+	ddSchemaBrowser(wxWindow *parent, wxWindowID id, const wxPoint &pos, const wxSize &size, long style);
+	~ddSchemaBrowser();
+	wxTreeItemId &createRoot(wxString Name);
+	void refreshFromModel();
+
+private:
+
+	wxTreeItemId rootNode;
+	wxImageList *imageList;
+
+	DECLARE_EVENT_TABLE()
+};
+
 #endif
 

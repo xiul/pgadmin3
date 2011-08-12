@@ -5,7 +5,7 @@
 // Copyright (C) 2002 - 2011, The pgAdmin Development Team
 // This software is released under the PostgreSQL Licence
 //
-// hdRemoveDeleteDialog.cpp - Utility dialog class to allow user to select between delete / remove a figure
+// ddSelectSchemaDialog.cpp - Utility dialog class to allow user to select between delete / remove a figure
 //
 //////////////////////////////////////////////////////////////////////////
 
@@ -16,58 +16,56 @@
 #include <wx/statline.h>
 
 // App headers
-#include "hotdraw/utilities/hdRemoveDeleteDialog.h"
+#include "dd/dditems/utilities/ddSelectSchemaDialog.h"
+#include "images/namespace-sm.pngc"
+#include "images/namespaces.pngc"
 
-IMPLEMENT_CLASS( hdRemoveDeleteDialog, wxDialog )
-
-BEGIN_EVENT_TABLE(hdRemoveDeleteDialog, wxDialog)
-        EVT_BUTTON(DD_REMOVE, hdRemoveDeleteDialog::OnRemove)
-        EVT_BUTTON(DD_DELETE, hdRemoveDeleteDialog::OnDelete)
-        EVT_BUTTON(wxID_CANCEL, hdRemoveDeleteDialog::OnCancel)
+IMPLEMENT_CLASS( ddSelectSchemaDialog, wxDialog )
+BEGIN_EVENT_TABLE(ddSelectSchemaDialog, wxDialog)
+        EVT_BUTTON(wxID_CANCEL, ddSelectSchemaDialog::OnCancel)
 END_EVENT_TABLE()
 
-hdRemoveDeleteDialog::hdRemoveDeleteDialog(	const wxString& message, 
+BEGIN_EVENT_TABLE(ddSchemaBrowser, wxTreeCtrl)
+/*	EVT_TREE_ITEM_ACTIVATED(DD_BROWSER, ddModelBrowser::OnItemActivated) 
+	EVT_TREE_BEGIN_DRAG(DD_BROWSER, ddModelBrowser::OnBeginDrag)*/
+END_EVENT_TABLE()
+
+ddSelectSchemaDialog::ddSelectSchemaDialog(	const wxString& message, 
 												const wxString& caption, 
-												wxWindow *parent, bool allowRemove
+												wxWindow *parent
                                               )
 {
-	allowRemoveButton=allowRemove;
 	wxWindowBase::SetFont(settings->GetSystemFont());
 	Init();
 	Create(parent, wxID_ANY, message, caption);
-	cancelButton->SetFocus();
+//666	cancelButton->SetFocus();
 }
 
-hdRemoveDeleteDialog::~hdRemoveDeleteDialog()
+ddSelectSchemaDialog::~ddSelectSchemaDialog()
 {
-	if(staticText)
-		delete staticText;
-	if(staticText2)
-		delete staticText2;
-	if(staticText3)
-		delete staticText3;
-	if(line)
+	if(schemaBrowser)
+		delete schemaBrowser;
+/*666	if(line)
 		delete line;
-	if(removeButton)
-		delete removeButton;
-	if(deleteButton)
-		delete deleteButton;
+	if(okButton)
+		delete okButton;
 	if(cancelButton)
 		delete cancelButton;
+		*/
 }
 
-hdRemoveDeleteDialog::hdRemoveDeleteDialog()
+ddSelectSchemaDialog::ddSelectSchemaDialog()
 {
 	Init();
 }
 
 
-void hdRemoveDeleteDialog::Init( )
+void ddSelectSchemaDialog::Init( )
 {
 }
 
 // Creation
-bool hdRemoveDeleteDialog::Create(	wxWindow *parent,
+bool ddSelectSchemaDialog::Create(	wxWindow *parent,
 	                wxWindowID id,
 					const wxString& caption,
 					const wxString& message
@@ -97,13 +95,16 @@ bool hdRemoveDeleteDialog::Create(	wxWindow *parent,
 
 
 	// Creates the controls and sizers
-void hdRemoveDeleteDialog::CreateControls(const wxString& message)
+void ddSelectSchemaDialog::CreateControls(const wxString& message)
 {
 	// A top-level sizer
 	topSizer = new wxBoxSizer(wxVERTICAL );
 	this->SetSizer(topSizer);
 	topSizer->AddSpacer(10);
-	//Message Sizer
+
+	schemaBrowser = new ddSchemaBrowser(this,DD_SCHEMASTREE,wxDefaultPosition, wxDefaultSize, wxALIGN_CENTER);
+
+/*	//Message Sizer
 	messageSizer = new wxBoxSizer(wxHORIZONTAL );
 	topSizer->Add(messageSizer);
 	messageSizer->AddSpacer(25);
@@ -137,8 +138,6 @@ void hdRemoveDeleteDialog::CreateControls(const wxString& message)
 
 	removeButton = new wxButton ( this, DD_REMOVE, wxT("&Remove from Diagram"),
 	                    wxDefaultPosition, wxDefaultSize, 0 );
-	if(!allowRemoveButton)
-		removeButton->Enable(false);
 	buttonsSizer->Add(removeButton, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
 
 	deleteButton = new wxButton ( this, DD_DELETE, wxT("&Remove from Model"),
@@ -149,19 +148,56 @@ void hdRemoveDeleteDialog::CreateControls(const wxString& message)
 	                    wxDefaultPosition, wxDefaultSize, 0 );
 	buttonsSizer->Add(cancelButton, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
 	topSizer->AddSpacer(10);
+*/
 }
 
-void hdRemoveDeleteDialog::OnRemove(wxCommandEvent& WXUNUSED(event))
+/*
+void ddSelectSchemaDialog::OnRemove(wxCommandEvent& WXUNUSED(event))
 {
     EndModal( DD_REMOVE );
 }
 
-void hdRemoveDeleteDialog::OnDelete(wxCommandEvent& WXUNUSED(event))
+void ddSelectSchemaDialog::OnDelete(wxCommandEvent& WXUNUSED(event))
 {
     EndModal( DD_DELETE );
 }
+*/
 
-void hdRemoveDeleteDialog::OnCancel(wxCommandEvent& WXUNUSED(event))
+void ddSelectSchemaDialog::OnCancel(wxCommandEvent& WXUNUSED(event))
 {
     EndModal( wxID_CANCEL );
 }
+
+//
+// ddSchemaBrowser
+//
+
+ddSchemaBrowser::ddSchemaBrowser(wxWindow *parent, wxWindowID id, const wxPoint &pos, const wxSize &size, long style)
+	: wxTreeCtrl(parent, id, pos, size, style)
+{
+	rootNode = (wxTreeItemId *)NULL;
+	createRoot(_("Available Schemas"));
+
+	// Create normal images list of browser
+	// Remember to update enum gqbImages in ddModelBrowser.h if changing the images!!
+	imageList = new wxImageList(16, 16);
+	imageList->Add(*namespace_sm_png_ico);
+	imageList->Add(*namespaces_png_ico);
+	this->AssignImageList(imageList);
+}
+
+// Destructor
+ddSchemaBrowser::~ddSchemaBrowser()
+{
+	this->DeleteAllItems();        // This remove and delete data inside tree's node
+}
+
+// Create root node
+wxTreeItemId &ddSchemaBrowser::createRoot(wxString Name)
+{
+	rootNode = this->AddRoot(Name,DD_IMG_FIG_SCHEMES, DD_IMG_FIG_SCHEMES);
+	return rootNode;
+}
+
+
+

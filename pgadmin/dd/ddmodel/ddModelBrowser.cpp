@@ -58,36 +58,8 @@ ddModelBrowser::~ddModelBrowser()
 wxTreeItemId &ddModelBrowser::createRoot(wxString Name)
 {
 	rootNode = this->AddRoot(Name, DD_IMG_FIG_DATABASE, DD_IMG_FIG_DATABASE);
-
-/*	catalogsNode = this->AppendItem(rootNode, _("Catalogs"), DD_IMG_CATALOGS, DD_IMG_CATALOGS, NULL);
-	schemasNode = this->AppendItem(rootNode, _("Schemas"), DD_IMG_NAMESPACES, DD_IMG_NAMESPACES, NULL);
-*/
 	return rootNode;
 }
-
-/*
-// Event activated when user double click on a item of tree
-void ddModelBrowser::OnItemActivated(wxTreeEvent &event)
-{
-	wxTreeItemId itemId = event.GetItem();
-	gqbObject *object = (gqbObject *) GetItemData(itemId);
-	if(object)
-	{
-		if (object->getType() == GQB_TABLE || object->getType() == GQB_VIEW)
-		{
-			gqbTable *item = (gqbTable *)  object;
-			controller->addTableToModel(item, wxPoint(10, 10));
-			controller->getView()->Refresh();
-		}
-		else if (GetChildrenCount(itemId) == 0 && object->getType() == GQB_SCHEMA)
-		{
-			gqbSchema *schema = (gqbSchema *)object;
-			schema->createObjects(this, schema->getOid(), itemId, GQB_IMG_TABLE, GQB_IMG_VIEW, GQB_IMG_EXTTABLE);
-		}
-	}
-}
-*/
-
 
 void ddModelBrowser::refreshFromModel()
 {
@@ -136,58 +108,7 @@ void ddModelBrowser::OnBeginDrag(wxTreeEvent &event)
 		wxDragResult result = dragSource.DoDragDrop(wxDrag_CopyOnly);
 		if(result != wxDragCopy)
 		{
-		/*	controller->getView()->CalcUnscrolledPosition(xx, yy, &xx, &yy);
-			gqbQueryObject *queryObj = controller->addTableToModel(item, wxPoint(xx, yy));
-			controller->getView()->Refresh();
-			if (queryObj)
-			{
-				controller->getView()->Update();
-				controller->getView()->updateModelSize(queryObj, false);
-			}
-			*/
 			wxMessageBox(wxT("Error invalid kind of data at drag and drop operation"), wxT("Drag and drop error"), wxICON_ERROR);
 		}
 	}
 }
-
-/*
-void ddModelBrowser::refreshTables(pgConn *connection)
-{
-	controller->emptyModel();
-	this->DeleteAllItems();
-	gqbDatabase *Data = new gqbDatabase(wxEmptyString, connection);
-	Data->createObjects(this);
-	this->Expand(rootNode);
-}
-*/
-
-	/*
-void ddModelBrowser::OnBeginDrag(wxTreeEvent &event)
-{
-
-	wxTreeItemId itemId = event.GetItem();
-
-	// Simplest solution, simulate DnD but actually don't do it
-	gqbObject *object = (gqbObject *) GetItemData(itemId);
-	if(object != NULL && (object->getType() == GQB_TABLE || object->getType() == GQB_VIEW))
-	{
-		gqbTable *item = (gqbTable *) object;
-		wxString tableName = item->getName();
-		wxTextDataObject textData(tableName);
-		wxDropSource dragSource(this);
-		dragSource.SetData(textData);
-		wxDragResult result = dragSource.DoDragDrop(wxDrag_CopyOnly);
-		if(result == wxDragCopy)
-		{
-			controller->getView()->CalcUnscrolledPosition(xx, yy, &xx, &yy);
-			gqbQueryObject *queryObj = controller->addTableToModel(item, wxPoint(xx, yy));
-			controller->getView()->Refresh();
-			if (queryObj)
-			{
-				controller->getView()->Update();
-				controller->getView()->updateModelSize(queryObj, false);
-			}
-		}
-	}
-}
-	*/
