@@ -22,7 +22,9 @@
 
 enum
 {
-	CTL_DDNOTEBOOK = 1001
+	CTL_DDNOTEBOOK = 1001,
+	CTL_DDCONNECTION,
+	CTL_IMPSCHEMA
 };
 
 class frmDatabaseDesigner : public pgFrame
@@ -35,12 +37,18 @@ public:
 private:
 	int deletedTab;
 	bool changed, previousChanged;
-	wxMenu *diagramMenu, *preferencesMenu;
+	wxBitmapComboBox *cbConnection;
+	wxMenu *diagramMenu, *preferencesMenu, *viewMenu;
 	wxString lastFile;
 	frmMain *mainForm;
 	pgConn *connection;
+	
+	// These status flags are required to work round some wierdness on wxGTK,
+	// particularly on Solaris.
+	bool closing, loading;
+
 	ddDatabaseDesign *design;
-	wxPanel *browserPanel;
+	wxPanel *browserPanel, *connectionPanel;
 	ddModelBrowser *modelBrowser;
 	ctlAuiNotebook *diagrams;
 	ctlSQLBox *sqltext;
@@ -62,7 +70,13 @@ private:
 	void OnDiagramGeneration(wxCommandEvent &event);
 	void OnModelSave(wxCommandEvent &event);
 	void OnModelLoad(wxCommandEvent &event);
+	void OnToggleModelBrowser(wxCommandEvent &event);
+	void OnToggleSQLWindow(wxCommandEvent &event);
 	void OnChangeDefaultFont(wxCommandEvent &event);
+	void OnChangeConnection(wxCommandEvent &event);
+	void OnImportSchema(wxCommandEvent& WXUNUSED(event));
+	wxBitmap CreateBitmap(const wxColour &colour);
+	wxColour GetServerColour(pgConn *connection);
 	void UpdateToolbar();
 	wxAuiManager manager;
 	DECLARE_EVENT_TABLE()

@@ -78,6 +78,8 @@ public:
 	wxString generateSQLCreate();
 	wxString generateSQLAlterPks();
 	wxString generateSQLAlterFks();
+	wxString generateSQLAlterUks();
+	wxString generateAltersTable(pgConn *connection, wxString schemaName);
 	static wxString generateShortName(wxString longName);
 	wxArrayString getAllColumnsNames();
 	wxArrayString getAllFkSourceColsNames(bool pk, int ukIndex = -1);
@@ -134,12 +136,19 @@ public:
 		return idxsWindow;
 	};
 
+	//Temporary alter table instead of create Helper
+	bool getBelongsToSchema() {return belongsToSchema;};
+	void setBelongsToSchema(bool value) { belongsToSchema=value;};
+
 protected:
 	//drawing
 	virtual void basicDraw(wxBufferedDC &context, hdDrawingView *view);
 	virtual void basicDrawSelected(wxBufferedDC &context, hdDrawingView *view);
 
 private:
+	//Temporary alter table instead of create Helper
+	bool belongsToSchema;
+
 	//Main Rectangle Sizes
 	hdMultiPosRect fullSizeRect, titleRect, titleColsRect, colsRect, titleIndxsRect, indxsRect;
 	hdMultiPosRect unScrolledColsRect, unScrolledFullSizeRect, unScrolledTitleRect;
