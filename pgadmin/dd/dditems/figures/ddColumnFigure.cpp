@@ -79,7 +79,8 @@ ddColumnFigure::ddColumnFigure(wxString &columnName, ddTableFigure *owner, ddCol
 	}
 	else
 	{
-		wxMessageBox(_("Not compatible data type for column found"));
+		wxMessageBox(_("Not compatible data type for column found when creating it: ") + colDataType + _(" at column ")+columnName+_(" setting default data type "));
+		setDataType((ddDataType)0);
 	}
 
 	columnText->setPrecision(p);
@@ -338,9 +339,19 @@ wxString &ddColumnFigure::getColumnName(bool datatype)
 	return columnText->getText(datatype);
 }
 
+void ddColumnFigure::setPrecision(int n)
+{
+	columnText->setPrecision(n);
+}
+
 int ddColumnFigure::getPrecision()
 {
 	return columnText->getPrecision();
+}
+
+void ddColumnFigure::setScale(int n)
+{
+	columnText->setScale(n);
 }
 
 int ddColumnFigure::getScale()

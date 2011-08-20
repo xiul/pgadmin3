@@ -284,7 +284,7 @@ wxString ddDatabaseDesign::getNewTableName()
 				else
 					tmpStr = wxString::Format(_("NewTable%d"), indx);
 
-				if(table->getTableName().Contains(tmpStr))
+				if(table->getTableName().IsSameAs(tmpStr))
 				{
 					indx++;
 					repeat = true;
@@ -326,7 +326,7 @@ ddTableFigure *ddDatabaseDesign::getTable(wxString tableName)
 		if(tmp->getKindId() == DDTABLEFIGURE)
 		{
 			table = (ddTableFigure *)tmp;
-			if(table->getTableName().Contains(tableName))
+			if(table->getTableName().IsSameAs(tableName,false))
 			{
 				out = table;
 			}

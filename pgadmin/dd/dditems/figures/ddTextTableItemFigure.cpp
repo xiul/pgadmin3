@@ -77,7 +77,7 @@ wxString &ddTextTableItemFigure::getText(bool extended)
 	{
 		wxString ddType = dataTypes()[getDataType()];   //Should use getDataType() & getPrecision(), because when column is fk, type is not taken from this column, instead from original column (source of fk)
 		bool havePrecision = columnType == dt_numeric || dt_bit || columnType == dt_char || columnType == dt_interval || columnType == dt_varbit || columnType == dt_varchar;
-		if( havePrecision && getPrecision() > 0)
+		if( havePrecision && getPrecision() >= 0)
 		{
 			ddType.Truncate(ddType.Find(wxT("(")));
 			if(getScale() == -1)
@@ -114,7 +114,7 @@ wxString ddTextTableItemFigure::getType()
 	wxString ddType = dataTypes()[columnType];
 
 	bool havePrecision = columnType == dt_numeric || dt_bit || columnType == dt_char || columnType == dt_interval || columnType == dt_varbit || columnType == dt_varchar;
-	if( havePrecision && getPrecision() > 0)
+	if( havePrecision && getPrecision() >= 0)
 	{
 		ddType.Truncate(ddType.Find(wxT("(")));
 		if(getScale() == -1)
@@ -233,7 +233,7 @@ void ddTextTableItemFigure::OnGenericPopupClick(wxCommandEvent &event, hdDrawing
 			                                   _("Size for varchar datatype"),
 			                                   _("Varchar size"),
 			                                   getPrecision(), 0, 255, view);
-			if (tmpprecision > 0)
+			if (tmpprecision >= 0)
 			{
 				setPrecision(tmpprecision);
 				setScale(-1);
@@ -254,7 +254,7 @@ void ddTextTableItemFigure::OnGenericPopupClick(wxCommandEvent &event, hdDrawing
 					                                   _("Size for datatype"),
 					                                   _("size"),
 					                                   getPrecision(), 0, 255, view);
-					if (tmpprecision > 0)
+					if (tmpprecision >= 0)
 					{
 						setPrecision(tmpprecision);
 						setScale(-1);

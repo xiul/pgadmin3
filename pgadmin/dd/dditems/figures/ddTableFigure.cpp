@@ -1188,3 +1188,9 @@ wxString ddTableFigure::generateSQLAlterFks()
 	delete iterator;
 	return tmp;
 }
+
+wxString ddTableFigure::generateSQLAlterUks()
+{
+	//By a mistake this function wasn't added before.
+	return wxEmptyString;
+}

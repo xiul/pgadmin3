@@ -78,6 +78,7 @@ public:
 	wxString generateSQLCreate();
 	wxString generateSQLAlterPks();
 	wxString generateSQLAlterFks();
+	wxString generateSQLAlterUks();
 	static wxString generateShortName(wxString longName);
 	wxArrayString getAllColumnsNames();
 	wxArrayString getAllFkSourceColsNames(bool pk, int ukIndex = -1);

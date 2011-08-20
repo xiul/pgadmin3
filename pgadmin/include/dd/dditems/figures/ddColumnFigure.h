@@ -72,7 +72,9 @@ public:
 	ddRelationshipItem *getFkSource();
 	void setFkSource(ddRelationshipItem *newColumn);
 	int getPrecision();
+	void setPrecision(int n);
 	int getScale();
+	void setScale(int n);
 	void setAsUserCreatedFk(ddRelationshipItem *relatedFkItem);
 	ddRelationshipItem *getRelatedFkItem();
 	bool validateColumn(wxString &errors);
