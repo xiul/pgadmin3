@@ -46,8 +46,12 @@ public:
 	static ddStubTable* getTable(pgConn *connection, wxString tableName, OID tableOid);
 	static ddTableFigure* getTableFigure(ddStubTable *table);
 	static void getAllRelationships(pgConn *connection, stubTablesHashMap &tables, ddDatabaseDesign* design);
+	static int getPgColumnNum(pgConn *connection, wxString schemaName, wxString tableName, wxString columnName);
 	static OID getTableOID(pgConn *connection, wxString schemaName, wxString tableName);
 	static OID getSchemaOID(pgConn *connection, wxString schemaName);
+	static bool existsFk(pgConn *connection, OID destTableOid, wxString schemaName, wxString fkName, wxString sourceTableName);
+	static wxArrayString getFkAtDbNotInModel(pgConn *connection, OID destTableOid, wxString schemaName, wxArrayString existingFkList, ddDatabaseDesign* design);
+	static bool isModelSameDbFk(pgConn *connection, OID destTableOid, wxString schemaName, wxString fkName, wxString sourceTableName, wxString destTableName, ddStubTable *destStubTable, ddRelationshipFigure *relation);
 
 private:
 	static bool setUniqueConstraints(pgConn *connection, ddStubTable *table);

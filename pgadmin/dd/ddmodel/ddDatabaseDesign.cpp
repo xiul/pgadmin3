@@ -151,6 +151,7 @@ wxString ddDatabaseDesign::generateList(wxArrayString tables, wxArrayInt options
 			return wxEmptyString;
 		}
 	}
+
 	//Start Generation of CREATE + Alter Pk(s) + Alter Uk(s) + Alter Fks(s)
 	wxString out;
 	out += wxT(" \n");
@@ -160,9 +161,15 @@ wxString ddDatabaseDesign::generateList(wxArrayString tables, wxArrayInt options
 	out += wxT(" \n");
 	for(i=0;i<tablesCount;i++)
 	{
-		if(options[i]==DDGENCREATE)
+		if(options[i]==DDGENCREATE || options[i]==DDGENDROPCRE)
 		{
 			ddTableFigure *table = getTable(tables[i]);
+			if(options[i]==DDGENDROPCRE)
+			{
+				out += wxT(" \n");
+				out += wxT("DROP TABLE '")+table->getTableName()+_("';");
+				out += wxT(" \n");
+			}
 			out += wxT(" \n");
 			out += table->generateSQLCreate();
 			out += wxT(" \n");
@@ -178,7 +185,7 @@ wxString ddDatabaseDesign::generateList(wxArrayString tables, wxArrayInt options
 	out += wxT(" \n");
 	for(i=0;i<tablesCount;i++)
 	{
-		if(options[i]==DDGENCREATE)
+		if(options[i]==DDGENCREATE || options[i]==DDGENDROPCRE)
 		{
 			ddTableFigure *table = getTable(tables[i]);
 			out += table->generateSQLAlterPks();
@@ -194,7 +201,7 @@ wxString ddDatabaseDesign::generateList(wxArrayString tables, wxArrayInt options
 	out += wxT(" \n");
 	for(i=0;i<tablesCount;i++)
 	{
-		if(options[i]==DDGENCREATE)
+		if(options[i]==DDGENCREATE || options[i]==DDGENDROPCRE)
 		{
 			ddTableFigure *table = getTable(tables[i]);
 			out += table->generateSQLAlterUks();
@@ -210,14 +217,12 @@ wxString ddDatabaseDesign::generateList(wxArrayString tables, wxArrayInt options
 	out += wxT(" \n");
 	for(i=0;i<tablesCount;i++)
 	{
-		if(options[i]==DDGENCREATE)
+		if(options[i]==DDGENCREATE || options[i]==DDGENDROPCRE)
 		{
 			ddTableFigure *table = getTable(tables[i]);
 			out += table->generateSQLAlterFks();
 		}
 	}
-
-	//666 drop and create falta
 
 	//Start generation of alter table instead of create
 	//Check there is some 
@@ -256,7 +261,7 @@ wxString ddDatabaseDesign::generateList(wxArrayString tables, wxArrayInt options
 			if(options[i]==DDGENALTER)
 			{
 				ddTableFigure *table = getTable(tables[i]);
-				out += table->generateAltersTable(connection,schemaName);
+				out += table->generateAltersTable(connection,schemaName,this);
 				out += wxT(" \n");
 			}
 		}

@@ -528,6 +528,7 @@ void ddImportDBUtils::getAllRelationships(pgConn *connection, stubTablesHashMap 
 					wxString destTableName = foreignKeys->GetVal(wxT("fktab"));
 
 					destTabFigure = design->getTable(destTableName);
+					sourceTabFigure = design->getTable(sourceTableName);
 
 					//Only if both tables were imported at same time
 					if(destTabFigure!=NULL && sourceTabFigure !=NULL)
@@ -694,7 +695,7 @@ void ddImportDBUtils::getAllRelationships(pgConn *connection, stubTablesHashMap 
 						}
 						else
 						{
-							identifying = true;
+							identifying = false;
 						}
 
 						//------ 1:1 or 1:M  ?  as a fact 1:1 have a fk,uk at destination table.
@@ -808,6 +809,514 @@ void ddImportDBUtils::getAllRelationships(pgConn *connection, stubTablesHashMap 
 			delete foreignKeys;
 		}
 	}
+}
+
+bool ddImportDBUtils::existsFk(pgConn *connection, OID destTableOid, wxString schemaName, wxString fkName, wxString sourceTableName)
+{
+	wxString sql;
+	OID sourceOID = getTableOID(connection, schemaName, sourceTableName);
+	if(sourceOID == -1 )
+	{
+		return false;
+	}
+
+	sql = wxT("SELECT ct.oid, conname, condeferrable, condeferred, confupdtype, confdeltype, confmatchtype, ")
+		  wxT("conkey, confkey, confrelid, nl.nspname as fknsp, cl.relname as fktab, ")
+		  wxT("nr.nspname as refnsp, cr.relname as reftab, description");
+	if (connection->BackendMinimumVersion(9, 1))
+		sql += wxT(", convalidated");
+	sql += wxT("\n  FROM pg_constraint ct\n")
+		   wxT("  JOIN pg_class cl ON cl.oid=conrelid\n")
+		   wxT("  JOIN pg_namespace nl ON nl.oid=cl.relnamespace\n")
+		   wxT("  JOIN pg_class cr ON cr.oid=confrelid\n")
+		   wxT("  JOIN pg_namespace nr ON nr.oid=cr.relnamespace\n")
+		   wxT("  LEFT OUTER JOIN pg_description des ON des.objoid=ct.oid\n")
+		   wxT(" WHERE contype='f' AND conrelid = ") + NumToStr(destTableOid) + wxT("::oid")
+		   wxT(" AND conname ='") + fkName + wxT("' ")
+		   wxT(" AND confrelid = ") + NumToStr(sourceOID) + wxT("::oid")
+		   wxT("\n")
+		   wxT(" ORDER BY conname");
+
+	pgSet *foreignKeys = connection->ExecuteSet(sql);
+
+	//relation don't exists then
+	if(foreignKeys->NumRows()==0)
+	{
+		return false;
+	}
+	delete foreignKeys;
+
+	return true;
+}
+
+int ddImportDBUtils::getPgColumnNum(pgConn *connection, wxString schemaName, wxString tableName, wxString columnName)
+{
+	int out = -1;
+	wxString sql;
+	OID tableOid = getTableOID(connection, schemaName, tableName);
+			wxString systemRestriction;
+			systemRestriction = wxT("\n   AND att.attnum > 0");
+
+			sql =  wxT("SELECT att.attrelid,att.attname, att.attnum ")
+				   wxT("\n")
+				   wxT("  FROM pg_attribute att\n")
+				   wxT("  JOIN pg_type ty ON ty.oid=atttypid\n")
+				   wxT("  JOIN pg_namespace tn ON tn.oid=ty.typnamespace\n")
+				   wxT("  JOIN pg_class cl ON cl.oid=att.attrelid\n")
+				   wxT("  JOIN pg_namespace na ON na.oid=cl.relnamespace\n")
+				   wxT("  LEFT OUTER JOIN pg_type et ON et.oid=ty.typelem\n")
+				   wxT("  LEFT OUTER JOIN pg_attrdef def ON adrelid=att.attrelid AND adnum=att.attnum\n")
+				   wxT("  LEFT OUTER JOIN pg_description des ON des.objoid=att.attrelid AND des.objsubid=att.attnum\n")
+				   wxT("  LEFT OUTER JOIN (pg_depend JOIN pg_class cs ON objid=cs.oid AND cs.relkind='S') ON refobjid=att.attrelid AND refobjsubid=att.attnum\n")
+				   wxT("  LEFT OUTER JOIN pg_namespace ns ON ns.oid=cs.relnamespace\n")
+				   wxT("  LEFT OUTER JOIN pg_index pi ON pi.indrelid=att.attrelid AND indisprimary\n");
+			if (connection->BackendMinimumVersion(9, 1))
+				sql += wxT("  LEFT OUTER JOIN pg_collation coll ON att.attcollation=coll.oid\n")
+					   wxT("  LEFT OUTER JOIN pg_namespace nspc ON coll.collnamespace=nspc.oid\n");
+			sql += wxT(" WHERE att.attrelid = ") + NumToStr(tableOid)
+				   + systemRestriction + wxT("\n")
+				   wxT("   AND att.attisdropped IS FALSE\n")
+				   wxT(" ORDER BY att.attnum");
+
+			pgSet *columns = connection->ExecuteSet(sql);
+			if (columns)
+			{
+				while (!columns->Eof())
+				{
+					wxString colName = columns->GetVal(wxT("attname"));
+					if(colName.IsSameAs(columnName,false))
+					{
+						out = columns->GetLong(wxT("attnum"));
+						break;
+					}
+					columns->MoveNext();
+				}
+				delete columns;
+			}
+	return out;
+}
+
+wxArrayString ddImportDBUtils::getFkAtDbNotInModel(pgConn *connection, OID destTableOid, wxString schemaName, wxArrayString existingFkList, ddDatabaseDesign* design)
+{
+	wxArrayString out;
+	wxString sql;
+
+	sql = wxT("SELECT ct.oid, conname, condeferrable, condeferred, confupdtype, confdeltype, confmatchtype, ")
+		  wxT("conkey, confkey, confrelid, nl.nspname as fknsp, cl.relname as fktab, ")
+		  wxT("nr.nspname as refnsp, cr.relname as reftab, description");
+	if (connection->BackendMinimumVersion(9, 1))
+		sql += wxT(", convalidated");
+	sql += wxT("\n  FROM pg_constraint ct\n")
+		   wxT("  JOIN pg_class cl ON cl.oid=conrelid\n")
+		   wxT("  JOIN pg_namespace nl ON nl.oid=cl.relnamespace\n")
+		   wxT("  JOIN pg_class cr ON cr.oid=confrelid\n")
+		   wxT("  JOIN pg_namespace nr ON nr.oid=cr.relnamespace\n")
+		   wxT("  LEFT OUTER JOIN pg_description des ON des.objoid=ct.oid\n")
+		   wxT(" WHERE contype='f' AND conrelid = ") + NumToStr(destTableOid) + wxT("::oid");
+		   //Add Fk names in model
+		   int i,max=existingFkList.Count();
+		   if(max>0)
+		   {
+				sql+=wxT(" AND conname NOT IN( ");
+				for(i=0;i<max-1;i++)
+				{
+					sql+=wxT("'") + existingFkList[i] + wxT("',");
+				}
+				if(max>=1)
+				{
+					sql+=wxT("'") + existingFkList[max-1] + wxT("'");
+				}
+				sql+=  wxT(" ) ");
+		   }
+	   
+			//Add valid tables sources names to search (others outside a model shouldn't be modified)
+		   sql+= wxT("\n ORDER BY conname");
+
+	pgSet *foreignKeys = connection->ExecuteSet(sql);
+
+	if (foreignKeys && foreignKeys->NumRows() >0)
+	{
+		while (!foreignKeys->Eof())
+		{
+			//Create a list will all relationships in db but not in model [but only for tables IN MODEL because tables not in model SHOULDN'T BE modified]
+			wxString sourceTableName = foreignKeys->GetVal(wxT("reftab"));
+			if(design->getTable(sourceTableName))
+			{ 
+				wxString RelationshipName = foreignKeys->GetVal(wxT("conname"));
+				out.Add(RelationshipName);
+			}
+			foreignKeys->MoveNext();
+		}
+		delete foreignKeys;
+	}
+	//return a list with Fks to delete from db because don't exists at model.
+	return out;
+}
+
+//Assumption Fk exists, and this should be checked before with existsFk function
+bool ddImportDBUtils::isModelSameDbFk(pgConn *connection, OID destTableOid, wxString schemaName, wxString fkName, wxString sourceTableName, wxString destTableName, ddStubTable *destStubTable, ddRelationshipFigure *relation)
+{
+	bool equalFk = true;
+
+	wxString sql;
+	OID sourceOID = getTableOID(connection, schemaName, sourceTableName);
+	sql = wxT("SELECT ct.oid, conname, condeferrable, condeferred, confupdtype, confdeltype, confmatchtype, ")
+		  wxT("conkey, confkey, confrelid, nl.nspname as fknsp, cl.relname as fktab, ")
+		  wxT("nr.nspname as refnsp, cr.relname as reftab, description");
+	if (connection->BackendMinimumVersion(9, 1))
+		sql += wxT(", convalidated");
+	sql += wxT("\n  FROM pg_constraint ct\n")
+		   wxT("  JOIN pg_class cl ON cl.oid=conrelid\n")
+		   wxT("  JOIN pg_namespace nl ON nl.oid=cl.relnamespace\n")
+		   wxT("  JOIN pg_class cr ON cr.oid=confrelid\n")
+		   wxT("  JOIN pg_namespace nr ON nr.oid=cr.relnamespace\n")
+		   wxT("  LEFT OUTER JOIN pg_description des ON des.objoid=ct.oid\n")
+		   wxT(" WHERE contype='f' AND conrelid = ") + NumToStr(destTableOid) + wxT("::oid")
+		   wxT(" AND conname ='") + fkName + wxT("' ")
+		   wxT(" AND confrelid = ") + NumToStr(sourceOID) + wxT("::oid")
+		   wxT("\n")
+		   wxT(" ORDER BY conname");
+
+	pgSet *foreignKeys = connection->ExecuteSet(sql);
+
+
+	//First Step create array with columns from pgCol numbers from destTable (MODEL) in relationship;
+	//Second Step create array with columns from pgCol numbers from srcTable (MODEL) in relationship;
+	wxSortedArrayInt destPgs(sortFunc);
+	wxSortedArrayInt srcPgs(sortFunc);
+	columnsHashMap::iterator it;
+	ddRelationshipItem *item;
+	for (it = relation->getItemsHashMap().begin(); it != relation->getItemsHashMap().end(); ++it)
+	{
+		wxString key = it->first;
+		item = it->second;
+		int pgColDest = getPgColumnNum(connection, schemaName, destTableName, item->fkColumn->getColumnName());
+		destPgs.Add(pgColDest);
+		int pgColSrc =  getPgColumnNum(connection, schemaName, sourceTableName, item->original->getColumnName());
+		srcPgs.Add(pgColSrc);
+	}
+
+	//Extracting relationship metadata information from DB relationship
+	int ukindex = -1; //Only Supporting foreign keys from PK right now when importing model
+	wxString RelationshipName;
+	actionKind onUpdate;
+	actionKind onDelete;
+	bool matchSimple;
+	bool identifying = true; //Default assumption is relationship is identifying
+	bool oneToMany = true;
+	bool mandatoryRelationship;
+	bool fkFromPk = true;	//Default assumption is the source of this fk is a Primary Key.
+	wxSortedArrayInt sourceFkCols(sortFunc);
+	wxSortedArrayInt destFkCols(sortFunc);
+
+
+	if (foreignKeys && foreignKeys->NumRows() == 1)
+	{
+		while (!foreignKeys->Eof())
+		{
+
+			//------ Preparing metada to allow discovery of some relationship attributes
+			RelationshipName = foreignKeys->GetVal(wxT("conname"));
+				
+			wxString onUpd = foreignKeys->GetVal(wxT("confupdtype"));
+			onUpdate = 	onUpd.IsSameAs('a') ? FK_ACTION_NO :
+									onUpd.IsSameAs('r') ? FK_RESTRICT :
+									onUpd.IsSameAs('c') ? FK_CASCADE :
+									onUpd.IsSameAs('d') ? FK_SETDEFAULT :
+									onUpd.IsSameAs('n') ? FK_SETNULL : FK_ACTION_NO;
+
+			
+			wxString onDel = foreignKeys->GetVal(wxT("confdeltype"));
+			onDelete = 	onUpd.IsSameAs('a') ? FK_ACTION_NO :
+									onUpd.IsSameAs('r') ? FK_RESTRICT :
+									onUpd.IsSameAs('c') ? FK_CASCADE :
+									onUpd.IsSameAs('d') ? FK_SETDEFAULT :
+									onUpd.IsSameAs('n') ? FK_SETNULL : FK_ACTION_NO;
+
+			wxString match = foreignKeys->GetVal(wxT("confmatchtype"));
+			matchSimple = 	match.IsSameAs('f') ? false :
+								match.IsSameAs('u') ? true : false;
+
+
+			//------ Preparing metada to allow discovery of some relationship attributes
+			//Source table columns
+			wxString fkColsSourceTable = foreignKeys->GetVal(wxT("confkey"));
+			wxSortedArrayInt sourcePKs(sortFunc);
+			wxSortedArrayInt destPKs(sortFunc);
+			//remove {} of string
+			fkColsSourceTable.Remove(0,1);
+			fkColsSourceTable.RemoveLast();
+			wxString fkColsDestTable = foreignKeys->GetVal(wxT("conkey"));
+			//remove {} of string
+			fkColsDestTable.Remove(0,1);
+			fkColsDestTable.RemoveLast();
+			
+			//Separe columns from sourceFk
+			wxStringTokenizer confkey(fkColsSourceTable);
+			while (confkey.HasMoreTokens())
+			{
+				wxString str = confkey.GetNextToken();
+				sourceFkCols.Add(StrToLong(str));
+			}
+
+			//Separe columns from destFk
+			wxStringTokenizer conkey(fkColsDestTable);
+			while (conkey.HasMoreTokens())
+			{
+				wxString str = conkey.GetNextToken();
+				destFkCols.Add(StrToLong(str));
+			}
+
+			//Get Stub of source table
+			ddStubTable *sourceStubTable =	ddImportDBUtils::getTable(connection,sourceTableName,sourceOID);
+			
+			//Get PK columns of source
+			stubColsHashMap::iterator it;
+			ddStubColumn *column;
+			for (it = sourceStubTable->cols.begin(); it != sourceStubTable->cols.end(); ++it)
+			{
+				wxString key = it->first;
+				column = it->second;
+				if(column->isPrimaryKey)
+					sourcePKs.Add(column->pgColNumber);
+			}
+			
+			//Get PK columns of dest
+			for (it = destStubTable->cols.begin(); it != destStubTable->cols.end(); ++it)
+			{
+				wxString key = it->first;
+				column = it->second;
+				if(column->isPrimaryKey)
+					destPKs.Add(column->pgColNumber);
+			}
+			
+			//  Source Table  ----------------------<| Destination Table
+
+			//first check: number of columns used as fk at Source is the same of the pk at Source
+			if(sourceFkCols.Count() == sourcePKs.Count())
+			{
+				int i;
+				//Because postgres columns numbers are stored in an ordered array, 
+				//their index should be the same at all positions
+				int srcFkCount = sourceFkCols.Count();
+				for(i=0; i < srcFkCount; i++)
+				{
+					if( sourceFkCols[i] != sourcePKs[i] )
+					{
+						fkFromPk = false;
+						break;
+					}
+				}
+			}
+			else
+			{
+				fkFromPk = true;
+			}
+
+			//------ Finding fk from uk or pk?
+			int ukIndex = -1;
+			//if fkFromPk = false then is fkfromUK?, check that
+			//all source fk columns should belong to one Uk at source table.
+			if( fkFromPk==false )
+			{
+				bool error = false;
+				int baseColNumber = sourceFkCols[sourceFkCols.Count()-1];
+				int baseUkIdxSourceCol = sourceStubTable->getColumnByNumber(baseColNumber)->uniqueKeyIndex;
+				int nextColNumber, nextUkIdxSourceCol; 
+				int countSrcFkCols = sourceFkCols.Count() - 2;
+				while(countSrcFkCols>=0){
+					nextColNumber = sourceFkCols[countSrcFkCols];
+					nextUkIdxSourceCol = sourceStubTable->getColumnByNumber(nextColNumber)->uniqueKeyIndex;
+					countSrcFkCols--;
+					if(baseUkIdxSourceCol != baseUkIdxSourceCol)
+					{
+						error = true;
+						wxMessageBox(_("Error detecting kind of foreign key source: from Pk or from Uk"), _("Error importing relationship"),  wxICON_ERROR);
+						return false;
+					}
+				}
+				if(!error)
+				{
+					ukIndex = baseUkIdxSourceCol;
+				}
+			}
+
+			//Last check of consistency
+			if(fkFromPk==false && ukIndex < 0)
+			{
+				wxMessageBox(_("Error detecting kind of foreign key source: from Pk or from Uk"), _("Error importing relationship"),  wxICON_ERROR);
+				return false;
+			}
+
+
+			//------ identifying relationship or not  -----|-<|?
+			//first check: number of columns used as fk at Source is the same of the pk at Source
+			if(destFkCols.Count() == destPKs.Count())
+			{
+				int i;
+				//Because postgres columns numbers are stored in an ordered array, 
+				//their index should be the same at all positions
+				int destFkCount = destFkCols.Count();
+				for(i=0; i < destFkCount; i++)
+				{
+					if( destFkCols[i] != destPKs[i] )
+					{
+						identifying = false;
+						break;
+					}
+				}
+			}
+			else
+			{
+				identifying = false;
+			}
+
+			//------ 1:1 or 1:M  ?  as a fact 1:1 have a fk,uk at destination table.
+			// A foreign key have an one to many relationship when there is an UK for same column(s) 
+			// inside the foreign key. Assumption, a column on belong to one Uk (no more than one).
+			int baseColNumber = destFkCols[destFkCols.Count()-1];
+			int baseUkIdxDestCol = destStubTable->getColumnByNumber(baseColNumber)->uniqueKeyIndex;
+			if(baseUkIdxDestCol!=-1)
+			{
+				oneToMany = false;
+				int nextUkIdxDestCol, nextColNumber; 
+				int countDestFkCols = destFkCols.Count() - 2;
+				while(countDestFkCols>=0){
+					nextColNumber = destFkCols[countDestFkCols];
+					nextUkIdxDestCol = destStubTable->getColumnByNumber(nextColNumber)->uniqueKeyIndex;
+					countDestFkCols--;
+					//if a dest fk column is not in the same Uk index of first one
+					if(nextUkIdxDestCol != baseUkIdxDestCol)
+					{
+						oneToMany = true;
+						break;
+					}
+				}
+			}
+			
+			//Step two check all column of fk are inside a unique key (all and not more)
+			if(oneToMany == false)  //assumption is 1:1 relationship until now
+			{
+				int numberColsInUk = 0, nextUkIdxDestCol, nextColNumber;
+				ddStubColumn *item;
+				for (it = destStubTable->cols.begin(); it != destStubTable->cols.end(); ++it)
+				{
+					wxString key = it->first;
+					item = it->second;
+					//at each column with same uk index that base comparison column, count it
+					nextColNumber = item->pgColNumber;
+					nextUkIdxDestCol = destStubTable->getColumnByNumber(nextColNumber)->uniqueKeyIndex;
+					if( nextUkIdxDestCol == baseUkIdxDestCol)
+					{
+						numberColsInUk++;
+					}
+				}
+
+				//number of columns in uk used by relationship is bigger or lesser than number of columns
+				//in destination table used by relationship as fk dest(dest fk columnn), then is not 1:1
+				if(numberColsInUk != destFkCols.Count())
+					oneToMany = true;
+			}
+
+			//Optional or Mandatory consistency
+			int countDestFkCols = destFkCols.Count() - 1;
+			bool isNotNull;
+			int nnCols=0, nullCols=0, nextColNumber;
+			while(countDestFkCols>=0){
+				nextColNumber = destFkCols[countDestFkCols];
+				isNotNull = destStubTable->getColumnByNumber(nextColNumber)->isNotNull;
+				countDestFkCols--;
+				if(isNotNull)
+					nnCols++;
+				else
+					nullCols++;
+			}
+
+			if(nnCols == 0 && nullCols > 0)
+			{
+				mandatoryRelationship = false;
+			}
+			else if(nnCols >0 && nullCols == 0)
+			{
+				mandatoryRelationship = true;
+			}
+			else
+			{
+				wxMessageBox(_("Error detecting kind of foreign key: null or not null"), _("Error importing relationship"),  wxICON_ERROR);
+				return false;
+			}
+			delete sourceStubTable;
+			foreignKeys->MoveNext();
+		}
+		//After collection db info compare with model info
+		
+		//Is safe to check if this UKindex  is the same Ukindex of relationship because both aren't equal.
+		//Before should by unified by same uk index like in comparing uk at table figure class
+		//Todo in a future
+	
+		//relation is fromPk in model and db?
+		if(fkFromPk && !relation->isForeignKeyFromPk())
+			equalFk=false;
+		
+		//OnUpdateAction is the same kind?
+		if(onUpdate!=relation->getOnUpdateAction())
+			equalFk=false;
+		
+		//OnDeleteAction  is the same kind?
+		if(onDelete!=relation->getOnDeleteAction())
+			equalFk=false;
+		
+		//Are same match kind
+		if(matchSimple!=relation->getMatchSimple())
+			equalFk=false;
+
+		//are both identifying?
+		if(identifying!=relation->getIdentifying())
+			equalFk=false;
+
+		//are both 1:1 or 1:M
+		if(oneToMany!=relation->getOneToMany())
+			equalFk=false;
+
+		//Mandatory value is the same?
+		if(mandatoryRelationship!=relation->getMandatory())
+			equalFk=false;
+
+		//Columns at both arrays: created from model and created from db are supposed to have same number of item
+		//if not fk has changed.
+		
+		//Number of source fk columns at DB is the same number of source fk columns at model
+		if(sourceFkCols.Count() != srcPgs.Count())
+			equalFk=false;
+
+		//Number of destination fk columns at DB is the same number of destination fk columns at model
+		if(destFkCols.Count() != destPgs.Count())
+			equalFk=false;
+
+		//Now because arrays are sorted they numbers should match exactly (same pg column number)
+		int i, max=sourceFkCols.Count();
+		for(i=0;i<max;i++)
+		{
+			if(sourceFkCols[i]!=srcPgs[i])
+				equalFk=false;
+		}
+
+		max=destFkCols.Count();
+		for(i=0;i<max;i++)
+		{
+			if(destFkCols[i]!=destPgs[i])
+				equalFk=false;
+		}
+
+		return equalFk;
+	}
+	else
+	{
+		wxMessageBox(_("Error fk is repeated"), _("Error comparing relationships"),  wxICON_ERROR);
+	}
+	delete foreignKeys;
+
+	return equalFk;
 }
 
 ddTableFigure* ddImportDBUtils::getTableFigure(ddStubTable *table)
@@ -1034,13 +1543,13 @@ ddDBReverseEngineering::ddDBReverseEngineering(wxFrame *frame, ddDatabaseDesign 
              _T("Import database tables to model tables wizard.\n")
              _T("\n")
              _T("The next pages will allow you to import database tables inside a database model.")
-			_T("\n\n\n\n\n\n\n")
+			_T("\n\n\n\n\n")
 			_T("\nSome restrictions apply:\n\n")
-			_T("1. If a column belongs to more than one unique key, unexpected behavior will ocurr.\n\n")
-			_T("2. Relationships are imported only if both tables: source and destination of foreign key are imported.\n\n")
-			_T("3. User defined datatypes aren't supported at this time, it will be included in a future.\n\n")
-			_T("4. Not indexes, views, sequences and others objects different from views and tables can be imported.\n\n")
-			_T("5. If a table with the same name of the table to import exists in the model, that operation shouldn't be allowed.\n\n")
+			_T("1. Columns that belongs to more than one unique constraint aren't supported.\n\n")
+			_T("2. Relationships are imported only if both tables: source and destination are imported.\n\n")
+			_T("3. User defined datatypes aren't supported.\n\n")
+			_T("4. Not indexes, views, sequences and others objects different from tables/relationships can be imported.\n\n")
+			_T("5. Tables with same name cannot be imported.\n\n")
 			,wxPoint(5,5)
         );
 

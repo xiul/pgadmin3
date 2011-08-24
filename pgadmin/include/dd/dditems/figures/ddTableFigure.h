@@ -16,6 +16,7 @@
 #include "hotdraw/figures/hdSimpleTextFigure.h"
 #include "dd/dditems/figures/ddTextTableItemFigure.h"
 #include "dd/dditems/figures/ddColumnFigure.h"
+#include "dd/ddmodel/ddDatabaseDesign.h"
 
 class ddScrollBarHandle;
 class ddRelationshipFigure;
@@ -79,7 +80,7 @@ public:
 	wxString generateSQLAlterPks();
 	wxString generateSQLAlterFks();
 	wxString generateSQLAlterUks();
-	wxString generateAltersTable(pgConn *connection, wxString schemaName);
+	wxString generateAltersTable(pgConn *connection, wxString schemaName, ddDatabaseDesign *design);
 	static wxString generateShortName(wxString longName);
 	wxArrayString getAllColumnsNames();
 	wxArrayString getAllFkSourceColsNames(bool pk, int ukIndex = -1);

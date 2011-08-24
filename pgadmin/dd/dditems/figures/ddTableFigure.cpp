@@ -41,6 +41,8 @@
 #include "dd/dditems/figures/ddRelationshipFigure.h"
 #include "hotdraw/connectors/hdLocatorConnector.h"
 #include "hotdraw/main/hdDrawing.h"
+#include "dd/ddmodel/ddDatabaseDesign.h"
+
 //Images
 #include "images/ddAddColumn.pngc"
 #include "images/ddRemoveColumn.pngc"
@@ -1254,7 +1256,7 @@ wxString ddTableFigure::generateSQLAlterUks()
 	return tmp;
 }
 
-wxString ddTableFigure::generateAltersTable(pgConn *connection, wxString schemaName)
+wxString ddTableFigure::generateAltersTable(pgConn *connection, wxString schemaName, ddDatabaseDesign *design)
 {
 	wxString out;
 	OID oidTable = ddImportDBUtils::getTableOID(connection,schemaName,getTableName());
@@ -1745,47 +1747,79 @@ wxString ddTableFigure::generateAltersTable(pgConn *connection, wxString schemaN
 			}
 		}
 	}
+	
+	//Validate all fk(s) have a name defined at model
+	hdIteratorBase *iteratorRelations = observersEnumerator();
+	while(iteratorRelations->HasNext())
+	{
+		ddRelationshipFigure *r = (ddRelationshipFigure *) iteratorRelations->Next();
+		if(r->getConstraintName().Len()==0)	//Add to list, FK(s) with this table as destination. source ---<| destination
+		{
+			wxMessageBox(_("Generating alter table for fk(s) with no consistency (fk without name at model), please name it at destination table: ") + getTableName(), _("altering Foreign key(s) columns at table"),  wxICON_ERROR);
+			return wxEmptyString;
+		}
+	}
+
 	//Check Foreign Keys
-	//Look for new fk(s) at model not existing at table
-	//NOT SUPPORTED YET
+	// FK at model are same (including attributes and columns) at db
+	iteratorRelations->ResetIterator();
+	while(iteratorRelations->HasNext())
+	{
+		ddRelationshipFigure *r = (ddRelationshipFigure *) iteratorRelations->Next();
+		if(r->getEndFigure() == this)	//Only check FK this table as destination. source ---<| destination
+		{
+			//check relationship from model exists a db?
+			if(ddImportDBUtils::existsFk(connection, dbTable->OIDTable,schemaName, r->getConstraintName(),r->getStartTable()->getTableName()))
+			{
+				//Columns and other properties are exactly the same? if not then drop and create
+				if(!ddImportDBUtils::isModelSameDbFk(connection,dbTable->OIDTable,schemaName,r->getConstraintName(),r->getStartTable()->getTableName(),r->getEndTable()->getTableName(),dbTable,r))
+				{
+					//Drop it first
+					out += _("\n");
+					out += _("ALTER TABLE \"") + this->getTableName() +_("\" ");
+					out += _("DROP CONSTRAINT \"") + r->getConstraintName() + _("\";");
+					out += _("\n");
+
+					//Then Add it again with changes
+					out += r->generateSQL();
+
+				}
+			}
+			else //relationship only exists at model and not in db
+			{
+				//Create because it doesn't exists
+				out += r->generateSQL();
+			}
+		}
+	}
+
+	wxArrayString validFks;
+	//Check foreign keys at db but not in model to delete it
+	//First create a list of Fk at dest table in model
+	iteratorRelations->ResetIterator();
+	while(iteratorRelations->HasNext())
+	{
+		ddRelationshipFigure *r = (ddRelationshipFigure *) iteratorRelations->Next();
+		if(r->getEndFigure() == this)	//Add to list, FK(s) with this table as destination. source ---<| destination
+		{
+			validFks.Add(r->getConstraintName());
+		}
+	}
+	delete iteratorRelations;	
+
+	wxArrayString fksToDelete = ddImportDBUtils::getFkAtDbNotInModel(connection, dbTable->OIDTable, schemaName, validFks , design);
+
+	int max = fksToDelete.Count();
+	for(i=0;i<max;i++)
+	{
+		//Drop it.
+		out += _("\n");
+		out += _("ALTER TABLE \"") + this->getTableName() +_("\" ");
+		out += _("DROP CONSTRAINT \"") + fksToDelete[i] + _("\";");
+		out += _("\n");
+	}
 
 	if(dbTable)
 		delete dbTable;
 	return out;
 }
-
-/*666
-class ddStubColumn : public hdObject
-{
-public:
-	ddStubColumn();
-	ddStubColumn(const ddStubColumn& copy);
-	ddStubColumn(wxString name, OID oidSource, bool notNull, bool pk, pgDatatype *type, int ukIndex=-1);
-	ddStubColumn(wxString name, OID oidSource);
-	~ddStubColumn();
-	wxString columnName;
-	bool isNotNull;
-	bool isPrimaryKey;
-	bool isUniqueKey() {return uniqueKeyIndex > -1; };
-	int uniqueKeyIndex;
-	OID OIDTable;
-	pgDatatype *typeColumn;
-	int pgColNumber;
-};
-
-WX_DECLARE_STRING_HASH_MAP( ddStubColumn*, stubColsHashMap);
-
-class ddStubTable : public hdObject
-{
-public:
-	ddStubTable();
-	ddStubTable(wxString name, OID tableOID);
-	ddStubColumn* getColumnByNumber(int pgColNumber);
-	~ddStubTable();
-	wxString tableName;
-	OID OIDTable;
-	stubColsHashMap cols;
-	wxString PrimaryKeyName;
-	wxArrayString UniqueKeysNames;
-};
-*/

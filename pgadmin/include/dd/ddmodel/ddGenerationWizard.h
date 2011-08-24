@@ -108,6 +108,9 @@ private:
 	DECLARE_EVENT_TABLE()
 };
 
+//Special version of wxGrid to allow use of fast comboboxes and grid columns auto fit
+//some snippets from http://forums.wxwidgets.org/viewtopic.php?t=27568 under same wxwidgets license
+//others from pgAdming gqb
 class wxDDGrid: public wxGrid
 {
 public:
@@ -115,9 +118,23 @@ public:
 	void ComboBoxEvent(wxGridEvent &event);
 	void RevertSel();
 
+	int sf[10];
+	
+	void OnSizeEvt( wxSizeEvent& ev );
+	int StretchIt();
+	int keepFit;
+		
+   public:
+	void SetColStretch ( unsigned i, int factor ) {	if( i < 10 ) sf[i]=factor; }
+	int  GetColStretch ( unsigned i ) const { return (i<10)?sf[i]:1; }
+	void ReLayout() { StretchIt(); }
+	void SetFit( int fit_style ) { keepFit=fit_style; }
 private:
 	wxGridSelection *m_selTemp;
 };
+
+
+
 
 class ReportGridPage : public wxWizardPage
 {
@@ -137,8 +154,6 @@ private:
 	wxStaticText *message;
 	wxWizardPage *m_prev, *m_next;
 	wxDDGrid *reportGrid;
-//666	wxListBox *m_allSchemas;
-//666	wxArrayString schemasNames;
 	ddGenerationWizard *wparent;
 	DECLARE_EVENT_TABLE()
 };

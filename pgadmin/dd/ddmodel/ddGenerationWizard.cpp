@@ -65,14 +65,13 @@ ddGenerationWizard::ddGenerationWizard(wxFrame *frame, ddDatabaseDesign *design,
              _T("Generate DDL from model tables.\n")
              _T("\n")
              _T("The next pages will allow generate DDL of a database designer model.")
-			_T("\n\n\n\n\n\n\n")
-			_T("\nSome restrictions apply:\n\n")
-			_T("1. When generating alter senteces instead of create for existing objects\n\n")
-			_T("   only changes done in the design will be applied to the db not otherwise.\n\n")
-			_T("2. Rename of columns or tables is not supported when generating alter senteces instead of create.\n\n")
-			_T("3. Rename of Unique Key constraints aren't supported.\n\n")
-			_T("4. Add all others... .\n\n")
-
+			_T("\n\n\n\n")
+			_T("\nRestrictions apply when using experimental function alter table instead of drop/create:\n\n")
+			_T("1. Database connection is required to schema with existing table.\n\n")
+			_T("2. Only changes done in the design will be applied to the db not otherwise.\n\n")
+			_T("3. Rename of columns or tables is not supported.\n\n")
+			_T("4. Rename of constraints generate a drop and create except for primary key constraint.\n\n")
+			_T("5. All constraints should have a name defined.\n\n")
 			,wxPoint(5,5)
         );
 
@@ -391,7 +390,7 @@ SelGenSchemaPage::SelGenSchemaPage(wxWizard *parent, wxWizardPage *prev)
 	this->SetSizer(topSizer);
 
 	//Add a message
-	message = new wxStaticText(this, wxID_STATIC, _("Please, select a schema to use as generation target. \n\n\nThis affect the selection between create / alter table(s) matching for the DDL generated \ndepending on whether exists or not the table in that schema"), wxDefaultPosition, wxDefaultSize, wxALIGN_LEFT);
+	message = new wxStaticText(this, wxID_STATIC, _("Please, select a schema to use as generation target. \n\nThis affect the selection between create / alter table(s) matching for the DDL generated \ndepending on whether exists or not the table in that schema"), wxDefaultPosition, wxDefaultSize, wxALIGN_LEFT);
 	topSizer->Add(message);
 	topSizer->AddSpacer(10);
 
@@ -609,8 +608,10 @@ void ReportGridPage::populateGrid()
 		}
 
 	}
+	
 	reportGrid->AutoSizeColumns();
 	reportGrid->Fit();
+
 }
 
 void ReportGridPage::OnWizardPageChanging(wxWizardEvent& event)
@@ -639,12 +640,16 @@ void ReportGridPage::OnCellLeftClick(wxGridEvent &event)
 
 
 //
-//  -- Special version of wxGrid to allow use of fast comboboxes
+//  -- Special version of wxGrid to allow use of fast comboboxes and grid columns auto fit
 //
 wxDDGrid::wxDDGrid(wxWindow *parent, wxWindowID id):
 	wxGrid(parent, id, wxDefaultPosition, wxDefaultSize, wxTE_READONLY | wxTE_BESTWRAP, wxT("")),
-	m_selTemp(NULL)
+	m_selTemp(NULL), keepFit(1)
 {
+		// Initially all columns have s-factor=1
+	for( unsigned i=0; i<10; ++i ) sf[i]=1; 
+	
+	Connect( wxEVT_SIZE, wxSizeEventHandler( wxDDGrid::OnSizeEvt) );
 	// Adjust the default row height to be more compact
 	wxFont font = GetLabelFont();
 	int nWidth = 0;
@@ -699,4 +704,41 @@ void wxDDGrid::RevertSel()
 		m_selection = m_selTemp;
 		m_selTemp = NULL;
 	}
+}
+
+void wxDDGrid::OnSizeEvt( wxSizeEvent& ev )
+{
+	if( !StretchIt() ) ev.Skip();		
+}
+
+int wxDDGrid::StretchIt()
+{
+	int new_width = GetClientSize().GetWidth()-GetRowLabelSize()-10;
+	int fixedWidth=0, numStretches=0, numStretched=0;
+	
+	for( int i=0; i<GetNumberCols(); ++i )
+	{
+		if( sf[i] == 0 ) fixedWidth += GetColSize(i);
+		else if( sf[i] < 0 ) {
+			AutoSizeColumn(i,false);
+			fixedWidth += GetColSize(i);
+		} else {
+			numStretches += sf[i];
+			numStretched += 1;
+		}
+	}
+	
+	// Now either we have space for normal layout or resort to wxGrid default behaviour	
+	if( numStretched && ((fixedWidth + numStretched*10) < new_width) )
+	{
+		int stretchSpace = (new_width - fixedWidth)/numStretches;
+		//BeginBatch();	
+		int i,max=GetNumberCols();
+		for(i=0; i<max; ++i )
+			if( sf[i] > 0 )
+				SetColSize(i,stretchSpace*sf[i]);
+		//EndBatch();
+		return 1;
+	} 
+	return 0;
 }
