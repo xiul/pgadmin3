@@ -131,7 +131,164 @@ bool ddDatabaseDesign::validateModel(wxString &errors)
 	return out;
 }
 
-wxString ddDatabaseDesign::generateModel()
+wxString ddDatabaseDesign::generateList(wxArrayString tables, wxArrayInt options, pgConn *connection, wxString schemaName)
+{
+	int i;
+	//Validate
+	if(tables.Count()!=options.Count())
+	{
+		wxMessageBox(_("Unexpected error, invalid number of arguments in call of function generate tables of list"), _("Error at generation process"),  wxICON_ERROR);
+		return wxEmptyString;
+	}
+
+	int tablesCount = tables.Count();
+	for(i=0;i<tablesCount;i++)
+	{
+		ddTableFigure *table = getTable(tables[i]);
+		if(table==NULL)
+		{
+			wxMessageBox(_("Unexpected error, metadata of table to be generated not found at database designer model"), _("Error at generation process"),  wxICON_ERROR);
+			return wxEmptyString;
+		}
+	}
+
+	//Start Generation of CREATE + Alter Pk(s) + Alter Uk(s) + Alter Fks(s)
+	wxString out;
+	out += wxT(" \n");
+	out += wxT("--\n-- ");
+	out += _("Generating Create sentence(s) for table(s) ");
+	out += wxT(" \n--\n");
+	out += wxT(" \n");
+	for(i=0;i<tablesCount;i++)
+	{
+		if(options[i]==DDGENCREATE || options[i]==DDGENDROPCRE)
+		{
+			ddTableFigure *table = getTable(tables[i]);
+			if(options[i]==DDGENDROPCRE)
+			{
+				out += wxT(" \n");
+				out += wxT("DROP TABLE '")+table->getTableName()+_("';");
+				out += wxT(" \n");
+			}
+			out += wxT(" \n");
+			out += table->generateSQLCreate(schemaName);
+			out += wxT(" \n");
+		}
+	}
+	out += wxT(" \n");
+	out += wxT(" \n");
+	out += wxT(" \n");
+	out += wxT("--\n-- ");
+	out += _("Generating Pk sentence for table(s) ");
+	out += wxT(" \n--\n");
+	out += wxT(" \n");
+	out += wxT(" \n");
+	for(i=0;i<tablesCount;i++)
+	{
+		if(options[i]==DDGENCREATE || options[i]==DDGENDROPCRE)
+		{
+			ddTableFigure *table = getTable(tables[i]);
+			out += table->generateSQLAlterPks(schemaName);
+		}
+	}
+	out += wxT(" \n");
+	out += wxT(" \n");
+	out += wxT(" \n");
+	out += wxT("--\n-- ");
+	out += _("Generating Uk sentence(s) for table(s) ");
+	out += wxT(" \n--\n");
+	out += wxT(" \n");
+	out += wxT(" \n");
+	for(i=0;i<tablesCount;i++)
+	{
+		if(options[i]==DDGENCREATE || options[i]==DDGENDROPCRE)
+		{
+			ddTableFigure *table = getTable(tables[i]);
+			out += table->generateSQLAlterUks(schemaName);
+		}
+	}
+	out += wxT(" \n");
+	out += wxT(" \n");
+	out += wxT(" \n");
+	out += wxT("--\n-- ");
+	out += _("Generating Fk sentence(s) for table(s) ");
+	out += wxT(" \n--\n");
+	out += wxT(" \n");
+	out += wxT(" \n");
+	for(i=0;i<tablesCount;i++)
+	{
+		if(options[i]==DDGENCREATE || options[i]==DDGENDROPCRE)
+		{
+			ddTableFigure *table = getTable(tables[i]);
+			out += table->generateSQLAlterFks(schemaName);
+		}
+	}
+
+	//Start generation of alter table instead of create
+	//Check there is some 
+	int countAlter=0;
+	for(i=0;i<tablesCount;i++)
+	{
+		if(options[i]==DDGENALTER)
+		{
+			countAlter++;
+		}
+	}
+	
+	if(countAlter > 0 && connection==NULL)
+	{
+		wxMessageBox(_("Unexpected error, not connection found when generating alter table DDL"), _("Error at generation process"),  wxICON_ERROR);
+		return out;	
+		
+	}
+	else if(countAlter > 0 && connection!=NULL)
+	{
+		if(schemaName.IsEmpty())
+		{
+			wxMessageBox(_("Unexpected error schema defined when generating alter table DDL"), _("Error at generation process"),  wxICON_ERROR);
+			return out;	
+		}
+		out += wxT(" \n");
+		out += wxT(" \n");
+		out += wxT(" \n");
+		out += wxT("--\n-- ");
+		out += _("Generating Alter table sentence(s) for table(s) ");
+		out += wxT(" \n--\n");
+		out += wxT(" \n");
+		out += wxT(" \n");
+		for(i=0;i<tablesCount;i++)
+		{
+			if(options[i]==DDGENALTER)
+			{
+				ddTableFigure *table = getTable(tables[i]);
+				out += table->generateAltersTable(connection,schemaName,this);
+				out += wxT(" \n");
+			}
+		}
+	}
+		
+return out;	
+}
+
+wxArrayString ddDatabaseDesign::getModelTables()
+{
+	wxArrayString out;
+	hdIteratorBase *iterator = editor->modelFiguresEnumerator();
+	hdIFigure *tmp;
+	ddTableFigure *table;
+	while(iterator->HasNext())
+	{
+		tmp = (hdIFigure *)iterator->Next();
+		if(tmp->getKindId() == DDTABLEFIGURE)
+		{
+			table = (ddTableFigure *)tmp;
+			out.Add(table->getTableName());
+		}
+	}
+	return out;
+}
+
+wxString ddDatabaseDesign::generateModel(wxString schemaName)
 {
 	wxString out;
 	hdIteratorBase *iterator = editor->modelFiguresEnumerator();
@@ -149,7 +306,7 @@ wxString ddDatabaseDesign::generateModel()
 		{
 			out += wxT(" \n");
 			table = (ddTableFigure *)tmp;
-			out += table->generateSQLCreate();
+			out += table->generateSQLCreate(schemaName);
 			out += wxT(" \n");
 		}
 	}
@@ -169,7 +326,26 @@ wxString ddDatabaseDesign::generateModel()
 		if(tmp->getKindId() == DDTABLEFIGURE)
 		{
 			table = (ddTableFigure *)tmp;
-			out += table->generateSQLAlterPks();
+			out += table->generateSQLAlterPks(schemaName);
+		}
+	}
+
+	out += wxT(" \n");
+	out += wxT(" \n");
+	out += wxT(" \n");
+	out += wxT("--\n-- ");
+	out += _("Generating Uk sentence(s) for table(s) ");
+	out += wxT(" \n--\n");
+	out += wxT(" \n");
+	out += wxT(" \n");
+	iterator->ResetIterator();
+	while(iterator->HasNext())
+	{
+		tmp = (hdIFigure *)iterator->Next();
+		if(tmp->getKindId() == DDTABLEFIGURE)
+		{
+			table = (ddTableFigure *)tmp;
+			out += table->generateSQLAlterUks(schemaName);
 		}
 	}
 
@@ -188,7 +364,7 @@ wxString ddDatabaseDesign::generateModel()
 		if(tmp->getKindId() == DDTABLEFIGURE)
 		{
 			table = (ddTableFigure *)tmp;
-			out += table->generateSQLAlterFks();
+			out += table->generateSQLAlterFks(schemaName);
 		}
 	}
 
@@ -196,7 +372,26 @@ wxString ddDatabaseDesign::generateModel()
 	return out;
 }
 
-wxString ddDatabaseDesign::generateDiagram(int diagramIndex)
+wxArrayString ddDatabaseDesign::getDiagramTables(int diagramIndex)
+{
+	wxArrayString out;
+	hdIteratorBase *iterator = editor->getExistingDiagram(diagramIndex)->figuresEnumerator();
+	hdIFigure *tmp;
+	ddTableFigure *table;
+	while(iterator->HasNext())
+	{
+		tmp = (hdIFigure *)iterator->Next();
+		if(tmp->getKindId() == DDTABLEFIGURE)
+		{
+			table = (ddTableFigure *)tmp;
+			out.Add(table->getTableName());
+		}
+	}
+
+	return out;
+}
+
+wxString ddDatabaseDesign::generateDiagram(int diagramIndex, wxString schemaName)
 {
 	wxString out;
 	hdIteratorBase *iterator = editor->getExistingDiagram(diagramIndex)->figuresEnumerator();
@@ -214,7 +409,7 @@ wxString ddDatabaseDesign::generateDiagram(int diagramIndex)
 		{
 			out += wxT(" \n");
 			table = (ddTableFigure *)tmp;
-			out += table->generateSQLCreate();
+			out += table->generateSQLCreate(schemaName);
 			out += wxT(" \n");
 		}
 	}
@@ -234,7 +429,26 @@ wxString ddDatabaseDesign::generateDiagram(int diagramIndex)
 		if(tmp->getKindId() == DDTABLEFIGURE)
 		{
 			table = (ddTableFigure *)tmp;
-			out += table->generateSQLAlterPks();
+			out += table->generateSQLAlterPks(schemaName);
+		}
+	}
+
+	out += wxT(" \n");
+	out += wxT(" \n");
+	out += wxT(" \n");
+	out += wxT("--\n-- ");
+	out += _("Generating Uk sentence(s) for table(s) ");
+	out += wxT(" \n--\n");
+	out += wxT(" \n");
+	out += wxT(" \n");
+	iterator->ResetIterator();
+	while(iterator->HasNext())
+	{
+		tmp = (hdIFigure *)iterator->Next();
+		if(tmp->getKindId() == DDTABLEFIGURE)
+		{
+			table = (ddTableFigure *)tmp;
+			out += table->generateSQLAlterUks(schemaName);
 		}
 	}
 
@@ -253,7 +467,7 @@ wxString ddDatabaseDesign::generateDiagram(int diagramIndex)
 		if(tmp->getKindId() == DDTABLEFIGURE)
 		{
 			table = (ddTableFigure *)tmp;
-			out += table->generateSQLAlterFks();
+			out += table->generateSQLAlterFks(schemaName);
 		}
 	}
 
@@ -284,7 +498,7 @@ wxString ddDatabaseDesign::getNewTableName()
 				else
 					tmpStr = wxString::Format(_("NewTable%d"), indx);
 
-				if(table->getTableName().Contains(tmpStr))
+				if(table->getTableName().IsSameAs(tmpStr))
 				{
 					indx++;
 					repeat = true;
@@ -326,7 +540,7 @@ ddTableFigure *ddDatabaseDesign::getTable(wxString tableName)
 		if(tmp->getKindId() == DDTABLEFIGURE)
 		{
 			table = (ddTableFigure *)tmp;
-			if(table->getTableName().Contains(tableName))
+			if(table->getTableName().IsSameAs(tableName,false))
 			{
 				out = table;
 			}
@@ -497,4 +711,36 @@ void ddDatabaseDesign::deleteDiagram(int diagramIndex, bool deleteView)
 wxString ddDatabaseDesign::getVersionXML()
 {
 	return wxString(_("1.0"));
+}
+
+void ddDatabaseDesign::markSchemaOn(wxArrayString tables)
+{
+	
+	int i, tablesCount = tables.Count();
+	for(i=0;i<tablesCount;i++)
+	{
+		ddTableFigure *table = getTable(tables[i]);
+		if(table!=NULL) //mark on if table exists in other case do nothing
+		{
+			table->setBelongsToSchema(true);
+		}
+	}
+}
+
+void ddDatabaseDesign::unMarkSchemaOnAll()
+{
+	hdIteratorBase *iterator = editor->modelFiguresEnumerator();
+	hdIFigure *tmpFigure;
+	ddTableFigure *table;
+
+	while(iterator->HasNext())
+	{
+		tmpFigure = (hdIFigure *)iterator->Next();
+		if(tmpFigure->getKindId() == DDTABLEFIGURE)
+		{
+			table = (ddTableFigure *)tmpFigure;
+			table->setBelongsToSchema(false);
+		}
+	}
+	delete iterator;
 }
